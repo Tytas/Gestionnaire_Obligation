@@ -9,13 +9,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DatabaseInteractor {
 
-    static Obligation GenerateObligation(String name){
+    static Obligation GenerateObligation(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/obligations/";
         try {
             // Vérifier si le dossier existe
-            if (Files.exists(Path.of(baseDir, name))) {
-                Obligation oblig = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
+            if (Files.exists(Path.of(baseDir, Integer.toString(id)))) {
+                Obligation oblig = objectMapper.readValue(Path.of(baseDir, Integer.toString(id)).resolve("data.json").toFile(),
                                                         Obligation.class);
                 return oblig;
             }
@@ -28,7 +28,7 @@ public class DatabaseInteractor {
 
     static Boolean SaveObligation(Obligation oblig){
         String baseDir = "data/obligations/";
-        String obligationName = oblig.getName();
+        String obligationName = Integer.toString(oblig.getId());
         Path obligationFolder = Path.of(baseDir, obligationName);
 
         try {
@@ -43,6 +43,141 @@ public class DatabaseInteractor {
             // Sérialiser avec Jackson
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, oblig);
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+    static Investor GenerateInvestor(int id){
+        ObjectMapper objectMapper = new ObjectMapper();
+        String baseDir = "data/investors/";
+        String name = Integer.toString(id);
+        try {
+            // Vérifier si le dossier existe
+            if (Files.exists(Path.of(baseDir, name))) {
+                Investor investor = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
+                                                        Investor.class);
+                return investor;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
+    static Boolean SaveInvestor(Investor investor){
+        String baseDir = "data/investors/";
+        String investorName = Integer.toString(investor.getId());
+        Path investorFolder = Path.of(baseDir, investorName);
+
+        try {
+            // Créer le dossier s'il n'existe pas déjà
+            if (!Files.exists(investorFolder)) {
+                Files.createDirectories(investorFolder);
+            }
+
+            // Créer le fichier JSON
+            File jsonFile = investorFolder.resolve("data.json").toFile();
+
+            // Sérialiser avec Jackson
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, investor);
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+    static Family GenerateFamily(int id){
+        ObjectMapper objectMapper = new ObjectMapper();
+        String baseDir = "data/families/";
+        String name = Integer.toString(id);
+        try {
+            // Vérifier si le dossier existe
+            if (Files.exists(Path.of(baseDir, name))) {
+                Family family = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
+                                                        Family.class);
+                return family;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
+    static Boolean SaveFamily(Family family){
+        String baseDir = "data/families/";
+        String familyName = Integer.toString(family.getId());
+        Path familyFolder = Path.of(baseDir, familyName);
+
+        try {
+            // Créer le dossier s'il n'existe pas déjà
+            if (!Files.exists(familyFolder)) {
+                Files.createDirectories(familyFolder);
+            }
+
+            // Créer le fichier JSON
+            File jsonFile = familyFolder.resolve("data.json").toFile();
+
+            // Sérialiser avec Jackson
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, family);
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+    static Applicant GenerateApplicant(int id){
+        ObjectMapper objectMapper = new ObjectMapper();
+        String baseDir = "data/applicants/";
+        String name = Integer.toString(id);
+        try {
+            // Vérifier si le dossier existe
+            if (Files.exists(Path.of(baseDir, name))) {
+                Applicant applicant = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
+                                                        Applicant.class);
+                return applicant;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
+    static Boolean SaveApplicant(Applicant applicant){
+        String baseDir = "data/applicants/";
+        String applicantName = Integer.toString(applicant.getId());
+        Path applicantFolder = Path.of(baseDir, applicantName);
+
+        try {
+            // Créer le dossier s'il n'existe pas déjà
+            if (!Files.exists(applicantFolder)) {
+                Files.createDirectories(applicantFolder);
+            }
+
+            // Créer le fichier JSON
+            File jsonFile = applicantFolder.resolve("data.json").toFile();
+
+            // Sérialiser avec Jackson
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, applicant);
 
             return true;
         } catch (IOException e) {

@@ -1,0 +1,5 @@
+{
+  "id" : 1,
+  "name" : "Famille Dupont",
+  "investors" : [ 1, 2 ]
+}
