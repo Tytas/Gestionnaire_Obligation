@@ -15,29 +15,63 @@ class Main {
                                         LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
                                         24,
                                         1);
+        String[] address = {"1", "rue de la Paix", "95000", "Paris", "France", ""};
         Applicant applicant = new Applicant(1,
-                                        "Dupuis",
-                                        "Emily",
-                                        "dupuis.emily@gmail.com",
+                                        "Applicant 1",
+                                        "France",
+                                        123456789,
+                                        "2023-10-01",
+                                        "Entreprise",
+                                        "SARL",
+                                        address,
+                                        "M",
+                                        "Dupont",
+                                        "Jean",
+                                        "FR",
+                                        "1980-01-01",
+                                        "Paris",
+                                        "Français",
+                                        "dupont.jean@gmail.com",
                                         "0123456789",
-                                        "2 rue de la Paix, Paris",
-                                        "FR7612345678901234567890123");
+                                        address,
+                                        "France",
+                                        "123456789",
+                                        "Directeur",
+                                        "FR7612345678901234567890123",
+                                        "CRLIFRPP",
+                                        "LCL",
+                                        1);
+        Group group = new Group(1, "Big Group", "Arnaut", "Bernard");
         Family family = new Family(1, "Famille Dupont");
-        Investor jean = new Investor(1,
+        InvestorNP jean = new InvestorNP(1,
+                                    "M",
                                     "Dupont",
-                                    "Jean", 
+                                    "Jean",
+                                    "FR",
+                                    "1980-01-01",
+                                    "Paris",
+                                    "Français",
                                     "dupont.jean@gmail.com",
                                     "0123456789", 
-                                    "1 rue de la Paix, Paris", 
+                                    address, 
                                     "FR7612345678901234567890123",
+                                    "CRLIFRPP",
+                                    "LCL",
                                     1);
-        Investor louis = new Investor(2,
+        InvestorNP louis = new InvestorNP(2,
+                                    "M",
                                     "Dupont",
                                     "Louis", 
+                                    "FR",
+                                    "1985-01-01",
+                                    "Paris",
+                                    "Français",
                                     "dupont.louis@gmail.com",
                                     "0123456789", 
-                                    "1 rue de la Paix, Paris", 
+                                    address, 
                                     "FR7612345678901234567890123",
+                                    "CRLIFRPP",
+                                    "LCL",
                                     1);
         oblig.addInvestor(jean.getId(), 10000000000l);
         oblig.addInvestor(louis.getId(), 5000000000l);
@@ -46,28 +80,30 @@ class Main {
         family.addInvestor(louis.getId());
         louis.addObligation(1);
         jean.addObligation(1);
+        group.addMember(applicant.getId());
         DatabaseInteractor.SaveApplicant(applicant);
         DatabaseInteractor.SaveFamily(family);
-        DatabaseInteractor.SaveInvestor(jean);
-        DatabaseInteractor.SaveInvestor(louis);
+        DatabaseInteractor.SaveInvestorNP(jean);
+        DatabaseInteractor.SaveInvestorNP(louis);
         DatabaseInteractor.SaveObligation(oblig);
-        Obligation loadedOblig = DatabaseInteractor.GenerateObligation(1);
+        DatabaseInteractor.SaveGroup(group);
+        Obligation loadedOblig = DatabaseInteractor.GetObligation(1);
         if (loadedOblig != null) {
             System.out.println("Obligation loaded successfully:");
             System.out.println("Value: " + loadedOblig.getAmount());
         } else {
             System.out.println("Failed to load obligation.");
         }
-        Applicant loadedApplicant = DatabaseInteractor.GenerateApplicant(1);
+        Applicant loadedApplicant = DatabaseInteractor.GetApplicant(1);
         if (loadedApplicant != null) {
             System.out.println("Applicant loaded successfully:");
-            System.out.println("Name: " + loadedApplicant.getFirstName());
+            System.out.println("Name: " + loadedApplicant.getName());
         } else {
             System.out.println("Failed to load applicant.");
         }
         for (Map.Entry<Integer, Long> entry : loadedOblig.getInvestors().entrySet()) {
-            Investor loadedInvestor = DatabaseInteractor.GenerateInvestor(entry.getKey());
-            Family loadedFamily = DatabaseInteractor.GenerateFamily(loadedInvestor.getFamilyId());
+            InvestorNP loadedInvestor = DatabaseInteractor.GetInvestorNP(entry.getKey());
+            Family loadedFamily = DatabaseInteractor.GetFamily(loadedInvestor.getFamilyId());
             if (loadedInvestor != null && loadedFamily != null ) {
                 System.out.println("Investor and family loaded successfully:");
                 System.out.println("Name: " + loadedInvestor.getFirstName());

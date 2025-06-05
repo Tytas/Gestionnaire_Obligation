@@ -1,0 +1,18 @@
+{
+  "id" : 1,
+  "civility" : "M",
+  "name" : "Dupont",
+  "firstName" : "Jean",
+  "nationality" : "FR",
+  "dateOfBirth" : "1980-01-01",
+  "placeOfBirth" : "Paris",
+  "email" : "dupont.jean@gmail.com",
+  "phoneNumber" : "0123456789",
+  "address" : [ "1", "rue de la Paix", "95000", "Paris", "France", "" ],
+  "bankName" : "LCL",
+  "familyId" : 1,
+  "obligations" : [ 1 ],
+  "language" : "Français",
+  "iban" : "FR7612345678901234567890123",
+  "bic" : "CRLIFRPP"
+}

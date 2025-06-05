@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DatabaseInteractor {
 
-    static Obligation GenerateObligation(int id){
+    static Obligation GetObligation(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/obligations/";
         try {
@@ -53,15 +53,15 @@ public class DatabaseInteractor {
 
 
 
-    static Investor GenerateInvestor(int id){
+    static InvestorNP GetInvestorNP(int id){
         ObjectMapper objectMapper = new ObjectMapper();
-        String baseDir = "data/investors/";
+        String baseDir = "data/investors/NP/";
         String name = Integer.toString(id);
         try {
             // Vérifier si le dossier existe
             if (Files.exists(Path.of(baseDir, name))) {
-                Investor investor = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
-                                                        Investor.class);
+                InvestorNP investor = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
+                                                            InvestorNP.class);
                 return investor;
             }
         } catch (IOException e) {
@@ -71,8 +71,51 @@ public class DatabaseInteractor {
         return null;
     }
 
-    static Boolean SaveInvestor(Investor investor){
-        String baseDir = "data/investors/";
+    static Boolean SaveInvestorNP(InvestorNP investor){
+        String baseDir = "data/investors/NP/";
+        String investorName = Integer.toString(investor.getId());
+        Path investorFolder = Path.of(baseDir, investorName);
+
+        try {
+            // Créer le dossier s'il n'existe pas déjà
+            if (!Files.exists(investorFolder)) {
+                Files.createDirectories(investorFolder);
+            }
+
+            // Créer le fichier JSON
+            File jsonFile = investorFolder.resolve("data.json").toFile();
+
+            // Sérialiser avec Jackson
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, investor);
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    static InvestorLP GetInvestorLP(int id){
+        ObjectMapper objectMapper = new ObjectMapper();
+        String baseDir = "data/investors/LP/";
+        String name = Integer.toString(id);
+        try {
+            // Vérifier si le dossier existe
+            if (Files.exists(Path.of(baseDir, name))) {
+                InvestorLP investor = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
+                                                            InvestorLP.class);
+                return investor;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
+    static Boolean SaveInvestorLP(InvestorLP investor){
+        String baseDir = "data/investors/LP/";
         String investorName = Integer.toString(investor.getId());
         Path investorFolder = Path.of(baseDir, investorName);
 
@@ -98,7 +141,7 @@ public class DatabaseInteractor {
 
 
 
-    static Family GenerateFamily(int id){
+    static Family GetFamily(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/families/";
         String name = Integer.toString(id);
@@ -143,7 +186,7 @@ public class DatabaseInteractor {
 
 
 
-    static Applicant GenerateApplicant(int id){
+    static Applicant GetApplicant(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/applicants/";
         String name = Integer.toString(id);
@@ -178,6 +221,49 @@ public class DatabaseInteractor {
             // Sérialiser avec Jackson
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, applicant);
+
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    static Group GetGroup(int id){
+        ObjectMapper objectMapper = new ObjectMapper();
+        String baseDir = "data/groups/";
+        String name = Integer.toString(id);
+        try {
+            // Vérifier si le dossier existe
+            if (Files.exists(Path.of(baseDir, name))) {
+                Group group = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
+                                                        Group.class);
+                return group;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
+    static Boolean SaveGroup(Group group){
+        String baseDir = "data/groups/";
+        String groupName = Integer.toString(group.getId());
+        Path groupFolder = Path.of(baseDir, groupName);
+
+        try {
+            // Créer le dossier s'il n'existe pas déjà
+            if (!Files.exists(groupFolder)) {
+                Files.createDirectories(groupFolder);
+            }
+
+            // Créer le fichier JSON
+            File jsonFile = groupFolder.resolve("data.json").toFile();
+
+            // Sérialiser avec Jackson
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, group);
 
             return true;
         } catch (IOException e) {
