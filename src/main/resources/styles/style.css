@@ -1,13 +1,13 @@
 /* Style général pour tous les boutons */
 .button {
-    -fx-background-color: #4CAF50; /* Couleur de fond verte */
+    -fx-background-color: #af4c4c; /* Couleur de fond verte */
     -fx-text-fill: white; /* Couleur du texte */
     -fx-font-size: 14px; /* Taille de la police */
     -fx-font-weight: bold; /* Texte en gras */
     -fx-padding: 10 20; /* Espacement interne du bouton */
     -fx-background-radius: 30; /* Bords arrondis */
     -fx-border-radius: 30; /* Bords arrondis pour la bordure */
-    -fx-border-color: #4CAF50; /* Bordure de couleur verte */
+    -fx-border-color: #af4c4c; /* Bordure de couleur verte */
     -fx-border-width: 2; /* Largeur de la bordure */
     -fx-transition: all 0.3s ease; /* Animation lors du survol */
 }

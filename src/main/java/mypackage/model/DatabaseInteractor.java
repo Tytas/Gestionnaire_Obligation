@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DatabaseInteractor {
 
-    static Obligation GetObligation(int id){
+    public static Obligation GetObligation(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/obligations/";
         try {
@@ -26,7 +26,7 @@ public class DatabaseInteractor {
         return null;
     }
 
-    static Boolean SaveObligation(Obligation oblig){
+    public static Boolean SaveObligation(Obligation oblig){
         String baseDir = "data/obligations/";
         String obligationName = Integer.toString(oblig.getId());
         Path obligationFolder = Path.of(baseDir, obligationName);
@@ -53,7 +53,7 @@ public class DatabaseInteractor {
 
 
 
-    static InvestorNP GetInvestorNP(int id){
+    public static InvestorNP GetInvestorNP(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/investors/NP/";
         String name = Integer.toString(id);
@@ -71,7 +71,7 @@ public class DatabaseInteractor {
         return null;
     }
 
-    static Boolean SaveInvestorNP(InvestorNP investor){
+    public static Boolean SaveInvestorNP(InvestorNP investor){
         String baseDir = "data/investors/NP/";
         String investorName = Integer.toString(investor.getId());
         Path investorFolder = Path.of(baseDir, investorName);
@@ -96,7 +96,7 @@ public class DatabaseInteractor {
         }
     }
 
-    static InvestorLP GetInvestorLP(int id){
+    public static InvestorLP GetInvestorLP(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/investors/LP/";
         String name = Integer.toString(id);
@@ -114,7 +114,7 @@ public class DatabaseInteractor {
         return null;
     }
 
-    static Boolean SaveInvestorLP(InvestorLP investor){
+    public static Boolean SaveInvestorLP(InvestorLP investor){
         String baseDir = "data/investors/LP/";
         String investorName = Integer.toString(investor.getId());
         Path investorFolder = Path.of(baseDir, investorName);
@@ -141,7 +141,7 @@ public class DatabaseInteractor {
 
 
 
-    static Family GetFamily(int id){
+    public static Family GetFamily(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/families/";
         String name = Integer.toString(id);
@@ -159,7 +159,7 @@ public class DatabaseInteractor {
         return null;
     }
 
-    static Boolean SaveFamily(Family family){
+    public static Boolean SaveFamily(Family family){
         String baseDir = "data/families/";
         String familyName = Integer.toString(family.getId());
         Path familyFolder = Path.of(baseDir, familyName);
@@ -186,7 +186,7 @@ public class DatabaseInteractor {
 
 
 
-    static Applicant GetApplicant(int id){
+    public static Applicant GetApplicant(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/applicants/";
         String name = Integer.toString(id);
@@ -204,7 +204,7 @@ public class DatabaseInteractor {
         return null;
     }
 
-    static Boolean SaveApplicant(Applicant applicant){
+    public static Boolean SaveApplicant(Applicant applicant){
         String baseDir = "data/applicants/";
         String applicantName = Integer.toString(applicant.getId());
         Path applicantFolder = Path.of(baseDir, applicantName);
@@ -229,7 +229,7 @@ public class DatabaseInteractor {
         }
     }
 
-    static Group GetGroup(int id){
+    public static Group GetGroup(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/groups/";
         String name = Integer.toString(id);
@@ -247,7 +247,7 @@ public class DatabaseInteractor {
         return null;
     }
 
-    static Boolean SaveGroup(Group group){
+    public static Boolean SaveGroup(Group group){
         String baseDir = "data/groups/";
         String groupName = Integer.toString(group.getId());
         Path groupFolder = Path.of(baseDir, groupName);

@@ -1,38 +1,71 @@
 package mypackage.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Label;
+import mypackage.MainAppTest;
+import mypackage.model.DatabaseInteractor;
+import mypackage.model.Obligation;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 public class MyController {
 
     @FXML
-    private AnchorPane contentArea;
+    private TableView<String> personTable;
+    @FXML
+    private TableColumn<String, String> firstNameColumn;
+    @FXML
+    private TableColumn<String, String> lastNameColumn;
 
     @FXML
-    private void handleMenu1() {
-        // Changer le contenu de la zone droite pour Menu 1
-        contentArea.getChildren().clear();
-        // Ajoutez ici le contenu de la page Menu 1
+    private Label firstNameLabel;
+    @FXML
+    private Label lastNameLabel;
+    @FXML
+    private Label streetLabel;
+    @FXML
+    private Label postalCodeLabel;
+    @FXML
+    private Label cityLabel;
+    @FXML
+    private Label birthdayLabel;
+
+    private MainAppTest mainApp;
+
+    private ObservableList<Obligation> listOblig = FXCollections.observableArrayList();
+
+    public MyController() {
     }
 
     @FXML
-    private void handleMenu2() {
-        // Changer le contenu de la zone droite pour Menu 2
-        contentArea.getChildren().clear();
-        // Ajoutez ici le contenu de la page Menu 2
+    private void initialize() {
+        // Add some sample data
+        Obligation oblig = DatabaseInteractor.GetObligation(1);
+        listOblig.add(oblig);
     }
 
-    @FXML
-    private void handleMenu3() {
-        // Changer le contenu de la zone droite pour Menu 3
-        contentArea.getChildren().clear();
-        // Ajoutez ici le contenu de la page Menu 3
+    public ObservableList<Obligation> getObligations() {
+        return listOblig;
     }
 
-    @FXML
-    private void handleMenu4() {
-        // Changer le contenu de la zone droite pour Menu 4
-        contentArea.getChildren().clear();
-        // Ajoutez ici le contenu de la page Menu 4
+    public void displayObligation() {
+        this.firstNameLabel.setText(this.getObligations().get(0).getName());
+    }
+
+    public void getMainApp() {
+        if (mainApp != null) {
+            System.out.println("MainApp is set.");
+        } else {
+            System.out.println("MainApp is not set.");
+        }
+    }
+
+    public void setMainApp(MainAppTest mainApp) {
+        this.mainApp = mainApp;
+
+        // Add observable list data to the table
+        //personTable.setItems(mainApp.getPersonData());
     }
 }
