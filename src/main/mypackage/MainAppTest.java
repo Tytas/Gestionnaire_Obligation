@@ -35,7 +35,7 @@ public class MainAppTest extends Application {
     public void initRootLayout() {
         try {
             // Load root layout from fxml file.
-            File fxmlFile = new File("src/main/resources/mypackage/test2.fxml");
+            File fxmlFile = new File("src/main/mypackage/view/test2.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;
@@ -56,7 +56,7 @@ public class MainAppTest extends Application {
         try {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
-            File fxmlFile = new File("src/main/resources/mypackage/test1.fxml");
+            File fxmlFile = new File("src/main/mypackage/view/test1.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;

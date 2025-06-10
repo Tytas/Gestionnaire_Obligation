@@ -1,20 +1,21 @@
 package mypackage.model;
 
 import java.util.ArrayList;
+import javafx.beans.property.SimpleStringProperty;
 
 public class Group {
     private int id;
-    private String name;
+    private SimpleStringProperty name;
     private String BossName;
     private String BossFirstName;
-    private ArrayList<Integer> members = new ArrayList<>();
+    private ArrayList<Integer> members = new ArrayList<>(); //applicant
 
     public Group() {
         this.id = 0;
-        this.name = "";
+        this.name = new SimpleStringProperty("");;
     }
 
-    public Group(int id, String name, String bossName, String bossFirstName) {
+    public Group(int id, SimpleStringProperty name, String bossName, String bossFirstName) {
         this.id = id;
         this.name = name;
         this.BossName = bossName;
@@ -25,7 +26,7 @@ public class Group {
         return id;
     }
     public String getName() {
-        return name;
+        return name.get();
     }
     public String getBossName() {
         return BossName;
@@ -40,7 +41,7 @@ public class Group {
     public void setId(int id) {
         this.id = id;
     }
-    public void setName(String name) {
+    public void setName(SimpleStringProperty name) {
         this.name = name;
     }
     public void setBossName(String bossName) {

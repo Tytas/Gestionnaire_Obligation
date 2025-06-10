@@ -1,10 +1,11 @@
 package mypackage.model;
 
 import java.util.ArrayList;
+import javafx.beans.property.SimpleStringProperty;
 
 public class InvestorNP extends Investor {
     private String civility;
-    private String name;
+    private SimpleStringProperty name;
     private String firstName;
     private String nationality;
     private String dateOfBirth;
@@ -22,7 +23,7 @@ public class InvestorNP extends Investor {
     public InvestorNP() {
         super();
         this.civility = "";
-        this.name = "";
+        this.name = new SimpleStringProperty("");;
         this.firstName = "";
         this.nationality = "";
         this.dateOfBirth = "";
@@ -38,7 +39,7 @@ public class InvestorNP extends Investor {
         this.bankName = "";
         this.familyId = 0;
     }
-    public InvestorNP(int id, String civility, String name, String firstName,String nationality,
+    public InvestorNP(int id, String civility, SimpleStringProperty name, String firstName,String nationality,
                     String dateOfBirth, String placeOfBirth, String language, String email, String phoneNumber,
                     String[] address, String IBAN, String BIC, String BankName, int familyId) {
         super(id);
@@ -62,7 +63,7 @@ public class InvestorNP extends Investor {
         return civility;
     }
     public String getName() {
-        return name;
+        return name.get();
     }   
     public String getFirstName() {
         return firstName;
@@ -107,7 +108,7 @@ public class InvestorNP extends Investor {
     public void setCivility(String civility) {
         this.civility = civility;
     }
-    public void setName(String name) {
+    public void setName(SimpleStringProperty name) {
         this.name = name;
     }
     public void setFirstName(String firstName) {

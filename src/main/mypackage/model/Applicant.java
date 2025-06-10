@@ -1,10 +1,11 @@
 package mypackage.model;
 
 import java.util.ArrayList;
+import javafx.beans.property.SimpleStringProperty;
 
 public class Applicant {
     private int id;
-    private String name;
+    private SimpleStringProperty name;
     private String country;
     private int registerNumber;
     private String dateOfCreation;
@@ -13,7 +14,7 @@ public class Applicant {
     private String[] address = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
 
     private String civilityBoss;
-    private String nameBoss;
+    private SimpleStringProperty nameBoss;
     private String firstNameBoss;
     private String nationalityBoss;
     private String dateOfBirthBoss;
@@ -32,7 +33,7 @@ public class Applicant {
     private ArrayList<Integer> obligations = new ArrayList<>();
 
     public Applicant() {
-        this.name = "";
+        this.name = new SimpleStringProperty("");;
         this.country = "";
         this.registerNumber = 0;
         this.dateOfCreation = "";
@@ -43,7 +44,7 @@ public class Applicant {
         }
         
         this.civilityBoss = "";
-        this.nameBoss = "";
+        this.nameBoss = new SimpleStringProperty("");;
         this.firstNameBoss = "";
         this.nationalityBoss = "";
         this.dateOfBirthBoss = "";
@@ -63,9 +64,9 @@ public class Applicant {
         this.groupId = 0;
     }
 
-    public Applicant(int id, String name, String country, int registerNumber, String dateOfCreation,
+    public Applicant(int id, SimpleStringProperty name, String country, int registerNumber, String dateOfCreation,
                     String typeOfBuisness, String legalStatus, String[] address,
-                    String civilityBoss, String nameBoss, String firstNameBoss, String nationalityBoss,
+                    String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss, String languageBoss,
                     String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
                     String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int groupId) {
@@ -101,7 +102,7 @@ public class Applicant {
         return id;
     }
     public String getName() {
-        return name;
+        return name.get();
     }
     public String getcountry() {
         return country;
@@ -125,7 +126,7 @@ public class Applicant {
         return civilityBoss;
     }
     public String getNameBoss() {
-        return nameBoss;
+        return nameBoss.get();
     }
     public String getFirstNameBoss() {
         return firstNameBoss;
@@ -180,7 +181,7 @@ public class Applicant {
     public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
-    public void setName(String name) {
+    public void setName(SimpleStringProperty name) {
         this.name = name;
     }
     public void setcountry(String country) {
@@ -204,7 +205,7 @@ public class Applicant {
     public void setCivilityBoss(String civilityBoss) {
         this.civilityBoss = civilityBoss;
     }
-    public void setNameBoss(String nameBoss) {
+    public void setNameBoss(SimpleStringProperty nameBoss) {
         this.nameBoss = nameBoss;
     }
     public void setFirstNameBoss(String firstNameBoss) {

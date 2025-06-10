@@ -1,16 +1,17 @@
 package mypackage.model;
 
 import java.util.ArrayList;
+import javafx.beans.property.SimpleStringProperty;
 
 public class Family {
     private int id;
-    private String name;
+    private SimpleStringProperty name;
     private ArrayList<Integer> investors = new ArrayList<>();
 
     public Family() {
-        this.name = "";
+        this.name = new SimpleStringProperty("");;
     }
-    public Family(int id, String name) {
+    public Family(int id, SimpleStringProperty name) {
         this.id = id;
         this.name = name;
     }
@@ -19,7 +20,7 @@ public class Family {
         return id;
     }
     public String getName() {
-        return name;
+        return name.get();
     }
     public ArrayList<Integer> getInvestors() {
         return investors;
@@ -28,7 +29,7 @@ public class Family {
     public void setId(int id) {
         this.id = id;
     }
-    public void setName(String name) {
+    public void setName(SimpleStringProperty name) {
         this.name = name;
     }
     public void setInvestors(ArrayList<Integer> investors) {

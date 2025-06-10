@@ -2,6 +2,7 @@ package mypackage.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import javafx.beans.property.SimpleStringProperty;
 
 
 class Main {
@@ -9,7 +10,7 @@ class Main {
     public static void main(String[] args) {
         // Print a greeting message to the console.
         Obligation oblig = new Obligation(1,
-                                        "Oblig 2",
+                                        new SimpleStringProperty("Oblig 2"),
                                         "YYYYYYEEEEEEE",
                                         10000000000l,
                                         LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
@@ -17,7 +18,7 @@ class Main {
                                         1);
         String[] address = {"1", "rue de la Paix", "95000", "Paris", "France", ""};
         Applicant applicant = new Applicant(1,
-                                        "Applicant 1",
+                                        new SimpleStringProperty("Applicant 1"),
                                         "France",
                                         123456789,
                                         "2023-10-01",
@@ -25,7 +26,7 @@ class Main {
                                         "SARL",
                                         address,
                                         "M",
-                                        "Dupont",
+                                        new SimpleStringProperty("Dupont"),
                                         "Jean",
                                         "FR",
                                         "1980-01-01",
@@ -41,11 +42,11 @@ class Main {
                                         "CRLIFRPP",
                                         "LCL",
                                         1);
-        Group group = new Group(1, "Big Group", "Arnaut", "Bernard");
-        Family family = new Family(1, "Famille Dupont");
+        Group group = new Group(1, new SimpleStringProperty("Big Group"), "Arnaut", "Bernard");
+        Family family = new Family(1, new SimpleStringProperty("Famille Dupont"));
         InvestorNP jean = new InvestorNP(1,
                                     "M",
-                                    "Dupont",
+                                    new SimpleStringProperty("Dupont"),
                                     "Jean",
                                     "FR",
                                     "1980-01-01",
@@ -60,7 +61,7 @@ class Main {
                                     1);
         InvestorNP louis = new InvestorNP(2,
                                     "M",
-                                    "Dupont",
+                                    new SimpleStringProperty("Dupont"),
                                     "Louis", 
                                     "FR",
                                     "1985-01-01",

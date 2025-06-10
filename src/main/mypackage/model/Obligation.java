@@ -3,9 +3,11 @@ package mypackage.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import javafx.beans.property.SimpleStringProperty;
+
 public class Obligation {
     private int id;
-    private String name;
+    private final SimpleStringProperty name;
     private String description; 
     private long amount;
     private String startDate;   
@@ -14,14 +16,14 @@ public class Obligation {
     private Map<Integer, Long> investors = new HashMap<>();
 
     public Obligation() {
-        this.name = "";
+        this.name = new SimpleStringProperty("");
         this.description = "";
         this.amount = 0;
         this.startDate = "";
         this.durationMonths = 0;
     }
 
-    public Obligation(int id, String name, String description, long amount, String startDate, int durationMonths, int applicantId) {
+    public Obligation(int id, SimpleStringProperty name, String description, long amount, String startDate, int durationMonths, int applicantId) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -35,6 +37,9 @@ public class Obligation {
         return id;
     }
     public String getName() {
+        return name.get();
+    }
+    public SimpleStringProperty nameProperty() {
         return name;
     }
     public String getDescription() {
@@ -60,7 +65,7 @@ public class Obligation {
         this.id = id;
     }
     public void setName(String name) {
-        this.name = name;
+        this.name.set(name);
     }
     public void setDescription(String description) {
         this.description = description;

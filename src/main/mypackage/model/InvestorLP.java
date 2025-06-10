@@ -1,9 +1,10 @@
 package mypackage.model;
 
 import java.util.ArrayList;
+import javafx.beans.property.SimpleStringProperty;
 
 public class InvestorLP extends Investor {
-    private String name;
+    private SimpleStringProperty name;
     private String country;
     private int registerNumber;
     private String dateOfCreation;
@@ -12,7 +13,7 @@ public class InvestorLP extends Investor {
     private String[] address = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
 
     private String civilityBoss;
-    private String nameBoss;
+    private SimpleStringProperty nameBoss;
     private String firstNameBoss;
     private String nationalityBoss;
     private String dateOfBirthBoss;
@@ -32,7 +33,7 @@ public class InvestorLP extends Investor {
 
     public InvestorLP() {
         super();
-        this.name = "";
+        this.name = new SimpleStringProperty("");;
         this.country = "";
         this.registerNumber = 0;
         this.dateOfCreation = "";
@@ -43,7 +44,7 @@ public class InvestorLP extends Investor {
         }
         
         this.civilityBoss = "";
-        this.nameBoss = "";
+        this.nameBoss = new SimpleStringProperty("");;
         this.firstNameBoss = "";
         this.nationalityBoss = "";
         this.dateOfBirthBoss = "";
@@ -63,9 +64,9 @@ public class InvestorLP extends Investor {
         this.familyId = 0;
     }
 
-    public InvestorLP(int id, String name, String country, int registerNumber, String dateOfCreation,
+    public InvestorLP(int id, SimpleStringProperty name, String country, int registerNumber, String dateOfCreation,
                       String typeOfBuisness, String legalStatus, String[] address,
-                      String civilityBoss, String nameBoss, String firstNameBoss, String nationalityBoss,
+                      String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                       String dateOfBirthBoss, String placeOfBirthBoss, String languageBoss,
                       String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
                       String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int familyId) {
@@ -98,7 +99,7 @@ public class InvestorLP extends Investor {
     }
 
     public String getName() {
-        return name;
+        return name.get();
     }
     public String getcountry() {
         return country;
@@ -122,7 +123,7 @@ public class InvestorLP extends Investor {
         return civilityBoss;
     }
     public String getNameBoss() {
-        return nameBoss;
+        return nameBoss.get();
     }
     public String getFirstNameBoss() {
         return firstNameBoss;
@@ -173,7 +174,7 @@ public class InvestorLP extends Investor {
         return obligations;
     }
 
-    public void setName(String name) {
+    public void setName(SimpleStringProperty name) {
         this.name = name;
     }
     public void setcountry(String country) {
@@ -197,7 +198,7 @@ public class InvestorLP extends Investor {
     public void setCivilityBoss(String civilityBoss) {
         this.civilityBoss = civilityBoss;
     }
-    public void setNameBoss(String nameBoss) {
+    public void setNameBoss(SimpleStringProperty nameBoss) {
         this.nameBoss = nameBoss;
     }
     public void setFirstNameBoss(String firstNameBoss) {

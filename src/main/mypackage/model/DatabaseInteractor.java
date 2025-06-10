@@ -4,18 +4,21 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
+import java.util.ArrayList;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javafx.beans.property.SimpleStringProperty;
 
 public class DatabaseInteractor {
 
     public static Obligation GetObligation(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/obligations/";
+        SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
-            if (Files.exists(Path.of(baseDir, Integer.toString(id)))) {
-                Obligation oblig = objectMapper.readValue(Path.of(baseDir, Integer.toString(id)).resolve("data.json").toFile(),
+            if (Files.exists(Path.of(baseDir, name.get()))) {
+                Obligation oblig = objectMapper.readValue(Path.of(baseDir, name.get()).resolve("data.json").toFile(),
                                                         Obligation.class);
                 return oblig;
             }
@@ -24,6 +27,19 @@ public class DatabaseInteractor {
             return null;
         }
         return null;
+    }
+
+    public static ArrayList<Integer> GetAllObligationsId(){
+        File[] ListObligFiles = new File("data/obligations/").listFiles(File::isDirectory);
+        ArrayList<Integer> ListObligId = new ArrayList<>();
+        for (File file : ListObligFiles) {
+            try {
+                ListObligId.add(Integer.parseInt(file.getName()));
+            } catch (NumberFormatException e) {
+                // ignorer les dossiers qui ne sont pas des nombres
+            }
+        }
+        return ListObligId;
     }
 
     public static Boolean SaveObligation(Obligation oblig){
@@ -51,16 +67,42 @@ public class DatabaseInteractor {
         }
     }
 
+    public static Boolean DeleteObligation(int id){
+        String baseDir = "data/obligations/";
+        String obligationName = Integer.toString(id);
+        Path obligationFolder = Path.of(baseDir, obligationName);
+
+        try {
+            // Supprimer le dossier et son contenu
+            if (Files.exists(obligationFolder)) {
+                Files.walk(obligationFolder)
+                     .sorted((a, b) -> b.compareTo(a)) // Pour supprimer les fichiers avant les dossiers
+                     .forEach(path -> {
+                         try {
+                             Files.delete(path);
+                         } catch (IOException e) {
+                             e.printStackTrace();
+                         }
+                     });
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+
 
 
     public static InvestorNP GetInvestorNP(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/investors/NP/";
-        String name = Integer.toString(id);
+        SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
-            if (Files.exists(Path.of(baseDir, name))) {
-                InvestorNP investor = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
+            if (Files.exists(Path.of(baseDir, name.get()))) {
+                InvestorNP investor = objectMapper.readValue(Path.of(baseDir, name.get()).resolve("data.json").toFile(),
                                                             InvestorNP.class);
                 return investor;
             }
@@ -99,11 +141,11 @@ public class DatabaseInteractor {
     public static InvestorLP GetInvestorLP(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/investors/LP/";
-        String name = Integer.toString(id);
+        SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
-            if (Files.exists(Path.of(baseDir, name))) {
-                InvestorLP investor = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
+            if (Files.exists(Path.of(baseDir, name.get()))) {
+                InvestorLP investor = objectMapper.readValue(Path.of(baseDir, name.get()).resolve("data.json").toFile(),
                                                             InvestorLP.class);
                 return investor;
             }
@@ -144,11 +186,11 @@ public class DatabaseInteractor {
     public static Family GetFamily(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/families/";
-        String name = Integer.toString(id);
+        SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
-            if (Files.exists(Path.of(baseDir, name))) {
-                Family family = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
+            if (Files.exists(Path.of(baseDir, name.get()))) {
+                Family family = objectMapper.readValue(Path.of(baseDir, name.get()).resolve("data.json").toFile(),
                                                         Family.class);
                 return family;
             }
@@ -189,11 +231,11 @@ public class DatabaseInteractor {
     public static Applicant GetApplicant(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/applicants/";
-        String name = Integer.toString(id);
+        SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
-            if (Files.exists(Path.of(baseDir, name))) {
-                Applicant applicant = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
+            if (Files.exists(Path.of(baseDir, name.get()))) {
+                Applicant applicant = objectMapper.readValue(Path.of(baseDir, name.get()).resolve("data.json").toFile(),
                                                         Applicant.class);
                 return applicant;
             }
@@ -232,11 +274,11 @@ public class DatabaseInteractor {
     public static Group GetGroup(int id){
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/groups/";
-        String name = Integer.toString(id);
+        SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
-            if (Files.exists(Path.of(baseDir, name))) {
-                Group group = objectMapper.readValue(Path.of(baseDir, name).resolve("data.json").toFile(),
+            if (Files.exists(Path.of(baseDir, name.get()))) {
+                Group group = objectMapper.readValue(Path.of(baseDir, name.get()).resolve("data.json").toFile(),
                                                         Group.class);
                 return group;
             }
