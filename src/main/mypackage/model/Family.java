@@ -22,6 +22,9 @@ public class Family {
     public String getName() {
         return name.get();
     }
+    public SimpleStringProperty nameProperty() {
+        return name;
+    }
     public ArrayList<Integer> getInvestors() {
         return investors;
     }
@@ -29,8 +32,8 @@ public class Family {
     public void setId(int id) {
         this.id = id;
     }
-    public void setName(SimpleStringProperty name) {
-        this.name = name;
+    public void setName(String name) {
+        this.name.set(name);
     }
     public void setInvestors(ArrayList<Integer> investors) {
         this.investors = investors;

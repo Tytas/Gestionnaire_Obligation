@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import javafx.beans.property.SimpleStringProperty;
 
 public class InvestorLP extends Investor {
-    private SimpleStringProperty name;
     private String country;
     private int registerNumber;
     private String dateOfCreation;
@@ -33,7 +32,6 @@ public class InvestorLP extends Investor {
 
     public InvestorLP() {
         super();
-        this.name = new SimpleStringProperty("");;
         this.country = "";
         this.registerNumber = 0;
         this.dateOfCreation = "";
@@ -70,8 +68,7 @@ public class InvestorLP extends Investor {
                       String dateOfBirthBoss, String placeOfBirthBoss, String languageBoss,
                       String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
                       String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int familyId) {
-        super(id);
-        this.name = name;
+        super(id, name);
         this.country = country;
         this.registerNumber = registerNumber;
         this.dateOfCreation = dateOfCreation;
@@ -98,9 +95,6 @@ public class InvestorLP extends Investor {
         this.familyId = familyId;
     }
 
-    public String getName() {
-        return name.get();
-    }
     public String getcountry() {
         return country;
     }
@@ -124,6 +118,9 @@ public class InvestorLP extends Investor {
     }
     public String getNameBoss() {
         return nameBoss.get();
+    }
+    public SimpleStringProperty nameBossProperty() {
+        return nameBoss;
     }
     public String getFirstNameBoss() {
         return firstNameBoss;
@@ -173,10 +170,6 @@ public class InvestorLP extends Investor {
     public ArrayList<Integer> getObligations() {
         return obligations;
     }
-
-    public void setName(SimpleStringProperty name) {
-        this.name = name;
-    }
     public void setcountry(String country) {
         this.country = country;
     }
@@ -198,8 +191,8 @@ public class InvestorLP extends Investor {
     public void setCivilityBoss(String civilityBoss) {
         this.civilityBoss = civilityBoss;
     }
-    public void setNameBoss(SimpleStringProperty nameBoss) {
-        this.nameBoss = nameBoss;
+    public void setNameBoss(String nameBoss) {
+        this.nameBoss.set(nameBoss);
     }
     public void setFirstNameBoss(String firstNameBoss) {
         this.firstNameBoss = firstNameBoss;

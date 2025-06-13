@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import javafx.beans.property.SimpleStringProperty;
+import mypackage.model.DataBaseInteractor.*;
 
 
 class Main {
@@ -82,20 +83,20 @@ class Main {
         louis.addObligation(1);
         jean.addObligation(1);
         group.addMember(applicant.getId());
-        DatabaseInteractor.SaveApplicant(applicant);
-        DatabaseInteractor.SaveFamily(family);
-        DatabaseInteractor.SaveInvestorNP(jean);
-        DatabaseInteractor.SaveInvestorNP(louis);
-        DatabaseInteractor.SaveObligation(oblig);
-        DatabaseInteractor.SaveGroup(group);
-        Obligation loadedOblig = DatabaseInteractor.GetObligation(1);
+        ApplicantInteractor.SaveApplicant(applicant);
+        FamilyInteractor.SaveFamily(family);
+        InvestorInteractor.SaveInvestorNP(jean);
+        InvestorInteractor.SaveInvestorNP(louis);
+        ObligationInteractor.SaveObligation(oblig);
+        GroupInteractor.SaveGroup(group);
+        Obligation loadedOblig = ObligationInteractor.GetObligation(1);
         if (loadedOblig != null) {
             System.out.println("Obligation loaded successfully:");
             System.out.println("Value: " + loadedOblig.getAmount());
         } else {
             System.out.println("Failed to load obligation.");
         }
-        Applicant loadedApplicant = DatabaseInteractor.GetApplicant(1);
+        Applicant loadedApplicant = ApplicantInteractor.GetApplicant(1);
         if (loadedApplicant != null) {
             System.out.println("Applicant loaded successfully:");
             System.out.println("Name: " + loadedApplicant.getName());
@@ -103,8 +104,8 @@ class Main {
             System.out.println("Failed to load applicant.");
         }
         for (Map.Entry<Integer, Long> entry : loadedOblig.getInvestors().entrySet()) {
-            InvestorNP loadedInvestor = DatabaseInteractor.GetInvestorNP(entry.getKey());
-            Family loadedFamily = DatabaseInteractor.GetFamily(loadedInvestor.getFamilyId());
+            InvestorNP loadedInvestor = InvestorInteractor.GetInvestorNP(entry.getKey());
+            Family loadedFamily = FamilyInteractor.GetFamily(loadedInvestor.getFamilyId());
             if (loadedInvestor != null && loadedFamily != null ) {
                 System.out.println("Investor and family loaded successfully:");
                 System.out.println("Name: " + loadedInvestor.getFirstName());

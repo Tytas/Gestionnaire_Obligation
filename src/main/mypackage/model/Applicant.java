@@ -104,6 +104,9 @@ public class Applicant {
     public String getName() {
         return name.get();
     }
+    public SimpleStringProperty nameProperty() {
+        return name;
+    }
     public String getcountry() {
         return country;
     }
@@ -181,8 +184,8 @@ public class Applicant {
     public void setGroupId(int groupId) {
         this.groupId = groupId;
     }
-    public void setName(SimpleStringProperty name) {
-        this.name = name;
+    public void setName(String name) {
+        this.name.set(name);
     }
     public void setcountry(String country) {
         this.country = country;
@@ -205,8 +208,8 @@ public class Applicant {
     public void setCivilityBoss(String civilityBoss) {
         this.civilityBoss = civilityBoss;
     }
-    public void setNameBoss(SimpleStringProperty nameBoss) {
-        this.nameBoss = nameBoss;
+    public void setNameBoss(String nameBoss) {
+        this.nameBoss.set(nameBoss);
     }
     public void setFirstNameBoss(String firstNameBoss) {
         this.firstNameBoss = firstNameBoss;

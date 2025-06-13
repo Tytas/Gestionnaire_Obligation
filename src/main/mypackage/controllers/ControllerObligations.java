@@ -12,13 +12,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import mypackage.MainAppTest;
-import mypackage.model.DatabaseInteractor;
+import mypackage.model.DataBaseInteractor.*;
 import mypackage.model.Obligation;
 import mypackage.view.util.ConfirmWindow;
 
 
 
-public class MyController {
+public class ControllerObligations {
 
     @FXML
     private Label NameObligation;
@@ -42,18 +42,20 @@ public class MyController {
 
     private Obligation selectedObligation;
 
-    public MyController() {
+    public ControllerObligations() {
     }
 
     @FXML
     private void initialize() {
         // Add some sample data
-        ids = DatabaseInteractor.GetAllObligationsId();
+        ids = ObligationInteractor.GetAllObligationsId();
         for (Integer id : ids) {
-            listOblig.add(DatabaseInteractor.GetObligation(id));
+            listOblig.add(ObligationInteractor.GetObligation(id));
         }
-        System.out.println("Obligations loaded: " + listOblig.size());
-        tableObligations.setItems(listOblig);
+        if (!listOblig.isEmpty()) {
+            System.out.println("Obligations loaded: " + listOblig.size());
+            tableObligations.setItems(listOblig);
+        }
         this.listObligName.setCellValueFactory(new PropertyValueFactory<Obligation, String>("name"));
         this.listObligId.setCellValueFactory(new PropertyValueFactory<Obligation, String>("id"));
 
@@ -89,7 +91,7 @@ public class MyController {
         if (selectedObligation != null) {
             if (ConfirmWindow.confirmWindow()) {
                 System.out.println("Obligation deleted: " + selectedObligation.getName());
-                DatabaseInteractor.DeleteObligation(selectedObligation.getId());
+                ObligationInteractor.DeleteObligation(selectedObligation.getId());
                 listOblig.remove(selectedObligation);
             } else {
                 System.out.println("Deletion cancelled.");
@@ -110,8 +112,5 @@ public class MyController {
 
     public void setMainApp(MainAppTest mainApp) {
         this.mainApp = mainApp;
-
-        // Add observable list data to the table
-        //personTable.setItems(mainApp.getPersonData());
     }
 }

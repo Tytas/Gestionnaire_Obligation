@@ -5,7 +5,6 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class InvestorNP extends Investor {
     private String civility;
-    private SimpleStringProperty name;
     private String firstName;
     private String nationality;
     private String dateOfBirth;
@@ -23,7 +22,6 @@ public class InvestorNP extends Investor {
     public InvestorNP() {
         super();
         this.civility = "";
-        this.name = new SimpleStringProperty("");;
         this.firstName = "";
         this.nationality = "";
         this.dateOfBirth = "";
@@ -42,9 +40,8 @@ public class InvestorNP extends Investor {
     public InvestorNP(int id, String civility, SimpleStringProperty name, String firstName,String nationality,
                     String dateOfBirth, String placeOfBirth, String language, String email, String phoneNumber,
                     String[] address, String IBAN, String BIC, String BankName, int familyId) {
-        super(id);
+        super(id, name);
         this.civility = civility;
-        this.name = name;
         this.firstName = firstName;
         this.nationality = nationality;
         this.dateOfBirth = dateOfBirth;
@@ -62,9 +59,6 @@ public class InvestorNP extends Investor {
     public String getCivility() {
         return civility;
     }
-    public String getName() {
-        return name.get();
-    }   
     public String getFirstName() {
         return firstName;
     }
@@ -107,9 +101,6 @@ public class InvestorNP extends Investor {
 
     public void setCivility(String civility) {
         this.civility = civility;
-    }
-    public void setName(SimpleStringProperty name) {
-        this.name = name;
     }
     public void setFirstName(String firstName) {
         this.firstName = firstName;
