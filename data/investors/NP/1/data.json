@@ -1,7 +1,7 @@
 {
   "id" : 1,
+  "name" : "Dupont",
   "civility" : "M",
-  "name" : "Dupond",
   "firstName" : "Jean",
   "nationality" : "FR",
   "dateOfBirth" : "1980-01-01",
@@ -12,7 +12,7 @@
   "bankName" : "LCL",
   "familyId" : 1,
   "obligations" : [ 1 ],
-  "language" : "Français",
   "iban" : "FR7612345678901234567890123",
-  "bic" : "CRLIFRPP"
+  "bic" : "CRLIFRPP",
+  "language" : "Français"
 }

@@ -35,8 +35,8 @@
                      <children>
                         <Label text="Nom" />
                         <Label fx:id="NameInvestor" GridPane.columnIndex="1" />
-                        <Label text="Amount" GridPane.rowIndex="1" />
-                        <Label fx:id="AmountObligation" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="capital" GridPane.rowIndex="1" />
+                        <Label fx:id="capitalObligation" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Label" GridPane.rowIndex="2" />
                         <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="Label" GridPane.rowIndex="3" />

@@ -6,13 +6,13 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
-import mypackage.MainAppTest;
+import mypackage.MainApp;
 
 
 
 public class ControllerMenu {
 
-    private MainAppTest mainApp;
+    private MainApp mainApp;
 
 
     public ControllerMenu() {
@@ -27,7 +27,6 @@ public class ControllerMenu {
 
     @FXML
     private void handleMenuObligations() {
-        System.out.println("handleMenuObligations called");
         try {
             // Load root layout from fxml file.
             File fxmlFile = new File("src/main/mypackage/view/Obligations.fxml");
@@ -96,7 +95,7 @@ public class ControllerMenu {
         }
     }
 
-    public void setMainApp(MainAppTest mainApp) {
+    public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 }

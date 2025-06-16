@@ -11,7 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import mypackage.MainAppTest;
+import mypackage.MainApp;
 import mypackage.model.Applicant;
 import mypackage.model.DataBaseInteractor.ApplicantInteractor;
 import mypackage.view.util.ConfirmWindow;
@@ -23,7 +23,7 @@ public class ControllerEmetteurs {
     @FXML
     private Label NameApplicant;
     @FXML
-    private Label AmountApplicant;
+    private Label capitalApplicant;
     @FXML
     private TableView<Applicant> tableApplicants;
     @FXML
@@ -34,7 +34,7 @@ public class ControllerEmetteurs {
     @FXML
     private Button deleteButton;
 
-    private MainAppTest mainApp;
+    private MainApp mainApp;
 
     private ObservableList<Applicant> listApplicant = FXCollections.observableArrayList();
 
@@ -108,7 +108,7 @@ public class ControllerEmetteurs {
         }
     }
 
-    public void setMainApp(MainAppTest mainApp) {
+    public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 }

@@ -11,7 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import mypackage.MainAppTest;
+import mypackage.MainApp;
 import mypackage.model.Family;
 import mypackage.model.DataBaseInteractor.*;
 import mypackage.view.util.ConfirmWindow;
@@ -23,7 +23,7 @@ public class ControllerFamilies {
     @FXML
     private Label NameFamily;
     @FXML
-    private Label AmountFamily;
+    private Label capitalFamily;
     @FXML
     private TableView<Family> tableFamily;
     @FXML
@@ -34,7 +34,7 @@ public class ControllerFamilies {
     @FXML
     private Button deleteButton;
 
-    private MainAppTest mainApp;
+    private MainApp mainApp;
 
     private ObservableList<Family> listFam = FXCollections.observableArrayList();
 
@@ -108,7 +108,7 @@ public class ControllerFamilies {
         }
     }
 
-    public void setMainApp(MainAppTest mainApp) {
+    public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 }

@@ -17,7 +17,7 @@ public class InvestorLP extends Investor {
     private String nationalityBoss;
     private String dateOfBirthBoss;
     private String placeOfBirthBoss;
-    private String LanguageBoss;
+    private String languageBoss;
     private String emailBoss;
     private String phoneNumberBoss;
     private String[] addressBoss = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
@@ -47,7 +47,7 @@ public class InvestorLP extends Investor {
         this.nationalityBoss = "";
         this.dateOfBirthBoss = "";
         this.placeOfBirthBoss = "";
-        this.LanguageBoss = "";
+        this.languageBoss = "";
         this.emailBoss = "";
         this.phoneNumberBoss = "";
         for (int i = 0; i < addressBoss.length; i++) {
@@ -82,7 +82,7 @@ public class InvestorLP extends Investor {
         this.nationalityBoss = nationalityBoss;
         this.dateOfBirthBoss = dateOfBirthBoss;
         this.placeOfBirthBoss = placeOfBirthBoss;
-        this.LanguageBoss = languageBoss;
+        this.languageBoss = languageBoss;
         this.emailBoss = emailBoss;
         this.phoneNumberBoss = phoneNumberBoss;
         this.addressBoss = addressBoss;
@@ -134,8 +134,8 @@ public class InvestorLP extends Investor {
     public String getPlaceOfBirthBoss() {
         return placeOfBirthBoss;
     }
-    public String getLanguageBoss() {
-        return LanguageBoss;
+    public String getlanguageBoss() {
+        return languageBoss;
     }
     public String getEmailBoss() {
         return emailBoss;
@@ -206,8 +206,8 @@ public class InvestorLP extends Investor {
     public void setPlaceOfBirthBoss(String placeOfBirthBoss) {
         this.placeOfBirthBoss = placeOfBirthBoss;
     }
-    public void setLanguageBoss(String languageBoss) {
-        this.LanguageBoss = languageBoss;
+    public void setlanguageBoss(String languageBoss) {
+        this.languageBoss = languageBoss;
     }
     public void setEmailBoss(String emailBoss) {
         this.emailBoss = emailBoss;

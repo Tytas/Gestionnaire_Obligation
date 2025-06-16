@@ -11,7 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import mypackage.MainAppTest;
+import mypackage.MainApp;
 import mypackage.model.DataBaseInteractor.*;
 import mypackage.model.Investor;
 import mypackage.model.InvestorNP;
@@ -34,7 +34,7 @@ public class ControllerSouscripteurs {
     @FXML
     private Button deleteButton;
 
-    private MainAppTest mainApp;
+    private MainApp mainApp;
 
     private ObservableList<Investor> listInvestor = FXCollections.observableArrayList();
 
@@ -122,7 +122,7 @@ public class ControllerSouscripteurs {
         }
     }
 
-    public void setMainApp(MainAppTest mainApp) {
+    public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
     }
 }

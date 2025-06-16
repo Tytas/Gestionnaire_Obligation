@@ -19,7 +19,7 @@ public class Applicant {
     private String nationalityBoss;
     private String dateOfBirthBoss;
     private String placeOfBirthBoss;
-    private String LanguageBoss;
+    private String languageBoss;
     private String emailBoss;
     private String phoneNumberBoss;
     private String[] addressBoss = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
@@ -49,7 +49,7 @@ public class Applicant {
         this.nationalityBoss = "";
         this.dateOfBirthBoss = "";
         this.placeOfBirthBoss = "";
-        this.LanguageBoss = "";
+        this.languageBoss = "";
         this.emailBoss = "";
         this.phoneNumberBoss = "";
         for (int i = 0; i < addressBoss.length; i++) {
@@ -85,7 +85,7 @@ public class Applicant {
         this.nationalityBoss = nationalityBoss;
         this.dateOfBirthBoss = dateOfBirthBoss;
         this.placeOfBirthBoss = placeOfBirthBoss;
-        this.LanguageBoss = languageBoss;
+        this.languageBoss = languageBoss;
         this.emailBoss = emailBoss;
         this.phoneNumberBoss = phoneNumberBoss;
         this.addressBoss = addressBoss;
@@ -143,8 +143,8 @@ public class Applicant {
     public String getPlaceOfBirthBoss() {
         return placeOfBirthBoss;
     }
-    public String getLanguageBoss() {
-        return LanguageBoss;
+    public String getlanguageBoss() {
+        return languageBoss;
     }
     public String getEmailBoss() {
         return emailBoss;
@@ -179,7 +179,6 @@ public class Applicant {
     public ArrayList<Integer> getObligations() {
         return obligations;
     }
-
 
     public void setGroupId(int groupId) {
         this.groupId = groupId;
@@ -223,8 +222,8 @@ public class Applicant {
     public void setPlaceOfBirthBoss(String placeOfBirthBoss) {
         this.placeOfBirthBoss = placeOfBirthBoss;
     }
-    public void setLanguageBoss(String languageBoss) {
-        this.LanguageBoss = languageBoss;
+    public void setlanguageBoss(String languageBoss) {
+        this.languageBoss = languageBoss;
     }
     public void setEmailBoss(String emailBoss) {
         this.emailBoss = emailBoss;

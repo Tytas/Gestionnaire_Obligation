@@ -35,7 +35,7 @@
                      <children>
                         <Label text="Nom" />
                         <Label fx:id="NameFamily" GridPane.columnIndex="1" />
-                        <Label text="Amount" GridPane.rowIndex="1" />
+                        <Label text="capital" GridPane.rowIndex="1" />
                         <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Label" GridPane.rowIndex="2" />
                         <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />

@@ -1,6 +1,7 @@
 package mypackage.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Map;
 import javafx.beans.property.SimpleStringProperty;
 import mypackage.model.DataBaseInteractor.*;
@@ -10,12 +11,20 @@ class Main {
     // This is the main method that serves as the entry point for the program.
     public static void main(String[] args) {
         // Print a greeting message to the console.
+        ArrayList<String> safetiesExample = new ArrayList<>();
+        safetiesExample.add("Safety 1");
+        safetiesExample.add("Safety 2");
         Obligation oblig = new Obligation(1,
-                                        new SimpleStringProperty("Oblig 2"),
-                                        "YYYYYYEEEEEEE",
+                                        new SimpleStringProperty("ZQSD"),
+                                        false,
                                         10000000000l,
                                         LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
                                         24,
+                                        new int[]{0, 0},
+                                        0,
+                                        0,
+                                        new String[]{"Non", "", ""},
+                                        safetiesExample,
                                         1);
         String[] address = {"1", "rue de la Paix", "95000", "Paris", "France", ""};
         Applicant applicant = new Applicant(1,
@@ -44,7 +53,34 @@ class Main {
                                         "LCL",
                                         1);
         Group group = new Group(1, new SimpleStringProperty("Big Group"), "Arnaut", "Bernard");
-        Family family = new Family(1, new SimpleStringProperty("Famille Dupont"));
+        Family family = new Family(1,
+                                    new SimpleStringProperty("Famille Dupont"),
+                                    "France",
+                                    123456789,
+                                    "2023-10-01",
+                                    "Entreprise",
+                                    "SARL",
+                                    address,
+                                    "M",
+                                    new SimpleStringProperty("Dupont"),
+                                    "Jean",
+                                    "FR",
+                                    "1980-01-01",
+                                    "Paris",
+                                    "Français",
+                                    "dupont.jean@gmail.com",
+                                    "0123456789",
+                                    address,
+                                    "France",
+                                    "123456789",
+                                    "Directeur",
+                                    "FR7612345678901234567890123",
+                                    "CRLIFRPP",
+                                    "LCL",
+                                    "SARL",
+                                    "1",
+                                    "boss@gmail.com"
+                                    );
         InvestorNP jean = new InvestorNP(1,
                                     "M",
                                     new SimpleStringProperty("Dupont"),
@@ -92,7 +128,7 @@ class Main {
         Obligation loadedOblig = ObligationInteractor.GetObligation(1);
         if (loadedOblig != null) {
             System.out.println("Obligation loaded successfully:");
-            System.out.println("Value: " + loadedOblig.getAmount());
+            System.out.println("Value: " + loadedOblig.getCapital());
         } else {
             System.out.println("Failed to load obligation.");
         }
