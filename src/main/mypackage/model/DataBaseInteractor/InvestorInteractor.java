@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.beans.property.SimpleStringProperty;
 import mypackage.model.InvestorLP;
 import mypackage.model.InvestorNP;
+import mypackage.model.Investor;
 
 public class InvestorInteractor {
 
@@ -125,26 +126,6 @@ public class InvestorInteractor {
         return false;
     }
 
-    public static ArrayList<Integer> GetAllInvestorId(){
-        File[] ListInvestorLPFiles = new File("data/investors/LP/").listFiles(File::isDirectory);
-        File[] ListInvestorNPFiles = new File("data/investors/NP/").listFiles(File::isDirectory);
-        ArrayList<Integer> ListInvestorId = new ArrayList<>();
-        for (File file : ListInvestorLPFiles) {
-            try {
-                ListInvestorId.add(Integer.parseInt(file.getName()));
-            } catch (NumberFormatException e) {
-                // ignorer les dossiers qui ne sont pas des nombres
-            }
-        }
-        for (File file : ListInvestorNPFiles) {
-            try {
-                ListInvestorId.add(Integer.parseInt(file.getName()));
-            } catch (NumberFormatException e) {
-                // ignorer les dossiers qui ne sont pas des nombres
-            }
-        }
-        return ListInvestorId;
-    }
 
     public static Boolean DeleteInvestorLP(int id){
         String baseDir = "data/investors/LP/";
@@ -170,5 +151,38 @@ public class InvestorInteractor {
             return false;
         }
         return false;
+    }
+
+    public static ArrayList<Integer> GetAllInvestorId(){
+        File[] ListInvestorLPFiles = new File("data/investors/LP/").listFiles(File::isDirectory);
+        File[] ListInvestorNPFiles = new File("data/investors/NP/").listFiles(File::isDirectory);
+        ArrayList<Integer> ListInvestorId = new ArrayList<>();
+        for (File file : ListInvestorLPFiles) {
+            try {
+                ListInvestorId.add(Integer.parseInt(file.getName()));
+            } catch (NumberFormatException e) {
+                // ignorer les dossiers qui ne sont pas des nombres
+            }
+        }
+        for (File file : ListInvestorNPFiles) {
+            try {
+                ListInvestorId.add(Integer.parseInt(file.getName()));
+            } catch (NumberFormatException e) {
+                // ignorer les dossiers qui ne sont pas des nombres
+            }
+        }
+        return ListInvestorId;
+    }
+
+    public static Investor GetInvestor(int id) {
+        InvestorNP investorNP = GetInvestorNP(id);
+        if (investorNP != null) {
+            return investorNP;
+        }
+        InvestorLP investorLP = GetInvestorLP(id);
+        if (investorLP != null) {
+            return investorLP;
+        }
+        return null; // Si l'investisseur n'est ni NP ni LP
     }
 }

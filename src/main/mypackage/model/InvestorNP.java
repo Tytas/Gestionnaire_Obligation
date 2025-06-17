@@ -1,6 +1,5 @@
 package mypackage.model;
 
-import java.util.ArrayList;
 import javafx.beans.property.SimpleStringProperty;
 
 public class InvestorNP extends Investor {
@@ -16,8 +15,6 @@ public class InvestorNP extends Investor {
     private String IBAN;
     private String BIC;
     private String bankName;
-    private int familyId;
-    private ArrayList<Integer> obligations = new ArrayList<>();
 
     public InvestorNP() {
         super();
@@ -35,12 +32,11 @@ public class InvestorNP extends Investor {
         this.IBAN = "";
         this.BIC = "";
         this.bankName = "";
-        this.familyId = 0;
     }
     public InvestorNP(int id, String civility, SimpleStringProperty name, String firstName,String nationality,
                     String dateOfBirth, String placeOfBirth, String language, String email, String phoneNumber,
                     String[] address, String IBAN, String BIC, String BankName, int familyId) {
-        super(id, name);
+        super(id, name, familyId);
         this.civility = civility;
         this.firstName = firstName;
         this.nationality = nationality;
@@ -53,7 +49,6 @@ public class InvestorNP extends Investor {
         this.IBAN = IBAN;
         this.BIC = BIC;
         this.bankName = BankName;
-        this.familyId = familyId;
     }
 
     public String getCivility() {
@@ -92,12 +87,6 @@ public class InvestorNP extends Investor {
     public String getBankName() {
         return bankName;
     }
-    public int getFamilyId() {
-        return familyId;
-    }
-    public ArrayList<Integer> getObligations() {
-        return obligations;
-    }
 
     public void setCivility(String civility) {
         this.civility = civility;
@@ -134,17 +123,5 @@ public class InvestorNP extends Investor {
     }
     public void setBankName(String bankName) {
         this.bankName = bankName;
-    }
-    public void setFamilyId(int familyId) {
-        this.familyId = familyId;
-    }
-    public void setObligations(ArrayList<Integer> obligations) {
-        this.obligations = obligations;
-    }
-    public void addObligation(int obligationId) {
-        this.obligations.add(obligationId);
-    }
-    public void removeObligation(int obligationId) {
-        this.obligations.remove(Integer.valueOf(obligationId));
     }
 }

@@ -97,6 +97,9 @@ public class Obligation {
     public Map<Integer, Long> getInvestors() {
         return investors;
     }
+    public Long getInvestorCapital(int investorId) {
+        return investors.getOrDefault(investorId, 0L);
+    }
 
     public void setId(int id) {
         this.id = id;

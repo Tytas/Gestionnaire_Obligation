@@ -1,6 +1,5 @@
 package mypackage.model;
 
-import java.util.ArrayList;
 import javafx.beans.property.SimpleStringProperty;
 
 public class InvestorLP extends Investor {
@@ -27,8 +26,6 @@ public class InvestorLP extends Investor {
     private String IBAN;
     private String BIC;
     private String bankName;
-    private int familyId;
-    private ArrayList<Integer> obligations = new ArrayList<>();
 
     public InvestorLP() {
         super();
@@ -59,7 +56,6 @@ public class InvestorLP extends Investor {
         this.IBAN = "";
         this.BIC = "";
         this.bankName = "";
-        this.familyId = 0;
     }
 
     public InvestorLP(int id, SimpleStringProperty name, String country, int registerNumber, String dateOfCreation,
@@ -68,7 +64,7 @@ public class InvestorLP extends Investor {
                       String dateOfBirthBoss, String placeOfBirthBoss, String languageBoss,
                       String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
                       String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int familyId) {
-        super(id, name);
+        super(id, name, familyId);
         this.country = country;
         this.registerNumber = registerNumber;
         this.dateOfCreation = dateOfCreation;
@@ -92,7 +88,6 @@ public class InvestorLP extends Investor {
         this.IBAN = IBAN;
         this.BIC = BIC;
         this.bankName = BankName;
-        this.familyId = familyId;
     }
 
     public String getcountry() {
@@ -155,9 +150,6 @@ public class InvestorLP extends Investor {
     public String getRoleBoss() {
         return roleBoss;
     }
-    public int getFamilyId() {
-        return familyId;
-    }
     public String getIBAN() {
         return IBAN;
     }
@@ -166,9 +158,6 @@ public class InvestorLP extends Investor {
     }
     public String getBankName() {
         return bankName;
-    }
-    public ArrayList<Integer> getObligations() {
-        return obligations;
     }
     public void setcountry(String country) {
         this.country = country;
@@ -235,19 +224,5 @@ public class InvestorLP extends Investor {
     }
     public void setBankName(String bankName) {
         this.bankName = bankName;
-    }
-    public void setFamilyId(int familyId) {
-        this.familyId = familyId;
-    }
-    public void setObligations(ArrayList<Integer> obligations) {
-        this.obligations = obligations;
-    }
-    public void addObligation(int obligationId) {
-        if (!obligations.contains(obligationId)) {
-            obligations.add(obligationId);
-        }
-    }
-    public void removeObligation(int obligationId) {
-        obligations.remove(Integer.valueOf(obligationId));
     }
 }
