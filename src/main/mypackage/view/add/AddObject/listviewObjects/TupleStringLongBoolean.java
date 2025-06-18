@@ -1,4 +1,4 @@
-package mypackage.view.util.AddObject;
+package mypackage.view.add.AddObject.listviewObjects;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;

@@ -93,4 +93,13 @@ public class ObligationInteractor {
         }
         return false;
     }
+
+    public static int generateNewId() {
+        ArrayList<Integer> ids = GetAllObligationsId();
+        if (ids.isEmpty()) {
+            return 1; // Si aucune obligation n'existe, commencer à 1
+        } else {
+            return ids.stream().max(Integer::compareTo).orElse(0) + 1; // Retourner le plus grand ID + 1
+        }
+    }
 }

@@ -14,8 +14,8 @@ public class Obligation {
     private String startDate;   
     private int durationMonths;
     private int[] rate = {0, 0}; // [In Fine, mensuelle]
-    private int interestBase;
-    private int periodicity;
+    private String interestBase;
+    private String periodicity;
     private String[] prorogation; // ["Oui" or "Non", Durée de prorogation, nouveau taux]
     private ArrayList<String> safeties = new ArrayList<>();
     private int ApplicantId;
@@ -29,14 +29,14 @@ public class Obligation {
         this.startDate = "";
         this.durationMonths = 0;
         this.rate = new int[]{0, 0};
-        this.interestBase = 0;
-        this.periodicity = 0;
+        this.interestBase = "";
+        this.periodicity = "";
         this.prorogation = new String[]{"", "", ""};
         this.ApplicantId = -1;
     }
 
     public Obligation(int id, SimpleStringProperty name, Boolean convertible, long capital, String startDate,
-                      int durationMonths, int[] rate, int interestBase, int periodicity,
+                      int durationMonths, int[] rate, String interestBase, String periodicity,
                       String[] prorogation, ArrayList<String> safeties, int applicantId) {
         this.id = id;
         this.name = name;
@@ -76,10 +76,10 @@ public class Obligation {
     public int[] getRate() {
         return rate;
     }
-    public int getInterestBase() {
+    public String getInterestBase() {
         return interestBase;
     }
-    public int getPeriodicity() {
+    public String getPeriodicity() {
         return periodicity;
     }
     public String[] getProrogation() {
@@ -122,10 +122,10 @@ public class Obligation {
     public void setRate(int[] rate) {
         this.rate = rate;
     }
-    public void setInterestBase(int interestBase) {
+    public void setInterestBase(String interestBase) {
         this.interestBase = interestBase;
     }
-    public void setPeriodicity(int periodicity) {
+    public void setPeriodicity(String periodicity) {
         this.periodicity = periodicity;
     }
     public void setProrogation(String[] prorogation) {

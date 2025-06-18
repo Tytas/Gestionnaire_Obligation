@@ -19,8 +19,8 @@ import javafx.stage.Stage;
 import mypackage.MainApp;
 import mypackage.model.DataBaseInteractor.*;
 import mypackage.model.Obligation;
+import mypackage.view.add.AddObject.AddObligationController;
 import mypackage.view.util.ConfirmWindow;
-import mypackage.view.util.AddObject.AddObligationController;
 
 
 

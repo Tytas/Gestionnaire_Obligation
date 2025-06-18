@@ -94,4 +94,14 @@ public class ApplicantInteractor {
         }
         return false;
     }
+    public static int GetApplicantByName(String name) {
+        ArrayList<Integer> ids = GetAllApplicantsId();
+        for (int id : ids) {
+            Applicant applicant = GetApplicant(id);
+            if (applicant != null && applicant.getName().equals(name)) {
+                return id;
+            }
+        }
+        return -1; // Retourne -1 si aucun applicant trouvé avec ce nom
+    }
 }
