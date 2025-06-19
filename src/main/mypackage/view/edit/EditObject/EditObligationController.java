@@ -1,42 +1,46 @@
-package mypackage.view.add.AddObject;
+package mypackage.view.edit.EditObject;
 
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ListView;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-
-import mypackage.model.Investor;
 import mypackage.model.Applicant;
+import mypackage.model.Investor;
 import mypackage.model.Obligation;
-import mypackage.model.DataBaseInteractor.ObligationInteractor;
-import mypackage.model.DataBaseInteractor.InvestorInteractor;
 import mypackage.model.DataBaseInteractor.ApplicantInteractor;
+import mypackage.model.DataBaseInteractor.InvestorInteractor;
+import mypackage.model.DataBaseInteractor.ObligationInteractor;
+import mypackage.model.util.Replacement;
 import mypackage.view.util.AmortissementWindow;
 import mypackage.view.util.SureteWindow;
-import mypackage.view.util.listviewObjects.*;
+import mypackage.view.util.cessionWindow;
+import mypackage.view.util.listviewObjects.TupleStringLongBoolean;
+import mypackage.view.util.listviewObjects.TupleStringMapMap;
 
-
-public class AddObligationController {
+public class EditObligationController {
 
     private boolean result = false;
-
+    private Obligation currentObligation;
     @FXML
     private TextField nomField;
     @FXML
@@ -72,6 +76,7 @@ public class AddObligationController {
     private TextField souscripteurSearchField;
     private ObservableList<TupleStringLongBoolean> allSouscripteurs = FXCollections.observableArrayList();
     private FilteredList<TupleStringLongBoolean> filteredSouscripteurs;
+    private ArrayList<TupleStringLongBoolean> selectedSouscripteurs = new ArrayList<>();
 
     private ChangeListener<Boolean> selectionListener;
 
@@ -96,13 +101,25 @@ public class AddObligationController {
     private ObservableList<String> suretes = FXCollections.observableArrayList();
 
     @FXML
+    private Button addcessionButton;
+    @FXML
+    private ListView<TupleStringMapMap> cessionListView;
+    private ObservableList<TupleStringMapMap> cessions = FXCollections.observableArrayList();
+
+    @FXML
     private Button validerButton;
     @FXML
     private Button annulerButton;
 
+    public EditObligationController() {
+        // Constructor can be used for initialization if needed
+    }
 
-    public AddObligationController() {
-        // Constructeur vide
+    public Obligation getCurrentObligation() {
+        return currentObligation;
+    }
+    public void setCurrentObligation(Obligation newObligation) {
+        this.currentObligation = newObligation;
     }
 
     public ListView<TupleStringLongBoolean> getSouscripteursListView() {
@@ -113,8 +130,22 @@ public class AddObligationController {
         return emetteurListView;
     }
 
-    public void initialize() {
-        // Initialisation des ComboBox
+    public void initData(Obligation obligation) {
+        this.currentObligation = obligation;
+        // Set default values for the fields if currentObligation is not null
+        System.out.println("Initializing EditObligationController with current obligation: " + currentObligation);
+        if (currentObligation != null) {
+            nomField.setText(currentObligation.getName());
+            capitalField.setText(String.valueOf(currentObligation.getCapital()));
+            dureeField.setText(String.valueOf(currentObligation.getDurationMonths()));
+            baseCalculComboBox.setValue(currentObligation.getInterestBase());
+            periodiciteComboBox.setValue(currentObligation.getPeriodicity());
+            dateDebutField.setValue(LocalDate.parse(currentObligation.getStartDate()));
+        }
+    }
+
+    @FXML
+    private void initialize() { 
         baseCalculComboBox.getItems().addAll("30/360", "Jour Réel/365");
         periodiciteComboBox.getItems().addAll("Mensuelle", "Trimestrielle", "Semestrielle", "Annuelle");
         ArrayList<Integer> investorsId = InvestorInteractor.GetAllInvestorId();
@@ -172,9 +203,16 @@ public class AddObligationController {
 
                     selectionListener = (obs, oldVal, newVal) -> {
                         montantField.setDisable(!newVal);
-                };
-                item.selectionneProperty().addListener(selectionListener);
-                setGraphic(content);
+                        if (newVal) {
+                            if (!selectedSouscripteurs.contains(item)) {
+                                selectedSouscripteurs.add(item);
+                            }
+                        } else {
+                            selectedSouscripteurs.remove(item);
+                        }
+                    };
+                    item.selectionneProperty().addListener(selectionListener);
+                    setGraphic(content);
                 }
             }
         });
@@ -269,6 +307,42 @@ public class AddObligationController {
             }
         });
 
+        cessionListView.setItems(cessions);
+        cessionListView.setCellFactory(lv -> new ListCell<TupleStringMapMap>() {
+            @Override
+            protected void updateItem(TupleStringMapMap item, boolean empty) {
+                super.updateItem(item, empty);
+                // Si item est nul ou si c'est une cellule vide, on ne fait rien
+                if (empty || item == null) {
+                    setGraphic(null);
+                    return;
+                }
+                // Crée le bouton de suppression
+                Button deleteButton = new Button("-");
+                deleteButton.setOnAction(e -> {
+                    cessions.remove(item);
+                    cessionListView.refresh();
+                });
+                Label cessionField = new Label("Date: " + item.getDate());
+                for(int i = 0; i < item.getVendeurs().size(); i++) {
+                    cessionField.setText(cessionField.getText() + ", Vendeur: " + item.getVendeurs().keySet().toArray()[i] + " (" + item.getVendeurs().values().toArray()[i] + ")");
+                }
+                for(int i = 0; i < item.getAcheteurs().size(); i++) {
+                    cessionField.setText(cessionField.getText() + ", Acheteur: " + item.getAcheteurs().keySet().toArray()[i] + " (" + item.getAcheteurs().values().toArray()[i] + ")");
+                }
+                HBox content = new HBox(10, cessionField, deleteButton);
+                setGraphic(content);
+            }
+        });
+        addcessionButton.setOnAction(e -> {
+            // Ouvre la fenêtre pour ajouter une cession
+            boolean success = cessionWindow.showDialog(cessions, selectedSouscripteurs);
+            if (success) {
+                // La nouvelle cession a été ajoutée à la liste
+                cessionListView.refresh();
+            }
+        });
+
         validerButton.setOnAction(event -> {
             String nom = nomField.getText();
             String capitalString = capitalField.getText();
@@ -321,7 +395,7 @@ public class AddObligationController {
                     || isProrogation == false) {
                     CreateObligation(nom, capital, taux, isConvertible, baseCalcul, periodicite, isProrogation,
                                      TauxProrogationField.getText(), DureeProrogationField.getText(), duree, dateDebutString,
-                                     allSouscripteurs, emetteur, suretes, amortissements);
+                                     selectedSouscripteurs, emetteur, suretes, amortissements);
                     result = true;
                     ((Stage) validerButton.getScene().getWindow()).close();
                 }
@@ -341,7 +415,7 @@ public class AddObligationController {
     private void CreateObligation(String nom, Long capital, int[] taux, Boolean isConvertible, 
                                   String baseCalcul, String periodicite, Boolean isProrogation, 
                                   String tauxProrogation, String dureeProrogation, Integer duree,
-                                  String dateDebut, ObservableList<TupleStringLongBoolean> souscripteursList, String emetteurName,
+                                  String dateDebut, ArrayList<TupleStringLongBoolean> souscripteursList, String emetteurName,
                                   ObservableList<String> suretes, ObservableList<String[]> amortissements) {
         int newId = ObligationInteractor.generateNewId(); // Generate a new ID for the obligation
         int idApplicant = ApplicantInteractor.GetApplicantByName(selectedEmetteur);
@@ -352,9 +426,7 @@ public class AddObligationController {
         Obligation obligation = new Obligation(newId, new SimpleStringProperty(nom), isConvertible, capital, dateDebut, duree, taux, baseCalcul, periodicite,
                                                 new String[]{tauxProrogation, dureeProrogation}, new ArrayList<>(suretes), idApplicant);
         for (TupleStringLongBoolean souscripteur : souscripteursList) {  
-            System.out.println("Adding investor: " + souscripteur.getName());
             if (souscripteur.getName() != null && !souscripteur.getName().isEmpty()) {
-                System.out.println("Investor name: " + souscripteur.getName());
                 int idInvestor = InvestorInteractor.GetInvestorByName(souscripteur.getName());
                 if (idInvestor == -1) {
                     System.out.println("Investor not found: " + souscripteur.getName());
@@ -363,6 +435,32 @@ public class AddObligationController {
                 obligation.addInvestor(idInvestor, Long.valueOf(souscripteur.getCapital()));
             }
         }
+        for (TupleStringMapMap cession : cessions) {
+            if (cession.getDate() != null && !cession.getVendeurs().isEmpty() && !cession.getAcheteurs().isEmpty()) {
+                Map<Integer, Long> vendeurs = new HashMap<>();
+                Map<Integer, Long> acheteurs = new HashMap<>();
+                for (Map.Entry<String, Long> entry : cession.getVendeurs().entrySet()) {
+                    int idVendeur = InvestorInteractor.GetInvestorByName(entry.getKey());
+                    if (idVendeur != -1) {
+                        vendeurs.put(idVendeur, entry.getValue());
+                    } else {
+                        System.out.println("Vendeur not found: " + entry.getKey());
+                    }
+                }
+                for (Map.Entry<String, Long> entry : cession.getAcheteurs().entrySet()) {
+                    int idAcheteur = InvestorInteractor.GetInvestorByName(entry.getKey());
+                    if (idAcheteur != -1) {
+                        acheteurs.put(idAcheteur, entry.getValue());
+                    } else {
+                        System.out.println("Acheteur not found: " + entry.getKey());
+                    }
+                }
+                Replacement replacement = new Replacement(cession.getDate(), vendeurs, acheteurs);
+                obligation.addReplacement(replacement);
+            }
+        }
+
         ObligationInteractor.SaveObligation(obligation);
     }
+
 }

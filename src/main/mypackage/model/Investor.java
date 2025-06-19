@@ -9,7 +9,6 @@ abstract public class Investor {
     private SimpleStringProperty name;
     private int familyId;
     private ArrayList<Integer> obligations = new ArrayList<>();
-
     
     public Investor() {
         this.name = new SimpleStringProperty("");

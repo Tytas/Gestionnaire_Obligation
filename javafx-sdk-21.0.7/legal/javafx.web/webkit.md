@@ -2002,7 +2002,7 @@ Source/WebCore/Modules/applepay
 Source/WebCore/Modules/applepay/paymentrequest
 Source/WebCore/Modules/applicationmanifest
 Source/WebCore/Modules/async-clipboard
-Source/WebCore/Modules/audiosession
+Source/WebCore/Modules/audiocession
 Source/WebCore/Modules/badge
 Source/WebCore/Modules/beacon
 Source/WebCore/Modules/cache
@@ -2026,7 +2026,7 @@ Source/WebCore/Modules/indexeddb/server
 Source/WebCore/Modules/indexeddb/shared
 Source/WebCore/Modules/mediacapabilities
 Source/WebCore/Modules/mediarecorder
-Source/WebCore/Modules/mediasession
+Source/WebCore/Modules/mediacession
 Source/WebCore/Modules/mediasource
 Source/WebCore/Modules/mediastream
 Source/WebCore/Modules/model-element

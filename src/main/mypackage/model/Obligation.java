@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import javafx.beans.property.SimpleStringProperty;
 
+import mypackage.model.util.Replacement;
+
 public class Obligation {
     private int id;
     private SimpleStringProperty name;
@@ -21,6 +23,7 @@ public class Obligation {
     private int ApplicantId;
     private Map<String, Integer> depreciations = new HashMap<>(); // Date -> Pourcentage
     private Map<Integer, Long> investors = new HashMap<>();
+    private ArrayList<Replacement> replacements = new ArrayList<>();
 
     public Obligation() {
         this.name = new SimpleStringProperty("");
@@ -100,6 +103,9 @@ public class Obligation {
     public Long getInvestorCapital(int investorId) {
         return investors.getOrDefault(investorId, 0L);
     }
+    public ArrayList<Replacement> getReplacements() {
+        return replacements;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -160,6 +166,15 @@ public class Obligation {
     }
     public void removeInvestor(Integer investor) {
         this.investors.remove(investor);
+    }
+    public void setReplacements(ArrayList<Replacement> replacements) {
+        this.replacements = replacements;
+    }
+    public void addReplacement(Replacement replacement) {
+        this.replacements.add(replacement);
+    }
+    public void removeReplacement(Replacement replacement) {
+        this.replacements.remove(replacement);
     }
     
 }

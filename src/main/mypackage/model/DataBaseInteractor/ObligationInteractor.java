@@ -33,6 +33,9 @@ public class ObligationInteractor {
     public static ArrayList<Integer> GetAllObligationsId(){
         File[] ListObligFiles = new File("data/obligations/").listFiles(File::isDirectory);
         ArrayList<Integer> ListObligId = new ArrayList<>();
+        if (ListObligFiles == null) {
+            return ListObligId; // Retourner une liste vide si aucun dossier n'est trouvé
+        }
         for (File file : ListObligFiles) {
             try {
                 ListObligId.add(Integer.parseInt(file.getName()));

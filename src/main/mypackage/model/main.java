@@ -21,8 +21,8 @@ class Main {
                                         LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE),
                                         24,
                                         new int[]{0, 0},
-                                        0,
-                                        0,
+                                        "0",
+                                        "0",
                                         new String[]{"Non", "", ""},
                                         safetiesExample,
                                         1);

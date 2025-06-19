@@ -185,4 +185,15 @@ public class InvestorInteractor {
         }
         return null; // Si l'investisseur n'est ni NP ni LP
     }
+
+    public static int GetInvestorByName(String name) {
+        ArrayList<Integer> ids = GetAllInvestorId();
+        for (Integer id : ids) {
+            Investor investor = GetInvestor(id);
+            if (investor != null && investor.getName().equals(name)) {
+                return id;
+            }
+        }
+        return -1; // Si l'investisseur n'est pas trouvé
+    }
 }

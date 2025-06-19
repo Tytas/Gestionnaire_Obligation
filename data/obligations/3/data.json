@@ -1,0 +1,19 @@
+{
+  "id" : 3,
+  "name" : "lklklklk",
+  "convertible" : false,
+  "capital" : 1,
+  "startDate" : "2025-06-28",
+  "durationMonths" : 1,
+  "rate" : [ 0, 0 ],
+  "interestBase" : "Jour Réel/365",
+  "periodicity" : "Trimestrielle",
+  "prorogation" : [ "", "" ],
+  "safeties" : [ ],
+  "depreciations" : { },
+  "investors" : {
+    "1" : 0
+  },
+  "replacements" : [ ],
+  "applicantId" : 1
+}

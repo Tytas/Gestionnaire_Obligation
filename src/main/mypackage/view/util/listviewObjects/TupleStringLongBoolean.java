@@ -1,6 +1,8 @@
-package mypackage.view.add.AddObject.listviewObjects;
+package mypackage.view.util.listviewObjects;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class TupleStringLongBoolean {
@@ -34,4 +36,22 @@ public class TupleStringLongBoolean {
     public BooleanProperty selectionneProperty() {
         return selectionne;
     }
+
+    public void setName(String name) {
+        this.name.set(name);
+    }
+    public void setCapital(String capital) {
+        this.capital.set(capital);
+    }
+    public void setSelectionne(Boolean selectionne) {
+        this.selectionne.set(selectionne);
+    }
+
+    public TupleStringLongBoolean clone() {
+    return new TupleStringLongBoolean(
+        new SimpleStringProperty(name.get()),
+        new SimpleStringProperty(capital.get()),
+        new SimpleBooleanProperty(selectionne.get())
+    );
+}
 }
