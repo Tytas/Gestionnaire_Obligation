@@ -1,0 +1,26 @@
+{
+  "id" : 4,
+  "name" : "bug123",
+  "convertible" : true,
+  "capital" : 10,
+  "startDate" : "2025-06-10",
+  "durationMonths" : 10,
+  "rate" : [ 0, 0 ],
+  "interestBase" : "Jour Réel/365",
+  "periodicity" : "Mensuelle",
+  "prorogation" : [ "", "" ],
+  "safeties" : [ "10", "coucou" ],
+  "depreciations" : {
+    "21-02-2025" : 1000
+  },
+  "investors" : {
+    "1" : 0,
+    "2" : 0
+  },
+  "replacements" : [ {
+    "date" : "15/06/2025",
+    "investorsSalersId" : { },
+    "investorsBuyersId" : { }
+  } ],
+  "applicantId" : 1
+}

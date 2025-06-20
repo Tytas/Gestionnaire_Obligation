@@ -40,7 +40,7 @@ public class Obligation {
 
     public Obligation(int id, SimpleStringProperty name, Boolean convertible, long capital, String startDate,
                       int durationMonths, int[] rate, String interestBase, String periodicity,
-                      String[] prorogation, ArrayList<String> safeties, int applicantId) {
+                      String[] prorogation, ArrayList<String> safeties, Map<String, Integer> depreciations, int applicantId) {
         this.id = id;
         this.name = name;
         this.convertible = convertible;
@@ -52,6 +52,7 @@ public class Obligation {
         this.periodicity = periodicity;
         this.prorogation = prorogation;
         this.safeties = safeties;
+        this.depreciations = depreciations;
         this.ApplicantId = applicantId;
     }
 

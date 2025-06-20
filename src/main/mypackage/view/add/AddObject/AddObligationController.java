@@ -21,6 +21,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import mypackage.model.Investor;
 import mypackage.model.Applicant;
@@ -349,9 +351,19 @@ public class AddObligationController {
             System.out.println("Emetteur not found: " + selectedEmetteur);
             return;
         }
+        Map<String, Integer> amortissementsMap = new HashMap<>();
+        for(String[] amortissement : amortissements) {
+            if (amortissement.length == 2) {
+                String dateAmortissement = amortissement[0];
+                int montantAmortissement = Integer.parseInt(amortissement[1]);
+                amortissementsMap.put(dateAmortissement, montantAmortissement);
+            } else {
+                System.out.println("Invalid amortissement format: " + amortissement);
+            }
+        }
         Obligation obligation = new Obligation(newId, new SimpleStringProperty(nom), isConvertible, capital, dateDebut, duree, taux, baseCalcul, periodicite,
-                                                new String[]{tauxProrogation, dureeProrogation}, new ArrayList<>(suretes), idApplicant);
-        for (TupleStringLongBoolean souscripteur : souscripteursList) {  
+                                                new String[]{tauxProrogation, dureeProrogation}, new ArrayList<>(suretes), amortissementsMap, idApplicant);
+        for (TupleStringLongBoolean souscripteur : souscripteursList) {
             System.out.println("Adding investor: " + souscripteur.getName());
             if (souscripteur.getName() != null && !souscripteur.getName().isEmpty()) {
                 System.out.println("Investor name: " + souscripteur.getName());

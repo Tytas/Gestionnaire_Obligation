@@ -51,7 +51,7 @@ public class TupleStringLongBoolean {
     return new TupleStringLongBoolean(
         new SimpleStringProperty(name.get()),
         new SimpleStringProperty(capital.get()),
-        new SimpleBooleanProperty(selectionne.get())
+        new SimpleBooleanProperty(false)
     );
 }
 }

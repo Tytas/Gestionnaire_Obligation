@@ -141,6 +141,66 @@ public class EditObligationController {
             baseCalculComboBox.setValue(currentObligation.getInterestBase());
             periodiciteComboBox.setValue(currentObligation.getPeriodicity());
             dateDebutField.setValue(LocalDate.parse(currentObligation.getStartDate()));
+            if(currentObligation.getProrogation()[0] == "Oui") {
+                prorogationOui.setSelected(true);
+                TauxProrogationField.setText(currentObligation.getProrogation()[1]);
+                DureeProrogationField.setText(currentObligation.getProrogation()[2]);
+            } else {
+                prorogationNon.setSelected(true);
+            }
+            if(currentObligation.getConvertible()) {
+                convertible.selectToggle(convertible.getToggles().get(0)); // Assuming the first toggle is "OCA"
+            } else {
+                convertible.selectToggle(convertible.getToggles().get(1)); // Assuming the second toggle is "Non Convertible"
+            }
+            taux_INFINE.setText(String.valueOf(currentObligation.getRate()[0]));
+            taux_TEMP.setText(String.valueOf(currentObligation.getRate()[1]));
+            for (int i = 0; i < emetteurListView.getItems().size(); i++) {
+                if (emetteurListView.getItems().get(i).equals(ApplicantInteractor.GetApplicant(currentObligation.getApplicantId()).getName())) {
+                    emetteurListView.getSelectionModel().select(i);
+                    selectedEmetteur = emetteurListView.getItems().get(i);
+                    break;
+                }
+            }
+            for (TupleStringLongBoolean item : filteredSouscripteurs) {
+                for (int id : currentObligation.getInvestors().keySet()) {
+                    if (item.getName().equalsIgnoreCase(InvestorInteractor.GetInvestor(id).getName())) {
+                        item.selectionneProperty().set(true);
+                        item.capitalProperty().set(String.valueOf(currentObligation.getInvestors().get(id)));
+                        souscripteurListView.getSelectionModel().select(item);
+                        if (!selectedSouscripteurs.contains(item)) {
+                            selectedSouscripteurs.add(item);
+                        }
+                    }
+                }
+            }
+            for (Map.Entry<String, Integer> entry : currentObligation.getDepreciations().entrySet()) {
+                String[] amortissementArray = new String[2];
+                amortissementArray[0] = entry.getKey();
+                amortissementArray[1] = String.valueOf(entry.getValue());
+                amortissements.add(amortissementArray);
+            }
+            for (String surete : currentObligation.getSafeties()) {
+                suretes.add(surete);
+            }
+            for (Replacement cession : currentObligation.getReplacements()) {
+                Map<Integer, Long> vendeurs = cession.getInvestorsSalersId();
+                Map<Integer, Long> acheteurs = cession.getInvestorsBuyersId();
+                Map<String, Long> vendeursStringKey = new HashMap<>();
+                Map<String, Long> acheteursStringKey = new HashMap<>();
+                // Transformation des Map<Integer, Long> en Map<String, Long>
+                for (Map.Entry<Integer, Long> entry : vendeurs.entrySet()) {
+                    vendeursStringKey.put(String.valueOf(entry.getKey()), entry.getValue());
+                }
+                for (Map.Entry<Integer, Long> entry : acheteurs.entrySet()) {
+                    acheteursStringKey.put(String.valueOf(entry.getKey()), entry.getValue());
+                }
+                TupleStringMapMap tupleCession = new TupleStringMapMap(cession.getDate(), vendeursStringKey, acheteursStringKey);
+                cessions.add(tupleCession);
+            }
+            suretesListView.refresh();
+            amortissementsListView.refresh();
+            cessionListView.refresh();
         }
     }
 
@@ -336,6 +396,7 @@ public class EditObligationController {
         });
         addcessionButton.setOnAction(e -> {
             // Ouvre la fenêtre pour ajouter une cession
+            System.out.println("Liste souscripteur: " + selectedSouscripteurs);
             boolean success = cessionWindow.showDialog(cessions, selectedSouscripteurs);
             if (success) {
                 // La nouvelle cession a été ajoutée à la liste
@@ -417,15 +478,24 @@ public class EditObligationController {
                                   String tauxProrogation, String dureeProrogation, Integer duree,
                                   String dateDebut, ArrayList<TupleStringLongBoolean> souscripteursList, String emetteurName,
                                   ObservableList<String> suretes, ObservableList<String[]> amortissements) {
-        int newId = ObligationInteractor.generateNewId(); // Generate a new ID for the obligation
         int idApplicant = ApplicantInteractor.GetApplicantByName(selectedEmetteur);
         if (idApplicant == -1) {
             System.out.println("Emetteur not found: " + selectedEmetteur);
             return;
         }
-        Obligation obligation = new Obligation(newId, new SimpleStringProperty(nom), isConvertible, capital, dateDebut, duree, taux, baseCalcul, periodicite,
-                                                new String[]{tauxProrogation, dureeProrogation}, new ArrayList<>(suretes), idApplicant);
-        for (TupleStringLongBoolean souscripteur : souscripteursList) {  
+        Map<String, Integer> amortissementsMap = new HashMap<>();
+        for(String[] amortissement : amortissements) {
+            if (amortissement.length == 2) {
+                String dateAmortissement = amortissement[0];
+                int montantAmortissement = Integer.parseInt(amortissement[1]);
+                amortissementsMap.put(dateAmortissement, montantAmortissement);
+            } else {
+                System.out.println("Invalid amortissement format: " + amortissement);
+            }
+        }
+        Obligation obligation = new Obligation(currentObligation.getId(), new SimpleStringProperty(nom), isConvertible, capital, dateDebut, duree, taux, baseCalcul, periodicite,
+                                                new String[]{tauxProrogation, dureeProrogation}, new ArrayList<>(suretes), amortissementsMap, idApplicant);
+        for (TupleStringLongBoolean souscripteur : souscripteursList) {
             if (souscripteur.getName() != null && !souscripteur.getName().isEmpty()) {
                 int idInvestor = InvestorInteractor.GetInvestorByName(souscripteur.getName());
                 if (idInvestor == -1) {
@@ -435,6 +505,7 @@ public class EditObligationController {
                 obligation.addInvestor(idInvestor, Long.valueOf(souscripteur.getCapital()));
             }
         }
+        System.out.println(cessions + " cessions to process.");
         for (TupleStringMapMap cession : cessions) {
             if (cession.getDate() != null && !cession.getVendeurs().isEmpty() && !cession.getAcheteurs().isEmpty()) {
                 Map<Integer, Long> vendeurs = new HashMap<>();
@@ -459,7 +530,7 @@ public class EditObligationController {
                 obligation.addReplacement(replacement);
             }
         }
-
+        ObligationInteractor.DeleteObligation(obligation.getId());
         ObligationInteractor.SaveObligation(obligation);
     }
 

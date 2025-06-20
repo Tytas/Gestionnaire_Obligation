@@ -5,9 +5,10 @@ import java.util.HashMap;
 
 
 public class Replacement {
+    
+    private String date;
     private Map<Integer, Long> investorsSalersId;
     private Map<Integer, Long> investorsBuyersId;
-    private String date;
 
     public Replacement() {
         this.investorsSalersId = new HashMap<>();
@@ -16,9 +17,9 @@ public class Replacement {
     }
 
     public Replacement(String date, Map<Integer, Long> investorsSalersId, Map<Integer, Long> investorsBuyersId) {
+        this.date = date;
         this.investorsSalersId = investorsSalersId;
         this.investorsBuyersId = investorsBuyersId;
-        this.date = date;
     }
 
     public Map<Integer, Long> getInvestorsSalersId() {

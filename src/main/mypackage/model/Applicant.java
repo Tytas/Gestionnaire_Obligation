@@ -26,6 +26,7 @@ public class Applicant {
     private String fiscalcountryBoss;
     private String taxIdNumberBoss;
     private String roleBoss;
+    
     private String IBAN;
     private String BIC;
     private String bankName;

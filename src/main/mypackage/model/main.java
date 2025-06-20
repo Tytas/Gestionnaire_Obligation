@@ -14,6 +14,7 @@ class Main {
         ArrayList<String> safetiesExample = new ArrayList<>();
         safetiesExample.add("Safety 1");
         safetiesExample.add("Safety 2");
+        Map<String, Integer> depreciationsExample = Map.of("1", 10000000, "2", 5000000);
         Obligation oblig = new Obligation(1,
                                         new SimpleStringProperty("ZQSD"),
                                         false,
@@ -25,6 +26,7 @@ class Main {
                                         "0",
                                         new String[]{"Non", "", ""},
                                         safetiesExample,
+                                        depreciationsExample,
                                         1);
         String[] address = {"1", "rue de la Paix", "95000", "Paris", "France", ""};
         Applicant applicant = new Applicant(1,
