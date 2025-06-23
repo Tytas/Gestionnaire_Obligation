@@ -1,9 +1,9 @@
 {
-  "id" : 3,
-  "name" : "lklklklk",
-  "convertible" : true,
+  "id" : 5,
+  "name" : "test123",
+  "convertible" : false,
   "capital" : 1,
-  "startDate" : "2025-06-28",
+  "startDate" : "2025-05-29",
   "durationMonths" : 1,
   "rate" : [ 0, 0 ],
   "interestBase" : "Jour Réel/365",
@@ -12,8 +12,9 @@
   "safeties" : [ ],
   "depreciations" : { },
   "investors" : {
-    "1" : 58
+    "1" : 0,
+    "2" : 123
   },
   "replacements" : [ ],
-  "applicantId" : 2
+  "applicantId" : 3
 }

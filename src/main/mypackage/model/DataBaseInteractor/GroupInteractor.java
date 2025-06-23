@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -51,6 +53,39 @@ public class GroupInteractor {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public static ArrayList<Integer> GetAllGroupsId(){
+        File[] ListGroupFiles = new File("data/groups/").listFiles(File::isDirectory);
+        ArrayList<Integer> ListGroupId = new ArrayList<>();
+        for (File file : ListGroupFiles) {
+            try {
+                ListGroupId.add(Integer.parseInt(file.getName()));
+            } catch (NumberFormatException e) {
+                // ignorer les dossiers qui ne sont pas des nombres
+            }
+        }
+        return ListGroupId;
+    }
+
+    public static int GetGroupByName(String name) {
+        ArrayList<Integer> ids = GetAllGroupsId();
+        for (int id : ids) {
+            Group group = GetGroup(id);
+            if (group != null && group.getName().equals(name)) {
+                return id;
+            }
+        }
+        return -1; // Retourne -1 si aucun groupe trouvé avec ce nom
+    }
+
+    public static int generateNewId() {
+        ArrayList<Integer> ids = GetAllGroupsId();
+        if (ids.isEmpty()) {
+            return 1; // Si aucun groupe n'existe, commencer à 1
+        } else {
+            return ids.stream().max(Integer::compareTo).orElse(0) + 1; // Retourner le plus grand ID + 1
         }
     }
 }

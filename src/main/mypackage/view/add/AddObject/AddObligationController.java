@@ -12,6 +12,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ListView;
@@ -67,6 +68,18 @@ public class AddObligationController {
     private TextField TauxProrogationField; 
     @FXML
     private TextField DureeProrogationField; 
+
+    @FXML private Label nomErreurField;
+    @FXML private Label capitalErreurField;
+    @FXML private Label tauxInFineErreurField;
+    @FXML private Label tauxTempErreurField;
+    @FXML private Label baseCalculErreurComboBox;
+    @FXML private Label periodiciteErreurComboBox;
+    @FXML private Label dateDebutErreurField;
+    @FXML private Label dureeErreurField;
+    @FXML private Label tauxProrogationErreurField;
+    @FXML private Label dureeProrogationErreurField;
+    @FXML private Label emetteurErreurLabel;
 
     @FXML
     private ListView<TupleStringLongBoolean> souscripteurListView;
@@ -272,61 +285,151 @@ public class AddObligationController {
         });
 
         validerButton.setOnAction(event -> {
+            boolean hasError = false;
+
             String nom = nomField.getText();
+            if (nom.isEmpty()) {
+                showError(nomErreurField, "Le nom est requis");
+                hasError = true;
+            } else {
+                hideError(nomErreurField);
+            }
+
             String capitalString = capitalField.getText();
-            String dureeString = dureeField.getText();
-            Boolean isConvertible = false;
-            int[] taux = {0, 0}; // [In Fine, mensuelle]
             Long capital = null;
-            Integer duree = null;
-            String baseCalcul = baseCalculComboBox.getValue();
-            String periodicite = periodiciteComboBox.getValue();
-            Boolean isProrogation = false;
-            String dateDebutString = null;
-            if(dateDebutField.getValue() != null){
-                dateDebutString = dateDebutField.getValue().toString();
-            }
-            String emetteur = this.getEmetteursListView().getSelectionModel().getSelectedItem();
-
-            RadioButton selectedType = (RadioButton) convertible.getSelectedToggle();
-            if (selectedType != null && "OCA".equals(selectedType.getText())) {
-                isConvertible = true;
-                System.out.println("OCA selected");
-            }
-            RadioButton selectedProrogation = (RadioButton) prorogation.getSelectedToggle();
-            if (selectedProrogation != null && selectedProrogation == prorogationOui) {
-                isProrogation = true;
-                System.out.println("prorogationOui selected");
-            }
-
-            if (capitalString != null && !capitalString.isEmpty()) {
+            if (capitalString == null || capitalString.isEmpty()) {
+                showError(capitalErreurField, "Le capital est requis");
+                hasError = true;
+            } else {
                 try {
                     capital = Long.parseLong(capitalString);
+                    hideError(capitalErreurField);
                 } catch (NumberFormatException e) {
-                    System.out.println("Capital must be a number");
-                    return;
+                    showError(capitalErreurField, "Le capital doit être un nombre");
+                    hasError = true;
                 }
             }
-            if (dureeString != null && !dureeString.isEmpty()) {
+
+            String tauxTempString = taux_TEMP.getText();
+            int tauxTemp = 0;
+            if (tauxTempString == null || tauxTempString.isEmpty()) {
+                showError(tauxTempErreurField, "Le taux TEMP est requis");
+                hasError = true;
+            } else {
+                try {
+                    tauxTemp = Integer.parseInt(tauxTempString);
+                    if (tauxTemp < 0 || tauxTemp > 100) {
+                        showError(tauxTempErreurField, "Le taux TEMP doit être un pourcentage entre 0 et 100");
+                        hasError = true;
+                    }
+                    hideError(tauxInFineErreurField);
+                } catch (NumberFormatException e) {
+                    showError(tauxInFineErreurField, "Le taux IN FINE doit être un pourcentage");
+                    hasError = true;
+                }
+            }
+
+            String tauxInFineString = taux_INFINE.getText();
+            int tauxInFine = 0;
+            if (tauxInFineString == null || tauxInFineString.isEmpty()) {
+                showError(tauxInFineErreurField, "Le taux IN FINE est requis");
+                hasError = true;
+            } else {
+                try {
+                    tauxInFine = Integer.parseInt(tauxInFineString);
+                    if (tauxInFine < 0 || tauxInFine > 100) {
+                        showError(tauxInFineErreurField, "Le taux IN FINE doit être un pourcentage entre 0 et 100");
+                        hasError = true;
+                    }
+                    hideError(tauxInFineErreurField);
+                } catch (NumberFormatException e) {
+                    showError(tauxInFineErreurField, "Le taux IN FINE doit être un pourcentage");
+                    hasError = true;
+                }
+            }
+
+            String dureeString = dureeField.getText();
+            Integer duree = null;
+            if (dureeString == null || dureeString.isEmpty()) {
+                showError(dureeErreurField, "Durée requise");
+                hasError = true;
+            } else {
                 try {
                     duree = Integer.parseInt(dureeString);
+                    hideError(dureeErreurField);
                 } catch (NumberFormatException e) {
-                    System.out.println("Duration must be a number");
-                    return;
+                    showError(dureeErreurField, "Durée invalide");
+                    hasError = true;
                 }
             }
-            
 
-            if (!nom.isEmpty() && capital != null && taux != null && isConvertible != null && selectedType != null
-                && !baseCalcul.isEmpty() && !periodicite.isEmpty() && isProrogation != null && duree != null) {
-                if((isProrogation == true && !TauxProrogationField.getText().trim().isEmpty() && !DureeProrogationField.getText().trim().isEmpty()) 
-                    || isProrogation == false) {
-                    CreateObligation(nom, capital, taux, isConvertible, baseCalcul, periodicite, isProrogation,
-                                     TauxProrogationField.getText(), DureeProrogationField.getText(), duree, dateDebutString,
-                                     allSouscripteurs, emetteur, suretes, amortissements);
-                    result = true;
-                    ((Stage) validerButton.getScene().getWindow()).close();
+            String baseCalcul = baseCalculComboBox.getValue();
+            if (baseCalcul == null || baseCalcul.isEmpty()) {
+                showError(baseCalculErreurComboBox, "Base requise");
+                hasError = true;
+            } else {
+                hideError(baseCalculErreurComboBox);
+            }
+
+            String periodicite = periodiciteComboBox.getValue();
+            if (periodicite == null || periodicite.isEmpty()) {
+                showError(periodiciteErreurComboBox, "Périodicité requise");
+                hasError = true;
+            } else {
+                hideError(periodiciteErreurComboBox);
+            }
+
+            String dateDebutString = null;
+            if (dateDebutField.getValue() == null) {
+                showError(dateDebutErreurField, "Date requise");
+                hasError = true;
+            } else {
+                dateDebutString = dateDebutField.getValue().toString();
+                hideError(dateDebutErreurField);
+            }
+
+            RadioButton selectedType = (RadioButton) convertible.getSelectedToggle();
+            boolean isConvertible = selectedType != null && "OCA".equals(selectedType.getText());
+
+            Toggle selectedProrogation = prorogation.getSelectedToggle();
+            boolean isProrogation = selectedProrogation != null &&
+                                ((RadioButton) selectedProrogation).getText().equalsIgnoreCase("Oui");
+
+            System.out.println("isProrogation: " + isProrogation);
+
+            if (isProrogation) {
+                if (TauxProrogationField.getText().trim().isEmpty()) {
+                    showError(tauxProrogationErreurField, "Taux requis");
+                    hasError = true;
+                } else {
+                    hideError(tauxProrogationErreurField);
                 }
+
+                if (DureeProrogationField.getText().trim().isEmpty()) {
+                    showError(dureeProrogationErreurField, "Durée requise");
+                    hasError = true;
+                } else {
+                    hideError(dureeProrogationErreurField);
+                }
+            } else {
+                hideError(tauxProrogationErreurField);
+                hideError(dureeProrogationErreurField);
+            }
+
+            String emetteur = this.getEmetteursListView().getSelectionModel().getSelectedItem();
+            if (emetteur == null || emetteur.isEmpty()) {
+                showError(emetteurErreurLabel, "Émetteur requis");
+                hasError = true;
+            } else {
+                hideError(emetteurErreurLabel);
+            }
+
+            if (!hasError) {
+                CreateObligation(nom, capital, new int[]{tauxInFine, tauxTemp}, isConvertible, baseCalcul, periodicite, isProrogation,
+                    TauxProrogationField.getText(), DureeProrogationField.getText(), duree, dateDebutString,
+                    allSouscripteurs, emetteur, suretes, amortissements);
+                result = true;
+                ((Stage) validerButton.getScene().getWindow()).close();
             }
         });
 
@@ -339,6 +442,17 @@ public class AddObligationController {
     public boolean getResult() {
         return result;
     }
+
+    private void showError(Label label, String message) {
+        label.setText(message);
+        label.setVisible(true);
+        label.setStyle("-fx-text-fill: red; -fx-font-size: 10px;");
+    }
+
+    private void hideError(Label label) {
+        label.setVisible(false);
+    }
+
 
     private void CreateObligation(String nom, Long capital, int[] taux, Boolean isConvertible, 
                                   String baseCalcul, String periodicite, Boolean isProrogation, 
@@ -365,7 +479,7 @@ public class AddObligationController {
                                                 new String[]{tauxProrogation, dureeProrogation}, new ArrayList<>(suretes), amortissementsMap, idApplicant);
         for (TupleStringLongBoolean souscripteur : souscripteursList) {
             System.out.println("Adding investor: " + souscripteur.getName());
-            if (souscripteur.getName() != null && !souscripteur.getName().isEmpty()) {
+            if (souscripteur.getName() != null && !souscripteur.getName().isEmpty() && souscripteur.getSelectionne()) {
                 System.out.println("Investor name: " + souscripteur.getName());
                 int idInvestor = InvestorInteractor.GetInvestorByName(souscripteur.getName());
                 if (idInvestor == -1) {
@@ -376,5 +490,21 @@ public class AddObligationController {
             }
         }
         ObligationInteractor.SaveObligation(obligation);
+        Applicant newApplicant = ApplicantInteractor.GetApplicant(idApplicant);
+        newApplicant.addObligation(obligation.getId());
+        ApplicantInteractor.DeleteApplicant(idApplicant);
+        ApplicantInteractor.SaveApplicant(newApplicant);
+
+        for (TupleStringLongBoolean souscripteur : souscripteursList) {
+            if( souscripteur.getSelectionne()){
+                int idInvestor = InvestorInteractor.GetInvestorByName(souscripteur.getName());
+                if (idInvestor != -1) {
+                    Investor newInvestor = InvestorInteractor.GetInvestor(idInvestor);
+                    newInvestor.addObligation(obligation.getId());
+                    InvestorInteractor.DeleteInvestor(idInvestor);
+                    InvestorInteractor.SaveInvestor(newInvestor);
+                }
+            }
+        }
     }
 }

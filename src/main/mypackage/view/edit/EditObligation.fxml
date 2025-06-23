@@ -40,25 +40,15 @@
   </rowConstraints>
    <children>
       <Label text="Nom" />
-      <TextField fx:id="nomField" prefHeight="8.0" prefWidth="300.0" GridPane.columnIndex="1">
-         <GridPane.margin>
-            <Insets right="15.0" />
-         </GridPane.margin>
-      </TextField>
       <Label text="Capital" GridPane.columnIndex="2" />
       <Label prefWidth="76.0" text="Base de Calcul" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="2" />
       <Label prefHeight="41.0" prefWidth="76.0" text="Périodicité du coupon" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="1" />
       <Label text="Prorogation" GridPane.rowIndex="7" />
       <Label text="Durée Prorogation" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-      <TextField fx:id="capitalField" prefHeight="8.0" prefWidth="300.0" GridPane.columnIndex="3">
-         <GridPane.margin>
-            <Insets right="15.0" />
-         </GridPane.margin>
-      </TextField>
       <Label text="OS/OCA" GridPane.rowIndex="1" />
       <Label text="Date Début" GridPane.rowIndex="5" />
       <Label text="Durée" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-      <Label text="Taux PERIODIQUE" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <Label text="Taux TEMP" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="10">
          <children>
             <Button fx:id="annulerButton" mnemonicParsing="false" text="Annuler">
@@ -85,17 +75,6 @@
             <RadioButton mnemonicParsing="false" text="OCA" toggleGroup="$convertible" />
          </children>
       </HBox>
-      <DatePicker fx:id="dateDebutField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      <TextField fx:id="dureeField" GridPane.columnIndex="3" GridPane.rowIndex="5">
-         <GridPane.margin>
-            <Insets left="20.0" right="150.0" />
-         </GridPane.margin>
-      </TextField>
-      <ComboBox fx:id="periodiciteComboBox" prefHeight="26.0" prefWidth="180.0" promptText="Choisir une périodicité" GridPane.columnIndex="5" GridPane.rowIndex="1">
-         <GridPane.margin>
-            <Insets left="20.0" />
-         </GridPane.margin>
-      </ComboBox>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
          <children>
             <RadioButton fx:id="prorogationOui" mnemonicParsing="false" selected="true" text="oui">
@@ -109,11 +88,6 @@
             <RadioButton fx:id="prorogationNon" mnemonicParsing="false" text="non" toggleGroup="$prorogation" />
          </children>
       </HBox>
-      <TextField fx:id="DureeProrogationField" GridPane.columnIndex="3" GridPane.rowIndex="7">
-         <GridPane.margin>
-            <Insets left="20.0" right="150.0" />
-         </GridPane.margin>
-      </TextField>
       <Label text="Taux Prorogation" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="7" />
       <Label text="Sureté" GridPane.columnIndex="2" GridPane.rowIndex="3" />
       <Label text="Souscripteurs" GridPane.rowIndex="9">
@@ -121,23 +95,11 @@
             <Insets />
          </GridPane.margin></Label>
       <Label text="Emetteur" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-      <TextField fx:id="TauxProrogationField" prefHeight="8.0" prefWidth="300.0" GridPane.columnIndex="5" GridPane.rowIndex="7">
-         <GridPane.margin>
-            <Insets left="20.0" right="100.0" />
-         </GridPane.margin>
-      </TextField>
       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" />
       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="8" />
-      <TextField fx:id="taux_INFINE" prefHeight="8.0" prefWidth="300.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
       <Label text="Taux IN FINE" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-      <TextField fx:id="taux_TEMP" prefHeight="8.0" prefWidth="300.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
       <Label text="Amortissement" GridPane.rowIndex="3" />
-      <ComboBox fx:id="baseCalculComboBox" prefHeight="26.0" prefWidth="175.0" promptText="Choisir la base de calcul" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets left="20.0" />
-         </GridPane.margin>
-      </ComboBox>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="9">
          <children>
             <TextField fx:id="souscripteurSearchField" />
@@ -148,6 +110,7 @@
          <children>
             <TextField fx:id="emetteurSearchField" />
             <ListView fx:id="emetteurListView" prefHeight="200.0" prefWidth="200.0" />
+            <Label fx:id="emetteurErreurLabel" text="Label" visible="false" />
          </children>
       </VBox>
       <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -172,5 +135,65 @@
             <Insets top="15.0" />
          </GridPane.margin>
       </HBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+         <children>
+            <TextField fx:id="nomField" prefHeight="8.0" prefWidth="300.0" />
+            <Label fx:id="nomErreurField" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
+         <children>
+            <TextField fx:id="capitalField" prefHeight="8.0" prefWidth="300.0" />
+            <Label fx:id="capitalErreurField" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+         <children>
+            <TextField fx:id="taux_TEMP" prefHeight="8.0" prefWidth="300.0" />
+            <Label fx:id="tauxTempErreurField" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
+         <children>
+            <ComboBox fx:id="periodiciteComboBox" prefHeight="26.0" prefWidth="180.0" promptText="Choisir une périodicité" />
+            <Label fx:id="periodiciteErreurComboBox" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <ComboBox fx:id="baseCalculComboBox" prefHeight="26.0" prefWidth="175.0" promptText="Choisir la base de calcul" />
+            <Label fx:id="baseCalculErreurComboBox" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+         <children>
+            <TextField fx:id="taux_INFINE" prefHeight="8.0" prefWidth="300.0" />
+            <Label fx:id="tauxInFineErreurField" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <children>
+            <DatePicker fx:id="dateDebutField" />
+            <Label fx:id="dateDebutErreurField" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+         <children>
+            <TextField fx:id="dureeField" />
+            <Label fx:id="dureeErreurField" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
+         <children>
+            <TextField fx:id="DureeProrogationField" />
+            <Label fx:id="dureeProrogationErreurField" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" GridPane.rowIndex="7">
+         <children>
+            <TextField fx:id="TauxProrogationField" prefHeight="8.0" prefWidth="300.0" />
+            <Label fx:id="tauxProrogationErreurField" text="Label" visible="false" />
+         </children>
+      </VBox>
    </children>
 </GridPane>

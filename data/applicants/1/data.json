@@ -4,10 +4,10 @@
   "country" : "France",
   "registerNumber" : 123456789,
   "dateOfCreation" : "2023-10-01",
-  "typeOfBuisness" : "Entreprise",
+  "typeOfBusiness" : "Entreprise",
   "legalStatus" : "SARL",
   "address" : [ "1", "rue de la Paix", "95000", "Paris", "France", "" ],
-  "civilityBoss" : "M",
+  "civilityBoss" : "M.",
   "nameBoss" : "Dupont",
   "firstNameBoss" : "Jean",
   "nationalityBoss" : "FR",
@@ -22,7 +22,7 @@
   "roleBoss" : "Directeur",
   "bankName" : "LCL",
   "groupId" : 1,
-  "obligations" : [ 1 ],
+  "obligations" : [ 1, 5, 3, 5 ],
   "iban" : "FR7612345678901234567890123",
   "bic" : "CRLIFRPP"
 }

@@ -28,6 +28,9 @@ public class Group {
     public String getName() {
         return name.get();
     }
+    public SimpleStringProperty nameProperty() {
+        return name;
+    }
     public String getBossName() {
         return BossName;
     }
@@ -41,8 +44,8 @@ public class Group {
     public void setId(int id) {
         this.id = id;
     }
-    public void setName(SimpleStringProperty name) {
-        this.name = name;
+    public void setName(String name) {
+        this.name.set(name);
     }
     public void setBossName(String bossName) {
         this.BossName = bossName;

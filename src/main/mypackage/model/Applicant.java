@@ -9,7 +9,7 @@ public class Applicant {
     private String country;
     private int registerNumber;
     private String dateOfCreation;
-    private String typeOfBuisness;
+    private String typeOfBusiness;
     private String legalStatus;
     private String[] address = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
 
@@ -38,7 +38,7 @@ public class Applicant {
         this.country = "";
         this.registerNumber = 0;
         this.dateOfCreation = "";
-        this.typeOfBuisness = "";
+        this.typeOfBusiness = "";
         this.legalStatus = "";
         for (int i = 0; i < address.length; i++) {
             address[i] = "";
@@ -66,7 +66,7 @@ public class Applicant {
     }
 
     public Applicant(int id, SimpleStringProperty name, String country, int registerNumber, String dateOfCreation,
-                    String typeOfBuisness, String legalStatus, String[] address,
+                    String typeOfBusiness, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss, String languageBoss,
                     String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
@@ -76,7 +76,7 @@ public class Applicant {
         this.country = country;
         this.registerNumber = registerNumber;
         this.dateOfCreation = dateOfCreation;
-        this.typeOfBuisness = typeOfBuisness;
+        this.typeOfBusiness = typeOfBusiness;
         this.legalStatus = legalStatus;
         this.address = address;
 
@@ -108,7 +108,7 @@ public class Applicant {
     public SimpleStringProperty nameProperty() {
         return name;
     }
-    public String getcountry() {
+    public String getCountry() {
         return country;
     }
     public int getRegisterNumber() {
@@ -117,8 +117,8 @@ public class Applicant {
     public String getDateOfCreation() {
         return dateOfCreation;
     }
-    public String getTypeOfBuisness() {
-        return typeOfBuisness;
+    public String getTypeOfBusiness() {
+        return typeOfBusiness;
     }
     public String getLegalStatus() {
         return legalStatus;
@@ -144,7 +144,7 @@ public class Applicant {
     public String getPlaceOfBirthBoss() {
         return placeOfBirthBoss;
     }
-    public String getlanguageBoss() {
+    public String getLanguageBoss() {
         return languageBoss;
     }
     public String getEmailBoss() {
@@ -196,8 +196,8 @@ public class Applicant {
     public void setDateOfCreation(String dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
-    public void setTypeOfBuisness(String typeOfBuisness) {
-        this.typeOfBuisness = typeOfBuisness;
+    public void setTypeOfBusiness(String typeOfBusiness) {
+        this.typeOfBusiness = typeOfBusiness;
     }
     public void setLegalStatus(String legalStatus) {
         this.legalStatus = legalStatus;

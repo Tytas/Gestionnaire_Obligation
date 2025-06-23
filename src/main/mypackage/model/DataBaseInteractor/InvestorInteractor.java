@@ -99,6 +99,15 @@ public class InvestorInteractor {
             return false;
         }
     }
+
+    public static Boolean SaveInvestor(Investor investor){
+        if (investor instanceof InvestorNP) {
+            return SaveInvestorNP((InvestorNP) investor);
+        } else if (investor instanceof InvestorLP) {
+            return SaveInvestorLP((InvestorLP) investor);
+        }
+        return false; // Si l'investisseur n'est ni NP ni LP
+    }
     
     public static Boolean DeleteInvestorNP(int id){
         String baseDir = "data/investors/NP/";
@@ -151,6 +160,18 @@ public class InvestorInteractor {
             return false;
         }
         return false;
+    }
+
+    public static Boolean DeleteInvestor(int id){
+        InvestorNP investorNP = GetInvestorNP(id);
+        if (investorNP != null) {
+            return DeleteInvestorNP(id);
+        }
+        InvestorLP investorLP = GetInvestorLP(id);
+        if (investorLP != null) {
+            return DeleteInvestorLP(id);
+        }
+        return false; // Si l'investisseur n'est ni NP ni LP
     }
 
     public static ArrayList<Integer> GetAllInvestorId(){

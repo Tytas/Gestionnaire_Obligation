@@ -1,6 +1,8 @@
 {
   "id" : 1,
   "name" : "Dupond",
+  "familyId" : 1,
+  "obligations" : [ 1, 5, 3, 5 ],
   "civility" : "M",
   "firstName" : "Jean",
   "nationality" : "FR",
@@ -10,9 +12,7 @@
   "phoneNumber" : "0123456789",
   "address" : [ "1", "rue de la Paix", "95000", "Paris", "France", "" ],
   "bankName" : "LCL",
-  "familyId" : 1,
-  "obligations" : [ 1 ],
+  "language" : "Français",
   "iban" : "FR7612345678901234567890123",
-  "bic" : "CRLIFRPP",
-  "language" : "Français"
+  "bic" : "CRLIFRPP"
 }

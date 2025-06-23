@@ -30,6 +30,17 @@ public class ObligationInteractor {
         return null;
     }
 
+    public static Obligation GetObligationByName(String name){
+        ArrayList<Integer> ids = GetAllObligationsId();
+        for (Integer id : ids) {
+            Obligation oblig = GetObligation(id);
+            if (oblig != null && oblig.getName().equals(name)) {
+                return oblig;
+            }
+        }
+        return null; // Retourne null si aucune obligation avec ce nom n'est trouvée
+    }
+
     public static ArrayList<Integer> GetAllObligationsId(){
         File[] ListObligFiles = new File("data/obligations/").listFiles(File::isDirectory);
         ArrayList<Integer> ListObligId = new ArrayList<>();
