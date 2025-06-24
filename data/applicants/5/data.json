@@ -1,7 +1,6 @@
 {
   "id" : 5,
   "name" : "ffrfef",
-  "country" : "USA",
   "registerNumber" : 42,
   "dateOfCreation" : "2025-06-06",
   "typeOfBusiness" : "42",
@@ -13,7 +12,6 @@
   "nationalityBoss" : "Américaine",
   "dateOfBirthBoss" : "2025-06-16",
   "placeOfBirthBoss" : "42",
-  "languageBoss" : "Anglais",
   "emailBoss" : "42@gmail.com",
   "phoneNumberBoss" : "42",
   "addressBoss" : [ "424", "42", "42", "42", "42", "424" ],

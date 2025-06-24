@@ -6,8 +6,6 @@ import javafx.beans.property.SimpleStringProperty;
 public class Family {
     private int id;
     private SimpleStringProperty name;
-
-    private String country;
     private int registerNumber;
     private String dateOfCreation;
     private String typeOfBuisness;
@@ -20,7 +18,6 @@ public class Family {
     private String nationalityBoss;
     private String dateOfBirthBoss;
     private String placeOfBirthBoss;
-    private String languageBoss;
     private String emailBoss;
     private String phoneNumberBoss;
     private String[] addressBoss = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
@@ -39,7 +36,6 @@ public class Family {
 
     public Family() {
         this.name = new SimpleStringProperty("");
-        this.country = "";
         this.registerNumber = 0;
         this.dateOfCreation = "";
         this.typeOfBuisness = "";
@@ -53,7 +49,6 @@ public class Family {
         this.nationalityBoss = "";
         this.dateOfBirthBoss = "";
         this.placeOfBirthBoss = "";
-        this.languageBoss = "";
         this.emailBoss = "";
         this.phoneNumberBoss = "";
         for (int i = 0; i < addressBoss.length; i++) {
@@ -69,18 +64,16 @@ public class Family {
         this.nbAprooval = "";
         this.alertMail = "";
     }
-    public Family(int id, SimpleStringProperty name,
-                  String country, int registerNumber, String dateOfCreation,
+    public Family(int id, SimpleStringProperty name, int registerNumber, String dateOfCreation,
                   String typeOfBuisness, String legalStatus, String[] address,
                   String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss,
                   String nationalityBoss, String dateOfBirthBoss, String placeOfBirthBoss,
-                  String languageBoss, String emailBoss, String phoneNumberBoss,
+                  String emailBoss, String phoneNumberBoss,
                   String[] addressBoss, String fiscalcountryBoss, String taxIdNumberBoss,
                   String roleBoss, String IBAN, String BIC, String bankName, String familyType,
                   String nbAprooval, String alertMail) {
         this.id = id;
         this.name = name;
-        this.country = country;
         this.registerNumber = registerNumber;
         this.dateOfCreation = dateOfCreation;
         this.typeOfBuisness = typeOfBuisness;
@@ -92,7 +85,6 @@ public class Family {
         this.nationalityBoss = nationalityBoss;
         this.dateOfBirthBoss = dateOfBirthBoss;
         this.placeOfBirthBoss = placeOfBirthBoss;
-        this.languageBoss = languageBoss;
         this.emailBoss = emailBoss;
         this.phoneNumberBoss = phoneNumberBoss;
         this.addressBoss = addressBoss;
@@ -115,9 +107,6 @@ public class Family {
     }
     public SimpleStringProperty nameProperty() {
         return name;
-    }
-    public String getCountry() {
-        return country;
     }
     public int getRegisterNumber() {
         return registerNumber;
@@ -154,9 +143,6 @@ public class Family {
     }
     public String getPlaceOfBirthBoss() {
         return placeOfBirthBoss;
-    }
-    public String getlanguageBoss(){
-        return languageBoss;
     }
     public String getEmailBoss(){
         return emailBoss;
@@ -206,9 +192,6 @@ public class Family {
     public void setName(String name) {
         this.name.set(name);
     }
-    public void setcountry(String country) {
-        this.country = country;
-    }
     public void setRegisterNumber(int registerNumber) {
         this.registerNumber = registerNumber;
     }
@@ -241,9 +224,6 @@ public class Family {
     }
     public void setPlaceOfBirthBoss(String placeOfBirthBoss) {
         this.placeOfBirthBoss = placeOfBirthBoss;
-    }
-    public void setlanguageBoss(String languageBoss) {
-        this.languageBoss = languageBoss;
     }
     public void setEmailBoss(String emailBoss) {
         this.emailBoss = emailBoss;

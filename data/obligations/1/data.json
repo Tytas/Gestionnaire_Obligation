@@ -13,7 +13,8 @@
   "depreciations" : { },
   "investors" : {
     "1" : 10000000000,
-    "2" : 5000000000
+    "2" : 10,
+    "4" : 10
   },
   "replacements" : [ ],
   "applicantId" : 1

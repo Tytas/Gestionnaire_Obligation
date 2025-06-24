@@ -93,4 +93,18 @@ public class FamilyInteractor {
         }
         return false;
     }
+
+    public static int GetFamilyIdByName(String name) {
+        File[] ListFamFiles = new File("data/families/").listFiles(File::isDirectory);
+        for (File file : ListFamFiles) {
+            if (file.getName().equals(name)) {
+                try {
+                    return Integer.parseInt(file.getName());
+                } catch (NumberFormatException e) {
+                    // ignorer les dossiers qui ne sont pas des nombres
+                }
+            }
+        }
+        return -1; // Retourne -1 si aucun dossier ne correspond au nom
+    }
 }

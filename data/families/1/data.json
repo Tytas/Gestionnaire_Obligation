@@ -1,7 +1,6 @@
 {
   "id" : 1,
   "name" : "Famille Dupont",
-  "country" : "France",
   "registerNumber" : 123456789,
   "dateOfCreation" : "2023-10-01",
   "typeOfBuisness" : "Entreprise",
@@ -13,7 +12,6 @@
   "nationalityBoss" : "FR",
   "dateOfBirthBoss" : "1980-01-01",
   "placeOfBirthBoss" : "Paris",
-  "languageBoss" : "Français",
   "emailBoss" : "dupont.jean@gmail.com",
   "phoneNumberBoss" : "0123456789",
   "addressBoss" : [ "1", "rue de la Paix", "95000", "Paris", "France", "" ],

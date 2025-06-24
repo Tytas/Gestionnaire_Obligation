@@ -45,7 +45,6 @@
   </rowConstraints>
   <children>
     <Label text="Nom" />
-    <Label text="Pays" GridPane.columnIndex="2" />
     <Label text="Ville" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="4" />
     <Label text="Rue" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
     <Label text="Date de création" GridPane.rowIndex="1" />
@@ -130,7 +129,6 @@
     <Label text="Nationnalité" GridPane.columnIndex="4" GridPane.rowIndex="7" />
     <Label text="Date de naissance" GridPane.columnIndex="4" GridPane.rowIndex="6" />
     <Label text="Lieu de naissance" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="7" />
-    <Label text="Langue" GridPane.columnIndex="2" GridPane.rowIndex="7" />
     <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
       <children>
         <Label nodeOrientation="LEFT_TO_RIGHT" text="Email" textAlignment="CENTER" wrapText="true">
@@ -229,12 +227,6 @@
         <Label fx:id="nomErreurField" text="Label" visible="false" />
       </children>
     </VBox>
-    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
-      <children>
-        <ComboBox fx:id="paysComboBox" prefWidth="150.0" />
-        <Label fx:id="paysErreurComboBox" text="Label" visible="false" />
-      </children>
-    </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5">
       <children>
         <TextField fx:id="numRegistreField" />
@@ -305,12 +297,6 @@
       <children>
         <TextField fx:id="lieuNaissanceDirigeantField" />
         <Label fx:id="lieuNaissanceDirigeantErreurField" text="Label" visible="false" />
-      </children>
-    </VBox>
-    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
-      <children>
-        <ComboBox fx:id="langueDirigeantComboBox" prefWidth="150.0" />
-        <Label fx:id="langueDirigeantErreurComboBox" text="Label" visible="false" />
       </children>
     </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="9">

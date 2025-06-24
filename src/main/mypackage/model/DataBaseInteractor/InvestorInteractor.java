@@ -217,4 +217,13 @@ public class InvestorInteractor {
         }
         return -1; // Si l'investisseur n'est pas trouvé
     }
+
+    public static int generateNewId() {
+        ArrayList<Integer> ids = GetAllInvestorId();
+        if (ids.isEmpty()) {
+            return 1; // Si aucun investisseur n'existe, commencer à 1
+        } else {
+            return ids.stream().max(Integer::compareTo).orElse(0) + 1; // Retourner le plus grand ID + 1
+        }
+    }
 }

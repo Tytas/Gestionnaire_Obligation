@@ -8,7 +8,6 @@ public class InvestorNP extends Investor {
     private String nationality;
     private String dateOfBirth;
     private String placeOfBirth;
-    private String Language;
     private String email;
     private String phoneNumber;
     private String[] address = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
@@ -23,7 +22,6 @@ public class InvestorNP extends Investor {
         this.nationality = "";
         this.dateOfBirth = "";
         this.placeOfBirth = "";
-        this.Language = "";
         this.email = "";
         this.phoneNumber = "";
         for (int i = 0; i < address.length; i++) {
@@ -34,7 +32,7 @@ public class InvestorNP extends Investor {
         this.bankName = "";
     }
     public InvestorNP(int id, String civility, SimpleStringProperty name, String firstName,String nationality,
-                    String dateOfBirth, String placeOfBirth, String language, String email, String phoneNumber,
+                    String dateOfBirth, String placeOfBirth, String email, String phoneNumber,
                     String[] address, String IBAN, String BIC, String BankName, int familyId) {
         super(id, name, familyId);
         this.civility = civility;
@@ -42,7 +40,6 @@ public class InvestorNP extends Investor {
         this.nationality = nationality;
         this.dateOfBirth = dateOfBirth;
         this.placeOfBirth = placeOfBirth;
-        this.Language = language;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
@@ -65,9 +62,6 @@ public class InvestorNP extends Investor {
     }
     public String getPlaceOfBirth() {
         return placeOfBirth;
-    }
-    public String getLanguage() {
-        return Language;
     }
     public String getEmail() {
         return email;
@@ -102,9 +96,6 @@ public class InvestorNP extends Investor {
     }
     public void setPlaceOfBirth(String placeOfBirth) {
         this.placeOfBirth = placeOfBirth;
-    }
-    public void setLanguage(String language) {
-        this.Language = language;
     }
     public void setEmail(String email) {
         this.email = email;

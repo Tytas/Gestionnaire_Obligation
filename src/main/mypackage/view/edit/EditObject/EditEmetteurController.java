@@ -37,8 +37,6 @@ public class EditEmetteurController {
     @FXML
     private TextField nomField;
     @FXML
-    private ComboBox<String> paysComboBox;
-    @FXML
     private TextField numRegistreField;
     @FXML
     private DatePicker dateCreationField;
@@ -73,8 +71,6 @@ public class EditEmetteurController {
     @FXML
     private TextField lieuNaissanceDirigeantField;
     @FXML
-    private ComboBox<String> langueDirigeantComboBox;
-    @FXML
     private TextField emailDirigeantField;
     @FXML
     private TextField telephoneDirigeantField;
@@ -106,7 +102,6 @@ public class EditEmetteurController {
     private TextField banqueField;
 
     @FXML private Label nomErreurField;
-    @FXML private Label paysErreurComboBox;
     @FXML private Label numRegistreErreurField;
     @FXML private Label dateCreationErreurField;
     @FXML private Label typeEntrepriseErreurField;
@@ -171,13 +166,12 @@ public class EditEmetteurController {
         // Constructor logic if needed
     }
 
-public void initData(Applicant emetteur) {
+    public void initData(Applicant emetteur) {
         this.currentEmetteur = emetteur;
         // Set default values for the fields if currentObligation is not null
         System.out.println("Initializing EditEmetteurController with current emetteur: " + currentEmetteur);
         if (currentEmetteur != null) {
             nomField.setText(currentEmetteur.getName());
-            paysComboBox.setValue(currentEmetteur.getCountry());
             numRegistreField.setText(String.valueOf(currentEmetteur.getRegisterNumber()));
             dateCreationField.setValue(LocalDate.parse(currentEmetteur.getDateOfCreation()));
             typeEntrepriseField.setText(currentEmetteur.getTypeOfBusiness());
@@ -202,7 +196,6 @@ public void initData(Applicant emetteur) {
             nationaliteDirigeantComboBox.setValue(currentEmetteur.getNationalityBoss());
             dateNaissanceDirigeantField.setValue(LocalDate.parse(currentEmetteur.getDateOfBirthBoss()));
             lieuNaissanceDirigeantField.setText(currentEmetteur.getPlaceOfBirthBoss());
-            langueDirigeantComboBox.setValue(currentEmetteur.getLanguageBoss());
             emailDirigeantField.setText(currentEmetteur.getEmailBoss());
             telephoneDirigeantField.setText(currentEmetteur.getPhoneNumberBoss());
             numeroAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[0]);
@@ -232,10 +225,8 @@ public void initData(Applicant emetteur) {
     
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
-        paysComboBox.setItems(FXCollections.observableArrayList("France", "USA", "Germany", "Spain"));
         formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SA", "SAS", "EURL"));
         nationaliteDirigeantComboBox.setItems(FXCollections.observableArrayList("Française", "Américaine", "Allemande", "Espagnole"));
-        langueDirigeantComboBox.setItems(FXCollections.observableArrayList("Français", "Anglais", "Allemand", "Espagnol"));
 
         nouveauGroupeButton.setOnAction(event -> {
             // Open a new window to create a new group
@@ -297,7 +288,6 @@ public void initData(Applicant emetteur) {
 
         validerButton.setOnAction(event -> {
             boolean nomOK = validateField(nomField, nomErreurField, "text");
-            boolean paysOK = validateField(paysComboBox, paysErreurComboBox, "");
             boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
             boolean typeEntrepriseOK = validateField(typeEntrepriseField, typeEntrepriseErreurField, "text");
             boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
@@ -317,7 +307,6 @@ public void initData(Applicant emetteur) {
             boolean nationaliteDirigeantOK = validateField(nationaliteDirigeantComboBox, nationaliteDirigeantErreurComboBox, "");
             boolean dateNaissanceDirigeantOK = validateField(dateNaissanceDirigeantField, dateNaissanceDirigeantErreurField, "");
             boolean lieuNaissanceDirigeantOK = validateField(lieuNaissanceDirigeantField, lieuNaissanceDirigeantErreurField, "text");
-            boolean langueDirigeantOK = validateField(langueDirigeantComboBox, langueDirigeantErreurComboBox, "");
             boolean emailDirigeantOK = validateField(emailDirigeantField, emailDirigeantErreurField, "email");
             boolean telephoneDirigeantOK = validateField(telephoneDirigeantField, telephoneDirigeantErreurField, "text");
 
@@ -337,10 +326,10 @@ public void initData(Applicant emetteur) {
 
             // Vérification globale
             boolean formulaireValide =
-                nomOK && paysOK && numRegistreOK && typeEntrepriseOK && formeJuridiqueOK &&
+                nomOK && numRegistreOK && typeEntrepriseOK && formeJuridiqueOK &&
                 numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK &&
                 sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
-                lieuNaissanceDirigeantOK && langueDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
+                lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
                 numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
                 paysAdresseDirigeantOK &&
                 fonctionDirigeantOK && residenceFiscaleDirigeantOK && numeroIdentificationDirigeantOK &&
@@ -354,7 +343,6 @@ public void initData(Applicant emetteur) {
 
                 EditApplicant(
                     new SimpleStringProperty(nomField.getText().trim()),
-                    paysComboBox.getValue(),
                     Integer.parseInt(numRegistreField.getText().trim()),
                     dateCreationField.getValue().toString(),
                     typeEntrepriseField.getText().trim(),
@@ -373,7 +361,6 @@ public void initData(Applicant emetteur) {
                     nationaliteDirigeantComboBox.getValue(),
                     dateNaissanceDirigeantField.getValue().toString(),
                     lieuNaissanceDirigeantField.getText().trim(),
-                    langueDirigeantComboBox.getValue(),
                     emailDirigeantField.getText().trim(),
                     telephoneDirigeantField.getText().trim(),
                     new String[]{
@@ -406,17 +393,17 @@ public void initData(Applicant emetteur) {
         });
     }
 
-    private void EditApplicant(SimpleStringProperty name, String country, int registerNumber, String dateOfCreation,
+    private void EditApplicant(SimpleStringProperty name, int registerNumber, String dateOfCreation,
                     String typeOfBusiness, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
-                    String dateOfBirthBoss, String placeOfBirthBoss, String languageBoss,
+                    String dateOfBirthBoss, String placeOfBirthBoss,
                     String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
                     String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int groupId) {
         int Id = currentEmetteur.getId();
-        Applicant applicant = new Applicant(Id, name, country, registerNumber, dateOfCreation,
+        Applicant applicant = new Applicant(Id, name, registerNumber, dateOfCreation,
                 typeOfBusiness, legalStatus, address,
                 civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
-                dateOfBirthBoss, placeOfBirthBoss, languageBoss,
+                dateOfBirthBoss, placeOfBirthBoss,
                 emailBoss, phoneNumberBoss, addressBoss, fiscalcountryBoss,
                 taxIdNumberBoss, roleBoss, IBAN, BIC, BankName, groupId);
         System.out.println("Creating applicant with the following details:");

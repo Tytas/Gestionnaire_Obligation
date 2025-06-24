@@ -6,7 +6,6 @@ import javafx.beans.property.SimpleStringProperty;
 public class Applicant {
     private int id;
     private SimpleStringProperty name;
-    private String country;
     private int registerNumber;
     private String dateOfCreation;
     private String typeOfBusiness;
@@ -19,7 +18,6 @@ public class Applicant {
     private String nationalityBoss;
     private String dateOfBirthBoss;
     private String placeOfBirthBoss;
-    private String languageBoss;
     private String emailBoss;
     private String phoneNumberBoss;
     private String[] addressBoss = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
@@ -34,8 +32,7 @@ public class Applicant {
     private ArrayList<Integer> obligations = new ArrayList<>();
 
     public Applicant() {
-        this.name = new SimpleStringProperty("");;
-        this.country = "";
+        this.name = new SimpleStringProperty("");
         this.registerNumber = 0;
         this.dateOfCreation = "";
         this.typeOfBusiness = "";
@@ -50,7 +47,6 @@ public class Applicant {
         this.nationalityBoss = "";
         this.dateOfBirthBoss = "";
         this.placeOfBirthBoss = "";
-        this.languageBoss = "";
         this.emailBoss = "";
         this.phoneNumberBoss = "";
         for (int i = 0; i < addressBoss.length; i++) {
@@ -65,15 +61,14 @@ public class Applicant {
         this.groupId = 0;
     }
 
-    public Applicant(int id, SimpleStringProperty name, String country, int registerNumber, String dateOfCreation,
+    public Applicant(int id, SimpleStringProperty name, int registerNumber, String dateOfCreation,
                     String typeOfBusiness, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
-                    String dateOfBirthBoss, String placeOfBirthBoss, String languageBoss,
+                    String dateOfBirthBoss, String placeOfBirthBoss,
                     String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
                     String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int groupId) {
         this.id = id;
         this.name = name;
-        this.country = country;
         this.registerNumber = registerNumber;
         this.dateOfCreation = dateOfCreation;
         this.typeOfBusiness = typeOfBusiness;
@@ -86,7 +81,6 @@ public class Applicant {
         this.nationalityBoss = nationalityBoss;
         this.dateOfBirthBoss = dateOfBirthBoss;
         this.placeOfBirthBoss = placeOfBirthBoss;
-        this.languageBoss = languageBoss;
         this.emailBoss = emailBoss;
         this.phoneNumberBoss = phoneNumberBoss;
         this.addressBoss = addressBoss;
@@ -107,9 +101,6 @@ public class Applicant {
     }
     public SimpleStringProperty nameProperty() {
         return name;
-    }
-    public String getCountry() {
-        return country;
     }
     public int getRegisterNumber() {
         return registerNumber;
@@ -143,9 +134,6 @@ public class Applicant {
     }
     public String getPlaceOfBirthBoss() {
         return placeOfBirthBoss;
-    }
-    public String getLanguageBoss() {
-        return languageBoss;
     }
     public String getEmailBoss() {
         return emailBoss;
@@ -187,9 +175,6 @@ public class Applicant {
     public void setName(String name) {
         this.name.set(name);
     }
-    public void setcountry(String country) {
-        this.country = country;
-    }
     public void setRegisterNumber(int registerNumber) {
         this.registerNumber = registerNumber;
     }
@@ -222,9 +207,6 @@ public class Applicant {
     }
     public void setPlaceOfBirthBoss(String placeOfBirthBoss) {
         this.placeOfBirthBoss = placeOfBirthBoss;
-    }
-    public void setlanguageBoss(String languageBoss) {
-        this.languageBoss = languageBoss;
     }
     public void setEmailBoss(String emailBoss) {
         this.emailBoss = emailBoss;
