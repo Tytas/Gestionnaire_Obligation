@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
@@ -26,7 +25,7 @@
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="462.0" minWidth="10.0" prefWidth="223.19999999999993" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="80.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
@@ -40,11 +39,11 @@
     <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="130.0" minHeight="10.0" prefHeight="130.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="46.20001220703125" minHeight="4.0" prefHeight="39.0" vgrow="SOMETIMES" />
   </rowConstraints>
   <children>
-    <Label text="Nom" />
+    <Label text="Raison Sociale" />
     <Label text="Ville" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="4" />
     <Label text="Rue" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
     <Label text="Date de création" GridPane.rowIndex="1" />
@@ -67,7 +66,7 @@
     <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="13" />
     <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="11" />
     <Label text="Pays" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-    <Label text="Numéro de registre" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" />
+    <Label text="Numéro RCS" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" />
     <Label text="Forme Juridique" GridPane.columnIndex="4" GridPane.rowIndex="1" />
     <Label text="Code Postal" GridPane.columnIndex="4" GridPane.rowIndex="3" />
     <Label text="Complément d'adresse" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="4" />
@@ -177,50 +176,6 @@
     <Label text="Fonction" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="12" />
     <Label text="Pays de résidence FISCALE" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="12" />
     <Label text="Numéro d'identification FISCALE" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="12" />
-    <Label text="Obligations" GridPane.columnIndex="4" GridPane.rowIndex="14" />
-    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="14">
-      <children>
-        <Label nodeOrientation="LEFT_TO_RIGHT" text="BIC" textAlignment="CENTER" wrapText="true">
-          <VBox.margin>
-            <Insets />
-          </VBox.margin>
-        </Label>
-        <Label text="IBAN">
-          <VBox.margin>
-            <Insets top="5.0" />
-          </VBox.margin>
-        </Label>
-          <Label text="Banque">
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </Label>
-      </children>
-    </VBox>
-    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="14">
-      <children>
-        <TextField fx:id="bicField">
-          <VBox.margin>
-            <Insets top="2.0" />
-          </VBox.margin>
-        </TextField>
-        <Label fx:id="bicErreurField" text="Label" visible="false" />
-        <TextField fx:id="ibanField">
-          <VBox.margin>
-            <Insets top="2.0" />
-          </VBox.margin>
-        </TextField>
-        <Label fx:id="ibanErreurField" text="Label" visible="false" />
-        <TextField fx:id="banqueField" />
-        <Label fx:id="banqueErreurField" text="Label" visible="false" />
-      </children>
-    </VBox>
-    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" GridPane.rowIndex="14">
-      <children>
-        <TextField fx:id="obligationSearchField" />
-        <ListView fx:id="obligationListView" prefHeight="200.0" prefWidth="200.0" />
-      </children>
-    </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
       <children>
         <TextField fx:id="nomField" prefHeight="8.0" prefWidth="300.0" />
@@ -359,11 +314,44 @@
         <Label fx:id="nationaliteDirigeantErreurComboBox" text="Label" visible="false" />
       </children>
     </VBox>
-      <Label text="Groupe" GridPane.columnIndex="2" GridPane.rowIndex="14" />
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="14">
+         <children>
+        <Label nodeOrientation="LEFT_TO_RIGHT" text="BIC" textAlignment="CENTER" wrapText="true" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="14">
+         <children>
+        <TextField fx:id="bicField">
+          <VBox.margin>
+            <Insets top="2.0" />
+          </VBox.margin>
+        </TextField>
+        <Label fx:id="bicErreurField" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <Label text="Groupe" GridPane.columnIndex="2" />
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
+         <children>
+            <ComboBox fx:id="groupeComboBox" prefWidth="150.0" />
+            <Button fx:id="nouveauGroupeButton" mnemonicParsing="false" text="Nouveau Groupe" />
+         </children>
+      </VBox>
+  <Label text="IBAN" GridPane.columnIndex="2" GridPane.rowIndex="14" />
+    <Label text="Banque" GridPane.columnIndex="4" GridPane.rowIndex="14" />
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="14">
          <children>
-            <ComboBox fx:id="groupeComboBox" prefWidth="150.0" promptText="Choisir un Groupe" />
-            <Button fx:id="nouveauGroupeButton" mnemonicParsing="false" text="Nouveau Groupe" />
+        <TextField fx:id="ibanField">
+          <VBox.margin>
+            <Insets top="2.0" />
+          </VBox.margin>
+        </TextField>
+        <Label fx:id="ibanErreurField" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" GridPane.rowIndex="14">
+         <children>
+        <TextField fx:id="banqueField" />
+        <Label fx:id="banqueErreurField" text="Label" visible="false" />
          </children>
       </VBox>
   </children>

@@ -36,6 +36,10 @@ public class EditSouscripteurPhysiqueController {
     @FXML
     private ToggleGroup sexeToggleGroup;
     @FXML
+    private RadioButton MRadioButton;
+    @FXML
+    private RadioButton MmeRadioButton;
+    @FXML
     private TextField nomField;
     @FXML
     private TextField prenomField;
@@ -131,6 +135,16 @@ public class EditSouscripteurPhysiqueController {
         System.out.println("Initializing EditEmetteurController with current emetteur: " + currentSouscripteur);
         if (currentSouscripteur != null) {
             nomField.setText(currentSouscripteur.getName());
+            prenomField.setText(currentSouscripteur.getFirstName());
+            RadioButton selectedRadioButton = (RadioButton) sexeToggleGroup.getSelectedToggle();
+            if (selectedRadioButton != null) {
+                selectedRadioButton.setSelected(false);
+            }
+            if (currentSouscripteur.getCivility().equals("M.")) {
+                MRadioButton.setSelected(true);
+            } else {
+                MmeRadioButton.setSelected(true);
+            }
             numeroAdresseField.setText(currentSouscripteur.getAddress()[0]);
             rueAdresseField.setText(currentSouscripteur.getAddress()[1]);
             codePostalAdresseField.setText(currentSouscripteur.getAddress()[2]);
@@ -314,7 +328,7 @@ public class EditSouscripteurPhysiqueController {
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
                     banqueField.getText().trim(),
-                    FamilyInteractor.GetFamilyIdByName(selectedFamily)
+                    FamilyInteractor.GetFamilyByName(selectedFamily)
                 );
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
@@ -355,7 +369,8 @@ public class EditSouscripteurPhysiqueController {
             }
         }
         System.out.println("Selected family: " + selectedFamily);
-        int familyIdSelected = FamilyInteractor.GetFamilyIdByName(selectedFamily);
+        int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
+        System.out.println("Family ID selected: " + familyIdSelected);
         investorNP.setFamilyId(familyIdSelected);
         Family family = FamilyInteractor.GetFamily(familyIdSelected);
         family.addInvestor(id);

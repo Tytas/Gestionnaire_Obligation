@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 import mypackage.MainApp;
 import mypackage.model.DataBaseInteractor.*;
 import mypackage.model.Obligation;
+import mypackage.model.Applicant;
+import mypackage.model.Investor;
 import mypackage.view.add.AddObject.AddObligationController;
 import mypackage.view.edit.EditObject.EditObligationController;
 import mypackage.view.util.ConfirmWindow;
@@ -98,6 +100,16 @@ public class ControllerObligations {
         if (selectedObligation != null) {
             if (ConfirmWindow.confirmWindow()) {
                 System.out.println("Obligation deleted: " + selectedObligation.getName());
+                Applicant applicant = ApplicantInteractor.GetApplicant(selectedObligation.getApplicantId());
+                applicant.removeObligation(selectedObligation.getId());
+                ApplicantInteractor.DeleteApplicant(applicant.getId());
+                ApplicantInteractor.SaveApplicant(applicant);
+                selectedObligation.getInvestors().forEach((investorId, capital) -> {
+                    Investor investor = InvestorInteractor.GetInvestor(investorId);
+                    investor.removeObligation(selectedObligation.getId());
+                    InvestorInteractor.DeleteInvestor(investorId);
+                    InvestorInteractor.SaveInvestor(investor);
+                });
                 ObligationInteractor.DeleteObligation(selectedObligation.getId());
                 listOblig.remove(selectedObligation);
             } else {

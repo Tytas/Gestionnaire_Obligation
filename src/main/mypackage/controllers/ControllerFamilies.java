@@ -1,19 +1,26 @@
 package mypackage.controllers;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import mypackage.MainApp;
 import mypackage.model.Family;
 import mypackage.model.DataBaseInteractor.*;
+import mypackage.view.add.AddObject.AddFamilyController;
+import mypackage.view.edit.EditObject.EditFamilyController;
 import mypackage.view.util.ConfirmWindow;
 
 
@@ -35,6 +42,10 @@ public class ControllerFamilies {
     private Button deleteButton;
 
     private MainApp mainApp;
+
+    private Stage stage;
+    
+    private ObservableList<Family> listFamily = FXCollections.observableArrayList();
 
     private ObservableList<Family> listFam = FXCollections.observableArrayList();
 
@@ -89,6 +100,9 @@ public class ControllerFamilies {
         if (selectedFamily != null) {
             if (ConfirmWindow.confirmWindow()) {
                 System.out.println("Family deleted: " + selectedFamily.getName());
+                selectedFamily.getInvestors().forEach(investorId -> {
+                    InvestorInteractor.DeleteInvestor(investorId);
+                });
                 FamilyInteractor.DeleteFamily(selectedFamily.getId());
                 listFam.remove(selectedFamily);
             } else {
@@ -97,6 +111,82 @@ public class ControllerFamilies {
             }
         } else {
             System.out.println("No Family selected to delete.");
+        }
+    }
+
+    @FXML
+    private void addFamily() {
+        try {
+            File fxmlFile = new File("src/main/mypackage/view/add/AddFamily.fxml");
+            if (!fxmlFile.exists()) {
+                System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader(fxmlFile.toURI().toURL());
+            Parent root = loader.load();
+            
+            // Récupère le contrôleur lié au FXML (instancié automatiquement)
+            AddFamilyController addFamilyWindow = loader.getController();
+
+            stage = new Stage();
+            stage.setTitle("Ajouter une Family");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // bloque la fenêtre principale
+            stage.showAndWait(); // attend que la fenêtre se ferme
+
+            if (addFamilyWindow.getResult()) {
+                // Refresh the list of families
+                ids = FamilyInteractor.GetAllFamiliesId();
+                listFamily.clear();
+                for (Integer id : ids) {
+                    listFamily.add(FamilyInteractor.GetFamily(id));
+                }
+            }
+            tableFamily.setItems(listFamily);
+            selectedFamily = null; // Reset selected family
+            displayFamily(null); // Clear displayed family details
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void editFamily() {
+        if (selectedFamily != null) {
+            try {
+                File fxmlFile = new File("src/main/mypackage/view/edit/EditFamily.fxml");
+                if (!fxmlFile.exists()) {
+                    System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
+                    return;
+                }
+                FXMLLoader loader = new FXMLLoader(fxmlFile.toURI().toURL());
+                Parent root = loader.load();
+                
+                // Récupère le contrôleur lié au FXML (instancié automatiquement)
+                EditFamilyController editFamilyWindow = loader.getController();
+                System.out.println("Editing family: " + selectedFamily.getName());
+                editFamilyWindow.initData(selectedFamily);
+
+                stage = new Stage();
+                stage.setTitle("Modifier une famille");
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL); // bloque la fenêtre principale
+                stage.showAndWait(); // attend que la fenêtre se ferme
+
+                if (editFamilyWindow.getResult()) {
+                    // Refresh the list of families
+                    ids = FamilyInteractor.GetAllFamiliesId();
+                    listFamily.clear();
+                    for (Integer id : ids) {
+                        listFamily.add(FamilyInteractor.GetFamily(id));
+                    }
+                }
+                tableFamily.setItems(listFamily);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No obligation selected to edit.");
         }
     }
 

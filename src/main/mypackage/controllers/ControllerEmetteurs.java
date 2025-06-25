@@ -18,7 +18,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mypackage.MainApp;
 import mypackage.model.Applicant;
+import mypackage.model.Group;
 import mypackage.model.DataBaseInteractor.ApplicantInteractor;
+import mypackage.model.DataBaseInteractor.GroupInteractor;
+import mypackage.model.DataBaseInteractor.ObligationInteractor;
 import mypackage.view.add.AddObject.AddEmetteurController;
 import mypackage.view.edit.EditObject.EditEmetteurController;
 import mypackage.view.util.ConfirmWindow;
@@ -174,6 +177,13 @@ public class ControllerEmetteurs {
         if (selectedApplicant != null) {
             if (ConfirmWindow.confirmWindow()) {
                 System.out.println("Applicant deleted: " + selectedApplicant.getName());
+                Group group = GroupInteractor.GetGroup(selectedApplicant.getGroupId());
+                group.removeMember(selectedApplicant.getId());
+                GroupInteractor.DeleteGroup(selectedApplicant.getGroupId());
+                GroupInteractor.SaveGroup(group);
+                selectedApplicant.getObligations().forEach(obligationId -> {
+                    ObligationInteractor.DeleteObligation(obligationId);
+                });
                 ApplicantInteractor.DeleteApplicant(selectedApplicant.getId());
                 listApplicant.remove(selectedApplicant);
             } else {

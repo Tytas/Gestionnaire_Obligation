@@ -69,12 +69,12 @@
       <children>
         <HBox alignment="TOP_CENTER" prefHeight="18.0" prefWidth="225.0">
           <children>
-            <RadioButton mnemonicParsing="false" text="M.">
+            <RadioButton fx:id="MRadioButton" mnemonicParsing="false" text="M.">
                      <toggleGroup>
                         <ToggleGroup fx:id="sexeToggleGroup" />
                      </toggleGroup>
             </RadioButton>
-            <RadioButton mnemonicParsing="false" text="Mme." toggleGroup="$sexeToggleGroup" />
+            <RadioButton fx:id="MmeRadioButton" mnemonicParsing="false" text="Mme." toggleGroup="$sexeToggleGroup" />
           </children>
           <VBox.margin>
             <Insets top="5.0" />

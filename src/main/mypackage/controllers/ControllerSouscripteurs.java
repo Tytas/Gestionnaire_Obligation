@@ -22,9 +22,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mypackage.MainApp;
 import mypackage.model.DataBaseInteractor.*;
+import mypackage.model.Family;
 import mypackage.model.Investor;
 import mypackage.model.InvestorNP;
 import mypackage.model.InvestorLP;
+import mypackage.model.Obligation;
 import mypackage.view.util.ConfirmWindow;
 import mypackage.view.add.AddObject.AddSouscripteurMoralController;
 import mypackage.view.add.AddObject.AddSouscripteurPhysiqueController;
@@ -113,6 +115,16 @@ public class ControllerSouscripteurs {
             return;
         }
         if (ConfirmWindow.confirmWindow()) {
+            Family family = FamilyInteractor.GetFamily(selectedInvestor.getFamilyId());
+            family.removeInvestor(selectedInvestor.getId());
+            FamilyInteractor.DeleteFamily(family.getId());
+            FamilyInteractor.SaveFamily(family);
+            selectedInvestor.getObligations().forEach(obligationId -> {
+                Obligation obligation = ObligationInteractor.GetObligation(obligationId);
+                obligation.removeInvestor(selectedInvestor.getId());
+                ObligationInteractor.DeleteObligation(obligation.getId());
+                ObligationInteractor.SaveObligation(obligation);
+            });
             if (selectedInvestor instanceof InvestorLP) {
                 System.out.println("Investor deleted: " + ((InvestorLP)selectedInvestor).getName());
                 InvestorInteractor.DeleteInvestorLP(selectedInvestor.getId());

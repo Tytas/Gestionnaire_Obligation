@@ -449,10 +449,7 @@ public class EditObligationController {
 
             String tauxTempString = taux_TEMP.getText();
             int tauxTemp = 0;
-            if (tauxTempString == null || tauxTempString.isEmpty()) {
-                showError(tauxTempErreurField, "Le taux TEMP est requis");
-                hasError = true;
-            } else {
+            if (tauxTempString != null && !tauxTempString.isEmpty()) {
                 try {
                     tauxTemp = Integer.parseInt(tauxTempString);
                     if (tauxTemp < 0 || tauxTemp > 100) {
@@ -468,10 +465,7 @@ public class EditObligationController {
 
             String tauxInFineString = taux_INFINE.getText();
             int tauxInFine = 0;
-            if (tauxInFineString == null || tauxInFineString.isEmpty()) {
-                showError(tauxInFineErreurField, "Le taux IN FINE est requis");
-                hasError = true;
-            } else {
+            if (tauxInFineString != null && !tauxInFineString.isEmpty()) {
                 try {
                     tauxInFine = Integer.parseInt(tauxInFineString);
                     if (tauxInFine < 0 || tauxInFine > 100) {
@@ -596,9 +590,9 @@ public class EditObligationController {
                                   String tauxProrogation, String dureeProrogation, Integer duree,
                                   String dateDebut, ObservableList<TupleStringLongBoolean> souscripteursList, String emetteurName,
                                   ObservableList<String> suretes, ObservableList<String[]> amortissements) {
-        int idApplicant = ApplicantInteractor.GetApplicantByName(selectedEmetteur);
+        int idApplicant = ApplicantInteractor.GetApplicantByName(emetteurName);
         if (idApplicant == -1) {
-            System.out.println("Emetteur not found: " + selectedEmetteur);
+            System.out.println("Emetteur not found: " + emetteurName);
             return;
         }
         Map<String, Integer> amortissementsMap = new HashMap<>();

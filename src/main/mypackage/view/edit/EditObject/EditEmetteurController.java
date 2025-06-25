@@ -1,31 +1,22 @@
 package mypackage.view.edit.EditObject;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import mypackage.model.Applicant;
 import mypackage.model.Group;
-import mypackage.model.Obligation;
 import mypackage.model.DataBaseInteractor.ApplicantInteractor;
 import mypackage.model.DataBaseInteractor.GroupInteractor;
-import mypackage.model.DataBaseInteractor.ObligationInteractor;
 import mypackage.view.util.GroupeWindow;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 
@@ -139,13 +130,6 @@ public class EditEmetteurController {
     @FXML private Label banqueErreurField;
     
     @FXML
-    private ListView<String[]> obligationListView;
-    @FXML
-    private TextField obligationSearchField;
-    private ObservableList<String[]> allObligations = FXCollections.observableArrayList();
-    private FilteredList<String[]> filteredObligations;
-    
-    @FXML
     private ComboBox<String> groupeComboBox;
     @FXML
     private Button nouveauGroupeButton;
@@ -158,10 +142,6 @@ public class EditEmetteurController {
     public boolean getResult() {
         return result;
     }
-    public ListView<String[]> getObligationListView() {
-        return obligationListView;
-    }
-
     public EditEmetteurController() {
         // Constructor logic if needed
     }
@@ -210,14 +190,6 @@ public class EditEmetteurController {
             bicField.setText(currentEmetteur.getBIC());
             ibanField.setText(currentEmetteur.getIBAN());
             banqueField.setText(currentEmetteur.getBankName());
-            for(String[] obligation : filteredObligations) {
-                for(int id : emetteur.getObligations()) {
-                    if (obligation[0].equalsIgnoreCase(ObligationInteractor.GetObligation(id).getName())) {
-                        obligation[1] = "true"; // Mark as selected
-                        //obligationListView.getSelectionModel().select(obligation);
-                    }
-                }
-            }
             groupeComboBox.setValue(GroupInteractor.GetGroup(currentEmetteur.getGroupId()).getName());
         }
     }
@@ -225,7 +197,7 @@ public class EditEmetteurController {
     
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
-        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SA", "SAS", "EURL"));
+        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SA", "SAS"));
         nationaliteDirigeantComboBox.setItems(FXCollections.observableArrayList("Française", "Américaine", "Allemande", "Espagnole"));
 
         nouveauGroupeButton.setOnAction(event -> {
@@ -236,55 +208,11 @@ public class EditEmetteurController {
         // Initialize the groupeComboBox with existing groups
         for (int id : GroupInteractor.GetAllGroupsId()) {
             Group group = GroupInteractor.GetGroup(id);
+            System.out.println("Group : " + group);
             if (group != null) {
                 groupeComboBox.getItems().add(group.getName());
             }
         }
-
-        ArrayList<Integer> obligationId = ObligationInteractor.GetAllObligationsId();
-        for (Integer id : obligationId) {
-            Obligation obligation = ObligationInteractor.GetObligation(id);
-            if (obligation != null) {
-                String[] obligationData = new String[2];
-                obligationData[0] = obligation.getName();
-                obligationData[1] = String.valueOf(false);
-                allObligations.add(obligationData);
-            }
-        }
-
-        // Initialize the obligation list view
-        filteredObligations = new FilteredList<>(allObligations, p -> true);
-        obligationListView.setItems(filteredObligations);
-
-        // Add a listener to the search field to filter obligations
-        obligationSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredObligations.setPredicate(obligation -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true; // Show all obligations if search is empty
-                }
-                String lowerCaseFilter = newValue.toLowerCase();
-                return obligation[0].toLowerCase().contains(lowerCaseFilter);
-            });
-        });
-        
-        obligationListView.setCellFactory(lv -> new ListCell<>() {
-            @Override
-            protected void updateItem(String[] item, boolean empty) {
-                super.updateItem(item, empty);
-                CheckBox checkBox = new CheckBox();
-                HBox content = new HBox(10, checkBox);
-                if (empty || item == null) {
-                    setGraphic(null);
-                } else {
-                    checkBox.setText(item[0]);
-                    checkBox.setSelected(Boolean.parseBoolean(item[1])); 
-                    checkBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-                        item[1] = String.valueOf(isNowSelected);
-                    });
-                setGraphic(content);
-                }
-            }
-        });
 
         validerButton.setOnAction(event -> {
             boolean nomOK = validateField(nomField, nomErreurField, "text");
@@ -318,7 +246,6 @@ public class EditEmetteurController {
             
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
             boolean residenceFiscaleDirigeantOK = validateField(residenceFiscaleDirigeantField, residenceFiscaleDirigeantErreurField, "text");
-            boolean numeroIdentificationDirigeantOK = validateField(numeroIdentificationDirigeantField, numeroIdentificationDirigeantErreurField, "text");
 
             boolean bicOK = validateField(bicField, bicErreurField, "text");
             boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
@@ -331,9 +258,7 @@ public class EditEmetteurController {
                 sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
                 numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
-                paysAdresseDirigeantOK &&
-                fonctionDirigeantOK && residenceFiscaleDirigeantOK && numeroIdentificationDirigeantOK &&
-                bicOK && ibanOK && banqueOK;
+                paysAdresseDirigeantOK && fonctionDirigeantOK && residenceFiscaleDirigeantOK && bicOK && ibanOK && banqueOK;
 
             if (formulaireValide) {
                 String sexeDirigeant = "";
@@ -406,25 +331,13 @@ public class EditEmetteurController {
                 dateOfBirthBoss, placeOfBirthBoss,
                 emailBoss, phoneNumberBoss, addressBoss, fiscalcountryBoss,
                 taxIdNumberBoss, roleBoss, IBAN, BIC, BankName, groupId);
-        System.out.println("Creating applicant with the following details:");
-        for (String[] obligation : allObligations) {
-            if (Boolean.parseBoolean(obligation[1])) {
-                System.out.println(ObligationInteractor.GetObligationByName(obligation[0]).getId());
-                applicant.addObligation(ObligationInteractor.GetObligationByName(obligation[0]).getId());
-                int idObligation = ObligationInteractor.GetObligationByName(obligation[0]).getId();
-                if (idObligation != -1) {
-                    Obligation newObligation = ObligationInteractor.GetObligation(idObligation);
-                    newObligation.setApplicantId(Id);
-                    ObligationInteractor.DeleteObligation(idObligation);
-                    ObligationInteractor.SaveObligation(newObligation);
-                }
-            }
-        }
+        
         String selectedGroupName = groupeComboBox.getValue();
         int selectedGroupId = GroupInteractor.GetGroupByName(selectedGroupName);
         if (selectedGroupId != -1) {
             Group group = GroupInteractor.GetGroup(selectedGroupId);
             group.addMember(Id);
+            GroupInteractor.DeleteGroup(selectedGroupId);
             GroupInteractor.SaveGroup(group);
             applicant.setGroupId(selectedGroupId);
         }

@@ -8,7 +8,7 @@ public class Family {
     private SimpleStringProperty name;
     private int registerNumber;
     private String dateOfCreation;
-    private String typeOfBuisness;
+    private String typeOfBusiness;
     private String legalStatus;
     private String[] address = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
 
@@ -27,7 +27,6 @@ public class Family {
     private String IBAN;
     private String BIC;
     private String bankName;
-    private String familyType;
     private String nbAprooval;
     private ArrayList<String[]> contacts = new ArrayList<>(); // [Nom, Prénom, Email, Téléphone]
     private String alertMail;
@@ -38,7 +37,7 @@ public class Family {
         this.name = new SimpleStringProperty("");
         this.registerNumber = 0;
         this.dateOfCreation = "";
-        this.typeOfBuisness = "";
+        this.typeOfBusiness = "";
         this.legalStatus = "";
         for (int i = 0; i < address.length; i++) {
             address[i] = "";
@@ -60,23 +59,22 @@ public class Family {
         this.IBAN = "";
         this.BIC = "";
         this.bankName = "";
-        this.familyType = "";
         this.nbAprooval = "";
         this.alertMail = "";
     }
     public Family(int id, SimpleStringProperty name, int registerNumber, String dateOfCreation,
-                  String typeOfBuisness, String legalStatus, String[] address,
+                  String typeOfBusiness, String legalStatus, String[] address,
                   String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss,
                   String nationalityBoss, String dateOfBirthBoss, String placeOfBirthBoss,
                   String emailBoss, String phoneNumberBoss,
                   String[] addressBoss, String fiscalcountryBoss, String taxIdNumberBoss,
-                  String roleBoss, String IBAN, String BIC, String bankName, String familyType,
+                  String roleBoss, String IBAN, String BIC, String bankName,
                   String nbAprooval, String alertMail) {
         this.id = id;
         this.name = name;
         this.registerNumber = registerNumber;
         this.dateOfCreation = dateOfCreation;
-        this.typeOfBuisness = typeOfBuisness;
+        this.typeOfBusiness = typeOfBusiness;
         this.legalStatus = legalStatus;
         this.address = address;
         this.civilityBoss = civilityBoss;
@@ -94,7 +92,6 @@ public class Family {
         this.IBAN = IBAN;
         this.BIC = BIC;
         this.bankName = bankName;
-        this.familyType = familyType;
         this.nbAprooval = nbAprooval;
         this.alertMail = alertMail;
     }
@@ -114,8 +111,8 @@ public class Family {
     public String getDateOfCreation() {
         return dateOfCreation;
     }
-    public String getTypeOfBuisness() {
-        return typeOfBuisness;
+    public String getTypeOfBusiness() {
+        return typeOfBusiness;
     }
     public String getLegalStatus() {
         return legalStatus;
@@ -171,9 +168,6 @@ public class Family {
     public String getBankName() {
         return bankName;
     }
-    public String getFamilyType() {
-        return familyType;
-    }
     public String getNbAprooval() {
         return nbAprooval;
     }
@@ -198,8 +192,8 @@ public class Family {
     public void setDateOfCreation(String dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
-    public void setTypeOfBuisness(String typeOfBuisness) {
-        this.typeOfBuisness = typeOfBuisness;
+    public void setTypeOfBusiness(String typeOfBusiness) {
+        this.typeOfBusiness = typeOfBusiness;
     }
     public void setLegalStatus(String legalStatus) {
         this.legalStatus = legalStatus;
@@ -251,9 +245,6 @@ public class Family {
     }
     public void setBankName(String bankName) {
         this.bankName = bankName;
-    }
-    public void setFamilyType(String familyType) {
-        this.familyType = familyType;
     }
     public void setNbAprooval(String nbAprooval) {
         this.nbAprooval = nbAprooval;

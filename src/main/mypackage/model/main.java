@@ -75,7 +75,6 @@ class Main {
                                     "FR7612345678901234567890123",
                                     "CRLIFRPP",
                                     "LCL",
-                                    "SARL",
                                     "1",
                                     "boss@gmail.com"
                                     );

@@ -1,7 +1,7 @@
 {
   "id" : 5,
   "name" : "test123",
-  "convertible" : true,
+  "convertible" : false,
   "capital" : 1,
   "startDate" : "2025-05-29",
   "durationMonths" : 10,
@@ -9,12 +9,11 @@
   "interestBase" : "Jour Réel/365",
   "periodicity" : "Trimestrielle",
   "prorogation" : [ "", "" ],
-  "safeties" : [ ],
+  "safeties" : [ "CAUTION" ],
   "depreciations" : { },
   "investors" : {
     "1" : 0,
-    "2" : 10,
-    "4" : 10
+    "2" : 10
   },
   "replacements" : [ ],
   "applicantId" : 3

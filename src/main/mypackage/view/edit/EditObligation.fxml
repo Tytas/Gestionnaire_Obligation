@@ -48,7 +48,7 @@
       <Label text="OS/OCA" GridPane.rowIndex="1" />
       <Label text="Date Début" GridPane.rowIndex="5" />
       <Label text="Durée" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-      <Label text="Taux TEMP" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <Label text="Taux" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="10">
          <children>
             <Button fx:id="annulerButton" mnemonicParsing="false" text="Annuler">
@@ -193,6 +193,32 @@
          <children>
             <TextField fx:id="TauxProrogationField" prefHeight="8.0" prefWidth="300.0" />
             <Label fx:id="tauxProrogationErreurField" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <Label text="Valeur Nominale" GridPane.columnIndex="4" />
+      <TextField GridPane.columnIndex="5" />
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+         <children>
+            <Label text="Code ISIN" />
+            <Label text="Numéro ISIN" />
+         </children>
+      </VBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="248.0">
+               <children>
+                  <RadioButton mnemonicParsing="false" selected="true" text="OUI">
+                     <padding>
+                        <Insets left="20.0" right="20.0" />
+                     </padding>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="ISIN" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" text="NON" toggleGroup="$ISIN" />
+               </children>
+            </HBox>
+            <TextField />
          </children>
       </VBox>
    </children>

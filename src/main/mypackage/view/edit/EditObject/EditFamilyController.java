@@ -1,34 +1,31 @@
-package mypackage.view.add.AddObject;
+package mypackage.view.edit.EditObject;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import mypackage.model.InvestorLP;
-import mypackage.model.Obligation;
 import mypackage.model.Family;
-import mypackage.model.DataBaseInteractor.InvestorInteractor;
-import mypackage.model.DataBaseInteractor.ObligationInteractor;
 import mypackage.model.DataBaseInteractor.FamilyInteractor;
+import mypackage.view.util.ContactWindow;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Button;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 
-public class AddSouscripteurMoralController {
+public class EditFamilyController {
     private boolean result = false;
+
+    private Family currentFamily;
 
     @FXML
     private TextField nomField;
@@ -96,13 +93,25 @@ public class AddSouscripteurMoralController {
     private TextField ibanField;
     @FXML
     private TextField banqueField;
+    @FXML
+    private TextField nbApproovalField;
+    @FXML
+    private TextField alertMailField;
+
+    @FXML
+    private Button addContactButton;
+    @FXML
+    private ListView<String[]> contactsListView;
+    private ObservableList<String[]> contacts = FXCollections.observableArrayList();
 
     @FXML private Label nomErreurField;
-    @FXML private Label paysErreurComboBox;
     @FXML private Label numRegistreErreurField;
     @FXML private Label dateCreationErreurField;
     @FXML private Label typeEntrepriseErreurField;
     @FXML private Label formeJuridiqueErreurComboBox;
+    @FXML private Label familyTypeErreurComboBox;
+    @FXML private Label nbApproovalErreurField;
+    @FXML private Label alertMailErreurField;
 
     @FXML private Label numeroAdresseErreurField;
     @FXML private Label rueAdresseErreurField;
@@ -134,23 +143,7 @@ public class AddSouscripteurMoralController {
     @FXML private Label bicErreurField;
     @FXML private Label ibanErreurField;
     @FXML private Label banqueErreurField;
-    @FXML private Label familyErreurLabel;
     
-    @FXML
-    private ListView<String[]> obligationListView;
-    @FXML
-    private TextField obligationSearchField;
-    private ObservableList<String[]> allObligations = FXCollections.observableArrayList();
-    private FilteredList<String[]> filteredObligations;
-
-    @FXML
-    private ListView<String> familyListView;
-    @FXML
-    private TextField familySearchField;
-    private ObservableList<String> allFamilies = FXCollections.observableArrayList();
-    private FilteredList<String> filteredFamilies;
-    public String selectedFamily;
-
     @FXML
     private Button annulerButton;
     @FXML
@@ -159,93 +152,96 @@ public class AddSouscripteurMoralController {
     public boolean getResult() {
         return result;
     }
-    public ListView<String[]> getObligationListView() {
-        return obligationListView;
-    }
-    public ListView<String> getFamilyListView() {
-        return familyListView;
+
+    public EditFamilyController() {
+        // Constructor logic if needed
     }
 
-    public AddSouscripteurMoralController() {
-        // Constructor logic if needed
+    public void initData(Family family) {
+        this.currentFamily = family;
+        // Set default values for the fields if currentObligation is not null
+        System.out.println("Initializing EditFamilyController with current family: " + currentFamily);
+        if (currentFamily != null) {
+            nomField.setText(currentFamily.getName());
+            numRegistreField.setText(String.valueOf(currentFamily.getRegisterNumber()));
+            dateCreationField.setValue(LocalDate.parse(currentFamily.getDateOfCreation()));
+            typeEntrepriseField.setText(currentFamily.getTypeOfBusiness());
+            formeJuridiqueComboBox.setValue(currentFamily.getLegalStatus());
+            nbApproovalField.setText(String.valueOf(currentFamily.getNbAprooval()));
+            alertMailField.setText(currentFamily.getAlertMail());
+            numeroAdresseField.setText(currentFamily.getAddress()[0]);
+            rueAdresseField.setText(currentFamily.getAddress()[1]);
+            codePostalAdresseField.setText(currentFamily.getAddress()[2]);
+            villeAdresseField.setText(currentFamily.getAddress()[3]);
+            paysAdresseField.setText(currentFamily.getAddress()[4]);
+            complementAdresseField.setText(currentFamily.getAddress()[5]);
+            if (currentFamily.getCivilityBoss() != null) {
+                if( currentFamily.getCivilityBoss().equals("M.")) {
+                    sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(0)); // Monsieur
+                } else if (currentFamily.getCivilityBoss().equals("Mme.")) {
+                    sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(1)); // Madame
+                } else {
+                    sexeDirigeantToggleGroup.selectToggle(null); // Aucun
+                }
+            }
+            nomDirigeantField.setText(currentFamily.getNameBoss());
+            prenomDirigeantField.setText(currentFamily.getFirstNameBoss());
+            nationaliteDirigeantComboBox.setValue(currentFamily.getNationalityBoss());
+            dateNaissanceDirigeantField.setValue(LocalDate.parse(currentFamily.getDateOfBirthBoss()));
+            lieuNaissanceDirigeantField.setText(currentFamily.getPlaceOfBirthBoss());
+            emailDirigeantField.setText(currentFamily.getEmailBoss());
+            telephoneDirigeantField.setText(currentFamily.getPhoneNumberBoss());
+            numeroAdresseDirigeantField.setText(currentFamily.getAddressBoss()[0]);
+            rueAdresseDirigeantField.setText(currentFamily.getAddressBoss()[1]);
+            codePostalAdresseDirigeantField.setText(currentFamily.getAddressBoss()[2]);
+            villeAdresseDirigeantField.setText(currentFamily.getAddressBoss()[3]);
+            paysAdresseDirigeantField.setText(currentFamily.getAddressBoss()[4]);
+            complementAdresseDirigeantField.setText(currentFamily.getAddressBoss()[5]);
+            fonctionDirigeantField.setText(currentFamily.getRoleBoss());
+            residenceFiscaleDirigeantField.setText(currentFamily.getFiscalcountryBoss());
+            numeroIdentificationDirigeantField.setText(currentFamily.getTaxIdNumberBoss());
+            bicField.setText(currentFamily.getBIC());
+            ibanField.setText(currentFamily.getIBAN());
+            banqueField.setText(currentFamily.getBankName());
+            for (String[] contact : currentFamily.getContacts()) {
+                contacts.add(contact);
+            }
+        }
     }
 
     
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
-        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SA", "SAS", "EURL"));
+        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("CIF","PSI","BANQUE"));
         nationaliteDirigeantComboBox.setItems(FXCollections.observableArrayList("Française", "Américaine", "Allemande", "Espagnole"));
 
-        ArrayList<Integer> familyId = FamilyInteractor.GetAllFamiliesId();
-        for (Integer id : familyId) {
-            Family family = FamilyInteractor.GetFamily(id);
-            if (family != null) {
-                allFamilies.add(family.getName());
-            }
-        }
-        filteredFamilies = new FilteredList<>(allFamilies, s -> true);
-        familyListView.setItems(filteredFamilies);
-        familySearchField.textProperty().addListener((obs, oldValue, newValue) -> {
-            filteredFamilies.setPredicate(item -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-                String lowerCaseFilter = newValue.toLowerCase();
-                return item.toLowerCase().contains(lowerCaseFilter);
-            });
-        });
-        familyListView.setOnMouseClicked(event -> {
-            // Récupérer l'élément sélectionné dans la ListView
-            selectedFamily = familyListView.getSelectionModel().getSelectedItem();
-
-            // Si un élément est sélectionné
-            if (selectedFamily != null) {
-                System.out.println("Famille sélectionnée : " + selectedFamily);
-                // Faites ce que vous voulez avec l'élément sélectionné, par exemple :
-                // Vous pouvez également effectuer une autre action basée sur cet élément, comme afficher des détails supplémentaires.
-            }
-        });
-
-        ArrayList<Integer> obligationId = ObligationInteractor.GetAllObligationsId();
-        for (Integer id : obligationId) {
-            Obligation obligation = ObligationInteractor.GetObligation(id);
-            if (obligation != null) {
-                String[] obligationData = new String[2];
-                obligationData[0] = obligation.getName();
-                obligationData[1] = String.valueOf(false);
-                allObligations.add(obligationData);
-            }
-        }
-        // Initialize the obligation list view
-        filteredObligations = new FilteredList<>(allObligations, p -> true);
-        obligationListView.setItems(filteredObligations);
-
-        // Add a listener to the search field to filter obligations
-        obligationSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredObligations.setPredicate(obligation -> {
-                if (newValue == null || newValue.isEmpty()) {
-                    return true; // Show all obligations if search is empty
-                }
-                String lowerCaseFilter = newValue.toLowerCase();
-                return obligation[0].toLowerCase().contains(lowerCaseFilter);
-            });
-        });
-        obligationListView.setCellFactory(lv -> new ListCell<>() {
+        contactsListView.setItems(contacts);
+        contactsListView.setCellFactory(lv -> new ListCell<String[]>() {
             @Override
             protected void updateItem(String[] item, boolean empty) {
                 super.updateItem(item, empty);
-                CheckBox checkBox = new CheckBox();
-                HBox content = new HBox(10, checkBox);
-                if (empty || item == null) {
+                // Si item est nul ou si c'est une cellule vide, on ne fait rien
+                if (empty || item == null || item.length < 2) {
                     setGraphic(null);
-                } else {
-                    checkBox.setText(item[0]);
-                    checkBox.setSelected(Boolean.parseBoolean(item[1])); 
-                    checkBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-                        item[1] = String.valueOf(isNowSelected);
-                    });
-                setGraphic(content);
+                    return;
                 }
+                // Crée le bouton de suppression
+                Button deleteButton = new Button("-");
+                deleteButton.setOnAction(e -> {
+                    contacts.remove(item);
+                    contactsListView.refresh();
+                });
+                Label montantField = new Label("Nom: " + item[0] + ", Prénom: " + item[1] + ", Email: " + item[2] + ", Téléphone: " + item[3]);
+                HBox content = new HBox(10, montantField, deleteButton);
+                setGraphic(content);
+            }
+        });
+        addContactButton.setOnAction(e -> {
+            // Ouvre la fenêtre pour ajouter un contact
+            boolean success = ContactWindow.showDialog(contacts);
+            if (success) {
+                // Le nouveau contact a été ajouté à la liste
+                contactsListView.refresh();
             }
         });
 
@@ -254,23 +250,20 @@ public class AddSouscripteurMoralController {
             boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
             boolean typeEntrepriseOK = validateField(typeEntrepriseField, typeEntrepriseErreurField, "text");
             boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
+            boolean nbApproovalOK = validateField(nbApproovalField, nbApproovalErreurField, "text");
+            boolean alertMailOK = validateField(alertMailField, alertMailErreurField, "email");
+
 
             boolean numeroAdresseOK = validateField(numeroAdresseField, numeroAdresseErreurField, "text");
             boolean rueAdresseOK = validateField(rueAdresseField, rueAdresseErreurField, "text");
             boolean codePostalAdresseOK = validateField(codePostalAdresseField, codePostalAdresseErreurField, "text");
             boolean villeAdresseOK = validateField(villeAdresseField, villeAdresseErreurField, "text");
             boolean paysAdresseOK = validateField(paysAdresseField, paysAdresseErreurField, "text");
-            // Le complément est facultatif ? sinon :
-            boolean complementAdresseOK = validateField(complementAdresseField, complementAdresseErreurField, "text");
 
             boolean sexeDirigeantOK = sexeDirigeantToggleGroup.getSelectedToggle() != null;
-            if (!sexeDirigeantOK) {
-                sexeDirigeantErreurLabel.setText("Veuillez sélectionner un sexe.");
-                sexeDirigeantErreurLabel.setVisible(!sexeDirigeantOK);
-            }
-            else {
-                sexeDirigeantErreurLabel.setVisible(false);
-            }
+            if (!sexeDirigeantOK) sexeDirigeantErreurLabel.setText("Veuillez sélectionner un sexe.");
+            sexeDirigeantErreurLabel.setVisible(!sexeDirigeantOK);
+
             boolean nomDirigeantOK = validateField(nomDirigeantField, nomDirigeantErreurField, "text");
             boolean prenomDirigeantOK = validateField(prenomDirigeantField, prenomDirigeantErreurField, "text");
             boolean nationaliteDirigeantOK = validateField(nationaliteDirigeantComboBox, nationaliteDirigeantErreurComboBox, "");
@@ -284,8 +277,7 @@ public class AddSouscripteurMoralController {
             boolean codePostalAdresseDirigeantOK = validateField(codePostalAdresseDirigeantField, codePostalAdresseDirigeantErreurField, "text");
             boolean villeAdresseDirigeantOK = validateField(villeAdresseDirigeantField, villeAdresseDirigeantErreurField, "text");
             boolean paysAdresseDirigeantOK = validateField(paysAdresseDirigeantField, paysAdresseDirigeantErreurField, "text");
-            boolean complementAdresseDirigeantOK = validateField(complementAdresseDirigeantField, complementAdresseDirigeantErreurField, "text");
-
+            
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
             boolean residenceFiscaleDirigeantOK = validateField(residenceFiscaleDirigeantField, residenceFiscaleDirigeantErreurField, "text");
             boolean numeroIdentificationDirigeantOK = validateField(numeroIdentificationDirigeantField, numeroIdentificationDirigeantErreurField, "text");
@@ -294,31 +286,24 @@ public class AddSouscripteurMoralController {
             boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
             boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
 
-            
-            boolean familyOK = selectedFamily != null && !selectedFamily.isEmpty();
-            if (!familyOK){
-                familyErreurLabel.setText("Veuillez sélectionner une family.");
-                familyErreurLabel.setVisible(!familyOK);
-                familyErreurLabel.setStyle("-fx-text-fill: red; -fx-font-size: 10px;");
-            }
-            else {
-                familyErreurLabel.setVisible(false);
-            }
-
             // Vérification globale
             boolean formulaireValide =
                 nomOK && numRegistreOK && typeEntrepriseOK && formeJuridiqueOK &&
-                numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK && complementAdresseOK &&
+                numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK &&
                 sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
                 numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
-                paysAdresseDirigeantOK && complementAdresseDirigeantOK &&
+                paysAdresseDirigeantOK && nbApproovalOK && alertMailOK &&
                 fonctionDirigeantOK && residenceFiscaleDirigeantOK && numeroIdentificationDirigeantOK &&
-                bicOK && ibanOK && banqueOK && familyOK;
+                bicOK && ibanOK && banqueOK;
 
             if (formulaireValide) {
-                String sexeDirigeant = ((RadioButton) sexeDirigeantToggleGroup.getSelectedToggle()).getText();
-                CreateInvestorLP(
+                String sexeDirigeant = "";
+
+                sexeDirigeant = ((RadioButton) sexeDirigeantToggleGroup.getSelectedToggle()).getText();
+                System.out.println("Selected sexeDirigeant: " + sexeDirigeant);
+
+                EditFamily(
                     new SimpleStringProperty(nomField.getText().trim()),
                     Integer.parseInt(numRegistreField.getText().trim()),
                     dateCreationField.getValue().toString(),
@@ -353,8 +338,10 @@ public class AddSouscripteurMoralController {
                     fonctionDirigeantField.getText().trim(),
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
-                    banqueField.getText().trim(),
-                    FamilyInteractor.GetFamilyByName(selectedFamily) // Assuming selectedFamily is not null
+                    banqueField.getText().trim(), 
+                    nbApproovalField.getText().trim(),
+                    alertMailField.getText().trim(),
+                    contacts
                 );
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
@@ -370,40 +357,37 @@ public class AddSouscripteurMoralController {
         });
     }
 
-    private void CreateInvestorLP(SimpleStringProperty name, int registerNumber, String dateOfCreation,
+    private void EditFamily(SimpleStringProperty name, int registerNumber, String dateOfCreation,
                     String typeOfBusiness, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
                     String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
-                    String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int familyId) {
-        int newId = InvestorInteractor.generateNewId();
-        InvestorLP investorlp = new InvestorLP(newId, name, registerNumber, dateOfCreation,
+                    String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName,
+                    String nbAprooval, String alertMail, ObservableList<String[]> contacts) {
+        int Id = currentFamily.getId();
+        Family family = new Family(Id, name, registerNumber, dateOfCreation,
                 typeOfBusiness, legalStatus, address,
                 civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
                 dateOfBirthBoss, placeOfBirthBoss,
                 emailBoss, phoneNumberBoss, addressBoss, fiscalcountryBoss,
-                taxIdNumberBoss, roleBoss, IBAN, BIC, BankName, familyId);
-        System.out.println("Creating investorlp with the following details:");
-        for (String[] obligation : allObligations) {
-            if (Boolean.parseBoolean(obligation[1])) {
-                System.out.println(ObligationInteractor.GetObligationByName(obligation[0]).getId());
-                investorlp.addObligation(ObligationInteractor.GetObligationByName(obligation[0]).getId());
-                int idObligation = ObligationInteractor.GetObligationByName(obligation[0]).getId();
-                if (idObligation != -1) {
-                    Obligation newObligation = ObligationInteractor.GetObligation(idObligation);
-                    newObligation.addInvestor(newId, 10l);
-                    ObligationInteractor.DeleteObligation(idObligation);
-                    ObligationInteractor.SaveObligation(newObligation);
+                taxIdNumberBoss, roleBoss, IBAN, BIC, BankName,
+                nbAprooval, alertMail);
+        System.out.println("Creating family with the following details:");
+        if(contacts != null) {
+            for (String[] contact : contacts) {
+                if (contact != null && contact.length >= 4) {
+                    family.addContacts(contact);
+                    System.out.println("Contact added: " + contact[0] + " " + contact[1] + ", Email: " + contact[2] + ", Phone: " + contact[3]);
+                } else {
+                    System.out.println("Invalid contact data: " + (contact != null ? String.join(", ", contact) : "null"));
                 }
             }
+        } else {
+            System.out.println("No contacts provided.");
         }
-        int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
-        investorlp.setFamilyId(familyIdSelected);
-        Family family = FamilyInteractor.GetFamily(familyIdSelected);
-        family.addInvestor(newId);
-        FamilyInteractor.DeleteFamily(familyIdSelected);
+
+        FamilyInteractor.DeleteFamily(Id);
         FamilyInteractor.SaveFamily(family);
-        InvestorInteractor.SaveInvestorLP(investorlp);
     }
 
     private boolean validateField(Control field, Label errorLabel, String expectedType) {
@@ -448,5 +432,4 @@ public class AddSouscripteurMoralController {
                 return false; // Unknown type
         }
     }
-    
 }

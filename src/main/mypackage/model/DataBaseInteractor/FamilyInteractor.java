@@ -16,11 +16,13 @@ public class FamilyInteractor {
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/families/";
         SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
+        System.out.println("Dossier trouvé : " + name.get());
         try {
             // Vérifier si le dossier existe
             if (Files.exists(Path.of(baseDir, name.get()))) {
                 Family family = objectMapper.readValue(Path.of(baseDir, name.get()).resolve("data.json").toFile(),
                                                         Family.class);
+                System.out.println("Données de la famille chargées : " + family);
                 return family;
             }
         } catch (IOException e) {
@@ -94,17 +96,23 @@ public class FamilyInteractor {
         return false;
     }
 
-    public static int GetFamilyIdByName(String name) {
-        File[] ListFamFiles = new File("data/families/").listFiles(File::isDirectory);
-        for (File file : ListFamFiles) {
-            if (file.getName().equals(name)) {
-                try {
-                    return Integer.parseInt(file.getName());
-                } catch (NumberFormatException e) {
-                    // ignorer les dossiers qui ne sont pas des nombres
-                }
+    public static int GetFamilyByName(String name) {
+        ArrayList<Integer> ListFamId = GetAllFamiliesId();
+        for (int id : ListFamId) {
+            Family family = GetFamily(id);
+            if (family != null && family.getName().trim().equals(name.trim())) {
+                return id;
             }
         }
         return -1; // Retourne -1 si aucun dossier ne correspond au nom
+    }
+
+public static int generateNewId() {
+        ArrayList<Integer> ids = GetAllFamiliesId();
+        if (ids.isEmpty()) {
+            return 1; // Si aucune famille n'existe, commencer à 1
+        } else {
+            return ids.stream().max(Integer::compareTo).orElse(0) + 1; // Retourner le plus grand ID + 1
+        }
     }
 }

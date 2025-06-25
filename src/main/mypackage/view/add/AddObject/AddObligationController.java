@@ -312,10 +312,7 @@ public class AddObligationController {
 
             String tauxTempString = taux_TEMP.getText();
             int tauxTemp = 0;
-            if (tauxTempString == null || tauxTempString.isEmpty()) {
-                showError(tauxTempErreurField, "Le taux TEMP est requis");
-                hasError = true;
-            } else {
+            if (tauxTempString != null && !tauxTempString.isEmpty()) {
                 try {
                     tauxTemp = Integer.parseInt(tauxTempString);
                     if (tauxTemp < 0 || tauxTemp > 100) {
@@ -331,10 +328,7 @@ public class AddObligationController {
 
             String tauxInFineString = taux_INFINE.getText();
             int tauxInFine = 0;
-            if (tauxInFineString == null || tauxInFineString.isEmpty()) {
-                showError(tauxInFineErreurField, "Le taux IN FINE est requis");
-                hasError = true;
-            } else {
+            if (tauxInFineString != null && !tauxInFineString.isEmpty()) {
                 try {
                     tauxInFine = Integer.parseInt(tauxInFineString);
                     if (tauxInFine < 0 || tauxInFine > 100) {

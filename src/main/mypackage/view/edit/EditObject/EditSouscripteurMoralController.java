@@ -418,7 +418,7 @@ public class EditSouscripteurMoralController {
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
                     banqueField.getText().trim(),
-                    FamilyInteractor.GetFamilyIdByName(selectedFamily)
+                    FamilyInteractor.GetFamilyByName(selectedFamily)
                 );
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
@@ -461,7 +461,7 @@ public class EditSouscripteurMoralController {
                 }
             }
         }
-        int familyIdSelected = FamilyInteractor.GetFamilyIdByName(selectedFamily);
+        int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
         investorlp.setFamilyId(familyIdSelected);
         Family family = FamilyInteractor.GetFamily(familyIdSelected);
         family.addInvestor(Id);

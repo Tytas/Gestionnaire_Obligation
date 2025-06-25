@@ -204,6 +204,7 @@ public class InvestorInteractor {
         if (investorLP != null) {
             return investorLP;
         }
+        System.out.println("Investor with ID " + id + " not found.");
         return null; // Si l'investisseur n'est ni NP ni LP
     }
 

@@ -56,6 +56,31 @@ public class GroupInteractor {
         }
     }
 
+    public static Boolean DeleteGroup(int id){
+        String baseDir = "data/groups/";
+        String groupName = Integer.toString(id);
+        Path groupFolder = Path.of(baseDir, groupName);
+
+        try {
+            // Supprimer le dossier et son contenu
+            if (Files.exists(groupFolder)) {
+                Files.walk(groupFolder)
+                        .sorted((a, b) -> b.compareTo(a)) // Pour supprimer les fichiers avant les dossiers
+                        .forEach(path -> {
+                            try {
+                                Files.delete(path);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static ArrayList<Integer> GetAllGroupsId(){
         File[] ListGroupFiles = new File("data/groups/").listFiles(File::isDirectory);
         ArrayList<Integer> ListGroupId = new ArrayList<>();
