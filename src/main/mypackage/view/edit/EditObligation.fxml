@@ -20,10 +20,10 @@
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="125.59997787475587" minWidth="10.0" prefWidth="125.59997787475587" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="254.39999160766604" minWidth="10.0" prefWidth="221.60001525878906" />
-    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="148.39996337890625" minWidth="0.0" prefWidth="114.20003662109377" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="345.3999755859375" minWidth="10.0" prefWidth="243.20004882812498" />
-      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="269.20001220703125" minWidth="10.0" prefWidth="99.79997558593755" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="397.199951171875" minWidth="10.0" prefWidth="235.80002441406248" />
+    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="148.39996337890625" minWidth="0.0" prefWidth="110.19998779296873" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="345.3999755859375" minWidth="10.0" prefWidth="262.20001220703125" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="269.20001220703125" minWidth="10.0" prefWidth="99.20001220703125" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="397.199951171875" minWidth="10.0" prefWidth="260.79998779296886" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
@@ -196,7 +196,6 @@
          </children>
       </VBox>
       <Label text="Valeur Nominale" GridPane.columnIndex="4" />
-      <TextField GridPane.columnIndex="5" />
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
          <children>
             <Label text="Code ISIN" />
@@ -205,20 +204,32 @@
       </VBox>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="248.0">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <RadioButton mnemonicParsing="false" selected="true" text="OUI">
-                     <padding>
-                        <Insets left="20.0" right="20.0" />
-                     </padding>
-                     <toggleGroup>
-                        <ToggleGroup fx:id="ISIN" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="NON" toggleGroup="$ISIN" />
+                  <HBox alignment="CENTER" prefHeight="28.0" prefWidth="254.0">
+                     <children>
+                        <RadioButton fx:id="isinOui" mnemonicParsing="false" text="oui">
+                           <padding>
+                              <Insets left="20.0" right="20.0" />
+                           </padding>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="isinToggle" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="isinNon" mnemonicParsing="false" selected="true" text="non" toggleGroup="$isinToggle" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="isinErreurToggle" text="Label" visible="false" />
+                  <TextField fx:id="numeroIsinField" />
+                  <Label fx:id="numeroIsinErreurField" text="Label" visible="false" />
                </children>
-            </HBox>
-            <TextField />
+            </VBox>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5">
+         <children>
+            <TextField fx:id="valeurNominaleField" />
+            <Label fx:id="valeurNominaleErreurField" text="Label" visible="false" />
          </children>
       </VBox>
    </children>

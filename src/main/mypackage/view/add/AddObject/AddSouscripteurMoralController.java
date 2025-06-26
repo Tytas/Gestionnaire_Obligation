@@ -173,7 +173,7 @@ public class AddSouscripteurMoralController {
     
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
-        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SA", "SAS", "EURL"));
+        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SA", "SAS"));
         nationaliteDirigeantComboBox.setItems(FXCollections.observableArrayList("Française", "Américaine", "Allemande", "Espagnole"));
 
         ArrayList<Integer> familyId = FamilyInteractor.GetAllFamiliesId();
@@ -288,8 +288,7 @@ public class AddSouscripteurMoralController {
 
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
             boolean residenceFiscaleDirigeantOK = validateField(residenceFiscaleDirigeantField, residenceFiscaleDirigeantErreurField, "text");
-            boolean numeroIdentificationDirigeantOK = validateField(numeroIdentificationDirigeantField, numeroIdentificationDirigeantErreurField, "text");
-
+           
             boolean bicOK = validateField(bicField, bicErreurField, "text");
             boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
             boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
@@ -313,7 +312,7 @@ public class AddSouscripteurMoralController {
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
                 numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
                 paysAdresseDirigeantOK && complementAdresseDirigeantOK &&
-                fonctionDirigeantOK && residenceFiscaleDirigeantOK && numeroIdentificationDirigeantOK &&
+                fonctionDirigeantOK && residenceFiscaleDirigeantOK &&
                 bicOK && ibanOK && banqueOK && familyOK;
 
             if (formulaireValide) {

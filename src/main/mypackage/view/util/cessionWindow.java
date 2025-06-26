@@ -216,8 +216,8 @@ public class cessionWindow {
 
         cancelButton.setOnAction(e -> stage.close());
 
-        VBox inputBoxVendeur = new VBox(5, new Label("Rechercher :"), souscripteurVendeurSearchField, souscripteurVendeurListView);
-        VBox inputBoxAcheteur = new VBox(5, new Label("Rechercher :"), souscripteurAcheteurSearchField, souscripteurAcheteurListView);
+        VBox inputBoxVendeur = new VBox(5, new Label("Vendeur :"), souscripteurVendeurSearchField, souscripteurVendeurListView);
+        VBox inputBoxAcheteur = new VBox(5, new Label("Acheteur :"), souscripteurAcheteurSearchField, souscripteurAcheteurListView);
         HBox buttonBox = new HBox(10, okButton, cancelButton);
         buttonBox.setAlignment(Pos.CENTER);
 

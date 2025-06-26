@@ -86,6 +86,23 @@ public class ControllerMenu {
         }
     }
 
+    @FXML
+    private void handleMenuHome() {
+        try {
+            // Load root layout from fxml file.
+            File fxmlFile = new File("src/main/mypackage/view/Home.fxml");
+            if (!fxmlFile.exists()) {
+                System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
+                return;
+            }   
+            FXMLLoader loader = new FXMLLoader(fxmlFile.toURI().toURL());
+            mainPane.setCenter(loader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public void getMainApp() {
         if (mainApp != null) {

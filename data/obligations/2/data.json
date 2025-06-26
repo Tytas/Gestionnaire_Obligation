@@ -1,14 +1,16 @@
 {
   "id" : 2,
   "name" : "jjjj",
-  "convertible" : false,
+  "convertible" : true,
   "capital" : 10,
+  "valeurNominale" : 10,
   "startDate" : "2025-06-13",
   "durationMonths" : 10,
-  "rate" : [ 0, 0 ],
+  "rate" : [ 0, 5 ],
   "interestBase" : "Jour Réel/365",
   "periodicity" : "Semestrielle",
   "prorogation" : [ "", "" ],
+  "isin" : "",
   "safeties" : [ ],
   "depreciations" : { },
   "investors" : {

@@ -20,7 +20,7 @@
   "roleBoss" : "Directeur",
   "bankName" : "LCL",
   "groupId" : 1,
-  "obligations" : [ 1, 5, 3, 5 ],
+  "obligations" : [ 5, 3, 5, 2 ],
   "iban" : "FR7612345678901234567890123",
   "bic" : "CRLIFRPP"
 }

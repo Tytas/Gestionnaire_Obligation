@@ -250,7 +250,6 @@ public class EditFamilyController {
             boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
             boolean typeEntrepriseOK = validateField(typeEntrepriseField, typeEntrepriseErreurField, "text");
             boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
-            boolean nbApproovalOK = validateField(nbApproovalField, nbApproovalErreurField, "text");
             boolean alertMailOK = validateField(alertMailField, alertMailErreurField, "email");
 
 
@@ -280,10 +279,6 @@ public class EditFamilyController {
             
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
             boolean residenceFiscaleDirigeantOK = validateField(residenceFiscaleDirigeantField, residenceFiscaleDirigeantErreurField, "text");
-            boolean numeroIdentificationDirigeantOK = validateField(numeroIdentificationDirigeantField, numeroIdentificationDirigeantErreurField, "text");
-
-            boolean bicOK = validateField(bicField, bicErreurField, "text");
-            boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
             boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
 
             // Vérification globale
@@ -293,9 +288,9 @@ public class EditFamilyController {
                 sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
                 numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
-                paysAdresseDirigeantOK && nbApproovalOK && alertMailOK &&
-                fonctionDirigeantOK && residenceFiscaleDirigeantOK && numeroIdentificationDirigeantOK &&
-                bicOK && ibanOK && banqueOK;
+                paysAdresseDirigeantOK && alertMailOK &&
+                fonctionDirigeantOK && residenceFiscaleDirigeantOK &&
+                banqueOK;
 
             if (formulaireValide) {
                 String sexeDirigeant = "";

@@ -68,6 +68,16 @@ public class AddObligationController {
     private TextField TauxProrogationField; 
     @FXML
     private TextField DureeProrogationField; 
+    @FXML
+    private TextField valeurNominaleField;
+    @FXML
+    private ToggleGroup isinToggle;
+    @FXML
+    private RadioButton isinOui;
+    @FXML
+    private RadioButton isinNon;
+    @FXML
+    private TextField numeroIsinField;
 
     @FXML private Label nomErreurField;
     @FXML private Label capitalErreurField;
@@ -80,6 +90,9 @@ public class AddObligationController {
     @FXML private Label tauxProrogationErreurField;
     @FXML private Label dureeProrogationErreurField;
     @FXML private Label emetteurErreurLabel;
+    @FXML private Label valeurNominaleErreurField;
+    @FXML private Label isinErreurToggle;
+    @FXML private Label numeroIsinErreurField;
 
     @FXML
     private ListView<TupleStringLongBoolean> souscripteurListView;
@@ -149,6 +162,13 @@ public class AddObligationController {
             } else if (newToggle == prorogationNon) {
                 TauxProrogationField.setDisable(true);
                 DureeProrogationField.setDisable(true);
+            }
+        });
+        isinToggle.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            if (newToggle == isinOui) {
+                numeroIsinField.setDisable(false);
+            } else if (newToggle == isinNon) {
+                numeroIsinField.setDisable(true);
             }
         });
         filteredSouscripteurs = new FilteredList<>(allSouscripteurs, s -> true);
@@ -310,8 +330,23 @@ public class AddObligationController {
                 }
             }
 
+            String valeurNominaleString = valeurNominaleField.getText();
+            Integer valeurNominale = null;
+            if (valeurNominaleString == null || valeurNominaleString.isEmpty()) {
+                showError(valeurNominaleErreurField, "La valeur nominale est requise");
+                hasError = true;
+            } else {
+                try {
+                    valeurNominale = Integer.parseInt(valeurNominaleString);
+                    hideError(valeurNominaleErreurField);
+                } catch (NumberFormatException e) {
+                    showError(valeurNominaleErreurField, "La valeur nominale doit être un nombre");
+                    hasError = true;
+                }
+            }
+
             String tauxTempString = taux_TEMP.getText();
-            int tauxTemp = 0;
+            Integer tauxTemp = null;
             if (tauxTempString != null && !tauxTempString.isEmpty()) {
                 try {
                     tauxTemp = Integer.parseInt(tauxTempString);
@@ -388,9 +423,7 @@ public class AddObligationController {
             Toggle selectedProrogation = prorogation.getSelectedToggle();
             boolean isProrogation = selectedProrogation != null &&
                                 ((RadioButton) selectedProrogation).getText().equalsIgnoreCase("Oui");
-
             System.out.println("isProrogation: " + isProrogation);
-
             if (isProrogation) {
                 if (TauxProrogationField.getText().trim().isEmpty()) {
                     showError(tauxProrogationErreurField, "Taux requis");
@@ -410,6 +443,23 @@ public class AddObligationController {
                 hideError(dureeProrogationErreurField);
             }
 
+            Toggle selectedIsin = isinToggle.getSelectedToggle();
+            boolean isIsin = selectedIsin != null &&
+                                ((RadioButton) selectedIsin).getText().equalsIgnoreCase("Oui");
+            System.out.println("isIsin: " + isIsin);
+            String numeroIsin = "";
+            if (isIsin) {
+                if (numeroIsinField.getText().trim().isEmpty()) {
+                    showError(numeroIsinErreurField, "Numéro ISIN requis");
+                    hasError = true;
+                } else {
+                    numeroIsin = numeroIsinField.getText().trim();
+                    hideError(numeroIsinErreurField);
+                }
+            } else {
+                hideError(numeroIsinErreurField);
+            }
+
             String emetteur = this.getEmetteursListView().getSelectionModel().getSelectedItem();
             if (emetteur == null || emetteur.isEmpty()) {
                 showError(emetteurErreurLabel, "Émetteur requis");
@@ -419,9 +469,9 @@ public class AddObligationController {
             }
 
             if (!hasError) {
-                CreateObligation(nom, capital, new int[]{tauxInFine, tauxTemp}, isConvertible, baseCalcul, periodicite, isProrogation,
-                    TauxProrogationField.getText(), DureeProrogationField.getText(), duree, dateDebutString,
-                    allSouscripteurs, emetteur, suretes, amortissements);
+                CreateObligation(nom, capital, valeurNominale, new int[]{tauxInFine, tauxTemp}, isConvertible,
+                    baseCalcul, periodicite, isProrogation, TauxProrogationField.getText(), DureeProrogationField.getText(),
+                    numeroIsin, duree, dateDebutString, allSouscripteurs, emetteur, suretes, amortissements);
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
             }
@@ -448,9 +498,9 @@ public class AddObligationController {
     }
 
 
-    private void CreateObligation(String nom, Long capital, int[] taux, Boolean isConvertible, 
-                                  String baseCalcul, String periodicite, Boolean isProrogation, 
-                                  String tauxProrogation, String dureeProrogation, Integer duree,
+    private void CreateObligation(String nom, Long capital, Integer valeurNominale, int[] taux, Boolean isConvertible,
+                                  String baseCalcul, String periodicite, Boolean isProrogation,
+                                  String tauxProrogation, String dureeProrogation, String numeroIsin, Integer duree,
                                   String dateDebut, ObservableList<TupleStringLongBoolean> souscripteursList, String emetteurName,
                                   ObservableList<String> suretes, ObservableList<String[]> amortissements) {
         int newId = ObligationInteractor.generateNewId(); // Generate a new ID for the obligation
@@ -469,8 +519,8 @@ public class AddObligationController {
                 System.out.println("Invalid amortissement format: " + amortissement);
             }
         }
-        Obligation obligation = new Obligation(newId, new SimpleStringProperty(nom), isConvertible, capital, dateDebut, duree, taux, baseCalcul, periodicite,
-                                                new String[]{tauxProrogation, dureeProrogation}, new ArrayList<>(suretes), amortissementsMap, idApplicant);
+        Obligation obligation = new Obligation(newId, new SimpleStringProperty(nom), isConvertible, capital, valeurNominale, dateDebut, duree, taux, baseCalcul, periodicite,
+                                                new String[]{tauxProrogation, dureeProrogation}, numeroIsin, new ArrayList<>(suretes), amortissementsMap, idApplicant);
         for (TupleStringLongBoolean souscripteur : souscripteursList) {
             System.out.println("Adding investor: " + souscripteur.getName());
             if (souscripteur.getName() != null && !souscripteur.getName().isEmpty() && souscripteur.getSelectionne()) {

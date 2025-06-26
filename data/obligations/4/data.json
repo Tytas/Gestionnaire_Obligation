@@ -1,14 +1,16 @@
 {
   "id" : 4,
   "name" : "bug123",
-  "convertible" : true,
+  "convertible" : false,
   "capital" : 10,
+  "valeurNominale" : 10,
   "startDate" : "2025-06-10",
   "durationMonths" : 10,
-  "rate" : [ 0, 0 ],
+  "rate" : [ 5, 5 ],
   "interestBase" : "Jour Réel/365",
   "periodicity" : "Mensuelle",
-  "prorogation" : [ "", "" ],
+  "prorogation" : [ "20", "12" ],
+  "isin" : "",
   "safeties" : [ "10", "coucou" ],
   "depreciations" : {
     "21-02-2025" : 1000
@@ -17,10 +19,6 @@
     "1" : 0,
     "2" : 0
   },
-  "replacements" : [ {
-    "date" : "15/06/2025",
-    "investorsSalersId" : { },
-    "investorsBuyersId" : { }
-  } ],
+  "replacements" : [ ],
   "applicantId" : 5
 }

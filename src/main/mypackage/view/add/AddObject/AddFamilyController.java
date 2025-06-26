@@ -191,7 +191,6 @@ public class AddFamilyController {
             boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
             boolean typeEntrepriseOK = validateField(typeEntrepriseField, typeEntrepriseErreurField, "text");
             boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
-            boolean nbApproovalOK = validateField(nbApproovalField, nbApproovalErreurField, "text");
             boolean alertMailOK = validateField(alertMailField, alertMailErreurField, "email");
 
             boolean numeroAdresseOK = validateField(numeroAdresseField, numeroAdresseErreurField, "text");
@@ -223,10 +222,6 @@ public class AddFamilyController {
 
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
             boolean residenceFiscaleDirigeantOK = validateField(residenceFiscaleDirigeantField, residenceFiscaleDirigeantErreurField, "text");
-            boolean numeroIdentificationDirigeantOK = validateField(numeroIdentificationDirigeantField, numeroIdentificationDirigeantErreurField, "text");
-
-            boolean bicOK = validateField(bicField, bicErreurField, "text");
-            boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
             boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
 
             // Vérification globale
@@ -237,8 +232,8 @@ public class AddFamilyController {
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
                 numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
                 paysAdresseDirigeantOK && complementAdresseDirigeantOK &&
-                fonctionDirigeantOK && residenceFiscaleDirigeantOK && numeroIdentificationDirigeantOK &&
-                bicOK && ibanOK && banqueOK && nbApproovalOK && alertMailOK;
+                fonctionDirigeantOK && residenceFiscaleDirigeantOK &&
+                banqueOK && alertMailOK;
 
             if (formulaireValide) {
                 String sexeDirigeant = ((RadioButton) sexeDirigeantToggleGroup.getSelectedToggle()).getText();

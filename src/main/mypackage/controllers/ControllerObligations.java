@@ -1,6 +1,7 @@
 package mypackage.controllers;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -32,6 +33,31 @@ public class ControllerObligations {
     private Label NameObligation;
     @FXML
     private Label capitalObligation;
+    @FXML
+    private Label PartObligation;
+    @FXML
+    private Label EmetteurObligation;
+    @FXML
+    private Label OS_OCAObligation;
+    @FXML
+    private Label ISINObligation;
+    @FXML
+    private Label DureeObligation;
+    @FXML
+    private Label DateDebutObligation;
+    @FXML
+    private Label DateFinObligation;
+    @FXML 
+    private Label TauxObligation;
+    @FXML
+    private Label NombreSouscripteurObligation;
+    @FXML
+    private Label ProrogationObligation;
+    @FXML
+    private Label DureeProrogationObligation;
+    @FXML
+    private Label TauxProrogationObligation;
+
     @FXML
     private TableView<Obligation> tableObligations;
     @FXML
@@ -88,10 +114,54 @@ public class ControllerObligations {
             // Update the person details in the label
             NameObligation.setText(oblig.getName());
             capitalObligation.setText(String.valueOf(oblig.getCapital()));
+            PartObligation.setText(String.valueOf(oblig.getValeurNominale()));
+            EmetteurObligation.setText(ApplicantInteractor.GetApplicant(oblig.getApplicantId()).getName());
+            if(oblig.getConvertible()) {
+                OS_OCAObligation.setText("OCA");
+            } else {
+                OS_OCAObligation.setText("Obligation Simple");
+            }
+            ISINObligation.setText(oblig.getIsin());
+            DureeObligation.setText(String.valueOf(oblig.getDurationMonths()+" mois"));
+            DateDebutObligation.setText(oblig.getStartDate());
+            LocalDate dateFin = LocalDate.parse(oblig.getStartDate()).plusMonths(oblig.getDurationMonths());
+            DateFinObligation.setText(dateFin.toString());
+            if(oblig.getRate()[0] != 0 && oblig.getRate()[1] != 0) {
+                TauxObligation.setText(String.valueOf(oblig.getRate()[1]) + "%" + " + " + String.valueOf(oblig.getRate()[0]) + "% INFINE");
+            } else {
+                TauxObligation.setText("Aucun Taux");
+                if(oblig.getRate()[0] != 0){
+                    TauxObligation.setText(String.valueOf(oblig.getRate()[0]) + "% INFINE");
+                } if(oblig.getRate()[1] != 0){
+                    TauxObligation.setText(String.valueOf(oblig.getRate()[1]) + "%");
+                }
+            }
+            NombreSouscripteurObligation.setText(String.valueOf(oblig.getInvestors().size()));
+            if(oblig.getProrogation()[0] == "") {
+                ProrogationObligation.setText("Aucune");
+                DureeProrogationObligation.setText("");
+                TauxProrogationObligation.setText("");
+            } else {
+                ProrogationObligation.setText("Oui");
+                DureeProrogationObligation.setText(oblig.getProrogation()[0]);
+                TauxProrogationObligation.setText(oblig.getProrogation()[1] +  "%");
+            }
         } else {
             // Clear the details if no person is selected
             NameObligation.setText("");
             capitalObligation.setText("");
+            PartObligation.setText("");
+            EmetteurObligation.setText("");
+            OS_OCAObligation.setText("");  
+            ISINObligation.setText("");
+            DureeObligation.setText("");
+            DateDebutObligation.setText("");
+            DateFinObligation.setText("");
+            TauxObligation.setText("");
+            NombreSouscripteurObligation.setText("");
+            ProrogationObligation.setText("");
+            DureeProrogationObligation.setText("");
+            TauxProrogationObligation.setText("");
         }
     }
 

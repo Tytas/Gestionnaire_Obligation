@@ -13,12 +13,14 @@ public class Obligation {
     private SimpleStringProperty name;
     private Boolean convertible; 
     private long capital;
+    private Integer valeurNominale;
     private String startDate;   
     private int durationMonths;
     private int[] rate = {0, 0}; // [In Fine, mensuelle]
     private String interestBase;
     private String periodicity;
-    private String[] prorogation; // ["Oui" or "Non", Durée de prorogation, nouveau taux]
+    private String[] prorogation; // [Durée de prorogation, nouveau taux]
+    private String isin; //[numero ISIN]
     private ArrayList<String> safeties = new ArrayList<>();
     private int ApplicantId;
     private Map<String, Integer> depreciations = new HashMap<>(); // Date -> Pourcentage
@@ -29,28 +31,32 @@ public class Obligation {
         this.name = new SimpleStringProperty("");
         this.convertible = false;
         this.capital = 0;
+        this.valeurNominale = 0;
         this.startDate = "";
         this.durationMonths = 0;
         this.rate = new int[]{0, 0};
         this.interestBase = "";
         this.periodicity = "";
-        this.prorogation = new String[]{"", "", ""};
+        this.prorogation = new String[]{"", ""};
+        this.isin = "";
         this.ApplicantId = -1;
     }
 
-    public Obligation(int id, SimpleStringProperty name, Boolean convertible, long capital, String startDate,
-                      int durationMonths, int[] rate, String interestBase, String periodicity,
-                      String[] prorogation, ArrayList<String> safeties, Map<String, Integer> depreciations, int applicantId) {
+    public Obligation(int id, SimpleStringProperty name, Boolean convertible, long capital, Integer valeurNominale,
+                      String startDate, int durationMonths, int[] rate, String interestBase, String periodicity,
+                      String[] prorogation, String isin, ArrayList<String> safeties, Map<String, Integer> depreciations, int applicantId) {
         this.id = id;
         this.name = name;
         this.convertible = convertible;
         this.capital = capital;
+        this.valeurNominale = valeurNominale;
         this.startDate = startDate;
         this.durationMonths = durationMonths;
         this.rate = rate;
         this.interestBase = interestBase;
         this.periodicity = periodicity;
         this.prorogation = prorogation;
+        this.isin = isin;
         this.safeties = safeties;
         this.depreciations = depreciations;
         this.ApplicantId = applicantId;
@@ -71,6 +77,9 @@ public class Obligation {
     public long getCapital() {
         return capital;
     }
+    public Integer getValeurNominale() {
+        return valeurNominale;
+    }
     public String getStartDate() {
         return startDate;
     }
@@ -88,6 +97,9 @@ public class Obligation {
     }
     public String[] getProrogation() {
         return prorogation;
+    }
+    public String getIsin() {
+        return isin;
     }
     public ArrayList<String> getSafeties() {
         return safeties;
@@ -120,6 +132,9 @@ public class Obligation {
     public void setcapital(long capital) {
         this.capital = capital;
     }
+    public void setValeurNominale(Integer valeurNominale) {
+        this.valeurNominale = valeurNominale;
+    }
     public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
@@ -137,6 +152,9 @@ public class Obligation {
     }
     public void setProrogation(String[] prorogation) {
         this.prorogation = prorogation;
+    }
+    public void setIsin(String isin) {
+        this.isin = isin;
     }
     public void setSafeties(ArrayList<String> safeties) {
         this.safeties = safeties;

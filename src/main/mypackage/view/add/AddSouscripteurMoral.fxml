@@ -44,7 +44,7 @@
     <RowConstraints maxHeight="46.20001220703125" minHeight="4.0" prefHeight="39.0" vgrow="SOMETIMES" />
   </rowConstraints>
   <children>
-    <Label text="Nom" />
+    <Label text="Raison Sociale" />
     <Label text="Ville" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="4" />
     <Label text="Rue" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
     <Label text="Date de création" GridPane.rowIndex="1" />
@@ -67,7 +67,7 @@
     <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="13" />
     <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="11" />
     <Label text="Pays" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-    <Label text="Numéro de registre" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" />
+    <Label text="Numéro RCS" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" />
     <Label text="Forme Juridique" GridPane.columnIndex="4" GridPane.rowIndex="1" />
     <Label text="Code Postal" GridPane.columnIndex="4" GridPane.rowIndex="3" />
     <Label text="Complément d'adresse" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="4" />
