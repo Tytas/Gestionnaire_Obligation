@@ -50,7 +50,7 @@
                         <Label text="Nombres de Souscripteurs" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                         <Label text="Prorogation :" wrapText="true" GridPane.rowIndex="6" />
                         <Label text="Emetteur" GridPane.columnIndex="2" />
-                        <Label text="Part" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label text="Nominal par titre" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                         <Label fx:id="EmetteurObligation" text="vide" GridPane.columnIndex="3" />
                         <Label fx:id="PartObligation" text="vide" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         <Label fx:id="DureeObligation" text="vide" GridPane.columnIndex="1" GridPane.rowIndex="3" />

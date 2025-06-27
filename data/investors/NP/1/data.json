@@ -2,7 +2,7 @@
   "id" : 1,
   "name" : "Dupond",
   "familyId" : 1,
-  "obligations" : [ 5, 3, 5, 5, 5, 5, 4, 5, 5, 5, 5, 2, 5, 4, 4 ],
+  "obligations" : [ 5, 3, 5, 5, 5, 5, 4, 5, 5, 5, 5, 2, 5, 4, 4, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5 ],
   "civility" : "M",
   "firstName" : "Jean",
   "nationality" : "FR",
