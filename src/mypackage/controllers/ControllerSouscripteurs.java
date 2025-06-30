@@ -142,7 +142,7 @@ public class ControllerSouscripteurs {
 
     private void addSouscripteurMoral() {
         try {
-            File fxmlFile = new File("src/main/mypackage/view/add/AddSouscripteurMoral.fxml");
+            File fxmlFile = new File("src/mypackage/view/add/AddSouscripteurMoral.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;
@@ -177,7 +177,7 @@ public class ControllerSouscripteurs {
 
     private void addSouscripteurPhysique() {
         try {
-            File fxmlFile = new File("src/main/mypackage/view/add/AddSouscripteurPhysique.fxml");
+            File fxmlFile = new File("src/mypackage/view/add/AddSouscripteurPhysique.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;
@@ -237,10 +237,10 @@ public class ControllerSouscripteurs {
                 File fxmlFile = null;
                 Boolean isInvestorLP = null;
                 if( selectedInvestor instanceof InvestorLP) {       
-                    fxmlFile = new File("src/main/mypackage/view/edit/EditSouscripteurMoral.fxml");
+                    fxmlFile = new File("src/mypackage/view/edit/EditSouscripteurMoral.fxml");
                     isInvestorLP = true;
                 } else if (selectedInvestor instanceof InvestorNP) {
-                    fxmlFile = new File("src/main/mypackage/view/edit/EditSouscripteurPhysique.fxml");
+                    fxmlFile = new File("src/mypackage/view/edit/EditSouscripteurPhysique.fxml");
                     isInvestorLP = false;
                 }
                 if (!fxmlFile.exists()) {

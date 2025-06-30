@@ -194,7 +194,7 @@ public class ControllerObligations {
     @FXML
     private void addObligation() {
         try {
-            File fxmlFile = new File("src/main/mypackage/view/add/AddObligation.fxml");
+            File fxmlFile = new File("src/mypackage/view/add/AddObligation.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;
@@ -231,7 +231,7 @@ public class ControllerObligations {
     private void editObligation() {
         if (selectedObligation != null) {
             try {
-                File fxmlFile = new File("src/main/mypackage/view/edit/EditObligation.fxml");
+                File fxmlFile = new File("src/mypackage/view/edit/EditObligation.fxml");
                 if (!fxmlFile.exists()) {
                     System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                     return;

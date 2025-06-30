@@ -29,8 +29,6 @@ public class ControllerHome {
     private Label rateWeightedAverageLabel;
     @FXML
     private Label remainDurationAverageLabel;
-    @FXML
-    private Label lastUpdateLabel;
 
     @FXML
     private ListView<String[]> couponListView = new ListView<>();
@@ -150,8 +148,10 @@ public class ControllerHome {
                 Label amountLabel = new Label();
                 Label obligationNameLabel = new Label();
                 Button buttonOuvrir = new Button("Ouvrir");
-                AnchorPane content = new AnchorPane(dateLabel, amountLabel, obligationNameLabel, buttonOuvrir);
+                Button buttonPDF = new Button("PDF");
+                AnchorPane content = new AnchorPane(dateLabel, amountLabel, obligationNameLabel, buttonPDF, buttonOuvrir);
                 AnchorPane.setRightAnchor(buttonOuvrir, 0.0);
+                AnchorPane.setRightAnchor(buttonPDF, 50.0);
                 AnchorPane.setLeftAnchor(dateLabel, 0.0);
                 AnchorPane.setLeftAnchor(amountLabel, 80.0);
                 AnchorPane.setLeftAnchor(obligationNameLabel, 150.0);
@@ -163,12 +163,19 @@ public class ControllerHome {
                     amountLabel.setText(" " + item[1] +  " €");
                     obligationNameLabel.setText(" " + item[2] +  " ");
                     buttonOuvrir.setOnAction(event -> {
-                    //CouponWindow.show(item);
+                        CouponWindow.show(item);
+                    });
+                    buttonPDF.setOnAction(event -> {
+                        ShowPDFCoupon(item);
                     });
                 }
                 setGraphic(content);
             }
         });
+    }
+
+    private void ShowPDFCoupon(String[] item) {
+        System.out.println("Showing PDF for coupon: " + item[0] + ", " + item[1] + ", " + item[2]);
     }
 
     public void getMainApp() {

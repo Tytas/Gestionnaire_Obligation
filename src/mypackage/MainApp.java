@@ -30,7 +30,7 @@ public class MainApp extends Application {
     public void initRootLayout() {
         try {
             // Load root layout from fxml file.
-            File fxmlFile = new File("src/main/mypackage/view/Menu.fxml");
+            File fxmlFile = new File("src/mypackage/view/Menu.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;

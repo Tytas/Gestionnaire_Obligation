@@ -99,7 +99,7 @@ public class ControllerEmetteurs {
     @FXML
     private void addApplicant() {
         try {
-            File fxmlFile = new File("src/main/mypackage/view/add/AddEmetteur.fxml");
+            File fxmlFile = new File("src/mypackage/view/add/AddEmetteur.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;
@@ -136,7 +136,7 @@ public class ControllerEmetteurs {
     private void editApplicant() {
         if (selectedApplicant != null) {
             try {
-                File fxmlFile = new File("src/main/mypackage/view/edit/EditEmetteur.fxml");
+                File fxmlFile = new File("src/mypackage/view/edit/EditEmetteur.fxml");
                 if (!fxmlFile.exists()) {
                     System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                     return;

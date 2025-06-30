@@ -1,9 +1,9 @@
 {
   "id" : 4,
   "name" : "bug123",
-  "convertible" : false,
+  "convertible" : true,
   "capital" : 2000000,
-  "valeurNominale" : 10,
+  "valeurNominale" : 50000,
   "startDate" : "2025-06-10",
   "durationMonths" : 24,
   "rate" : [ 5, 5 ],
@@ -16,8 +16,8 @@
     "21-02-2025" : 1000
   },
   "investors" : {
-    "1" : 0,
-    "2" : 0
+    "1" : 10,
+    "2" : 20
   },
   "replacements" : [ ],
   "applicantId" : 5

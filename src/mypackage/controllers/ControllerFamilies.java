@@ -117,7 +117,7 @@ public class ControllerFamilies {
     @FXML
     private void addFamily() {
         try {
-            File fxmlFile = new File("src/main/mypackage/view/add/AddFamily.fxml");
+            File fxmlFile = new File("src/mypackage/view/add/AddFamily.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;
@@ -154,7 +154,7 @@ public class ControllerFamilies {
     private void editFamily() {
         if (selectedFamily != null) {
             try {
-                File fxmlFile = new File("src/main/mypackage/view/edit/EditFamily.fxml");
+                File fxmlFile = new File("src/mypackage/view/edit/EditFamily.fxml");
                 if (!fxmlFile.exists()) {
                     System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                     return;

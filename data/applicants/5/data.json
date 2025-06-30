@@ -20,7 +20,7 @@
   "roleBoss" : "42",
   "bankName" : "42",
   "groupId" : 2,
-  "obligations" : [ 4, 4, 4, 4, 4, 4 ],
+  "obligations" : [ 4, 4, 4, 4, 4, 4, 4 ],
   "iban" : "42",
   "bic" : "24"
 }

@@ -29,7 +29,7 @@ public class ControllerMenu {
     private void handleMenuObligations() {
         try {
             // Load root layout from fxml file.
-            File fxmlFile = new File("src/main/mypackage/view/Obligations.fxml");
+            File fxmlFile = new File("src/mypackage/view/Obligations.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;
@@ -44,7 +44,7 @@ public class ControllerMenu {
     private void handleMenuFamilies() {
         try {
             // Load root layout from fxml file.
-            File fxmlFile = new File("src/main/mypackage/view/Families.fxml");
+            File fxmlFile = new File("src/mypackage/view/Families.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;
@@ -59,7 +59,7 @@ public class ControllerMenu {
     private void handleMenuSouscripteurs() {
         try {
             // Load root layout from fxml file.
-            File fxmlFile = new File("src/main/mypackage/view/Souscripteurs.fxml");
+            File fxmlFile = new File("src/mypackage/view/Souscripteurs.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;
@@ -74,7 +74,7 @@ public class ControllerMenu {
     private void handleMenuEmetteurs() {
         try {
             // Load root layout from fxml file.
-            File fxmlFile = new File("src/main/mypackage/view/Emetteur.fxml");
+            File fxmlFile = new File("src/mypackage/view/Emetteur.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;
@@ -90,7 +90,7 @@ public class ControllerMenu {
     private void handleMenuHome() {
         try {
             // Load root layout from fxml file.
-            File fxmlFile = new File("src/main/mypackage/view/Home.fxml");
+            File fxmlFile = new File("src/mypackage/view/Home.fxml");
             if (!fxmlFile.exists()) {
                 System.err.println("FXML file not found: " + fxmlFile.getAbsolutePath());
                 return;
