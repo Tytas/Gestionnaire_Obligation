@@ -2,7 +2,7 @@
   "id" : 1,
   "name" : "Dupont",
   "familyId" : 1,
-  "obligations" : [ 1 ],
+  "obligations" : [ 1, 1, 1 ],
   "civility" : "M",
   "firstName" : "Jean",
   "nationality" : "FR",
@@ -12,6 +12,6 @@
   "phoneNumber" : "0123456789",
   "address" : [ "1", "rue de la Paix", "95000", "Paris", "France", "" ],
   "bankName" : "LCL",
-  "bic" : "CRLIFRPP",
-  "iban" : "FR7612345678901234567890123"
+  "iban" : "FR7612345678901234567890123",
+  "bic" : "CRLIFRPP"
 }
