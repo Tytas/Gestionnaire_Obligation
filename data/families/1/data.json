@@ -4,9 +4,9 @@
   "registerNumber" : 123456789,
   "dateOfCreation" : "2023-10-01",
   "typeOfBusiness" : "Entreprise",
-  "legalStatus" : "CIF",
+  "legalStatus" : "SARL",
   "address" : [ "1", "rue de la Paix", "95000", "Paris", "France", "" ],
-  "civilityBoss" : "M.",
+  "civilityBoss" : "M",
   "nameBoss" : "Dupont",
   "firstNameBoss" : "Jean",
   "nationalityBoss" : "FR",
@@ -20,9 +20,9 @@
   "roleBoss" : "Directeur",
   "bankName" : "LCL",
   "nbAprooval" : "1",
-  "contacts" : [ [ "giselle", "giselle", "giselle.giselle@gmail.com", "0606060606" ] ],
+  "contacts" : [ ],
   "alertMail" : "boss@gmail.com",
-  "investors" : [ ],
+  "investors" : [ 1, 2 ],
   "bic" : "CRLIFRPP",
   "iban" : "FR7612345678901234567890123"
 }

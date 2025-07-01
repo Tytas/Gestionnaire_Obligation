@@ -2,8 +2,8 @@
   "id" : 2,
   "name" : "Dupont",
   "familyId" : 1,
-  "obligations" : [ 5, 5, 5, 4, 5, 5, 5, 5, 5, 4, 4, 1, 4, 5, 1, 4, 5, 4 ],
-  "civility" : "M.",
+  "obligations" : [ 1 ],
+  "civility" : "M",
   "firstName" : "Louis",
   "nationality" : "FR",
   "dateOfBirth" : "1985-01-01",
@@ -12,6 +12,6 @@
   "phoneNumber" : "0123456789",
   "address" : [ "1", "rue de la Paix", "95000", "Paris", "France", "" ],
   "bankName" : "LCL",
-  "iban" : "FR7612345678901234567890123",
-  "bic" : "CRLIFRPP"
+  "bic" : "CRLIFRPP",
+  "iban" : "FR7612345678901234567890123"
 }
