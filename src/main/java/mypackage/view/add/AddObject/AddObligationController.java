@@ -535,7 +535,17 @@ public class AddObligationController {
         }
         ObligationInteractor.SaveObligation(obligation);
         Applicant newApplicant = ApplicantInteractor.GetApplicant(idApplicant);
-        newApplicant.addObligation(obligation.getId());
+        Boolean obligationExists = false;
+        for (Integer obligationId : newApplicant.getObligations()) {
+            if (obligationId == obligation.getId()) {
+                System.out.println("Obligation already exists for applicant: " + newApplicant.getName());
+                obligationExists = true;
+                break;
+            }
+        }
+        if (!obligationExists) {
+            newApplicant.addObligation(obligation.getId());
+        }
         ApplicantInteractor.DeleteApplicant(idApplicant);
         ApplicantInteractor.SaveApplicant(newApplicant);
 
@@ -544,7 +554,17 @@ public class AddObligationController {
                 int idInvestor = InvestorInteractor.GetInvestorByName(souscripteur.getName());
                 if (idInvestor != -1) {
                     Investor newInvestor = InvestorInteractor.GetInvestor(idInvestor);
-                    newInvestor.addObligation(obligation.getId());
+                    Boolean obligationInInvestor = false;
+                    for (Integer obligationId : newInvestor.getObligations()) {
+                        if (obligationId == obligation.getId()) {
+                            System.out.println("Obligation already exists for investor: " + newInvestor.getName());
+                            obligationInInvestor = true;
+                            break;
+                        }
+                    }
+                    if (!obligationInInvestor) {
+                        newInvestor.addObligation(obligation.getId());
+                    }
                     InvestorInteractor.DeleteInvestor(idInvestor);
                     InvestorInteractor.SaveInvestor(newInvestor);
                 }

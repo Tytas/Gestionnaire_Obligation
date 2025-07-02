@@ -10,13 +10,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ListView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mypackage.MainApp;
 import mypackage.model.Family;
+import mypackage.model.Investor;
 import mypackage.model.DataBaseInteractor.*;
 import mypackage.view.add.AddObject.AddFamilyController;
 import mypackage.view.edit.EditObject.EditFamilyController;
@@ -32,6 +36,8 @@ public class ControllerFamilies {
     private Label capitalFamily;
     @FXML
     private TableView<Family> tableFamily;
+    @FXML
+    private ListView<Investor> listViewInvestor;
     @FXML
     private TableColumn<Family, String> listFamName;
     @FXML
@@ -85,6 +91,33 @@ public class ControllerFamilies {
 
     private void displayFamily(Family fam) {
         this.selectedFamily = fam;
+
+        ObservableList<Investor> investors = FXCollections.observableArrayList();
+        if (fam != null) {
+            for (Integer investorId : fam.getInvestors()) {
+                Investor investor = InvestorInteractor.GetInvestor(investorId);
+                if (investor != null) {
+                    investors.add(investor);
+                }
+            }
+        }
+        listViewInvestor.getItems().clear();
+        listViewInvestor.setItems(investors);
+        listViewInvestor.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Investor item, boolean empty) {
+                super.updateItem(item, empty);
+                Label nameField = new Label();
+                HBox content = new HBox(10, nameField);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    nameField.setText(item.getName());
+                    setGraphic(content);
+                }
+            }
+        });
+
         if(fam != null) {
             // Update the person details in the label
             NameFamily.setText(fam.getName());

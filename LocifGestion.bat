@@ -6,24 +6,5 @@ REM =============================================
 
 cd /d "%~dp0"
 
-REM Vérification rapide
-echo.
-echo ==========================================
-echo    LOCIF GESTION - DEMARRAGE
-echo ==========================================
-echo.
-
-REM Lancer directement l'application avec Maven
-echo Lancement de l'application...
-mvn clean compile
-echo.
+REM Lancer l'application JavaFX
 mvn javafx:run
-
-echo.
-echo ==========================================
-echo    APPLICATION FERMEE
-echo ==========================================
-echo.
-timeout /t 3
-
-exit

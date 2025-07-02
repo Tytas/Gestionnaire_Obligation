@@ -14,9 +14,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ListView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mypackage.MainApp;
@@ -37,6 +40,12 @@ public class ControllerSouscripteurs {
 
     @FXML
     private Label NameInvestor;
+    @FXML
+    private Label NameIBAN;
+    @FXML
+    private Label NameBIC;
+    @FXML
+    private ListView<Obligation> listViewObligation;
     @FXML
     private TableView<Investor> tableInvestors;
     @FXML
@@ -95,12 +104,48 @@ public class ControllerSouscripteurs {
 
     private void displayInvestor(Investor investor) {
         this.selectedInvestor = investor;
+        ObservableList<Obligation> obligations = FXCollections.observableArrayList();
+        if (investor != null) {
+            for (Integer obligationId : investor.getObligations()) {
+                Obligation obligation = ObligationInteractor.GetObligation(obligationId);
+                if (obligation != null) {
+                    obligations.add(obligation);
+                }
+            }
+        }
+        listViewObligation.getItems().clear();
+        listViewObligation.setItems(obligations);
+        listViewObligation.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Obligation item, boolean empty) {
+                super.updateItem(item, empty);
+                Label nameField = new Label();
+                Label montantField = new Label();
+                HBox content = new HBox(10, nameField, montantField);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    nameField.setText(item.getName());
+                    montantField.setText(String.valueOf(item.getInvestorCapital(investor.getId())));
+                    setGraphic(content);
+                }
+            }
+        });
+
         if (investor instanceof InvestorNP) {
-            String name = ((InvestorNP) investor).getName();
+            String name = investor.getName() + " " + ((InvestorNP) investor).getFirstName();
             NameInvestor.setText(name);
+            String iban = ((InvestorNP) investor).getIBAN();
+            NameIBAN.setText(iban);
+            String bic = ((InvestorNP) investor).getBIC();
+            NameBIC.setText(bic);
         } else if (investor instanceof InvestorLP) {
             String name = ((InvestorLP) investor).getName();
             NameInvestor.setText(name);
+            String iban = ((InvestorLP) investor).getIBAN();
+            NameIBAN.setText(iban);
+            String bic = ((InvestorLP) investor).getBIC();
+            NameBIC.setText(bic);
         } else {
             // Clear the details if no person is selected
             NameInvestor.setText("");

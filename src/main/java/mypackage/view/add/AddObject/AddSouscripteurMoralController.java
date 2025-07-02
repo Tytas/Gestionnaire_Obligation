@@ -399,7 +399,17 @@ public class AddSouscripteurMoralController {
         int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
         investorlp.setFamilyId(familyIdSelected);
         Family family = FamilyInteractor.GetFamily(familyIdSelected);
-        family.addInvestor(newId);
+        Boolean isInFamily = false;
+        for(Integer investors : family.getInvestors()) {
+            if(investors.equals(newId)) {
+                System.out.println("Investor already exists in family.");
+                isInFamily = true;
+                break;
+            }
+        }
+        if(!isInFamily) {
+            family.addInvestor(newId);
+        }
         FamilyInteractor.DeleteFamily(familyIdSelected);
         FamilyInteractor.SaveFamily(family);
         InvestorInteractor.SaveInvestorLP(investorlp);

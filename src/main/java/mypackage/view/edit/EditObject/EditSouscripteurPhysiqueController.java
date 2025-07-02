@@ -358,11 +358,28 @@ public class EditSouscripteurPhysiqueController {
         for (String[] obligation : allObligations) {
             if (Boolean.parseBoolean(obligation[1])) {
                 System.out.println(ObligationInteractor.GetObligationByName(obligation[0]).getId());
-                investorNP.addObligation(ObligationInteractor.GetObligationByName(obligation[0]).getId());
+                int obligationId = ObligationInteractor.GetObligationByName(obligation[0]).getId();
+                
+                // Vérification que l'obligation n'existe pas déjà dans l'investor
+                if (!investorNP.getObligations().contains(obligationId)) {
+                    investorNP.addObligation(obligationId);
+                } else {
+                    System.out.println("Obligation " + obligationId + " already exists in investor " + id);
+                }
+                
                 int idObligation = ObligationInteractor.GetObligationByName(obligation[0]).getId();
                 if (idObligation != -1) {
                     Obligation newObligation = ObligationInteractor.GetObligation(idObligation);
-                    newObligation.addInvestor(id, 10l);
+                    
+                    // Vérification que l'investisseur avec ce montant n'existe pas déjà dans l'obligation
+                    Long defaultAmount = 10L;
+                    if (newObligation.getInvestors().containsKey(id) && 
+                        newObligation.getInvestors().get(id).equals(defaultAmount)) {
+                        System.out.println("Investor " + id + " with amount " + defaultAmount + " already exists in obligation " + idObligation);
+                    } else {
+                        newObligation.addInvestor(id, defaultAmount);
+                    }
+                    
                     ObligationInteractor.DeleteObligation(idObligation);
                     ObligationInteractor.SaveObligation(newObligation);
                 }
@@ -373,7 +390,14 @@ public class EditSouscripteurPhysiqueController {
         System.out.println("Family ID selected: " + familyIdSelected);
         investorNP.setFamilyId(familyIdSelected);
         Family family = FamilyInteractor.GetFamily(familyIdSelected);
-        family.addInvestor(id);
+        
+        // Vérification que l'investisseur n'existe pas déjà dans la famille
+        if (!family.getInvestors().contains(id)) {
+            family.addInvestor(id);
+        } else {
+            System.out.println("Investor " + id + " already exists in family " + familyIdSelected);
+        }
+        
         FamilyInteractor.DeleteFamily(familyIdSelected);
         FamilyInteractor.SaveFamily(family);
 

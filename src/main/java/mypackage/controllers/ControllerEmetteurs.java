@@ -10,14 +10,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ListView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mypackage.MainApp;
 import mypackage.model.Applicant;
 import mypackage.model.Group;
+import mypackage.model.Obligation;
 import mypackage.model.DataBaseInteractor.ApplicantInteractor;
 import mypackage.model.DataBaseInteractor.GroupInteractor;
 import mypackage.model.DataBaseInteractor.ObligationInteractor;
@@ -33,6 +37,8 @@ public class ControllerEmetteurs {
     private Label NameApplicant;
     @FXML
     private Label capitalApplicant;
+    @FXML
+    private ListView<Obligation> listViewObligation;
     @FXML
     private TableView<Applicant> tableApplicants;
     @FXML
@@ -84,11 +90,38 @@ public class ControllerEmetteurs {
         return ids;
     }   
 
-    private void displayApplicant(Applicant Applicant) {
-        this.selectedApplicant = Applicant;
-        if(Applicant != null) {
+    private void displayApplicant(Applicant applicant) {
+        this.selectedApplicant = applicant;
+
+        ObservableList<Obligation> obligations = FXCollections.observableArrayList();
+        if (applicant != null) {
+            for (Integer obligationId : applicant.getObligations()) {
+                Obligation obligation = ObligationInteractor.GetObligation(obligationId);
+                if (obligation != null) {
+                    obligations.add(obligation);
+                }
+            }
+        }
+        listViewObligation.getItems().clear();
+        listViewObligation.setItems(obligations);
+        listViewObligation.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Obligation item, boolean empty) {
+                super.updateItem(item, empty);
+                Label nameField = new Label();
+                HBox content = new HBox(10, nameField);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    nameField.setText(item.getName());
+                    setGraphic(content);
+                }
+            }
+        });
+
+        if(applicant != null) {
             // Update the person details in the label
-            NameApplicant.setText(Applicant.getName());
+            NameApplicant.setText(applicant.getName());
         } else {
             // Clear the details if no person is selected
             NameApplicant.setText("");

@@ -371,8 +371,24 @@ public class EditFamilyController {
         if(contacts != null) {
             for (String[] contact : contacts) {
                 if (contact != null && contact.length >= 4) {
-                    family.addContacts(contact);
-                    System.out.println("Contact added: " + contact[0] + " " + contact[1] + ", Email: " + contact[2] + ", Phone: " + contact[3]);
+                    // Vérification que le contact n'existe pas déjà
+                    boolean contactExists = false;
+                    for (String[] existingContact : family.getContacts()) {
+                        if (existingContact.length >= 4 && 
+                            existingContact[0].equals(contact[0]) && 
+                            existingContact[1].equals(contact[1]) && 
+                            existingContact[2].equals(contact[2]) && 
+                            existingContact[3].equals(contact[3])) {
+                            contactExists = true;
+                            System.out.println("Contact " + contact[0] + " " + contact[1] + " already exists");
+                            break;
+                        }
+                    }
+                    
+                    if (!contactExists) {
+                        family.addContacts(contact);
+                        System.out.println("Contact added: " + contact[0] + " " + contact[1] + ", Email: " + contact[2] + ", Phone: " + contact[3]);
+                    }
                 } else {
                     System.out.println("Invalid contact data: " + (contact != null ? String.join(", ", contact) : "null"));
                 }

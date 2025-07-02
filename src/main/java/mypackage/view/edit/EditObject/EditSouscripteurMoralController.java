@@ -450,11 +450,28 @@ public class EditSouscripteurMoralController {
         for (String[] obligation : allObligations) {
             if (Boolean.parseBoolean(obligation[1])) {
                 System.out.println(ObligationInteractor.GetObligationByName(obligation[0]).getId());
-                investorlp.addObligation(ObligationInteractor.GetObligationByName(obligation[0]).getId());
+                int obligationId = ObligationInteractor.GetObligationByName(obligation[0]).getId();
+                
+                // Vérification que l'obligation n'existe pas déjà dans l'investor
+                if (!investorlp.getObligations().contains(obligationId)) {
+                    investorlp.addObligation(obligationId);
+                } else {
+                    System.out.println("Obligation " + obligationId + " already exists in investor " + Id);
+                }
+                
                 int idObligation = ObligationInteractor.GetObligationByName(obligation[0]).getId();
                 if (idObligation != -1) {
                     Obligation newObligation = ObligationInteractor.GetObligation(idObligation);
-                    newObligation.addInvestor(Id, 10l);
+                    
+                    // Vérification que l'investisseur avec ce montant n'existe pas déjà dans l'obligation
+                    Long defaultAmount = 10L;
+                    if (newObligation.getInvestors().containsKey(Id) && 
+                        newObligation.getInvestors().get(Id).equals(defaultAmount)) {
+                        System.out.println("Investor " + Id + " with amount " + defaultAmount + " already exists in obligation " + idObligation);
+                    } else {
+                        newObligation.addInvestor(Id, defaultAmount);
+                    }
+                    
                     ObligationInteractor.DeleteObligation(idObligation);
                     ObligationInteractor.SaveObligation(newObligation);
                 }
@@ -463,7 +480,14 @@ public class EditSouscripteurMoralController {
         int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
         investorlp.setFamilyId(familyIdSelected);
         Family family = FamilyInteractor.GetFamily(familyIdSelected);
-        family.addInvestor(Id);
+        
+        // Vérification que l'investisseur n'existe pas déjà dans la famille
+        if (!family.getInvestors().contains(Id)) {
+            family.addInvestor(Id);
+        } else {
+            System.out.println("Investor " + Id + " already exists in family " + familyIdSelected);
+        }
+        
         FamilyInteractor.DeleteFamily(familyIdSelected);
         FamilyInteractor.SaveFamily(family);
         

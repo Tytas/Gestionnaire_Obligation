@@ -678,7 +678,16 @@ public class EditObligationController {
                     System.out.println("Investor not found: " + souscripteur.getName());
                     continue; // Skip this investor if not found
                 }
-                obligation.addInvestor(idInvestor, Long.valueOf(souscripteur.getCapital()));
+                
+                // Vérification que l'investisseur avec ce montant n'existe pas déjà
+                Long currentCapital = Long.valueOf(souscripteur.getCapital());
+                if (obligation.getInvestors().containsKey(idInvestor) && 
+                    obligation.getInvestors().get(idInvestor).equals(currentCapital)) {
+                    System.out.println("Investor " + souscripteur.getName() + " with amount " + currentCapital + " already exists in obligation");
+                    continue; // Skip this investor if already exists with same amount
+                }
+                
+                obligation.addInvestor(idInvestor, currentCapital);
             }
         }
         System.out.println(cessions + " cessions to process.");
@@ -703,13 +712,35 @@ public class EditObligationController {
                     }
                 }
                 Replacement replacement = new Replacement(cession.getDate(), vendeurs, acheteurs);
-                obligation.addReplacement(replacement);
+                
+                // Vérification que le replacement n'existe pas déjà
+                boolean replacementExists = false;
+                for (Replacement existingReplacement : obligation.getReplacements()) {
+                    if (existingReplacement.getDate().equals(replacement.getDate()) &&
+                        existingReplacement.getInvestorsSalersId().equals(replacement.getInvestorsSalersId()) &&
+                        existingReplacement.getInvestorsBuyersId().equals(replacement.getInvestorsBuyersId())) {
+                        replacementExists = true;
+                        System.out.println("Replacement for date " + replacement.getDate() + " with same sellers and buyers already exists");
+                        break;
+                    }
+                }
+                
+                if (!replacementExists) {
+                    obligation.addReplacement(replacement);
+                }
             }
         }
         ObligationInteractor.DeleteObligation(obligation.getId());
         ObligationInteractor.SaveObligation(obligation);
         Applicant newApplicant = ApplicantInteractor.GetApplicant(idApplicant);
-        newApplicant.addObligation(obligation.getId());
+        
+        // Vérification que l'obligation n'existe pas déjà dans l'applicant
+        if (!newApplicant.getObligations().contains(obligation.getId())) {
+            newApplicant.addObligation(obligation.getId());
+        } else {
+            System.out.println("Obligation " + obligation.getId() + " already exists in applicant " + idApplicant);
+        }
+        
         ApplicantInteractor.DeleteApplicant(idApplicant);
         ApplicantInteractor.SaveApplicant(newApplicant);
 
@@ -718,9 +749,16 @@ public class EditObligationController {
                 int idInvestor = InvestorInteractor.GetInvestorByName(souscripteur.getName());
                 if (idInvestor != -1) {
                     Investor newInvestor = InvestorInteractor.GetInvestor(idInvestor);
-                    newInvestor.addObligation(obligation.getId());
+                    
+                    // Vérification que l'obligation n'existe pas déjà dans l'investor
+                    if (!newInvestor.getObligations().contains(obligation.getId())) {
+                        newInvestor.addObligation(obligation.getId());
+                    } else {
+                        System.out.println("Obligation " + obligation.getId() + " already exists in investor " + idInvestor);
+                    }
+                    
                     InvestorInteractor.DeleteInvestor(idInvestor);
-                InvestorInteractor.SaveInvestor(newInvestor);
+                    InvestorInteractor.SaveInvestor(newInvestor);
                 }
             }
         }
