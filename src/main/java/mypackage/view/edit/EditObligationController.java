@@ -1,4 +1,4 @@
-package mypackage.view.edit.EditObject;
+package mypackage.view.edit;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

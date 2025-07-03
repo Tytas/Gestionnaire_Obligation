@@ -22,8 +22,8 @@ import mypackage.MainApp;
 import mypackage.model.Family;
 import mypackage.model.Investor;
 import mypackage.model.DataBaseInteractor.*;
-import mypackage.view.add.AddObject.AddFamilyController;
-import mypackage.view.edit.EditObject.EditFamilyController;
+import mypackage.view.add.AddFamilyController;
+import mypackage.view.edit.EditFamilyController;
 import mypackage.view.util.ConfirmWindow;
 
 

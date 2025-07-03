@@ -12,14 +12,14 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="600.0" minWidth="800.0" prefHeight="768.0" prefWidth="1024.0" styleClass="content-container" stylesheets="@../../styles/modern-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mypackage.controllers.ControllerObligations">
+<AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="600.0" minWidth="800.0" prefHeight="768.0" prefWidth="1024.0" styleClass="content-container" stylesheets="@../../styles/main-pages-styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mypackage.controllers.ControllerObligations">
    <children>
       <SplitPane dividerPositions="0.5752005347593582" prefHeight="768.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="main-grid">
                <children>
                   <Label layoutX="199.0" layoutY="34.0" styleClass="subtitle" text="Obligation Details" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-                  <GridPane layoutX="6.4" layoutY="30.4" prefHeight="300.0" prefWidth="332.0" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="30.0">
+                  <GridPane layoutX="20.0" layoutY="71.4" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="71.4">
                     <columnConstraints>
                       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="78.20001220703125" minWidth="10.0" prefWidth="75.1999755859375" />
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.60003662109375" minWidth="10.0" prefWidth="87.6000244140625" />
@@ -37,12 +37,12 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Nom" />
-                        <Label fx:id="NameObligation" text="vide" GridPane.columnIndex="1" />
-                        <Label text="capital" GridPane.rowIndex="1" />
-                        <Label fx:id="capitalObligation" text="vide" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Durée" GridPane.rowIndex="3" />
-                        <Label text="Nouveau Taux" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                        <Label styleClass="row-separator" text="Nom" />
+                        <Label fx:id="NameObligation" styleClass="row-separator" text="vide" GridPane.columnIndex="1" />
+                        <Label styleClass="row-separator" text="capital" GridPane.rowIndex="1" />
+                        <Label fx:id="capitalObligation" styleClass="row-separator" text="vide" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label styleClass="row-separator" text="Durée" GridPane.rowIndex="3" />
+                        <Label styleClass="row-separator" text="Nouveau Taux" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="7" />
                         <Label text="Date de Début" wrapText="true" GridPane.rowIndex="4" />
                         <Label text="Date de Fin" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                         <Label text="Taux" GridPane.rowIndex="5" />
@@ -70,17 +70,18 @@
                         <Insets />
                      </opaqueInsets>
                   </GridPane>
-                  <ButtonBar layoutX="94.0" layoutY="234.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                  <ButtonBar layoutX="94.0" layoutY="234.0" prefHeight="40.0" prefWidth="410.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0">
                     <buttons>
-                        <Button mnemonicParsing="false" onAction="#editObligation" styleClass="button-warning" text="Modifier" />
-                        <Button mnemonicParsing="false" onAction="#deleteObligation" styleClass="button-danger" text="Supprimer" />
+                        <Button mnemonicParsing="false" onAction="#consultObligation" text="Consulter" />
+                        <Button mnemonicParsing="false" onAction="#editObligation" text="Modifier" />
+                        <Button mnemonicParsing="false" onAction="#deleteObligation" text="Supprimer" />
                     </buttons>
                   </ButtonBar>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView fx:id="tableObligations" layoutX="-17.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" styleClass="table-view" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="tableObligations" layoutX="-17.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" styleClass="compact-table" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
                       <TableColumn fx:id="listObligName" prefWidth="232.80005186796188" text="Liste Obligations" />
                       <TableColumn fx:id="listObligId" prefWidth="62.39988708496094" text="Id" />
@@ -89,7 +90,7 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <Button mnemonicParsing="false" onAction="#addObligation" styleClass="button-success" text="Nouveau" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                  <Button mnemonicParsing="false" onAction="#addObligation" text="Nouveau" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                </children>
             </AnchorPane>
         </items>

@@ -1,5 +1,6 @@
-package mypackage.view.add.AddObject;
+package mypackage.view.edit;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -27,8 +28,9 @@ import mypackage.model.DataBaseInteractor.InvestorInteractor;
 import mypackage.model.DataBaseInteractor.ObligationInteractor;
 import mypackage.model.DataBaseInteractor.FamilyInteractor;
 
-public class AddSouscripteurMoralController {
+public class EditSouscripteurMoralController {
     private boolean result = false;
+    private InvestorLP currentSouscripteur;
 
     @FXML
     private TextField nomField;
@@ -166,11 +168,73 @@ public class AddSouscripteurMoralController {
         return familyListView;
     }
 
-    public AddSouscripteurMoralController() {
+    public EditSouscripteurMoralController() {
         // Constructor logic if needed
     }
 
-    
+    public void initData(InvestorLP souscripteur) {
+        this.currentSouscripteur = souscripteur;
+        // Set default values for the fields if currentObligation is not null
+        System.out.println("Initializing EditEmetteurController with current emetteur: " + currentSouscripteur);
+        if (currentSouscripteur != null) {
+            nomField.setText(currentSouscripteur.getName());
+            numRegistreField.setText(String.valueOf(currentSouscripteur.getRegisterNumber()));
+            dateCreationField.setValue(LocalDate.parse(currentSouscripteur.getDateOfCreation()));
+            typeEntrepriseField.setText(currentSouscripteur.getTypeOfBusiness());
+            formeJuridiqueComboBox.setValue(currentSouscripteur.getLegalStatus());
+            numeroAdresseField.setText(currentSouscripteur.getAddress()[0]);
+            rueAdresseField.setText(currentSouscripteur.getAddress()[1]);
+            codePostalAdresseField.setText(currentSouscripteur.getAddress()[2]);
+            villeAdresseField.setText(currentSouscripteur.getAddress()[3]);
+            paysAdresseField.setText(currentSouscripteur.getAddress()[4]);
+            complementAdresseField.setText(currentSouscripteur.getAddress()[5]);
+            if (currentSouscripteur.getCivilityBoss() != null) {
+                if( currentSouscripteur.getCivilityBoss().equals("M.")) {
+                    sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(0)); // Monsieur
+                } else if (currentSouscripteur.getCivilityBoss().equals("Mme.")) {
+                    sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(1)); // Madame
+                } else {
+                    sexeDirigeantToggleGroup.selectToggle(null); // Aucun
+                }
+            }
+            nomDirigeantField.setText(currentSouscripteur.getNameBoss());
+            prenomDirigeantField.setText(currentSouscripteur.getFirstNameBoss());
+            nationaliteDirigeantComboBox.setValue(currentSouscripteur.getNationalityBoss());
+            dateNaissanceDirigeantField.setValue(LocalDate.parse(currentSouscripteur.getDateOfBirthBoss()));
+            lieuNaissanceDirigeantField.setText(currentSouscripteur.getPlaceOfBirthBoss());
+            emailDirigeantField.setText(currentSouscripteur.getEmailBoss());
+            telephoneDirigeantField.setText(currentSouscripteur.getPhoneNumberBoss());
+            numeroAdresseDirigeantField.setText(currentSouscripteur.getAddressBoss()[0]);
+            rueAdresseDirigeantField.setText(currentSouscripteur.getAddressBoss()[1]);
+            codePostalAdresseDirigeantField.setText(currentSouscripteur.getAddressBoss()[2]);
+            villeAdresseDirigeantField.setText(currentSouscripteur.getAddressBoss()[3]);
+            paysAdresseDirigeantField.setText(currentSouscripteur.getAddressBoss()[4]);
+            complementAdresseDirigeantField.setText(currentSouscripteur.getAddressBoss()[5]);
+            fonctionDirigeantField.setText(currentSouscripteur.getRoleBoss());
+            residenceFiscaleDirigeantField.setText(currentSouscripteur.getFiscalcountryBoss());
+            numeroIdentificationDirigeantField.setText(currentSouscripteur.getTaxIdNumberBoss());
+            bicField.setText(currentSouscripteur.getBIC());
+            ibanField.setText(currentSouscripteur.getIBAN());
+            banqueField.setText(currentSouscripteur.getBankName());
+            for(String[] obligation : filteredObligations) {
+                for(int id : souscripteur.getObligations()) {
+                    if (obligation[0].equalsIgnoreCase(ObligationInteractor.GetObligation(id).getName())) {
+                        obligation[1] = "true"; // Mark as selected
+                        //obligationListView.getSelectionModel().select(obligation);
+                    }
+                }
+            }
+            for (int i = 0; i < familyListView.getItems().size(); i++) {
+                if (familyListView.getItems().get(i).equals(FamilyInteractor.GetFamily(currentSouscripteur.getFamilyId()).getName())) {
+                    familyListView.getSelectionModel().select(i);
+                    selectedFamily = familyListView.getItems().get(i);
+                    break;
+                }
+            }
+        }
+    }
+
+
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
         formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SA", "SAS"));
@@ -288,7 +352,7 @@ public class AddSouscripteurMoralController {
 
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
             boolean residenceFiscaleDirigeantOK = validateField(residenceFiscaleDirigeantField, residenceFiscaleDirigeantErreurField, "text");
-           
+            
             boolean bicOK = validateField(bicField, bicErreurField, "text");
             boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
             boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
@@ -317,7 +381,7 @@ public class AddSouscripteurMoralController {
 
             if (formulaireValide) {
                 String sexeDirigeant = ((RadioButton) sexeDirigeantToggleGroup.getSelectedToggle()).getText();
-                CreateInvestorLP(
+                EditInvestorLP(
                     new SimpleStringProperty(nomField.getText().trim()),
                     Integer.parseInt(numRegistreField.getText().trim()),
                     dateCreationField.getValue().toString(),
@@ -353,7 +417,7 @@ public class AddSouscripteurMoralController {
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
                     banqueField.getText().trim(),
-                    FamilyInteractor.GetFamilyByName(selectedFamily) // Assuming selectedFamily is not null
+                    FamilyInteractor.GetFamilyByName(selectedFamily)
                 );
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
@@ -369,14 +433,14 @@ public class AddSouscripteurMoralController {
         });
     }
 
-    private void CreateInvestorLP(SimpleStringProperty name, int registerNumber, String dateOfCreation,
+    private void EditInvestorLP(SimpleStringProperty name, int registerNumber, String dateOfCreation,
                     String typeOfBusiness, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
                     String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
                     String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int familyId) {
-        int newId = InvestorInteractor.generateNewId();
-        InvestorLP investorlp = new InvestorLP(newId, name, registerNumber, dateOfCreation,
+        int Id = currentSouscripteur.getId();
+        InvestorLP investorlp = new InvestorLP(Id, name, registerNumber, dateOfCreation,
                 typeOfBusiness, legalStatus, address,
                 civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
                 dateOfBirthBoss, placeOfBirthBoss,
@@ -386,11 +450,28 @@ public class AddSouscripteurMoralController {
         for (String[] obligation : allObligations) {
             if (Boolean.parseBoolean(obligation[1])) {
                 System.out.println(ObligationInteractor.GetObligationByName(obligation[0]).getId());
-                investorlp.addObligation(ObligationInteractor.GetObligationByName(obligation[0]).getId());
+                int obligationId = ObligationInteractor.GetObligationByName(obligation[0]).getId();
+                
+                // Vérification que l'obligation n'existe pas déjà dans l'investor
+                if (!investorlp.getObligations().contains(obligationId)) {
+                    investorlp.addObligation(obligationId);
+                } else {
+                    System.out.println("Obligation " + obligationId + " already exists in investor " + Id);
+                }
+                
                 int idObligation = ObligationInteractor.GetObligationByName(obligation[0]).getId();
                 if (idObligation != -1) {
                     Obligation newObligation = ObligationInteractor.GetObligation(idObligation);
-                    newObligation.addInvestor(newId, 10l);
+                    
+                    // Vérification que l'investisseur avec ce montant n'existe pas déjà dans l'obligation
+                    Long defaultAmount = 10L;
+                    if (newObligation.getInvestors().containsKey(Id) && 
+                        newObligation.getInvestors().get(Id).equals(defaultAmount)) {
+                        System.out.println("Investor " + Id + " with amount " + defaultAmount + " already exists in obligation " + idObligation);
+                    } else {
+                        newObligation.addInvestor(Id, defaultAmount);
+                    }
+                    
                     ObligationInteractor.DeleteObligation(idObligation);
                     ObligationInteractor.SaveObligation(newObligation);
                 }
@@ -399,19 +480,18 @@ public class AddSouscripteurMoralController {
         int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
         investorlp.setFamilyId(familyIdSelected);
         Family family = FamilyInteractor.GetFamily(familyIdSelected);
-        Boolean isInFamily = false;
-        for(Integer investors : family.getInvestors()) {
-            if(investors.equals(newId)) {
-                System.out.println("Investor already exists in family.");
-                isInFamily = true;
-                break;
-            }
+        
+        // Vérification que l'investisseur n'existe pas déjà dans la famille
+        if (!family.getInvestors().contains(Id)) {
+            family.addInvestor(Id);
+        } else {
+            System.out.println("Investor " + Id + " already exists in family " + familyIdSelected);
         }
-        if(!isInFamily) {
-            family.addInvestor(newId);
-        }
+        
         FamilyInteractor.DeleteFamily(familyIdSelected);
         FamilyInteractor.SaveFamily(family);
+        
+        InvestorInteractor.DeleteInvestorLP(currentSouscripteur.getId());
         InvestorInteractor.SaveInvestorLP(investorlp);
     }
 

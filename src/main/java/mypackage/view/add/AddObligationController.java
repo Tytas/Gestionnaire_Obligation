@@ -1,4 +1,4 @@
-package mypackage.view.add.AddObject;
+package mypackage.view.add;
 
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.FXCollections;

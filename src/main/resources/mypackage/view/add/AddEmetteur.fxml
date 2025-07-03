@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" styleClass="form-container" stylesheets="@../../../styles/modern-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mypackage.view.add.AddObject.AddEmetteurController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" styleClass="form-container" stylesheets="@../../../styles/add-styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mypackage.view.add.AddEmetteurController">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="122.20001449584962" minWidth="10.0" prefWidth="122.20001449584962" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="254.39999160766604" minWidth="10.0" prefWidth="224.80003662109377" />
@@ -95,7 +95,7 @@
         </Label>
       </children>
     </VBox>
-    <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+    <VBox prefHeight="200.0" prefWidth="100.0" styleClass="vbox-multi-fields" GridPane.columnIndex="1" GridPane.rowIndex="6">
       <children>
         <HBox alignment="TOP_CENTER" prefHeight="18.0" prefWidth="225.0">
           <children>

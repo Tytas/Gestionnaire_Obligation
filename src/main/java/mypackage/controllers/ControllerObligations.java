@@ -20,8 +20,9 @@ import mypackage.model.DataBaseInteractor.*;
 import mypackage.model.Obligation;
 import mypackage.model.Applicant;
 import mypackage.model.Investor;
-import mypackage.view.add.AddObject.AddObligationController;
-import mypackage.view.edit.EditObject.EditObligationController;
+import mypackage.view.consult.ConsultObligationController;
+import mypackage.view.add.AddObligationController;
+import mypackage.view.edit.EditObligationController;
 import mypackage.view.util.ConfirmWindow;
 
 
@@ -253,6 +254,42 @@ public class ControllerObligations {
             }
         } else {
             System.out.println("No obligation selected to edit.");
+        }
+    }
+
+    @FXML
+    private void consultObligation() {
+        if (selectedObligation != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mypackage/view/consult/ConsultObligation.fxml"));
+                Parent root = loader.load();
+                
+                // Récupère le contrôleur lié au FXML (instancié automatiquement)
+                ConsultObligationController consultObligationWindow = loader.getController();
+                System.out.println("Consulting obligation: " + selectedObligation.getName());
+                consultObligationWindow.setObligation(selectedObligation);
+                consultObligationWindow.init();
+
+                stage = new Stage();
+                stage.setTitle("Consulter une obligation");
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL); // bloque la fenêtre principale
+                stage.showAndWait(); // attend que la fenêtre se ferme
+
+                if (consultObligationWindow.getResult()) {
+                    // Refresh the list of obligations
+                    ids = ObligationInteractor.GetAllObligationsId();
+                    listOblig.clear();
+                    for (Integer id : ids) {
+                        listOblig.add(ObligationInteractor.GetObligation(id));
+                    }
+                }
+                tableObligations.setItems(listOblig);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No obligation selected to consult.");
         }
     }
 

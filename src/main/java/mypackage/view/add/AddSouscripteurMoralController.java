@@ -1,4 +1,4 @@
-package mypackage.view.add.AddObject;
+package mypackage.view.add;
 
 import java.util.ArrayList;
 
@@ -20,15 +20,39 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import mypackage.model.InvestorNP;
+import mypackage.model.InvestorLP;
 import mypackage.model.Obligation;
 import mypackage.model.Family;
 import mypackage.model.DataBaseInteractor.InvestorInteractor;
 import mypackage.model.DataBaseInteractor.ObligationInteractor;
 import mypackage.model.DataBaseInteractor.FamilyInteractor;
 
-public class AddSouscripteurPhysiqueController {
+public class AddSouscripteurMoralController {
     private boolean result = false;
+
+    @FXML
+    private TextField nomField;
+    @FXML
+    private TextField numRegistreField;
+    @FXML
+    private DatePicker dateCreationField;
+    @FXML
+    private TextField typeEntrepriseField;
+    @FXML
+    private  ComboBox<String> formeJuridiqueComboBox;
+
+    @FXML
+    private TextField numeroAdresseField;
+    @FXML
+    private TextField rueAdresseField;
+    @FXML
+    private TextField codePostalAdresseField;
+    @FXML
+    private TextField villeAdresseField;
+    @FXML
+    private TextField paysAdresseField;
+    @FXML
+    private TextField complementAdresseField;
 
     @FXML
     private ToggleGroup sexeDirigeantToggleGroup;
@@ -61,11 +85,31 @@ public class AddSouscripteurPhysiqueController {
     private TextField complementAdresseDirigeantField;
 
     @FXML
+    private TextField fonctionDirigeantField;
+    @FXML
+    private TextField residenceFiscaleDirigeantField;
+    @FXML
+    private TextField numeroIdentificationDirigeantField;
+    @FXML
     private TextField bicField;
     @FXML
     private TextField ibanField;
     @FXML
     private TextField banqueField;
+
+    @FXML private Label nomErreurField;
+    @FXML private Label paysErreurComboBox;
+    @FXML private Label numRegistreErreurField;
+    @FXML private Label dateCreationErreurField;
+    @FXML private Label typeEntrepriseErreurField;
+    @FXML private Label formeJuridiqueErreurComboBox;
+
+    @FXML private Label numeroAdresseErreurField;
+    @FXML private Label rueAdresseErreurField;
+    @FXML private Label codePostalAdresseErreurField;
+    @FXML private Label villeAdresseErreurField;
+    @FXML private Label paysAdresseErreurField;
+    @FXML private Label complementAdresseErreurField;
 
     @FXML private Label sexeDirigeantErreurLabel;
     @FXML private Label nomDirigeantErreurField;
@@ -73,6 +117,7 @@ public class AddSouscripteurPhysiqueController {
     @FXML private Label nationaliteDirigeantErreurComboBox;
     @FXML private Label dateNaissanceDirigeantErreurField;
     @FXML private Label lieuNaissanceDirigeantErreurField;
+    @FXML private Label langueDirigeantErreurComboBox;
     @FXML private Label emailDirigeantErreurField;
     @FXML private Label telephoneDirigeantErreurField;
 
@@ -83,6 +128,9 @@ public class AddSouscripteurPhysiqueController {
     @FXML private Label paysAdresseDirigeantErreurField;
     @FXML private Label complementAdresseDirigeantErreurField;
 
+    @FXML private Label fonctionDirigeantErreurField;
+    @FXML private Label residenceFiscaleDirigeantErreurField;
+    @FXML private Label numeroIdentificationDirigeantErreurField;
     @FXML private Label bicErreurField;
     @FXML private Label ibanErreurField;
     @FXML private Label banqueErreurField;
@@ -118,13 +166,14 @@ public class AddSouscripteurPhysiqueController {
         return familyListView;
     }
 
-    public AddSouscripteurPhysiqueController() {
+    public AddSouscripteurMoralController() {
         // Constructor logic if needed
     }
 
     
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
+        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SA", "SAS"));
         nationaliteDirigeantComboBox.setItems(FXCollections.observableArrayList("Française", "Américaine", "Allemande", "Espagnole"));
 
         ArrayList<Integer> familyId = FamilyInteractor.GetAllFamiliesId();
@@ -201,11 +250,23 @@ public class AddSouscripteurPhysiqueController {
         });
 
         validerButton.setOnAction(event -> {
+            boolean nomOK = validateField(nomField, nomErreurField, "text");
+            boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
+            boolean typeEntrepriseOK = validateField(typeEntrepriseField, typeEntrepriseErreurField, "text");
+            boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
+
+            boolean numeroAdresseOK = validateField(numeroAdresseField, numeroAdresseErreurField, "text");
+            boolean rueAdresseOK = validateField(rueAdresseField, rueAdresseErreurField, "text");
+            boolean codePostalAdresseOK = validateField(codePostalAdresseField, codePostalAdresseErreurField, "text");
+            boolean villeAdresseOK = validateField(villeAdresseField, villeAdresseErreurField, "text");
+            boolean paysAdresseOK = validateField(paysAdresseField, paysAdresseErreurField, "text");
+            // Le complément est facultatif ? sinon :
+            boolean complementAdresseOK = validateField(complementAdresseField, complementAdresseErreurField, "text");
+
             boolean sexeDirigeantOK = sexeDirigeantToggleGroup.getSelectedToggle() != null;
             if (!sexeDirigeantOK) {
                 sexeDirigeantErreurLabel.setText("Veuillez sélectionner un sexe.");
                 sexeDirigeantErreurLabel.setVisible(!sexeDirigeantOK);
-                sexeDirigeantErreurLabel.setStyle("-fx-text-fill: red; -fx-font-size: 10px;");
             }
             else {
                 sexeDirigeantErreurLabel.setVisible(false);
@@ -225,10 +286,14 @@ public class AddSouscripteurPhysiqueController {
             boolean paysAdresseDirigeantOK = validateField(paysAdresseDirigeantField, paysAdresseDirigeantErreurField, "text");
             boolean complementAdresseDirigeantOK = validateField(complementAdresseDirigeantField, complementAdresseDirigeantErreurField, "text");
 
+            boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
+            boolean residenceFiscaleDirigeantOK = validateField(residenceFiscaleDirigeantField, residenceFiscaleDirigeantErreurField, "text");
+           
             boolean bicOK = validateField(bicField, bicErreurField, "text");
             boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
             boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
 
+            
             boolean familyOK = selectedFamily != null && !selectedFamily.isEmpty();
             if (!familyOK){
                 familyErreurLabel.setText("Veuillez sélectionner une family.");
@@ -241,17 +306,33 @@ public class AddSouscripteurPhysiqueController {
 
             // Vérification globale
             boolean formulaireValide =
+                nomOK && numRegistreOK && typeEntrepriseOK && formeJuridiqueOK &&
+                numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK && complementAdresseOK &&
                 sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
                 numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
                 paysAdresseDirigeantOK && complementAdresseDirigeantOK &&
-                bicOK && ibanOK && banqueOK;
+                fonctionDirigeantOK && residenceFiscaleDirigeantOK &&
+                bicOK && ibanOK && banqueOK && familyOK;
 
             if (formulaireValide) {
                 String sexeDirigeant = ((RadioButton) sexeDirigeantToggleGroup.getSelectedToggle()).getText();
-                CreateInvestorNP(
-                    new SimpleStringProperty(nomDirigeantField.getText().trim()),
+                CreateInvestorLP(
+                    new SimpleStringProperty(nomField.getText().trim()),
+                    Integer.parseInt(numRegistreField.getText().trim()),
+                    dateCreationField.getValue().toString(),
+                    typeEntrepriseField.getText().trim(),
+                    formeJuridiqueComboBox.getValue(),
+                    new String[]{
+                        numeroAdresseField.getText().trim(),
+                        rueAdresseField.getText().trim(),
+                        codePostalAdresseField.getText().trim(),
+                        villeAdresseField.getText().trim(),
+                        paysAdresseField.getText().trim(),
+                        complementAdresseField.getText().trim()
+                    },
                     sexeDirigeant,
+                    new SimpleStringProperty(nomDirigeantField.getText().trim()),
                     prenomDirigeantField.getText().trim(),
                     nationaliteDirigeantComboBox.getValue(),
                     dateNaissanceDirigeantField.getValue().toString(),
@@ -266,10 +347,13 @@ public class AddSouscripteurPhysiqueController {
                         paysAdresseDirigeantField.getText().trim(),
                         complementAdresseDirigeantField.getText().trim()
                     },
+                    residenceFiscaleDirigeantField.getText().trim(),
+                    numeroIdentificationDirigeantField.getText().trim(),
+                    fonctionDirigeantField.getText().trim(),
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
                     banqueField.getText().trim(),
-                    0
+                    FamilyInteractor.GetFamilyByName(selectedFamily) // Assuming selectedFamily is not null
                 );
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
@@ -285,21 +369,24 @@ public class AddSouscripteurPhysiqueController {
         });
     }
 
-    private void CreateInvestorNP(SimpleStringProperty name,
-                    String civilityBoss, String firstNameBoss, String nationalityBoss,
-                    String dateOfBirthBoss, String placeOfBirthBoss, 
-                    String emailBoss, String phoneNumberBoss, String[] addressBoss,String IBAN, String BIC, String BankName, int familyId) {
+    private void CreateInvestorLP(SimpleStringProperty name, int registerNumber, String dateOfCreation,
+                    String typeOfBusiness, String legalStatus, String[] address,
+                    String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
+                    String dateOfBirthBoss, String placeOfBirthBoss,
+                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
+                    String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int familyId) {
         int newId = InvestorInteractor.generateNewId();
-        InvestorNP investorNP = new InvestorNP(
-                newId, civilityBoss, name, firstNameBoss, nationalityBoss,
+        InvestorLP investorlp = new InvestorLP(newId, name, registerNumber, dateOfCreation,
+                typeOfBusiness, legalStatus, address,
+                civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
                 dateOfBirthBoss, placeOfBirthBoss,
-                emailBoss, phoneNumberBoss, addressBoss, 
-                IBAN, BIC, BankName, familyId);
-        System.out.println("Creating investorNP with the following details:");
+                emailBoss, phoneNumberBoss, addressBoss, fiscalcountryBoss,
+                taxIdNumberBoss, roleBoss, IBAN, BIC, BankName, familyId);
+        System.out.println("Creating investorlp with the following details:");
         for (String[] obligation : allObligations) {
             if (Boolean.parseBoolean(obligation[1])) {
                 System.out.println(ObligationInteractor.GetObligationByName(obligation[0]).getId());
-                investorNP.addObligation(ObligationInteractor.GetObligationByName(obligation[0]).getId());
+                investorlp.addObligation(ObligationInteractor.GetObligationByName(obligation[0]).getId());
                 int idObligation = ObligationInteractor.GetObligationByName(obligation[0]).getId();
                 if (idObligation != -1) {
                     Obligation newObligation = ObligationInteractor.GetObligation(idObligation);
@@ -310,7 +397,7 @@ public class AddSouscripteurPhysiqueController {
             }
         }
         int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
-        investorNP.setFamilyId(familyIdSelected);
+        investorlp.setFamilyId(familyIdSelected);
         Family family = FamilyInteractor.GetFamily(familyIdSelected);
         Boolean isInFamily = false;
         for(Integer investors : family.getInvestors()) {
@@ -325,7 +412,7 @@ public class AddSouscripteurPhysiqueController {
         }
         FamilyInteractor.DeleteFamily(familyIdSelected);
         FamilyInteractor.SaveFamily(family);
-        InvestorInteractor.SaveInvestorNP(investorNP);
+        InvestorInteractor.SaveInvestorLP(investorlp);
     }
 
     private boolean validateField(Control field, Label errorLabel, String expectedType) {

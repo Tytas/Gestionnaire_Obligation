@@ -30,10 +30,10 @@ import mypackage.model.InvestorNP;
 import mypackage.model.InvestorLP;
 import mypackage.model.Obligation;
 import mypackage.view.util.ConfirmWindow;
-import mypackage.view.add.AddObject.AddSouscripteurMoralController;
-import mypackage.view.add.AddObject.AddSouscripteurPhysiqueController;
-import mypackage.view.edit.EditObject.EditSouscripteurMoralController;
-import mypackage.view.edit.EditObject.EditSouscripteurPhysiqueController;
+import mypackage.view.add.AddSouscripteurMoralController;
+import mypackage.view.add.AddSouscripteurPhysiqueController;
+import mypackage.view.edit.EditSouscripteurMoralController;
+import mypackage.view.edit.EditSouscripteurPhysiqueController;
 
 
 public class ControllerSouscripteurs {

@@ -1,27 +1,29 @@
-package mypackage.view.add.AddObject;
+package mypackage.view.edit;
+
+import java.time.LocalDate;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import mypackage.model.DataBaseInteractor.FamilyInteractor;
-import mypackage.view.util.ContactWindow;
-import mypackage.model.Family;
+import mypackage.model.Applicant;
+import mypackage.model.Group;
+import mypackage.model.DataBaseInteractor.ApplicantInteractor;
+import mypackage.model.DataBaseInteractor.GroupInteractor;
+import mypackage.view.util.GroupeWindow;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 
-public class AddFamilyController {
+public class EditEmetteurController {
     private boolean result = false;
+
+    private Applicant currentEmetteur;
 
     @FXML
     private TextField nomField;
@@ -89,25 +91,12 @@ public class AddFamilyController {
     private TextField ibanField;
     @FXML
     private TextField banqueField;
-    @FXML
-    private TextField nbApproovalField;
-    @FXML
-    private TextField alertMailField;
-
-    @FXML
-    private Button addContactButton;
-    @FXML
-    private ListView<String[]> contactsListView;
-    private ObservableList<String[]> contacts = FXCollections.observableArrayList();
 
     @FXML private Label nomErreurField;
     @FXML private Label numRegistreErreurField;
     @FXML private Label dateCreationErreurField;
     @FXML private Label typeEntrepriseErreurField;
     @FXML private Label formeJuridiqueErreurComboBox;
-    @FXML private Label familyTypeErreurComboBox;
-    @FXML private Label nbApproovalErreurField;
-    @FXML private Label alertMailErreurField;
 
     @FXML private Label numeroAdresseErreurField;
     @FXML private Label rueAdresseErreurField;
@@ -122,6 +111,7 @@ public class AddFamilyController {
     @FXML private Label nationaliteDirigeantErreurComboBox;
     @FXML private Label dateNaissanceDirigeantErreurField;
     @FXML private Label lieuNaissanceDirigeantErreurField;
+    @FXML private Label langueDirigeantErreurComboBox;
     @FXML private Label emailDirigeantErreurField;
     @FXML private Label telephoneDirigeantErreurField;
 
@@ -138,6 +128,11 @@ public class AddFamilyController {
     @FXML private Label bicErreurField;
     @FXML private Label ibanErreurField;
     @FXML private Label banqueErreurField;
+    
+    @FXML
+    private ComboBox<String> groupeComboBox;
+    @FXML
+    private Button nouveauGroupeButton;
 
     @FXML
     private Button annulerButton;
@@ -147,59 +142,89 @@ public class AddFamilyController {
     public boolean getResult() {
         return result;
     }
-
-    public AddFamilyController() {
+    public EditEmetteurController() {
         // Constructor logic if needed
     }
+
+    public void initData(Applicant emetteur) {
+        this.currentEmetteur = emetteur;
+        // Set default values for the fields if currentObligation is not null
+        System.out.println("Initializing EditEmetteurController with current emetteur: " + currentEmetteur);
+        if (currentEmetteur != null) {
+            nomField.setText(currentEmetteur.getName());
+            numRegistreField.setText(String.valueOf(currentEmetteur.getRegisterNumber()));
+            dateCreationField.setValue(LocalDate.parse(currentEmetteur.getDateOfCreation()));
+            typeEntrepriseField.setText(currentEmetteur.getTypeOfBusiness());
+            formeJuridiqueComboBox.setValue(currentEmetteur.getLegalStatus());
+            numeroAdresseField.setText(currentEmetteur.getAddress()[0]);
+            rueAdresseField.setText(currentEmetteur.getAddress()[1]);
+            codePostalAdresseField.setText(currentEmetteur.getAddress()[2]);
+            villeAdresseField.setText(currentEmetteur.getAddress()[3]);
+            paysAdresseField.setText(currentEmetteur.getAddress()[4]);
+            complementAdresseField.setText(currentEmetteur.getAddress()[5]);
+            if (currentEmetteur.getCivilityBoss() != null) {
+                if( currentEmetteur.getCivilityBoss().equals("M.")) {
+                    sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(0)); // Monsieur
+                } else if (currentEmetteur.getCivilityBoss().equals("Mme.")) {
+                    sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(1)); // Madame
+                } else {
+                    sexeDirigeantToggleGroup.selectToggle(null); // Aucun
+                }
+            }
+            nomDirigeantField.setText(currentEmetteur.getNameBoss());
+            prenomDirigeantField.setText(currentEmetteur.getFirstNameBoss());
+            nationaliteDirigeantComboBox.setValue(currentEmetteur.getNationalityBoss());
+            dateNaissanceDirigeantField.setValue(LocalDate.parse(currentEmetteur.getDateOfBirthBoss()));
+            lieuNaissanceDirigeantField.setText(currentEmetteur.getPlaceOfBirthBoss());
+            emailDirigeantField.setText(currentEmetteur.getEmailBoss());
+            telephoneDirigeantField.setText(currentEmetteur.getPhoneNumberBoss());
+            numeroAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[0]);
+            rueAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[1]);
+            codePostalAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[2]);
+            villeAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[3]);
+            paysAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[4]);
+            complementAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[5]);
+            fonctionDirigeantField.setText(currentEmetteur.getRoleBoss());
+            residenceFiscaleDirigeantField.setText(currentEmetteur.getFiscalcountryBoss());
+            numeroIdentificationDirigeantField.setText(currentEmetteur.getTaxIdNumberBoss());
+            bicField.setText(currentEmetteur.getBIC());
+            ibanField.setText(currentEmetteur.getIBAN());
+            banqueField.setText(currentEmetteur.getBankName());
+            groupeComboBox.setValue(GroupInteractor.GetGroup(currentEmetteur.getGroupId()).getName());
+        }
+    }
+
+    
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
+        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SA", "SAS"));
         nationaliteDirigeantComboBox.setItems(FXCollections.observableArrayList("Française", "Américaine", "Allemande", "Espagnole"));
-        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("CIF", "PSI", "BANQUE"));
 
-        contactsListView.setItems(contacts);
-        contactsListView.setCellFactory(lv -> new ListCell<String[]>() {
-            @Override
-            protected void updateItem(String[] item, boolean empty) {
-                super.updateItem(item, empty);
-                // Si item est nul ou si c'est une cellule vide, on ne fait rien
-                if (empty || item == null || item.length < 2) {
-                    setGraphic(null);
-                    return;
-                }
-                // Crée le bouton de suppression
-                Button deleteButton = new Button("-");
-                deleteButton.setOnAction(e -> {
-                    contacts.remove(item);
-                    contactsListView.refresh();
-                });
-                Label montantField = new Label("Nom: " + item[0] + ", Prénom: " + item[1] + ", Email: " + item[2] + ", Téléphone: " + item[3]);
-                HBox content = new HBox(10, montantField, deleteButton);
-                setGraphic(content);
-            }
+        nouveauGroupeButton.setOnAction(event -> {
+            // Open a new window to create a new group
+            GroupeWindow groupeWindow = new GroupeWindow();
+            groupeWindow.show();
         });
-        addContactButton.setOnAction(e -> {
-            // Ouvre la fenêtre pour ajouter un contact
-            boolean success = ContactWindow.showDialog(contacts);
-            if (success) {
-                // Le nouveau contact a été ajouté à la liste
-                contactsListView.refresh();
+        // Initialize the groupeComboBox with existing groups
+        for (int id : GroupInteractor.GetAllGroupsId()) {
+            Group group = GroupInteractor.GetGroup(id);
+            System.out.println("Group : " + group);
+            if (group != null) {
+                groupeComboBox.getItems().add(group.getName());
             }
-        });
+        }
 
         validerButton.setOnAction(event -> {
             boolean nomOK = validateField(nomField, nomErreurField, "text");
             boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
             boolean typeEntrepriseOK = validateField(typeEntrepriseField, typeEntrepriseErreurField, "text");
             boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
-            boolean alertMailOK = validateField(alertMailField, alertMailErreurField, "email");
 
             boolean numeroAdresseOK = validateField(numeroAdresseField, numeroAdresseErreurField, "text");
             boolean rueAdresseOK = validateField(rueAdresseField, rueAdresseErreurField, "text");
             boolean codePostalAdresseOK = validateField(codePostalAdresseField, codePostalAdresseErreurField, "text");
             boolean villeAdresseOK = validateField(villeAdresseField, villeAdresseErreurField, "text");
             boolean paysAdresseOK = validateField(paysAdresseField, paysAdresseErreurField, "text");
-            // Le complément est facultatif ? sinon :
-            boolean complementAdresseOK = validateField(complementAdresseField, complementAdresseErreurField, "text");
 
             boolean sexeDirigeantOK = sexeDirigeantToggleGroup.getSelectedToggle() != null;
             if (!sexeDirigeantOK) sexeDirigeantErreurLabel.setText("Veuillez sélectionner un sexe.");
@@ -218,26 +243,30 @@ public class AddFamilyController {
             boolean codePostalAdresseDirigeantOK = validateField(codePostalAdresseDirigeantField, codePostalAdresseDirigeantErreurField, "text");
             boolean villeAdresseDirigeantOK = validateField(villeAdresseDirigeantField, villeAdresseDirigeantErreurField, "text");
             boolean paysAdresseDirigeantOK = validateField(paysAdresseDirigeantField, paysAdresseDirigeantErreurField, "text");
-            boolean complementAdresseDirigeantOK = validateField(complementAdresseDirigeantField, complementAdresseDirigeantErreurField, "text");
-
+            
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
             boolean residenceFiscaleDirigeantOK = validateField(residenceFiscaleDirigeantField, residenceFiscaleDirigeantErreurField, "text");
+
+            boolean bicOK = validateField(bicField, bicErreurField, "text");
+            boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
             boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
 
             // Vérification globale
             boolean formulaireValide =
                 nomOK && numRegistreOK && typeEntrepriseOK && formeJuridiqueOK &&
-                numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK && complementAdresseOK &&
+                numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK &&
                 sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
                 numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
-                paysAdresseDirigeantOK && complementAdresseDirigeantOK &&
-                fonctionDirigeantOK && residenceFiscaleDirigeantOK &&
-                banqueOK && alertMailOK;
+                paysAdresseDirigeantOK && fonctionDirigeantOK && residenceFiscaleDirigeantOK && bicOK && ibanOK && banqueOK;
 
             if (formulaireValide) {
-                String sexeDirigeant = ((RadioButton) sexeDirigeantToggleGroup.getSelectedToggle()).getText();
-                CreateFamily(
+                String sexeDirigeant = "";
+
+                sexeDirigeant = ((RadioButton) sexeDirigeantToggleGroup.getSelectedToggle()).getText();
+                System.out.println("Selected sexeDirigeant: " + sexeDirigeant);
+
+                EditApplicant(
                     new SimpleStringProperty(nomField.getText().trim()),
                     Integer.parseInt(numRegistreField.getText().trim()),
                     dateCreationField.getValue().toString(),
@@ -272,10 +301,8 @@ public class AddFamilyController {
                     fonctionDirigeantField.getText().trim(),
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
-                    banqueField.getText().trim(),
-                    nbApproovalField.getText().trim(),
-                    alertMailField.getText().trim(),
-                    contacts
+                    banqueField.getText().trim(), 
+                    0 // Assuming groupId is managed elsewhere
                 );
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
@@ -291,34 +318,31 @@ public class AddFamilyController {
         });
     }
 
-    private void CreateFamily(SimpleStringProperty name, int registerNumber, String dateOfCreation,
+    private void EditApplicant(SimpleStringProperty name, int registerNumber, String dateOfCreation,
                     String typeOfBusiness, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
                     String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
-                    String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName,
-                    String nbAprooval, String alertMail, ObservableList<String[]> contacts) {
-        int newId = FamilyInteractor.generateNewId();
-        Family family = new Family(newId, name, registerNumber, dateOfCreation,
+                    String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int groupId) {
+        int Id = currentEmetteur.getId();
+        Applicant applicant = new Applicant(Id, name, registerNumber, dateOfCreation,
                 typeOfBusiness, legalStatus, address,
                 civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
                 dateOfBirthBoss, placeOfBirthBoss,
                 emailBoss, phoneNumberBoss, addressBoss, fiscalcountryBoss,
-                taxIdNumberBoss, roleBoss, IBAN, BIC, BankName,
-                nbAprooval, alertMail);
-        if(contacts != null) {
-            for (String[] contact : contacts) {
-                if (contact != null && contact.length >= 4) {
-                    family.addContacts(contact);
-                    System.out.println("Contact added: " + contact[0] + " " + contact[1] + ", Email: " + contact[2] + ", Phone: " + contact[3]);
-                } else {
-                    System.out.println("Invalid contact data: " + (contact != null ? String.join(", ", contact) : "null"));
-                }
-            }
-        } else {
-            System.out.println("No contacts provided.");
+                taxIdNumberBoss, roleBoss, IBAN, BIC, BankName, groupId);
+        
+        String selectedGroupName = groupeComboBox.getValue();
+        int selectedGroupId = GroupInteractor.GetGroupByName(selectedGroupName);
+        if (selectedGroupId != -1) {
+            Group group = GroupInteractor.GetGroup(selectedGroupId);
+            group.addMember(Id);
+            GroupInteractor.DeleteGroup(selectedGroupId);
+            GroupInteractor.SaveGroup(group);
+            applicant.setGroupId(selectedGroupId);
         }
-        FamilyInteractor.SaveFamily(family);
+        ApplicantInteractor.DeleteApplicant(Id);
+        ApplicantInteractor.SaveApplicant(applicant);
     }
 
     private boolean validateField(Control field, Label errorLabel, String expectedType) {

@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" styleClass="form-container" stylesheets="@../../../styles/modern-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mypackage.view.edit.EditObject.EditObligationController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" styleClass="edit-form-container" stylesheets="@../../../styles/edit-styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mypackage.view.edit.EditObligationController">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="125.59997787475587" minWidth="10.0" prefWidth="125.59997787475587" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="254.39999160766604" minWidth="10.0" prefWidth="221.60001525878906" />
@@ -116,20 +116,20 @@
       <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
             <ListView fx:id="amortissementsListView" prefHeight="200.0" prefWidth="200.0" />
-            <Button fx:id="addAmortissementButton" mnemonicParsing="false" text="+" />
+            <Button fx:id="addAmortissementButton" mnemonicParsing="false" styleClass="mini-button" text="+" />
          </children>
       </HBox>
       <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
          <children>
             <ListView fx:id="suretesListView" prefHeight="200.0" prefWidth="200.0" />
-            <Button fx:id="addSureteButton" mnemonicParsing="false" text="+" />
+            <Button fx:id="addSureteButton" mnemonicParsing="false" styleClass="mini-button" text="+" />
          </children>
       </HBox>
       <Label text="cessions" GridPane.columnIndex="4" GridPane.rowIndex="9" />
       <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="5" GridPane.rowIndex="9">
          <children>
             <ListView fx:id="cessionListView" prefHeight="200.0" prefWidth="200.0" />
-            <Button fx:id="addcessionButton" mnemonicParsing="false" text="+" />
+            <Button fx:id="addcessionButton" mnemonicParsing="false" styleClass="mini-button" text="+" />
          </children>
          <GridPane.margin>
             <Insets top="15.0" />

@@ -138,13 +138,13 @@ public class ControllerHome {
                 }
             }
             if(obligation.getRate()[1] != 0) {
-                    LocalDate couponDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths());
-                    String[] coupon = new String[3];
-                    coupon[0] = couponDate.toString();
-                    coupon[1] = String.valueOf(obligation.getRate()[1] * obligation.getCapital() / 100);
-                    coupon[2] = obligation.getName();
-                    couponListViewItems.add(coupon);
-                }
+                LocalDate couponDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths());
+                String[] coupon = new String[3];
+                coupon[0] = couponDate.toString();
+                coupon[1] = String.valueOf(obligation.getRate()[1] * obligation.getCapital() / 100);
+                coupon[2] = obligation.getName();
+                couponListViewItems.add(coupon);
+            }
         }
     }
 
@@ -162,17 +162,25 @@ public class ControllerHome {
             protected void updateItem(String[] item, boolean empty) {
                 super.updateItem(item, empty);
                 setGraphic(null);
-                Label  dateLabel = new Label();
+                Label dateLabel = new Label();
                 Label amountLabel = new Label();
                 Label obligationNameLabel = new Label();
                 Button buttonOuvrir = new Button("Ouvrir");
                 Button buttonPDF = new Button("Excel");
+                buttonOuvrir.getStyleClass().add("coupon-list-button");
+                buttonPDF.getStyleClass().addAll("coupon-list-button", "coupon-list-excel-button");
                 AnchorPane content = new AnchorPane(dateLabel, amountLabel, obligationNameLabel, buttonPDF, buttonOuvrir);
-                AnchorPane.setRightAnchor(buttonOuvrir, 0.0);
-                AnchorPane.setRightAnchor(buttonPDF, 50.0);
+                content.getStyleClass().add("coupon-list-cell");
+                AnchorPane.setRightAnchor(buttonOuvrir, 5.0);
+                AnchorPane.setRightAnchor(buttonPDF, 60.0);
                 AnchorPane.setLeftAnchor(dateLabel, 0.0);
                 AnchorPane.setLeftAnchor(amountLabel, 80.0);
                 AnchorPane.setLeftAnchor(obligationNameLabel, 150.0);
+                AnchorPane.setTopAnchor(dateLabel, 5.0);
+                AnchorPane.setTopAnchor(amountLabel, 5.0);
+                AnchorPane.setTopAnchor(obligationNameLabel, 5.0);
+                AnchorPane.setTopAnchor(buttonPDF, 5.0);
+                AnchorPane.setTopAnchor(buttonOuvrir, 5.0);
 
                 if (empty || item == null) {
                     setGraphic(null);

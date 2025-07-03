@@ -2,6 +2,7 @@ package mypackage.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -194,6 +195,46 @@ public class Obligation {
     }
     public void removeReplacement(Replacement replacement) {
         this.replacements.remove(replacement);
+    }
+
+    public ArrayList<String[]> getListCoupon() {
+        ArrayList<String[]> listCoupon = new ArrayList<>();
+        int period = 0;
+        if(this.getPeriodicity() != null) {
+            if(this.getPeriodicity().equals("Mensuelle")) {
+                period = 1;
+            } else if(this.getPeriodicity().equals("Trimestrielle")) {
+                period = 3;
+            } else if(this.getPeriodicity().equals("Semestrielle")) {
+                period = 6;
+            } else if(this.getPeriodicity().equals("Annuelle")) {
+                period = 12;
+            } else {
+                System.err.println("Unknown periodicity: " + this.getPeriodicity());
+            }
+        } else {
+            System.err.println("Periodicity not set for obligation ID: " + this.getId());
+            return null;
+        }
+        if(this.getRate()[0] != 0){
+            for(int i = 0; i < this.getDurationMonths(); i += period) {
+                LocalDate couponDate = LocalDate.parse(this.getStartDate()).plusMonths(i);
+                String[] coupon = new String[3];
+                coupon[0] = couponDate.toString();
+                coupon[1] = String.valueOf(this.getRate()[0] * this.getCapital() / 100);
+                coupon[2] = this.getName();
+                listCoupon.add(coupon);
+            }
+        }
+        if(this.getRate()[1] != 0) {
+            LocalDate couponDate = LocalDate.parse(this.getStartDate()).plusMonths(this.getDurationMonths());
+            String[] coupon = new String[3];
+            coupon[0] = couponDate.toString();
+            coupon[1] = String.valueOf(this.getRate()[1] * this.getCapital() / 100);
+            coupon[2] = this.getName();
+            listCoupon.add(coupon);
+        }
+        return listCoupon;
     }
     
 }

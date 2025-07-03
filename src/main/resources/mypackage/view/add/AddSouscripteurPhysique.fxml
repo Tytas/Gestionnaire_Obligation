@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" styleClass="form-container" stylesheets="@../../../styles/modern-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mypackage.view.add.AddObject.AddSouscripteurPhysiqueController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" styleClass="form-container" stylesheets="@../../../styles/add-styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mypackage.view.add.AddSouscripteurPhysiqueController">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="122.20001449584962" minWidth="10.0" prefWidth="122.20001449584962" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="254.39999160766604" minWidth="10.0" prefWidth="224.80003662109377" />
@@ -27,10 +27,10 @@
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="188.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="62.399987792968744" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="5.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="109.20000305175785" minHeight="10.0" prefHeight="92.80001220703122" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="151.39999999999998" minHeight="10.0" prefHeight="66.79999694824215" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="52.80001220703127" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="5.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="189.60000000000002" minHeight="10.0" prefHeight="189.60000000000002" vgrow="SOMETIMES" />
     <RowConstraints maxHeight="46.20001220703125" minHeight="4.0" prefHeight="39.0" vgrow="SOMETIMES" />
   </rowConstraints>
@@ -52,22 +52,25 @@
     <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
     <VBox alignment="CENTER" prefHeight="97.0" prefWidth="118.0">
       <children>
-        <Label text="Civilité" />
+        <Label text="Civilité">
+               <VBox.margin>
+                  <Insets bottom="25.0" />
+               </VBox.margin></Label>
         <Label nodeOrientation="LEFT_TO_RIGHT" text="Nom" textAlignment="CENTER" wrapText="true">
           <VBox.margin>
-            <Insets top="5.0" />
+            <Insets bottom="35.0" top="5.0" />
           </VBox.margin>
         </Label>
         <Label text="Prénom">
           <VBox.margin>
-            <Insets top="5.0" />
+            <Insets bottom="15.0" top="5.0" />
           </VBox.margin>
         </Label>
       </children>
     </VBox>
     <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
       <children>
-        <HBox alignment="TOP_CENTER" prefHeight="18.0" prefWidth="225.0">
+        <HBox alignment="TOP_CENTER" prefHeight="18.0" prefWidth="246.0">
           <children>
             <RadioButton mnemonicParsing="false" text="M.">
               <toggleGroup>
@@ -77,13 +80,13 @@
             <RadioButton mnemonicParsing="false" text="Mme." toggleGroup="$sexeDirigeantToggleGroup" />
           </children>
           <VBox.margin>
-            <Insets top="5.0" />
+            <Insets top="10.0" />
           </VBox.margin>
         </HBox>
         <Label fx:id="sexeDirigeantErreurLabel" text="Label" visible="false" />
         <TextField fx:id="nomDirigeantField">
           <VBox.margin>
-            <Insets top="2.0" />
+            <Insets />
           </VBox.margin>
         </TextField>
             <Label fx:id="nomDirigeantErreurField" text="Label" visible="false" />
@@ -127,17 +130,17 @@
       <children>
         <Label nodeOrientation="LEFT_TO_RIGHT" text="BIC" textAlignment="CENTER" wrapText="true">
           <VBox.margin>
-            <Insets />
+            <Insets bottom="35.0" />
           </VBox.margin>
         </Label>
         <Label text="IBAN">
           <VBox.margin>
-            <Insets top="5.0" />
+            <Insets bottom="30.0" top="5.0" />
           </VBox.margin>
         </Label>
           <Label text="Banque">
                <VBox.margin>
-                  <Insets top="5.0" />
+                  <Insets bottom="10.0" top="5.0" />
                </VBox.margin>
             </Label>
       </children>
@@ -146,7 +149,7 @@
       <children>
         <TextField fx:id="bicField">
           <VBox.margin>
-            <Insets top="2.0" />
+            <Insets top="10.0" />
           </VBox.margin>
         </TextField>
         <Label fx:id="bicErreurField" text="Label" visible="false" />
@@ -178,37 +181,55 @@
     </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
       <children>
-        <TextField fx:id="rueAdresseDirigeantField" />
+        <TextField fx:id="rueAdresseDirigeantField">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin></TextField>
         <Label fx:id="rueAdresseDirigeantErreurField" text="Label" visible="false" />
       </children>
     </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" GridPane.rowIndex="2">
       <children>
-        <TextField fx:id="codePostalAdresseDirigeantField" />
+        <TextField fx:id="codePostalAdresseDirigeantField">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin></TextField>
         <Label fx:id="codePostalAdresseDirigeantErreurField" text="Label" visible="false" />
       </children>
     </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
       <children>
-        <TextField fx:id="villeAdresseDirigeantField" />
+        <TextField fx:id="villeAdresseDirigeantField">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin></TextField>
         <Label fx:id="villeAdresseDirigeantErreurField" text="Label" visible="false" />
       </children>
     </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
       <children>
-        <TextField fx:id="paysAdresseDirigeantField" />
+        <TextField fx:id="paysAdresseDirigeantField">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin></TextField>
         <Label fx:id="paysAdresseDirigeantErreurField" text="Label" visible="false" />
       </children>
     </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" GridPane.rowIndex="3">
       <children>
-        <TextField fx:id="complementAdresseDirigeantField" />
+        <TextField fx:id="complementAdresseDirigeantField">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin></TextField>
         <Label fx:id="complementAdresseDirigeantErreurField" text="Label" visible="false" />
       </children>
     </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
       <children>
-        <TextField fx:id="numeroAdresseDirigeantField" />
+        <TextField fx:id="numeroAdresseDirigeantField">
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin></TextField>
         <Label fx:id="numeroAdresseDirigeantErreurField" text="Label" visible="false" />
       </children>
     </VBox>
@@ -222,15 +243,30 @@
       </VBox>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4">
          <children>
-          <Label text="Date de naissance" />
-          <Label text="Lieu de naissance" textAlignment="CENTER" wrapText="true" />
-          <Label text="Nationnalité" />
+          <Label text="Date de naissance">
+               <VBox.margin>
+                  <Insets bottom="45.0" />
+               </VBox.margin></Label>
+          <Label text="Lieu de naissance" textAlignment="CENTER" wrapText="true">
+               <VBox.margin>
+                  <Insets bottom="35.0" />
+               </VBox.margin></Label>
+          <Label text="Nationnalité">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin></Label>
          </children>
       </VBox>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
          <children>
-        <Label nodeOrientation="LEFT_TO_RIGHT" text="Email" textAlignment="CENTER" wrapText="true" />
-        <Label text="Telephone" />
+        <Label nodeOrientation="LEFT_TO_RIGHT" text="Email" textAlignment="CENTER" wrapText="true">
+               <VBox.margin>
+                  <Insets bottom="45.0" />
+               </VBox.margin></Label>
+        <Label text="Telephone">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></Label>
          </children>
       </VBox>
   </children>

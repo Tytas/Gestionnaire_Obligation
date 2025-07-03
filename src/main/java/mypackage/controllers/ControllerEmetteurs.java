@@ -25,8 +25,8 @@ import mypackage.model.Obligation;
 import mypackage.model.DataBaseInteractor.ApplicantInteractor;
 import mypackage.model.DataBaseInteractor.GroupInteractor;
 import mypackage.model.DataBaseInteractor.ObligationInteractor;
-import mypackage.view.add.AddObject.AddEmetteurController;
-import mypackage.view.edit.EditObject.EditEmetteurController;
+import mypackage.view.add.AddEmetteurController;
+import mypackage.view.edit.EditEmetteurController;
 import mypackage.view.util.ConfirmWindow;
 
 

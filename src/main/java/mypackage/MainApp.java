@@ -19,7 +19,9 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Gestionnaire d'Obligations");
-
+        primaryStage.setMaximized(true);
+        primaryStage.setMinWidth(800);
+        primaryStage.setMinHeight(600);
         initRootLayout();
     }
 
