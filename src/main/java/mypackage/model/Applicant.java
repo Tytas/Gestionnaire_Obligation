@@ -8,9 +8,10 @@ public class Applicant {
     private SimpleStringProperty name;
     private int registerNumber;
     private String dateOfCreation;
-    private String typeOfBusiness;
+    private String socialCapital;
     private String legalStatus;
     private String[] address = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
+    private String cityRCS;
 
     private String civilityBoss;
     private SimpleStringProperty nameBoss;
@@ -21,7 +22,6 @@ public class Applicant {
     private String emailBoss;
     private String phoneNumberBoss;
     private String[] addressBoss = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
-    private String fiscalcountryBoss;
     private String taxIdNumberBoss;
     private String roleBoss;
     
@@ -35,7 +35,7 @@ public class Applicant {
         this.name = new SimpleStringProperty("");
         this.registerNumber = 0;
         this.dateOfCreation = "";
-        this.typeOfBusiness = "";
+        this.socialCapital = "";
         this.legalStatus = "";
         for (int i = 0; i < address.length; i++) {
             address[i] = "";
@@ -52,7 +52,7 @@ public class Applicant {
         for (int i = 0; i < addressBoss.length; i++) {
             addressBoss[i] = "";
         }
-        this.fiscalcountryBoss = "";
+        this.cityRCS = "";
         this.taxIdNumberBoss = "";
         this.roleBoss = "";
         this.IBAN = "";
@@ -62,16 +62,16 @@ public class Applicant {
     }
 
     public Applicant(int id, SimpleStringProperty name, int registerNumber, String dateOfCreation,
-                    String typeOfBusiness, String legalStatus, String[] address,
+                    String socialCapital, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
-                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
+                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String cityRCS,
                     String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int groupId) {
         this.id = id;
         this.name = name;
         this.registerNumber = registerNumber;
         this.dateOfCreation = dateOfCreation;
-        this.typeOfBusiness = typeOfBusiness;
+        this.socialCapital = socialCapital;
         this.legalStatus = legalStatus;
         this.address = address;
 
@@ -84,7 +84,7 @@ public class Applicant {
         this.emailBoss = emailBoss;
         this.phoneNumberBoss = phoneNumberBoss;
         this.addressBoss = addressBoss;
-        this.fiscalcountryBoss = fiscalcountryBoss;
+        this.cityRCS = cityRCS;
         this.taxIdNumberBoss = taxIdNumberBoss;
         this.roleBoss = roleBoss;
         this.IBAN = IBAN;
@@ -108,8 +108,8 @@ public class Applicant {
     public String getDateOfCreation() {
         return dateOfCreation;
     }
-    public String getTypeOfBusiness() {
-        return typeOfBusiness;
+    public String getsocialCapital() {
+        return socialCapital;
     }
     public String getLegalStatus() {
         return legalStatus;
@@ -144,8 +144,8 @@ public class Applicant {
     public String[] getAddressBoss() {
         return addressBoss;
     }
-    public String getFiscalcountryBoss() {
-        return fiscalcountryBoss;
+    public String getcityRCS() {
+        return cityRCS;
     }
     public String getTaxIdNumberBoss() {
         return taxIdNumberBoss;
@@ -181,8 +181,8 @@ public class Applicant {
     public void setDateOfCreation(String dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
-    public void setTypeOfBusiness(String typeOfBusiness) {
-        this.typeOfBusiness = typeOfBusiness;
+    public void setsocialCapital(String socialCapital) {
+        this.socialCapital = socialCapital;
     }
     public void setLegalStatus(String legalStatus) {
         this.legalStatus = legalStatus;
@@ -217,8 +217,8 @@ public class Applicant {
     public void setAddressBoss(String[] addressBoss) {
         this.addressBoss = addressBoss;
     }
-    public void setFiscalcountryBoss(String fiscalcountryBoss) {
-        this.fiscalcountryBoss = fiscalcountryBoss;
+    public void setcityRCS(String cityRCS) {
+        this.cityRCS = cityRCS;
     }
     public void setTaxIdNumberBoss(String taxIdNumberBoss) {
         this.taxIdNumberBoss = taxIdNumberBoss;

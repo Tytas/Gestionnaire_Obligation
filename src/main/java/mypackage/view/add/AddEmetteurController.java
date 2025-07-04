@@ -29,7 +29,7 @@ public class AddEmetteurController {
     @FXML
     private DatePicker dateCreationField;
     @FXML
-    private TextField typeEntrepriseField;
+    private TextField capitalSocialField;
     @FXML
     private  ComboBox<String> formeJuridiqueComboBox;
 
@@ -79,7 +79,7 @@ public class AddEmetteurController {
     @FXML
     private TextField fonctionDirigeantField;
     @FXML
-    private TextField residenceFiscaleDirigeantField;
+    private TextField villeRCSField;
     @FXML
     private TextField numeroIdentificationDirigeantField;
     @FXML
@@ -92,7 +92,7 @@ public class AddEmetteurController {
     @FXML private Label nomErreurField;
     @FXML private Label numRegistreErreurField;
     @FXML private Label dateCreationErreurField;
-    @FXML private Label typeEntrepriseErreurField;
+    @FXML private Label capitalSocialErreurField;
     @FXML private Label formeJuridiqueErreurComboBox;
 
     @FXML private Label numeroAdresseErreurField;
@@ -119,7 +119,7 @@ public class AddEmetteurController {
     @FXML private Label complementAdresseDirigeantErreurField;
 
     @FXML private Label fonctionDirigeantErreurField;
-    @FXML private Label residenceFiscaleDirigeantErreurField;
+    @FXML private Label villeRCSErreurField;
     @FXML private Label numeroIdentificationDirigeantErreurField;
     @FXML private Label bicErreurField;
     @FXML private Label ibanErreurField;
@@ -165,7 +165,7 @@ public class AddEmetteurController {
         validerButton.setOnAction(event -> {
             boolean nomOK = validateField(nomField, nomErreurField, "text");
             boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
-            boolean typeEntrepriseOK = validateField(typeEntrepriseField, typeEntrepriseErreurField, "text");
+            boolean capitalSocialOK = validateField(capitalSocialField, capitalSocialErreurField, "text");
             boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
 
             boolean numeroAdresseOK = validateField(numeroAdresseField, numeroAdresseErreurField, "text");
@@ -195,7 +195,7 @@ public class AddEmetteurController {
             boolean paysAdresseDirigeantOK = validateField(paysAdresseDirigeantField, paysAdresseDirigeantErreurField, "text");
             
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
-            boolean residenceFiscaleDirigeantOK = validateField(residenceFiscaleDirigeantField, residenceFiscaleDirigeantErreurField, "text");
+            boolean villeRCSOK = validateField(villeRCSField, villeRCSErreurField, "text");
             
             boolean bicOK = validateField(bicField, bicErreurField, "text");
             boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
@@ -203,12 +203,12 @@ public class AddEmetteurController {
 
             // Vérification globale
             boolean formulaireValide =
-                nomOK && numRegistreOK && typeEntrepriseOK && formeJuridiqueOK &&
+                nomOK && numRegistreOK && capitalSocialOK && formeJuridiqueOK &&
                 numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK && complementAdresseOK &&
                 sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
                 numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
-                paysAdresseDirigeantOK && fonctionDirigeantOK && residenceFiscaleDirigeantOK && bicOK && ibanOK && banqueOK;
+                paysAdresseDirigeantOK && fonctionDirigeantOK && villeRCSOK && bicOK && ibanOK && banqueOK;
 
             if (formulaireValide) {
                 String sexeDirigeant = ((RadioButton) sexeDirigeantToggleGroup.getSelectedToggle()).getText();
@@ -216,7 +216,7 @@ public class AddEmetteurController {
                     new SimpleStringProperty(nomField.getText().trim()),
                     Integer.parseInt(numRegistreField.getText().trim()),
                     dateCreationField.getValue().toString(),
-                    typeEntrepriseField.getText().trim(),
+                    capitalSocialField.getText().trim(),
                     formeJuridiqueComboBox.getValue(),
                     new String[]{
                         numeroAdresseField.getText().trim(),
@@ -242,7 +242,7 @@ public class AddEmetteurController {
                         paysAdresseDirigeantField.getText().trim(),
                         complementAdresseDirigeantField.getText().trim()
                     },
-                    residenceFiscaleDirigeantField.getText().trim(),
+                    villeRCSField.getText().trim(),
                     numeroIdentificationDirigeantField.getText().trim(),
                     fonctionDirigeantField.getText().trim(),
                     ibanField.getText().trim(), 
@@ -265,17 +265,17 @@ public class AddEmetteurController {
     }
 
     private void CreateApplicant(SimpleStringProperty name, int registerNumber, String dateOfCreation,
-                    String typeOfBusiness, String legalStatus, String[] address,
+                    String socialCapital, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
-                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
+                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String cityRCS,
                     String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int groupId) {
         int newId = ApplicantInteractor.generateNewId();
         Applicant applicant = new Applicant(newId, name, registerNumber, dateOfCreation,
-                typeOfBusiness, legalStatus, address,
+                socialCapital, legalStatus, address,
                 civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
                 dateOfBirthBoss, placeOfBirthBoss,
-                emailBoss, phoneNumberBoss, addressBoss, fiscalcountryBoss,
+                emailBoss, phoneNumberBoss, addressBoss, cityRCS,
                 taxIdNumberBoss, roleBoss, IBAN, BIC, BankName, groupId);
         System.out.println("Creating applicant with the following details:");
         String selectedGroupName = groupeComboBox.getValue();

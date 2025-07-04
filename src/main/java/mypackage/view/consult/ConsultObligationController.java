@@ -157,7 +157,7 @@ public class ConsultObligationController {
             sheet.createRow(3);
 
             // Créer l'en-tête du tableau
-            Row headerRow = sheet.createRow(25);
+            Row headerRow = sheet.createRow(8);
 
             Cell headerCell1 = headerRow.createCell(0);
             headerCell1.setCellValue("ID Souscripteur");
@@ -194,15 +194,15 @@ public class ConsultObligationController {
                 System.err.println("⚠️ Aucun souscripteur trouvé pour l'obligation : " + obligation.getName());
                 
                 // Créer une ligne indiquant qu'il n'y a pas de souscripteurs
-                Row noDataRow = sheet.createRow(5);
+                Row noDataRow = sheet.createRow(9);
                 Cell noDataCell = noDataRow.createCell(0);
                 noDataCell.setCellValue("Aucun souscripteur trouvé pour cette obligation");
-                sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(5, 5, 0, 4 + headerListCoupon.size()));
+                sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(9, 9, 0, 4 + headerListCoupon.size()));
             } else {
                 System.out.println("💰 Valeur nominale: " + obligation.getValeurNominale());
                 System.out.println("📊 Taux [In Fine, Mensuel]: [" + obligation.getRate()[0] + "%, " + obligation.getRate()[1] + "%]");
                 
-                int rowIndex = 4; // Commencer après l'en-tête
+                int rowIndex = 9; // Commencer après l'en-tête
                 double[] totalPartsCoupon = new double[headerListCoupon.size()];
                 long totalPartsCount = 0;
                 long totalCapitalInvested = 0;

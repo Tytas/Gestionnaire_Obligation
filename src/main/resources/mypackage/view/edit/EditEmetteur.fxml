@@ -47,7 +47,7 @@
     <Label text="Ville" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="4" />
     <Label text="Rue" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
     <Label text="Date de création" GridPane.rowIndex="1" />
-    <Label text="Type d'entreprise" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+    <Label text="Capital Social" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="15">
       <children>
         <Button fx:id="annulerButton" mnemonicParsing="false" text="Annuler">
@@ -174,7 +174,7 @@
     <Label text="Complément d'adresse" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="10" />
     <Label text="Ville" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="10" />
     <Label text="Fonction" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="12" />
-    <Label text="Pays de résidence FISCALE" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+    <Label text="Ville RCS" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="12" />
     <Label text="Numéro d'identification FISCALE" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="12" />
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="14">
       <children>
@@ -206,8 +206,8 @@
     </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
       <children>
-        <TextField fx:id="typeEntrepriseField" prefHeight="8.0" prefWidth="300.0" />
-        <Label fx:id="typeEntrepriseErreurField" text="Label" visible="false" />
+        <TextField fx:id="capitalSocialField" prefHeight="8.0" prefWidth="300.0" />
+        <Label fx:id="capitalSocialErreurField" text="Label" visible="false" />
       </children>
     </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
@@ -302,8 +302,8 @@
     </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="12">
       <children>
-        <TextField fx:id="residenceFiscaleDirigeantField" />
-        <Label fx:id="residenceFiscaleDirigeantErreurField" text="Label" visible="false" />
+        <TextField fx:id="villeRCSField" />
+        <Label fx:id="villeRCSErreurField" text="Label" visible="false" />
       </children>
     </VBox>
     <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="5" GridPane.rowIndex="12">
