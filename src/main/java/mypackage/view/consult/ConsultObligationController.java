@@ -2,9 +2,12 @@ package mypackage.view.consult;
 
 import mypackage.model.Obligation;
 import mypackage.model.DataBaseInteractor.InvestorInteractor;
+import mypackage.model.DataBaseInteractor.ApplicantInteractor;
 import mypackage.model.DataBaseInteractor.FamilyInteractor;
 import mypackage.model.Family;
 import mypackage.model.Investor;
+import mypackage.model.InvestorLP;
+import mypackage.model.InvestorNP;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -142,25 +145,97 @@ public class ConsultObligationController {
             // Créer l'en-tête d'information
             Row titleRow = sheet.createRow(0);
             Cell titleCell = titleRow.createCell(0);
-            titleCell.setCellValue("Liste des Souscripteurs");
+            titleCell.setCellValue("EMETTEUR");
             titleCell.setCellStyle(headerStyle);
 
-            Row obligationRow = sheet.createRow(1);
-            Cell obligationCell = obligationRow.createCell(0);
-            obligationCell.setCellValue("Obligation : " + obligation.getName());
+            Cell titleCell2 = titleRow.createCell(1);
+            titleCell2.setCellValue(ApplicantInteractor.GetApplicant(obligation.getApplicantId()).getName());
+            titleCell2.setCellStyle(headerStyle);
 
-            Row montantRow = sheet.createRow(2);
-            Cell montantCell = montantRow.createCell(0);
-            montantCell.setCellValue("Montant total de l'obligation : " + obligation.getCapital() + " €");
+            Row obligationTypeRow = sheet.createRow(1);
+            Cell obligationTypeCell = obligationTypeRow.createCell(0);
+            obligationTypeCell.setCellValue("TYPE");
+            obligationTypeCell.setCellStyle(headerStyle);
 
+            Cell obligationTypeCell2 = obligationTypeRow.createCell(1);
+            obligationTypeCell2.setCellValue(obligation.getConvertible() ? "OCA" : "OS");
+            obligationTypeCell2.setCellStyle(headerStyle);
+
+            Row obligationNameRow = sheet.createRow(2);
+            Cell obligationNameCell = obligationNameRow.createCell(0);
+            obligationNameCell.setCellValue("NOM DE L'OBLIGATION");
+            obligationNameCell.setCellStyle(headerStyle);
+
+            Cell obligationNameCell2 = obligationNameRow.createCell(1);
+            obligationNameCell2.setCellValue(obligation.getName());
+            obligationNameCell2.setCellStyle(headerStyle);
+
+            Row obligationCapitalRow = sheet.createRow(3);
+            Cell obligationCapitalCell = obligationCapitalRow.createCell(0);
+            obligationCapitalCell.setCellValue("CAPITAL");
+            obligationCapitalCell.setCellStyle(headerStyle);
+
+            Cell obligationCapitalCell2 = obligationCapitalRow.createCell(1);
+            obligationCapitalCell2.setCellValue(obligation.getCapital());
+            obligationCapitalCell2.setCellStyle(headerStyle);
+
+            Row obligationDateRow = sheet.createRow(4);
+            Cell obligationDateCell = obligationDateRow.createCell(0);
+            obligationDateCell.setCellValue("ECHEANCE FINALE");
+            obligationDateCell.setCellStyle(headerStyle);
+
+            Cell obligationDateCell2 = obligationDateRow.createCell(1);
+            obligationDateCell2.setCellValue(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()).toString());
+            obligationDateCell2.setCellStyle(headerStyle);
+
+            Row obligationRateRow = sheet.createRow(5);
+            Cell obligationRateCell = obligationRateRow.createCell(0);
+            obligationRateCell.setCellValue("TAUX / TAUX IN FINE");
+            obligationRateCell.setCellStyle(headerStyle);
+
+            Cell obligationRateCell2 = obligationRateRow.createCell(1);
+            obligationRateCell2.setCellValue(obligation.getRate()[0] + "% / " + obligation.getRate()[1] + "%");
+            obligationRateCell2.setCellStyle(headerStyle);
+
+            Row obligationPeriodicityRow = sheet.createRow(6);
+            Cell obligationPeriodicityCell = obligationPeriodicityRow.createCell(0);
+            obligationPeriodicityCell.setCellValue("PERIODICITE COUPON");
+            obligationPeriodicityCell.setCellStyle(headerStyle);
+
+            Cell obligationPeriodicityCell2 = obligationPeriodicityRow.createCell(1);
+            obligationPeriodicityCell2.setCellValue(obligation.getPeriodicity());
+            obligationPeriodicityCell2.setCellStyle(headerStyle);
+
+            Row obligationDurationRow = sheet.createRow(7);
+            Cell obligationDurationCell = obligationDurationRow.createCell(0);
+            obligationDurationCell.setCellValue("DUREE");
+            obligationDurationCell.setCellStyle(headerStyle);
+
+            Cell obligationDurationCell2 = obligationDurationRow.createCell(1);
+            obligationDurationCell2.setCellValue(obligation.getDurationMonths() + " mois");
+            obligationDurationCell2.setCellStyle(headerStyle);
+
+            if (obligation.getProrogation()[0] != "") {
+                Cell obligationProrogationDateCell = obligationDateRow.createCell(2);
+                obligationProrogationDateCell.setCellValue("PROROGATION : " + LocalDate.parse(obligation.getStartDate()).plusMonths( obligation.getDurationMonths() + Integer.parseInt(obligation.getProrogation()[0])).toString());
+                obligationProrogationDateCell.setCellStyle(headerStyle);
+
+                Cell obligationProrogationRateCell = obligationRateRow.createCell(2);
+                obligationProrogationRateCell.setCellValue("Taux Prorogation : " + obligation.getProrogation()[1] + "%");
+                obligationProrogationRateCell.setCellStyle(headerStyle);
+            
+                Cell obligationProrogationDurationCell = obligationDurationRow.createCell(2);
+                obligationProrogationDurationCell.setCellValue("Durée Prorogation : " + obligation.getProrogation()[0] + " mois");
+                obligationProrogationDurationCell.setCellStyle(headerStyle);
+            }
             // Ligne vide
-            sheet.createRow(3);
+            sheet.createRow(8);
 
             // Créer l'en-tête du tableau
-            Row headerRow = sheet.createRow(8);
+            Row headerRow = sheet.createRow(9);
 
             Cell headerCell1 = headerRow.createCell(0);
-            headerCell1.setCellValue("ID Souscripteur");
+            headerCell1.setCellValue("Family Office");
             headerCell1.setCellStyle(headerStyle);
 
             Cell headerCell2 = headerRow.createCell(1);
@@ -168,22 +243,64 @@ public class ConsultObligationController {
             headerCell2.setCellStyle(headerStyle);
 
             Cell headerCell3 = headerRow.createCell(2);
-            headerCell3.setCellValue("Nombre de Parts");
+            headerCell3.setCellValue("PP / PM");
             headerCell3.setCellStyle(headerStyle);
 
             Cell headerCell4 = headerRow.createCell(3);
-            headerCell4.setCellValue("Montant Investi (€)");
+            headerCell4.setCellValue("R / NR");
             headerCell4.setCellStyle(headerStyle);
+
+            Cell headerCell5 = headerRow.createCell(4);
+            headerCell5.setCellValue("PLF");
+            headerCell5.setCellStyle(headerStyle);
+
+            Cell headerCell6 = headerRow.createCell(5);
+            headerCell6.setCellValue("Adresse");
+            headerCell6.setCellStyle(headerStyle);
+
+            Cell headerCell7 = headerRow.createCell(6);
+            headerCell7.setCellValue("Ville");
+            headerCell7.setCellStyle(headerStyle);
+
+            Cell headerCell8 = headerRow.createCell(7);
+            headerCell8.setCellValue("Pays");
+            headerCell8.setCellStyle(headerStyle);
+
+            Cell headerCell9 = headerRow.createCell(8);
+            headerCell9.setCellValue("Nombre D'Obligations");
+            headerCell9.setCellStyle(headerStyle);
+
+            Cell headerCell10 = headerRow.createCell(9);
+            headerCell10.setCellValue("Montant de Souscritption");
+            headerCell10.setCellStyle(headerStyle);
+
+            Cell headerCell11 = headerRow.createCell(10);
+            headerCell11.setCellValue("IBAN");
+            headerCell11.setCellStyle(headerStyle);
+
+            Cell headerCell12 = headerRow.createCell(11);
+            headerCell12.setCellValue("BIC");
+            headerCell12.setCellStyle(headerStyle);
 
             ArrayList<Cell> headerListCoupon = new ArrayList<>();
 
             ArrayList<String[]> listCoupon = obligation.getListCoupon();
 
-            for (int i = 0; i < listCoupon.size(); i++) {
-                Cell headerCellCoupon = headerRow.createCell(4 + i);
-                headerCellCoupon.setCellValue("Coupon du "+ listCoupon.get(i)[0]);
-                headerCellCoupon.setCellStyle(headerStyle);
-                headerListCoupon.add(headerCellCoupon);
+            Row headerCouponRow = sheet.createRow(8);
+            for (int i = 0; i < 3*listCoupon.size(); i+=3) {
+                Cell headerCouponCell = headerCouponRow.createCell(12 + i);
+                sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(8, 8, 12 + i, 14 + i));
+                headerCouponCell.setCellValue("COUPON " + listCoupon.get(i/3)[0]);
+                headerCouponCell.setCellStyle(headerStyle);
+
+                headerListCoupon.add(headerCouponCell);
+
+                Cell titleCouponBrutCell = headerRow.createCell(12 + i);
+                titleCouponBrutCell.setCellValue("BRUT");
+                Cell titleCouponPLFCell = headerRow.createCell(13 + i);
+                titleCouponPLFCell.setCellValue("PLF");
+                Cell titleCouponNetCell = headerRow.createCell(14 + i);
+                titleCouponNetCell.setCellValue("NET");
             }
 
             // Remplir les données des souscripteurs
@@ -202,99 +319,184 @@ public class ConsultObligationController {
                 System.out.println("💰 Valeur nominale: " + obligation.getValeurNominale());
                 System.out.println("📊 Taux [In Fine, Mensuel]: [" + obligation.getRate()[0] + "%, " + obligation.getRate()[1] + "%]");
                 
-                int rowIndex = 9; // Commencer après l'en-tête
-                double[] totalPartsCoupon = new double[headerListCoupon.size()];
-                long totalPartsCount = 0;
-                long totalCapitalInvested = 0;
+                int rowIndex = 10; // Commencer après l'en-tête
 
                 for (Map.Entry<Integer, Long> entry : investors.entrySet()) {
                     int investorId = entry.getKey();
                     long nombreParts = entry.getValue();
                     long montantInvesti = nombreParts * obligation.getValeurNominale();
-                    
-                    totalPartsCount += nombreParts;
-                    totalCapitalInvested += montantInvesti;
 
                     // Récupérer l'investisseur
                     Investor investor = InvestorInteractor.GetInvestor(investorId);
                     String investorName = investor != null ? investor.getName() : "Inconnu";
+                    String investorPMorPP = investor != null ? (investor instanceof InvestorNP ? "PP" : "PM") : "Inconnu";
+                    String investorResidence = "";
+                    String address = "";
+                    String ville = "";
+                    String pays = "";
+                    String investorIBAN = "";
+                    String investorBIC = "";
+                    if(investor != null && investor instanceof InvestorLP) {
+                        InvestorLP investorLP = (InvestorLP) investor;
+                        if (investorLP.getAddress()[4].equals("France")) {
+                            investorResidence = "R";
+                        } else {
+                            investorResidence = "NR";
+                        }
+                        address = investorLP.getAddress()[0] + " " +
+                                  investorLP.getAddress()[1] + ", " +
+                                  investorLP.getAddress()[5];
+                        ville = investorLP.getAddress()[2] + ", " +
+                                investorLP.getAddress()[3];
+                        pays = investorLP.getAddress()[4];
+                        investorIBAN = investorLP.getIBAN();
+                        investorBIC = investorLP.getBIC();
+                    } else if(investor != null && investor instanceof InvestorNP) {
+                        InvestorNP investorNP = (InvestorNP) investor;
+                        if (investorNP.getAddress()[4].equals("France")) {
+                            investorResidence = "R";
+                        } else {
+                            investorResidence = "NR";
+                        }
+                        address = investorNP.getAddress()[0] + " " +
+                                  investorNP.getAddress()[1] + ", " +
+                                  investorNP.getAddress()[5];
+                        ville = investorNP.getAddress()[2] + ", " +
+                                investorNP.getAddress()[3];
+                        pays = investorNP.getAddress()[4];
+                        investorIBAN = investorNP.getIBAN();
+                        investorBIC = investorNP.getBIC();
+                    } else {
+                        System.err.println("❌ Investisseur non trouvé ou de type inconnu pour l'ID: " + investorId);
+                        continue; // Passer à l'investisseur suivant
+                    }
+                    String PLF = "0";
+                    if (investorResidence.equals("R")) {
+                        PLF = "0.3";
+                    }
 
                     Row dataRow = sheet.createRow(rowIndex);
                     
                     // ID Souscripteur
-                    Cell cellId = dataRow.createCell(0);
-                    cellId.setCellValue(investorId);
-                    
+                    Cell cellFamily = dataRow.createCell(0);
+                    cellFamily.setCellValue(FamilyInteractor.GetFamily(investor.getFamilyId()).getName());
+
                     // Nom du Souscripteur
                     Cell cellName = dataRow.createCell(1);
                     cellName.setCellValue(investorName);
                     
-                    // Nombre de parts
-                    Cell cellParts = dataRow.createCell(2);
-                    cellParts.setCellValue(nombreParts);
+                    Cell cellPPorPM = dataRow.createCell(2);
+                    cellPPorPM.setCellValue(investorPMorPP);
 
-                    // Montant Investi
-                    Cell cellMontant = dataRow.createCell(3);
-                    cellMontant.setCellValue(montantInvesti);
-                    cellMontant.setCellStyle(currencyStyle);
+                    Cell cellResident = dataRow.createCell(3);
+                    cellResident.setCellValue(investorResidence);
+
+                    Cell cellPLF = dataRow.createCell(4);
+                    cellPLF.setCellValue(PLF);
+
+                    Cell cellAddress = dataRow.createCell(5);
+                    cellAddress.setCellValue(address);
+
+                    Cell cellVille = dataRow.createCell(6);
+                    cellVille.setCellValue(ville);
+
+                    Cell cellPays = dataRow.createCell(7);
+                    cellPays.setCellValue(pays);
+
+                    Cell cellNombreParts = dataRow.createCell(8);
+                    cellNombreParts.setCellValue(nombreParts);
+
+                    Cell cellMontantInvesti = dataRow.createCell(9);
+                    cellMontantInvesti.setCellValue(montantInvesti);
+                    cellMontantInvesti.setCellStyle(currencyStyle);
+
+                    Cell cellIBAN = dataRow.createCell(10);
+                    cellIBAN.setCellValue(investorIBAN);
+
+                    Cell cellBIC = dataRow.createCell(11);
+                    cellBIC.setCellValue(investorBIC);
 
                     // Calculer la part du coupon
-                    for (int i = 0; i < listCoupon.size(); i++) {
-                        double partCoupon = montantInvesti * obligation.getRate()[1] / 100.0;
-                        // Ajouter aux totaux
-                        totalPartsCoupon[i] += partCoupon;
-                        try {
-                            LocalDate obligationEndDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths());
-                            LocalDate couponDate = LocalDate.parse(listCoupon.get(i)[0]);
-                            
-                            if(obligationEndDate.isEqual(couponDate)) {
-                                if(obligation.getRate()[0] != 0) {
-                                    partCoupon += montantInvesti * obligation.getRate()[0] / 100.0;
-                                    headerListCoupon.get(i).setCellValue("Coupon du :"+ listCoupon.get(i)[0] +  " ATTENTION IN FINE");
-                                    System.out.println("📅 Date de coupon égale à la date de fin de l'obligation, ajout du taux In Fine.");
-                                }
+                    for (int i = 0; i < 3*listCoupon.size(); i+=3) {
+                        double partBrut = montantInvesti * obligation.getRate()[1] / 100.0;
+                        double partPLF = 0.0;
+                        double partNet = partBrut;
+                        LocalDate obligationEndDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths());
+                        LocalDate couponDate = LocalDate.parse(listCoupon.get(i/3)[0]);
+                        if(obligationEndDate.isEqual(couponDate)) {
+                            if(obligation.getRate()[0] != 0) {
+                                partBrut += montantInvesti * obligation.getRate()[0] / 100.0;
+                                headerListCoupon.get(i/3).setCellValue("COUPON IN FINE");
+                                System.out.println("📅 Date de coupon égale à la date de fin de l'obligation, ajout du taux In Fine.");
                             }
-                        } catch (Exception dateEx) {
-                            System.err.println("⚠️ Erreur de parsing des dates pour l'obligation " + obligation.getName() + ": " + dateEx.getMessage());
+                        }
+                        if(obligationEndDate.isEqual(couponDate)) {
+                            if(obligation.getRate()[0] != 0) {
+                                partBrut += montantInvesti * obligation.getRate()[0] / 100.0;
+                                headerListCoupon.get(i/3).setCellValue("Coupon du :"+ listCoupon.get(i/3)[0] +  " ATTENTION IN FINE");
+                                System.out.println("📅 Date de coupon égale à la date de fin de l'obligation, ajout du taux In Fine.");
+                            }
+                        }
+                        
+                        if (investorResidence.equals("R")) {
+                            partPLF = partBrut * 0.3;
+                            partNet = partBrut - partPLF;
                         }
                         // Part du Coupon
-                        Cell cellCoupon = dataRow.createCell(4 + i);
-                        cellCoupon.setCellValue(partCoupon);
-                        cellCoupon.setCellStyle(currencyStyle);
+                        Cell cellCouponBrut = dataRow.createCell(12 + i);
+                        cellCouponBrut.setCellValue(partBrut);
+                        cellCouponBrut.setCellStyle(currencyStyle);
+
+                        Cell cellCouponPLF = dataRow.createCell(13 + i);
+                        cellCouponPLF.setCellValue(partPLF);
+                        cellCouponPLF.setCellStyle(currencyStyle);
+
+                        Cell cellCouponNet = dataRow.createCell(14 + i);
+                        cellCouponNet.setCellValue(partNet);
+                        cellCouponNet.setCellStyle(currencyStyle);
                     }
                     rowIndex++;
                 }
 
                 // Ligne de total
-                Row totalRow = sheet.createRow(rowIndex + 1);
+                Row totalRow = sheet.createRow(rowIndex);
                 Cell totalLabelCell = totalRow.createCell(1);
                 totalLabelCell.setCellValue("TOTAL :");
                 totalLabelCell.setCellStyle(headerStyle);
 
-                Cell totalPartsCell = totalRow.createCell(2);
-                totalPartsCell.setCellValue(totalPartsCount);
+                Cell totalNombrePartsCell = totalRow.createCell(8);
+                totalNombrePartsCell.setCellFormula("SUM(I11:I" + (rowIndex) + ")");
 
-                Cell totalCapitalCell = totalRow.createCell(3);
-                totalCapitalCell.setCellValue(totalCapitalInvested);
-                totalCapitalCell.setCellStyle(currencyStyle);
+                Cell totalMontantInvestiCell = totalRow.createCell(9);
+                totalMontantInvestiCell.setCellFormula("SUM(J11:J" + (rowIndex) + ")");
+                totalMontantInvestiCell.setCellStyle(currencyStyle);
 
-                for (int i = 0; i < headerListCoupon.size(); i++) {
-                    Cell totalCouponCell = totalRow.createCell(4 + i);
-                    totalCouponCell.setCellValue(totalPartsCoupon[i]);
-                    totalCouponCell.setCellStyle(currencyStyle);
+                for (int i = 0; i < 3*headerListCoupon.size(); i+=3) {
+
+                    // Calculez les colonnes de base pour chaque itération
+                    String brutCol = getColumnReference(12 + i);
+                    String plfCol = getColumnReference(13 + i);
+                    String netCol = getColumnReference(14 + i);
+    
+                    Cell totalBrutCell = totalRow.createCell(12 + i);
+                    totalBrutCell.setCellFormula("SUM(" + brutCol + "11:" + brutCol + (rowIndex) + ")");
+                    totalBrutCell.setCellStyle(currencyStyle);
+
+                    Cell totalPLFCell = totalRow.createCell(13 + i);
+                    totalPLFCell.setCellFormula("SUM(" + plfCol + "11:" + plfCol + (rowIndex) + ")");
+                    totalPLFCell.setCellStyle(currencyStyle);
+
+                    Cell totalNetCell = totalRow.createCell(14 + i);
+                    totalNetCell.setCellFormula("SUM(" + netCol + "11:" + netCol + (rowIndex) + ")");
+                    totalNetCell.setCellStyle(currencyStyle);
                 }
             
             } // Fin du bloc else (si des investisseurs existent)
 
             // Ajuster la largeur des colonnes
-            for (int i = 0; i < 5 + headerListCoupon.size(); i++) {
+            for (int i = 0; i < 12 + 3*headerListCoupon.size(); i++) {
                 sheet.autoSizeColumn(i);
             }
-
-            // Fusionner les cellules du titre
-            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0, 0, 0, 4));
-            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(1, 1, 0, 4));
-            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(2, 2, 0, 4));
 
             // Sauvegarder le fichier
             FileOutputStream fileOut = new FileOutputStream(filename);
@@ -328,4 +530,16 @@ public class ConsultObligationController {
             e.printStackTrace();
         }
     }
+
+    // Méthode pour convertir un index de colonne en référence de colonne Excel (A, B, ..., Z, AA, AB, etc.)
+    private String getColumnReference(int columnIndex) {
+        StringBuilder sb = new StringBuilder();
+        while (columnIndex >= 0) {
+            sb.insert(0, (char)('A' + columnIndex % 26));
+            columnIndex = columnIndex / 26 - 1;
+        }
+        return sb.toString();
+    }
 }
+
+

@@ -6,6 +6,7 @@
   "socialCapital" : "75",
   "legalStatus" : "SARL",
   "address" : [ "575", "75", "75", "75", "75", "75" ],
+  "cityRCS" : "75",
   "civilityBoss" : "M.",
   "nameBoss" : "75",
   "firstNameBoss" : "75",
@@ -15,12 +16,11 @@
   "emailBoss" : "75@gmail.com",
   "phoneNumberBoss" : "75",
   "addressBoss" : [ "75", "75", "75", "75", "75", "75" ],
-  "cityRCS" : "75",
   "taxIdNumberBoss" : "75",
   "roleBoss" : "75",
   "bankName" : "75",
   "groupId" : 0,
-  "obligations" : [ 5 ],
+  "obligations" : [ ],
   "iban" : "75",
   "bic" : "75"
 }
