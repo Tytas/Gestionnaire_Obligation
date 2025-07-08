@@ -69,7 +69,11 @@ public class EditObligationController {
     @FXML
     private TextField TauxProrogationField; 
     @FXML
+    private TextField TauxProrogationInfineField;
+    @FXML
     private TextField DureeProrogationField; 
+    @FXML
+    private CheckBox ProrogationActivee;
 
     @FXML
     private ListView<TupleStringLongBoolean> souscripteurListView;
@@ -128,6 +132,7 @@ public class EditObligationController {
     @FXML private Label dateDebutErreurField;
     @FXML private Label dureeErreurField;
     @FXML private Label tauxProrogationErreurField;
+    @FXML private Label tauxProrogationInfineErreurField;
     @FXML private Label dureeProrogationErreurField;
     @FXML private Label emetteurErreurLabel;
     @FXML private Label valeurNominaleErreurField;
@@ -170,10 +175,12 @@ public class EditObligationController {
             baseCalculComboBox.setValue(currentObligation.getInterestBase());
             periodiciteComboBox.setValue(currentObligation.getPeriodicity());
             dateDebutField.setValue(LocalDate.parse(currentObligation.getStartDate()));
+            ProrogationActivee.setSelected(currentObligation.getProrogationActivated());
             if(currentObligation.getProrogation()[0] != "") {
                 prorogationOui.setSelected(true);
-                TauxProrogationField.setText(currentObligation.getProrogation()[0]);
-                DureeProrogationField.setText(currentObligation.getProrogation()[1]);
+                TauxProrogationField.setText(currentObligation.getProrogation()[1]);
+                TauxProrogationInfineField.setText(currentObligation.getProrogation()[2]);
+                DureeProrogationField.setText(currentObligation.getProrogation()[0]);
             } else {
                 prorogationNon.setSelected(true);
             }
@@ -267,11 +274,17 @@ public class EditObligationController {
             if (newToggle == prorogationOui) {
                 TauxProrogationField.setDisable(false);
                 DureeProrogationField.setDisable(false);
+                TauxProrogationInfineField.setDisable(false);
+                ProrogationActivee.setDisable(false);
             } else if (newToggle == prorogationNon) {
                 TauxProrogationField.setDisable(true);
                 DureeProrogationField.setDisable(true);
+                TauxProrogationInfineField.setDisable(true);
+                ProrogationActivee.setDisable(true);
                 TauxProrogationField.setText("");
                 DureeProrogationField.setText("");
+                TauxProrogationInfineField.setText("");
+                ProrogationActivee.setSelected(false);
             }
         });
         isinToggle.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
@@ -584,6 +597,12 @@ public class EditObligationController {
                 } else {
                     hideError(tauxProrogationErreurField);
                 }
+                if (TauxProrogationInfineField.getText().trim().isEmpty()) {
+                    showError(tauxProrogationInfineErreurField, "Taux IN FINE requis");
+                    hasError = true;
+                } else {
+                    hideError(tauxProrogationInfineErreurField);
+                }
 
                 if (DureeProrogationField.getText().trim().isEmpty()) {
                     showError(dureeProrogationErreurField, "Durée requise");
@@ -620,9 +639,9 @@ public class EditObligationController {
             }
 
             if (!hasError) {
-                EditObligation(nom, capital, valeurNominale, new int[]{tauxInFine, tauxTemp}, isConvertible, baseCalcul, periodicite, isProrogation,
-                    TauxProrogationField.getText(), DureeProrogationField.getText(), numeroIsinField.getText(), duree, dateDebutString,
-                    allSouscripteurs, emetteur, suretes, amortissements);
+                EditObligation(nom, capital, valeurNominale, new int[]{tauxInFine, tauxTemp}, isConvertible, baseCalcul, periodicite, isProrogation, 
+                    TauxProrogationField.getText(), TauxProrogationInfineField.getText(), ProrogationActivee.isSelected(), DureeProrogationField.getText(), 
+                    numeroIsinField.getText(), duree, dateDebutString, allSouscripteurs, emetteur, suretes, amortissements);
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
             }
@@ -651,7 +670,7 @@ public class EditObligationController {
 
     private void EditObligation(String nom, Long capital, Integer valeurNominale, int[] taux, Boolean isConvertible,
                                   String baseCalcul, String periodicite, Boolean isProrogation,
-                                  String tauxProrogation, String dureeProrogation, String isin, Integer duree,
+                                  String tauxProrogation, String tauxProrogationInfine, Boolean prorogationActivated, String dureeProrogation, String isin, Integer duree,
                                   String dateDebut, ObservableList<TupleStringLongBoolean> souscripteursList, String emetteurName,
                                   ObservableList<String> suretes, ObservableList<String[]> amortissements) {
         int idApplicant = ApplicantInteractor.GetApplicantByName(emetteurName);
@@ -670,7 +689,7 @@ public class EditObligationController {
             }
         }
         Obligation obligation = new Obligation(currentObligation.getId(), new SimpleStringProperty(nom), isConvertible, capital, valeurNominale, dateDebut, duree, taux, baseCalcul, periodicite,
-                                                new String[]{tauxProrogation, dureeProrogation}, isin, new ArrayList<>(suretes), amortissementsMap, idApplicant);
+                                                new String[]{dureeProrogation, tauxProrogation, tauxProrogationInfine}, prorogationActivated, isin, new ArrayList<>(suretes), amortissementsMap, idApplicant);
         for (TupleStringLongBoolean souscripteur : souscripteursList) {
             if (souscripteur.getName() != null && !souscripteur.getName().isEmpty() && souscripteur.getSelectionne()) {
                 int idInvestor = InvestorInteractor.GetInvestorByName(souscripteur.getName());

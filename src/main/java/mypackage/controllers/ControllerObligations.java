@@ -57,6 +57,8 @@ public class ControllerObligations {
     private Label DureeProrogationObligation;
     @FXML
     private Label TauxProrogationObligation;
+    @FXML
+    private Label ProrogationEnCoursObligation;
 
     @FXML
     private TableView<Obligation> tableObligations;
@@ -141,10 +143,12 @@ public class ControllerObligations {
                 ProrogationObligation.setText("Aucune");
                 DureeProrogationObligation.setText("");
                 TauxProrogationObligation.setText("");
+                ProrogationEnCoursObligation.setText("");
             } else {
                 ProrogationObligation.setText("Oui");
                 DureeProrogationObligation.setText(oblig.getProrogation()[0]);
-                TauxProrogationObligation.setText(oblig.getProrogation()[1] +  "%");
+                TauxProrogationObligation.setText(oblig.getProrogation()[1] +  "%" + " + " + oblig.getProrogation()[2] + "% INFINE");
+                ProrogationEnCoursObligation.setText(oblig.getProrogationActivated() ? "Oui" : "Non");
             }
         } else {
             // Clear the details if no person is selected
@@ -162,6 +166,7 @@ public class ControllerObligations {
             ProrogationObligation.setText("");
             DureeProrogationObligation.setText("");
             TauxProrogationObligation.setText("");
+            ProrogationEnCoursObligation.setText("");
         }
     }
 

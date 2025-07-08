@@ -20,7 +20,8 @@ public class Obligation {
     private int[] rate = {0, 0}; // [In Fine, mensuelle]
     private String interestBase;
     private String periodicity;
-    private String[] prorogation; // [Durée de prorogation, nouveau taux]
+    private String[] prorogation; // [Durée de prorogation, nouveau taux, nouveau taux In Fine]
+    private Boolean prorogationActivated = false;
     private String isin; //[numero ISIN]
     private ArrayList<String> safeties = new ArrayList<>();
     private int ApplicantId;
@@ -38,14 +39,15 @@ public class Obligation {
         this.rate = new int[]{0, 0};
         this.interestBase = "";
         this.periodicity = "";
-        this.prorogation = new String[]{"", ""};
+        this.prorogation = new String[]{"", "", ""}; // [Durée de prorogation, nouveau taux, nouveau taux In Fine]
+        this.prorogationActivated = false;
         this.isin = "";
         this.ApplicantId = -1;
     }
 
     public Obligation(int id, SimpleStringProperty name, Boolean convertible, long capital, Integer valeurNominale,
-                      String startDate, int durationMonths, int[] rate, String interestBase, String periodicity,
-                      String[] prorogation, String isin, ArrayList<String> safeties, Map<String, Integer> depreciations, int applicantId) {
+                      String startDate, int durationMonths, int[] rate, String interestBase, String periodicity, String[] prorogation, 
+                      Boolean prorogationActivated, String isin, ArrayList<String> safeties, Map<String, Integer> depreciations, int applicantId) {
         this.id = id;
         this.name = name;
         this.convertible = convertible;
@@ -57,6 +59,7 @@ public class Obligation {
         this.interestBase = interestBase;
         this.periodicity = periodicity;
         this.prorogation = prorogation;
+        this.prorogationActivated = prorogationActivated;
         this.isin = isin;
         this.safeties = safeties;
         this.depreciations = depreciations;
@@ -98,6 +101,9 @@ public class Obligation {
     }
     public String[] getProrogation() {
         return prorogation;
+    }
+    public Boolean getProrogationActivated() {
+        return prorogationActivated;
     }
     public String getIsin() {
         return isin;
@@ -153,6 +159,9 @@ public class Obligation {
     }
     public void setProrogation(String[] prorogation) {
         this.prorogation = prorogation;
+    }
+    public void setProrogationActivated(Boolean prorogationActivated) {
+        this.prorogationActivated = prorogationActivated;
     }
     public void setIsin(String isin) {
         this.isin = isin;

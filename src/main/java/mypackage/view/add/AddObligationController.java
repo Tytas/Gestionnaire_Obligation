@@ -67,6 +67,8 @@ public class AddObligationController {
     @FXML
     private TextField TauxProrogationField; 
     @FXML
+    private TextField TauxProrogationInfineField;
+    @FXML
     private TextField DureeProrogationField; 
     @FXML
     private TextField valeurNominaleField;
@@ -88,6 +90,7 @@ public class AddObligationController {
     @FXML private Label dateDebutErreurField;
     @FXML private Label dureeErreurField;
     @FXML private Label tauxProrogationErreurField;
+    @FXML private Label tauxProrogationInfineErreurField;
     @FXML private Label dureeProrogationErreurField;
     @FXML private Label emetteurErreurLabel;
     @FXML private Label valeurNominaleErreurField;
@@ -158,9 +161,11 @@ public class AddObligationController {
         prorogation.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
             if (newToggle == prorogationOui) {
                 TauxProrogationField.setDisable(false);
+                TauxProrogationInfineField.setDisable(false);
                 DureeProrogationField.setDisable(false);
             } else if (newToggle == prorogationNon) {
                 TauxProrogationField.setDisable(true);
+                TauxProrogationInfineField.setDisable(true);
                 DureeProrogationField.setDisable(true);
             }
         });
@@ -431,6 +436,12 @@ public class AddObligationController {
                 } else {
                     hideError(tauxProrogationErreurField);
                 }
+                if (TauxProrogationInfineField.getText().trim().isEmpty()) {
+                    showError(tauxProrogationInfineErreurField, "Taux Infine requis");
+                    hasError = true;
+                } else {
+                    hideError(tauxProrogationInfineErreurField);
+                }
 
                 if (DureeProrogationField.getText().trim().isEmpty()) {
                     showError(dureeProrogationErreurField, "Durée requise");
@@ -470,7 +481,7 @@ public class AddObligationController {
 
             if (!hasError) {
                 CreateObligation(nom, capital, valeurNominale, new int[]{tauxInFine, tauxTemp}, isConvertible,
-                    baseCalcul, periodicite, isProrogation, TauxProrogationField.getText(), DureeProrogationField.getText(),
+                    baseCalcul, periodicite, isProrogation, TauxProrogationField.getText(), TauxProrogationInfineField.getText(), DureeProrogationField.getText(),
                     numeroIsin, duree, dateDebutString, allSouscripteurs, emetteur, suretes, amortissements);
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
@@ -499,8 +510,8 @@ public class AddObligationController {
 
 
     private void CreateObligation(String nom, Long capital, Integer valeurNominale, int[] taux, Boolean isConvertible,
-                                  String baseCalcul, String periodicite, Boolean isProrogation,
-                                  String tauxProrogation, String dureeProrogation, String numeroIsin, Integer duree,
+                                  String baseCalcul, String periodicite, Boolean isProrogation,String tauxProrogation,
+                                  String tauxProrogationInfine, String dureeProrogation, String numeroIsin, Integer duree,
                                   String dateDebut, ObservableList<TupleStringLongBoolean> souscripteursList, String emetteurName,
                                   ObservableList<String> suretes, ObservableList<String[]> amortissements) {
         int newId = ObligationInteractor.generateNewId(); // Generate a new ID for the obligation
@@ -520,7 +531,7 @@ public class AddObligationController {
             }
         }
         Obligation obligation = new Obligation(newId, new SimpleStringProperty(nom), isConvertible, capital, valeurNominale, dateDebut, duree, taux, baseCalcul, periodicite,
-                                                new String[]{tauxProrogation, dureeProrogation}, numeroIsin, new ArrayList<>(suretes), amortissementsMap, idApplicant);
+                                                new String[]{dureeProrogation, tauxProrogation, tauxProrogationInfine}, false, numeroIsin, new ArrayList<>(suretes), amortissementsMap, idApplicant);
         for (TupleStringLongBoolean souscripteur : souscripteursList) {
             System.out.println("Adding investor: " + souscripteur.getName());
             if (souscripteur.getName() != null && !souscripteur.getName().isEmpty() && souscripteur.getSelectionne()) {

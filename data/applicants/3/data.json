@@ -19,7 +19,7 @@
   "roleBoss" : "75",
   "bankName" : "75",
   "groupId" : 0,
-  "obligations" : [ ],
+  "obligations" : [ 5 ],
   "iban" : "75",
   "bic" : "75"
 }

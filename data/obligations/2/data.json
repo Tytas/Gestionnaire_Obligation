@@ -9,12 +9,14 @@
   "rate" : [ 0, 5 ],
   "interestBase" : "Jour Réel/365",
   "periodicity" : "Semestrielle",
-  "prorogation" : [ "", "" ],
+  "prorogation" : [ "", "", "" ], 
+  "prorogationActivated" : false,
   "isin" : "",
   "safeties" : [ ],
   "depreciations" : { },
   "investors" : {
-    "1" : 12
+    "1" : 12,
+    "2" : 8
   },
   "replacements" : [ ],
   "applicantId" : 1

@@ -21,10 +21,10 @@
                   <Label layoutX="199.0" layoutY="34.0" styleClass="subtitle" text="Obligation Details" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                   <GridPane layoutX="20.0" layoutY="71.4" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="71.4">
                     <columnConstraints>
-                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="78.20001220703125" minWidth="10.0" prefWidth="75.1999755859375" />
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="100.60003662109375" minWidth="10.0" prefWidth="87.6000244140625" />
-                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="90.20001220703125" minWidth="10.0" prefWidth="74.79997558593752" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="119.20002593994141" minWidth="10.0" prefWidth="94.39998626708984" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="109.60001373291016" minWidth="10.0" prefWidth="109.60001373291016" />
+                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="110.39999999999998" minWidth="10.0" prefWidth="110.39999999999998" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="134.20001220703125" minWidth="10.0" prefWidth="119.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -42,7 +42,7 @@
                         <Label styleClass="row-separator" text="capital" GridPane.rowIndex="1" />
                         <Label fx:id="capitalObligation" styleClass="row-separator" text="vide" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label styleClass="row-separator" text="Durée" GridPane.rowIndex="3" />
-                        <Label styleClass="row-separator" text="Nouveau Taux" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                        <Label styleClass="row-separator" text="Nouveaux Taux" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="7" />
                         <Label text="Date de Début" wrapText="true" GridPane.rowIndex="4" />
                         <Label text="Date de Fin" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                         <Label text="Taux" GridPane.rowIndex="5" />
@@ -65,6 +65,8 @@
                         <Label fx:id="OS_OCAObligation" text="vide" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                         <Label text="Numéro ISIN" wrapText="true" GridPane.rowIndex="2" />
                         <Label fx:id="ISINObligation" text="vide" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="En Cours : " wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                        <Label fx:id="ProrogationEnCoursObligation" text="vide" GridPane.columnIndex="3" GridPane.rowIndex="6" />
                      </children>
                      <opaqueInsets>
                         <Insets />

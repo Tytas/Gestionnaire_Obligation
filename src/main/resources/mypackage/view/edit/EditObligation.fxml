@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -21,7 +22,7 @@
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
       <ColumnConstraints hgrow="SOMETIMES" />
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-      <ColumnConstraints hgrow="SOMETIMES" />
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
       <ColumnConstraints hgrow="SOMETIMES" />
   </columnConstraints>
@@ -31,9 +32,8 @@
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="5.0" minHeight="5.0" prefHeight="5.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
@@ -55,25 +55,17 @@
          <GridPane.margin>
             <Insets bottom="15.0" />
          </GridPane.margin></Label>
-      <Label text="Prorogation" GridPane.rowIndex="7" />
-      <Label text="Durée Prorogation" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="7">
+      <Label text="Prorogation" GridPane.rowIndex="5" />
+      <Label text="Durée Prorogation" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets bottom="15.0" />
          </GridPane.margin></Label>
       <Label text="OS/OCA" GridPane.rowIndex="1" />
-      <Label text="Date Début" GridPane.rowIndex="5">
-         <GridPane.margin>
-            <Insets bottom="15.0" />
-         </GridPane.margin></Label>
-      <Label text="Durée" GridPane.columnIndex="2" GridPane.rowIndex="5">
-         <GridPane.margin>
-            <Insets bottom="15.0" />
-         </GridPane.margin></Label>
       <Label text="Taux" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets bottom="15.0" />
          </GridPane.margin></Label>
-      <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="10">
+      <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="9">
          <children>
             <Button fx:id="annulerButton" mnemonicParsing="false" text="Annuler">
                <HBox.margin>
@@ -99,7 +91,7 @@
             <RadioButton mnemonicParsing="false" text="OCA" toggleGroup="$convertible" />
          </children>
       </HBox>
-      <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="7">
+      <HBox alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <children>
             <RadioButton fx:id="prorogationOui" mnemonicParsing="false" selected="true" text="oui">
                <padding>
@@ -112,31 +104,30 @@
             <RadioButton fx:id="prorogationNon" mnemonicParsing="false" text="non" toggleGroup="$prorogation" />
          </children>
       </HBox>
-      <Label text="Taux Prorogation" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="7">
+      <Label text="Taux Prorogation" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="5">
          <GridPane.margin>
             <Insets bottom="15.0" />
          </GridPane.margin></Label>
       <Label text="Sureté" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-      <Label text="Souscripteurs" GridPane.rowIndex="9">
+      <Label text="Souscripteurs" GridPane.rowIndex="8">
          <GridPane.margin>
             <Insets />
          </GridPane.margin></Label>
-      <Label text="Emetteur" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+      <Label text="Emetteur" GridPane.columnIndex="2" GridPane.rowIndex="8" />
       <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
-      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" />
-      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="8" />
+      <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" />
       <Label text="Taux IN FINE" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets bottom="15.0" />
          </GridPane.margin></Label>
       <Label text="Amortissement" GridPane.rowIndex="3" />
-      <VBox GridPane.columnIndex="1" GridPane.rowIndex="9">
+      <VBox GridPane.columnIndex="1" GridPane.rowIndex="8">
          <children>
             <TextField fx:id="souscripteurSearchField" />
             <ListView fx:id="souscripteurListView" prefHeight="150.0" prefWidth="200.0" />
          </children>
       </VBox>
-      <VBox GridPane.columnIndex="3" GridPane.rowIndex="9">
+      <VBox GridPane.columnIndex="3" GridPane.rowIndex="8">
          <children>
             <TextField fx:id="emetteurSearchField" minHeight="34.0" prefWidth="214.0" />
             <ListView fx:id="emetteurListView" prefHeight="150.0" prefWidth="200.0" />
@@ -155,8 +146,8 @@
             <Button fx:id="addSureteButton" mnemonicParsing="false" styleClass="mini-button" text="+" />
          </children>
       </HBox>
-      <Label text="cessions" GridPane.columnIndex="4" GridPane.rowIndex="9" />
-      <HBox alignment="BOTTOM_CENTER" GridPane.columnIndex="5" GridPane.rowIndex="9">
+      <Label text="cessions" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+      <HBox alignment="BOTTOM_CENTER" GridPane.columnIndex="5" GridPane.rowIndex="8">
          <children>
             <ListView fx:id="cessionListView" prefHeight="200.0" prefWidth="200.0" />
             <Button fx:id="addcessionButton" mnemonicParsing="false" styleClass="mini-button" text="+" />
@@ -201,25 +192,21 @@
             <Label fx:id="tauxInFineErreurField" text="Label" visible="false" />
          </children>
       </VBox>
-      <VBox GridPane.columnIndex="1" GridPane.rowIndex="5">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="5" GridPane.rowIndex="3">
          <children>
             <DatePicker fx:id="dateDebutField" />
             <Label fx:id="dateDebutErreurField" text="Label" visible="false" />
-         </children>
-      </VBox>
-      <VBox GridPane.columnIndex="3" GridPane.rowIndex="5">
-         <children>
             <TextField fx:id="dureeField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" />
             <Label fx:id="dureeErreurField" text="Label" visible="false" />
          </children>
       </VBox>
-      <VBox GridPane.columnIndex="3" GridPane.rowIndex="7">
+      <VBox GridPane.columnIndex="3" GridPane.rowIndex="5">
          <children>
             <TextField fx:id="DureeProrogationField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" />
             <Label fx:id="dureeProrogationErreurField" text="Label" visible="false" />
          </children>
       </VBox>
-      <VBox GridPane.columnIndex="5" GridPane.rowIndex="7">
+      <VBox GridPane.columnIndex="5" GridPane.rowIndex="5">
          <children>
             <TextField fx:id="TauxProrogationField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" />
             <Label fx:id="tauxProrogationErreurField" text="Label" visible="false" />
@@ -271,5 +258,24 @@
             <Label fx:id="valeurNominaleErreurField" text="Label" visible="false" />
          </children>
       </VBox>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="4" GridPane.rowIndex="3">
+         <children>
+            <Label text="Date Début" />
+            <Label text="Durée">
+               <VBox.margin>
+                  <Insets bottom="20.0" top="35.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+      <Label text="Taux IN FINE Prorogation" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+      <VBox GridPane.columnIndex="5" GridPane.rowIndex="6">
+         <children>
+            <TextField fx:id="TauxProrogationInfineField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" />
+            <Label fx:id="tauxProrogationInfineErreurField" text="Label" visible="false" />
+         </children>
+      </VBox>
+      <Label text="Prorogation activée" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+      <CheckBox fx:id="ProrogationActivee" mnemonicParsing="false" text="Activée" GridPane.columnIndex="3" GridPane.rowIndex="6" />
    </children>
 </GridPane>

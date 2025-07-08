@@ -219,5 +219,12 @@
             <Label fx:id="nomErreurField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" text="Label" visible="false" />
          </children>
       </VBox>
+      <Label text="Taux Prorogation" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="3" GridPane.rowIndex="10">
+         <children>
+            <TextField fx:id="TauxProrogationInfineField" prefHeight="8.0" prefWidth="300.0" />
+            <Label fx:id="tauxProrogationInfineErreurField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="15.0" text="Label" visible="false" />
+         </children>
+      </VBox>
    </children>
 </GridPane>
