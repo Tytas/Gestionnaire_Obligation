@@ -221,7 +221,7 @@ public class ConsultObligationController {
                 obligationProrogationDateCell.setCellStyle(headerStyle);
 
                 Cell obligationProrogationRateCell = obligationRateRow.createCell(2);
-                obligationProrogationRateCell.setCellValue("Taux Prorogation : " + obligation.getProrogation()[1] + "%");
+                obligationProrogationRateCell.setCellValue("Taux Prorogation : " + obligation.getProrogation()[1] + "%" + " + " + obligation.getProrogation()[2] + "% INFINE");
                 obligationProrogationRateCell.setCellStyle(headerStyle);
             
                 Cell obligationProrogationDurationCell = obligationDurationRow.createCell(2);
