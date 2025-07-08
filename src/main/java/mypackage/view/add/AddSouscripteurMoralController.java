@@ -37,7 +37,7 @@ public class AddSouscripteurMoralController {
     @FXML
     private DatePicker dateCreationField;
     @FXML
-    private TextField typeEntrepriseField;
+    private TextField capitalSocialField;
     @FXML
     private  ComboBox<String> formeJuridiqueComboBox;
 
@@ -87,9 +87,7 @@ public class AddSouscripteurMoralController {
     @FXML
     private TextField fonctionDirigeantField;
     @FXML
-    private TextField residenceFiscaleDirigeantField;
-    @FXML
-    private TextField numeroIdentificationDirigeantField;
+    private TextField villeRCSField;
     @FXML
     private TextField bicField;
     @FXML
@@ -101,7 +99,7 @@ public class AddSouscripteurMoralController {
     @FXML private Label paysErreurComboBox;
     @FXML private Label numRegistreErreurField;
     @FXML private Label dateCreationErreurField;
-    @FXML private Label typeEntrepriseErreurField;
+    @FXML private Label capitalSocialErreurField;
     @FXML private Label formeJuridiqueErreurComboBox;
 
     @FXML private Label numeroAdresseErreurField;
@@ -129,8 +127,7 @@ public class AddSouscripteurMoralController {
     @FXML private Label complementAdresseDirigeantErreurField;
 
     @FXML private Label fonctionDirigeantErreurField;
-    @FXML private Label residenceFiscaleDirigeantErreurField;
-    @FXML private Label numeroIdentificationDirigeantErreurField;
+    @FXML private Label villeRCSErreurField;
     @FXML private Label bicErreurField;
     @FXML private Label ibanErreurField;
     @FXML private Label banqueErreurField;
@@ -252,7 +249,7 @@ public class AddSouscripteurMoralController {
         validerButton.setOnAction(event -> {
             boolean nomOK = validateField(nomField, nomErreurField, "text");
             boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
-            boolean typeEntrepriseOK = validateField(typeEntrepriseField, typeEntrepriseErreurField, "text");
+            boolean capitalSocialOK = validateField(capitalSocialField, capitalSocialErreurField, "text");
             boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
 
             boolean numeroAdresseOK = validateField(numeroAdresseField, numeroAdresseErreurField, "text");
@@ -287,7 +284,7 @@ public class AddSouscripteurMoralController {
             boolean complementAdresseDirigeantOK = validateField(complementAdresseDirigeantField, complementAdresseDirigeantErreurField, "text");
 
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
-            boolean residenceFiscaleDirigeantOK = validateField(residenceFiscaleDirigeantField, residenceFiscaleDirigeantErreurField, "text");
+            boolean villeRCSOK = validateField(villeRCSField, villeRCSErreurField, "text");
            
             boolean bicOK = validateField(bicField, bicErreurField, "text");
             boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
@@ -306,13 +303,13 @@ public class AddSouscripteurMoralController {
 
             // Vérification globale
             boolean formulaireValide =
-                nomOK && numRegistreOK && typeEntrepriseOK && formeJuridiqueOK &&
+                nomOK && numRegistreOK && capitalSocialOK && formeJuridiqueOK &&
                 numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK && complementAdresseOK &&
                 sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
                 numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
                 paysAdresseDirigeantOK && complementAdresseDirigeantOK &&
-                fonctionDirigeantOK && residenceFiscaleDirigeantOK &&
+                fonctionDirigeantOK && villeRCSOK &&
                 bicOK && ibanOK && banqueOK && familyOK;
 
             if (formulaireValide) {
@@ -321,7 +318,7 @@ public class AddSouscripteurMoralController {
                     new SimpleStringProperty(nomField.getText().trim()),
                     Integer.parseInt(numRegistreField.getText().trim()),
                     dateCreationField.getValue().toString(),
-                    typeEntrepriseField.getText().trim(),
+                    capitalSocialField.getText().trim(),
                     formeJuridiqueComboBox.getValue(),
                     new String[]{
                         numeroAdresseField.getText().trim(),
@@ -347,8 +344,7 @@ public class AddSouscripteurMoralController {
                         paysAdresseDirigeantField.getText().trim(),
                         complementAdresseDirigeantField.getText().trim()
                     },
-                    residenceFiscaleDirigeantField.getText().trim(),
-                    numeroIdentificationDirigeantField.getText().trim(),
+                    villeRCSField.getText().trim(),
                     fonctionDirigeantField.getText().trim(),
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
@@ -370,18 +366,18 @@ public class AddSouscripteurMoralController {
     }
 
     private void CreateInvestorLP(SimpleStringProperty name, int registerNumber, String dateOfCreation,
-                    String typeOfBusiness, String legalStatus, String[] address,
+                    String capitalSocial, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
-                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
-                    String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int familyId) {
+                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String villeRCS,
+                    String roleBoss, String IBAN, String BIC, String BankName, int familyId) {
         int newId = InvestorInteractor.generateNewId();
         InvestorLP investorlp = new InvestorLP(newId, name, registerNumber, dateOfCreation,
-                typeOfBusiness, legalStatus, address,
+                capitalSocial, legalStatus, address,
                 civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
                 dateOfBirthBoss, placeOfBirthBoss,
-                emailBoss, phoneNumberBoss, addressBoss, fiscalcountryBoss,
-                taxIdNumberBoss, roleBoss, IBAN, BIC, BankName, familyId);
+                emailBoss, phoneNumberBoss, addressBoss, villeRCS,
+                roleBoss, IBAN, BIC, BankName, familyId);
         System.out.println("Creating investorlp with the following details:");
         for (String[] obligation : allObligations) {
             if (Boolean.parseBoolean(obligation[1])) {

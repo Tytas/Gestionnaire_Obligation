@@ -22,7 +22,6 @@ public class Applicant {
     private String emailBoss;
     private String phoneNumberBoss;
     private String[] addressBoss = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
-    private String taxIdNumberBoss;
     private String roleBoss;
     
     private String IBAN;
@@ -53,7 +52,6 @@ public class Applicant {
             addressBoss[i] = "";
         }
         this.cityRCS = "";
-        this.taxIdNumberBoss = "";
         this.roleBoss = "";
         this.IBAN = "";
         this.BIC = "";
@@ -66,7 +64,7 @@ public class Applicant {
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
                     String emailBoss, String phoneNumberBoss, String[] addressBoss, String cityRCS,
-                    String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int groupId) {
+                    String roleBoss, String IBAN, String BIC, String BankName, int groupId) {
         this.id = id;
         this.name = name;
         this.registerNumber = registerNumber;
@@ -85,7 +83,6 @@ public class Applicant {
         this.phoneNumberBoss = phoneNumberBoss;
         this.addressBoss = addressBoss;
         this.cityRCS = cityRCS;
-        this.taxIdNumberBoss = taxIdNumberBoss;
         this.roleBoss = roleBoss;
         this.IBAN = IBAN;
         this.BIC = BIC;
@@ -146,9 +143,6 @@ public class Applicant {
     }
     public String getcityRCS() {
         return cityRCS;
-    }
-    public String getTaxIdNumberBoss() {
-        return taxIdNumberBoss;
     }
     public String getRoleBoss() {
         return roleBoss;
@@ -219,9 +213,6 @@ public class Applicant {
     }
     public void setcityRCS(String cityRCS) {
         this.cityRCS = cityRCS;
-    }
-    public void setTaxIdNumberBoss(String taxIdNumberBoss) {
-        this.taxIdNumberBoss = taxIdNumberBoss;
     }
     public void setRoleBoss(String roleBoss) {
         this.roleBoss = roleBoss;

@@ -81,8 +81,6 @@ public class AddEmetteurController {
     @FXML
     private TextField villeRCSField;
     @FXML
-    private TextField numeroIdentificationDirigeantField;
-    @FXML
     private TextField bicField;
     @FXML
     private TextField ibanField;
@@ -243,7 +241,6 @@ public class AddEmetteurController {
                         complementAdresseDirigeantField.getText().trim()
                     },
                     villeRCSField.getText().trim(),
-                    numeroIdentificationDirigeantField.getText().trim(),
                     fonctionDirigeantField.getText().trim(),
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
@@ -269,14 +266,14 @@ public class AddEmetteurController {
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
                     String emailBoss, String phoneNumberBoss, String[] addressBoss, String cityRCS,
-                    String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int groupId) {
+                    String roleBoss, String IBAN, String BIC, String BankName, int groupId) {
         int newId = ApplicantInteractor.generateNewId();
         Applicant applicant = new Applicant(newId, name, registerNumber, dateOfCreation,
                 socialCapital, legalStatus, address,
                 civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
                 dateOfBirthBoss, placeOfBirthBoss,
                 emailBoss, phoneNumberBoss, addressBoss, cityRCS,
-                taxIdNumberBoss, roleBoss, IBAN, BIC, BankName, groupId);
+                roleBoss, IBAN, BIC, BankName, groupId);
         System.out.println("Creating applicant with the following details:");
         String selectedGroupName = groupeComboBox.getValue();
         int selectedGroupId = GroupInteractor.GetGroupByName(selectedGroupName);

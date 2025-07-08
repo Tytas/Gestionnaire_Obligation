@@ -30,7 +30,7 @@ public class AddFamilyController {
     @FXML
     private DatePicker dateCreationField;
     @FXML
-    private TextField typeEntrepriseField;
+    private TextField villeRCSField;
     @FXML
     private  ComboBox<String> formeJuridiqueComboBox;
 
@@ -80,9 +80,7 @@ public class AddFamilyController {
     @FXML
     private TextField fonctionDirigeantField;
     @FXML
-    private TextField residenceFiscaleDirigeantField;
-    @FXML
-    private TextField numeroIdentificationDirigeantField;
+    private TextField capitalSocialField;
     @FXML
     private TextField bicField;
     @FXML
@@ -103,7 +101,7 @@ public class AddFamilyController {
     @FXML private Label nomErreurField;
     @FXML private Label numRegistreErreurField;
     @FXML private Label dateCreationErreurField;
-    @FXML private Label typeEntrepriseErreurField;
+    @FXML private Label villeRCSErreurField;
     @FXML private Label formeJuridiqueErreurComboBox;
     @FXML private Label familyTypeErreurComboBox;
     @FXML private Label nbApproovalErreurField;
@@ -133,8 +131,7 @@ public class AddFamilyController {
     @FXML private Label complementAdresseDirigeantErreurField;
 
     @FXML private Label fonctionDirigeantErreurField;
-    @FXML private Label residenceFiscaleDirigeantErreurField;
-    @FXML private Label numeroIdentificationDirigeantErreurField;
+    @FXML private Label capitalSocialErreurField;
     @FXML private Label bicErreurField;
     @FXML private Label ibanErreurField;
     @FXML private Label banqueErreurField;
@@ -189,7 +186,7 @@ public class AddFamilyController {
         validerButton.setOnAction(event -> {
             boolean nomOK = validateField(nomField, nomErreurField, "text");
             boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
-            boolean typeEntrepriseOK = validateField(typeEntrepriseField, typeEntrepriseErreurField, "text");
+            boolean villeRCSOK = validateField(villeRCSField, villeRCSErreurField, "text");
             boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
             boolean alertMailOK = validateField(alertMailField, alertMailErreurField, "email");
 
@@ -221,18 +218,18 @@ public class AddFamilyController {
             boolean complementAdresseDirigeantOK = validateField(complementAdresseDirigeantField, complementAdresseDirigeantErreurField, "text");
 
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
-            boolean residenceFiscaleDirigeantOK = validateField(residenceFiscaleDirigeantField, residenceFiscaleDirigeantErreurField, "text");
+            boolean capitalSocialOK = validateField(capitalSocialField, capitalSocialErreurField, "text");
             boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
 
             // Vérification globale
             boolean formulaireValide =
-                nomOK && numRegistreOK && typeEntrepriseOK && formeJuridiqueOK &&
+                nomOK && numRegistreOK && villeRCSOK && formeJuridiqueOK &&
                 numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK && complementAdresseOK &&
                 sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
                 numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
                 paysAdresseDirigeantOK && complementAdresseDirigeantOK &&
-                fonctionDirigeantOK && residenceFiscaleDirigeantOK &&
+                fonctionDirigeantOK && capitalSocialOK &&
                 banqueOK && alertMailOK;
 
             if (formulaireValide) {
@@ -241,7 +238,7 @@ public class AddFamilyController {
                     new SimpleStringProperty(nomField.getText().trim()),
                     Integer.parseInt(numRegistreField.getText().trim()),
                     dateCreationField.getValue().toString(),
-                    typeEntrepriseField.getText().trim(),
+                    villeRCSField.getText().trim(),
                     formeJuridiqueComboBox.getValue(),
                     new String[]{
                         numeroAdresseField.getText().trim(),
@@ -267,8 +264,7 @@ public class AddFamilyController {
                         paysAdresseDirigeantField.getText().trim(),
                         complementAdresseDirigeantField.getText().trim()
                     },
-                    residenceFiscaleDirigeantField.getText().trim(),
-                    numeroIdentificationDirigeantField.getText().trim(),
+                    capitalSocialField.getText().trim(),
                     fonctionDirigeantField.getText().trim(),
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
@@ -292,19 +288,19 @@ public class AddFamilyController {
     }
 
     private void CreateFamily(SimpleStringProperty name, int registerNumber, String dateOfCreation,
-                    String typeOfBusiness, String legalStatus, String[] address,
+                    String villeRCS, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
-                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
-                    String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName,
+                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String SocialCapital,
+                    String roleBoss, String IBAN, String BIC, String BankName,
                     String nbAprooval, String alertMail, ObservableList<String[]> contacts) {
         int newId = FamilyInteractor.generateNewId();
         Family family = new Family(newId, name, registerNumber, dateOfCreation,
-                typeOfBusiness, legalStatus, address,
+                villeRCS, legalStatus, address,
                 civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
                 dateOfBirthBoss, placeOfBirthBoss,
-                emailBoss, phoneNumberBoss, addressBoss, fiscalcountryBoss,
-                taxIdNumberBoss, roleBoss, IBAN, BIC, BankName,
+                emailBoss, phoneNumberBoss, addressBoss, SocialCapital,
+                roleBoss, IBAN, BIC, BankName,
                 nbAprooval, alertMail);
         if(contacts != null) {
             for (String[] contact : contacts) {

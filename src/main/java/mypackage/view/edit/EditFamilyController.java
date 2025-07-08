@@ -34,7 +34,7 @@ public class EditFamilyController {
     @FXML
     private DatePicker dateCreationField;
     @FXML
-    private TextField typeEntrepriseField;
+    private TextField capitalSocialField;
     @FXML
     private  ComboBox<String> formeJuridiqueComboBox;
 
@@ -84,9 +84,7 @@ public class EditFamilyController {
     @FXML
     private TextField fonctionDirigeantField;
     @FXML
-    private TextField residenceFiscaleDirigeantField;
-    @FXML
-    private TextField numeroIdentificationDirigeantField;
+    private TextField villeRCSField;
     @FXML
     private TextField bicField;
     @FXML
@@ -107,7 +105,7 @@ public class EditFamilyController {
     @FXML private Label nomErreurField;
     @FXML private Label numRegistreErreurField;
     @FXML private Label dateCreationErreurField;
-    @FXML private Label typeEntrepriseErreurField;
+    @FXML private Label capitalSocialErreurField;
     @FXML private Label formeJuridiqueErreurComboBox;
     @FXML private Label familyTypeErreurComboBox;
     @FXML private Label nbApproovalErreurField;
@@ -138,8 +136,7 @@ public class EditFamilyController {
     @FXML private Label complementAdresseDirigeantErreurField;
 
     @FXML private Label fonctionDirigeantErreurField;
-    @FXML private Label residenceFiscaleDirigeantErreurField;
-    @FXML private Label numeroIdentificationDirigeantErreurField;
+    @FXML private Label villeRCSErreurField;
     @FXML private Label bicErreurField;
     @FXML private Label ibanErreurField;
     @FXML private Label banqueErreurField;
@@ -165,7 +162,7 @@ public class EditFamilyController {
             nomField.setText(currentFamily.getName());
             numRegistreField.setText(String.valueOf(currentFamily.getRegisterNumber()));
             dateCreationField.setValue(LocalDate.parse(currentFamily.getDateOfCreation()));
-            typeEntrepriseField.setText(currentFamily.getTypeOfBusiness());
+            capitalSocialField.setText(currentFamily.getSocialCapital());
             formeJuridiqueComboBox.setValue(currentFamily.getLegalStatus());
             nbApproovalField.setText(String.valueOf(currentFamily.getNbAprooval()));
             alertMailField.setText(currentFamily.getAlertMail());
@@ -198,8 +195,7 @@ public class EditFamilyController {
             paysAdresseDirigeantField.setText(currentFamily.getAddressBoss()[4]);
             complementAdresseDirigeantField.setText(currentFamily.getAddressBoss()[5]);
             fonctionDirigeantField.setText(currentFamily.getRoleBoss());
-            residenceFiscaleDirigeantField.setText(currentFamily.getFiscalcountryBoss());
-            numeroIdentificationDirigeantField.setText(currentFamily.getTaxIdNumberBoss());
+            villeRCSField.setText(currentFamily.getvilleRCS());
             bicField.setText(currentFamily.getBIC());
             ibanField.setText(currentFamily.getIBAN());
             banqueField.setText(currentFamily.getBankName());
@@ -248,7 +244,7 @@ public class EditFamilyController {
         validerButton.setOnAction(event -> {
             boolean nomOK = validateField(nomField, nomErreurField, "text");
             boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
-            boolean typeEntrepriseOK = validateField(typeEntrepriseField, typeEntrepriseErreurField, "text");
+            boolean capitalSocialOK = validateField(capitalSocialField, capitalSocialErreurField, "text");
             boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
             boolean alertMailOK = validateField(alertMailField, alertMailErreurField, "email");
 
@@ -278,18 +274,18 @@ public class EditFamilyController {
             boolean paysAdresseDirigeantOK = validateField(paysAdresseDirigeantField, paysAdresseDirigeantErreurField, "text");
             
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
-            boolean residenceFiscaleDirigeantOK = validateField(residenceFiscaleDirigeantField, residenceFiscaleDirigeantErreurField, "text");
+            boolean villeRCSOK = validateField(villeRCSField, villeRCSErreurField, "text");
             boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
 
             // Vérification globale
             boolean formulaireValide =
-                nomOK && numRegistreOK && typeEntrepriseOK && formeJuridiqueOK &&
+                nomOK && numRegistreOK && capitalSocialOK && formeJuridiqueOK &&
                 numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK &&
                 sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
                 numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
                 paysAdresseDirigeantOK && alertMailOK &&
-                fonctionDirigeantOK && residenceFiscaleDirigeantOK &&
+                fonctionDirigeantOK && villeRCSOK &&
                 banqueOK;
 
             if (formulaireValide) {
@@ -302,7 +298,7 @@ public class EditFamilyController {
                     new SimpleStringProperty(nomField.getText().trim()),
                     Integer.parseInt(numRegistreField.getText().trim()),
                     dateCreationField.getValue().toString(),
-                    typeEntrepriseField.getText().trim(),
+                    capitalSocialField.getText().trim(),
                     formeJuridiqueComboBox.getValue(),
                     new String[]{
                         numeroAdresseField.getText().trim(),
@@ -328,8 +324,7 @@ public class EditFamilyController {
                         paysAdresseDirigeantField.getText().trim(),
                         complementAdresseDirigeantField.getText().trim()
                     },
-                    residenceFiscaleDirigeantField.getText().trim(),
-                    numeroIdentificationDirigeantField.getText().trim(),
+                    villeRCSField.getText().trim(),
                     fonctionDirigeantField.getText().trim(),
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
@@ -353,19 +348,19 @@ public class EditFamilyController {
     }
 
     private void EditFamily(SimpleStringProperty name, int registerNumber, String dateOfCreation,
-                    String typeOfBusiness, String legalStatus, String[] address,
+                    String SocialCapital, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
-                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
-                    String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName,
+                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String villeRCSBoss,
+                    String roleBoss, String IBAN, String BIC, String BankName,
                     String nbAprooval, String alertMail, ObservableList<String[]> contacts) {
         int Id = currentFamily.getId();
         Family family = new Family(Id, name, registerNumber, dateOfCreation,
-                typeOfBusiness, legalStatus, address,
+                SocialCapital, legalStatus, address,
                 civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
                 dateOfBirthBoss, placeOfBirthBoss,
-                emailBoss, phoneNumberBoss, addressBoss, fiscalcountryBoss,
-                taxIdNumberBoss, roleBoss, IBAN, BIC, BankName,
+                emailBoss, phoneNumberBoss, addressBoss, villeRCSBoss,
+                roleBoss, IBAN, BIC, BankName,
                 nbAprooval, alertMail);
         System.out.println("Creating family with the following details:");
         if(contacts != null) {

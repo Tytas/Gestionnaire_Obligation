@@ -84,8 +84,6 @@ public class EditEmetteurController {
     @FXML
     private TextField villeRCSField;
     @FXML
-    private TextField numeroIdentificationDirigeantField;
-    @FXML
     private TextField bicField;
     @FXML
     private TextField ibanField;
@@ -186,7 +184,6 @@ public class EditEmetteurController {
             complementAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[5]);
             fonctionDirigeantField.setText(currentEmetteur.getRoleBoss());
             villeRCSField.setText(currentEmetteur.getcityRCS());
-            numeroIdentificationDirigeantField.setText(currentEmetteur.getTaxIdNumberBoss());
             bicField.setText(currentEmetteur.getBIC());
             ibanField.setText(currentEmetteur.getIBAN());
             banqueField.setText(currentEmetteur.getBankName());
@@ -300,7 +297,6 @@ public class EditEmetteurController {
                         complementAdresseDirigeantField.getText().trim()
                     },
                     villeRCSField.getText().trim(),
-                    numeroIdentificationDirigeantField.getText().trim(),
                     fonctionDirigeantField.getText().trim(),
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
@@ -326,14 +322,14 @@ public class EditEmetteurController {
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
                     String emailBoss, String phoneNumberBoss, String[] addressBoss, String cityRCS,
-                    String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int groupId) {
+                    String roleBoss, String IBAN, String BIC, String BankName, int groupId) {
         int Id = currentEmetteur.getId();
         Applicant applicant = new Applicant(Id, name, registerNumber, dateOfCreation,
                 socialCapital, legalStatus, address,
                 civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
                 dateOfBirthBoss, placeOfBirthBoss,
                 emailBoss, phoneNumberBoss, addressBoss, cityRCS,
-                taxIdNumberBoss, roleBoss, IBAN, BIC, BankName, groupId);
+                roleBoss, IBAN, BIC, BankName, groupId);
         
         String selectedGroupName = groupeComboBox.getValue();
         int selectedGroupId = GroupInteractor.GetGroupByName(selectedGroupName);

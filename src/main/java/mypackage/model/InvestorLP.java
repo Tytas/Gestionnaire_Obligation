@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class InvestorLP extends Investor {
     private int registerNumber;
     private String dateOfCreation;
-    private String typeOfBusiness;
+    private String capitalSocial;
     private String legalStatus;
     private String[] address = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
 
@@ -18,8 +18,7 @@ public class InvestorLP extends Investor {
     private String emailBoss;
     private String phoneNumberBoss;
     private String[] addressBoss = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
-    private String fiscalcountryBoss;
-    private String taxIdNumberBoss;
+    private String villeRCS;
     private String roleBoss;
     private String IBAN;
     private String BIC;
@@ -29,7 +28,7 @@ public class InvestorLP extends Investor {
         super();
         this.registerNumber = 0;
         this.dateOfCreation = "";
-        this.typeOfBusiness = "";
+        this.capitalSocial = "";
         this.legalStatus = "";
         for (int i = 0; i < address.length; i++) {
             address[i] = "";
@@ -46,8 +45,7 @@ public class InvestorLP extends Investor {
         for (int i = 0; i < addressBoss.length; i++) {
             addressBoss[i] = "";
         }
-        this.fiscalcountryBoss = "";
-        this.taxIdNumberBoss = "";
+        this.villeRCS = "";
         this.roleBoss = "";
         this.IBAN = "";
         this.BIC = "";
@@ -55,15 +53,15 @@ public class InvestorLP extends Investor {
     }
 
     public InvestorLP(int id, SimpleStringProperty name, int registerNumber, String dateOfCreation,
-                      String typeOfBusiness, String legalStatus, String[] address,
+                      String capitalSocial, String legalStatus, String[] address,
                       String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                       String dateOfBirthBoss, String placeOfBirthBoss,
-                      String emailBoss, String phoneNumberBoss, String[] addressBoss, String fiscalcountryBoss,
-                      String taxIdNumberBoss, String roleBoss, String IBAN, String BIC, String BankName, int familyId) {
+                      String emailBoss, String phoneNumberBoss, String[] addressBoss, String villeRCS,
+                      String roleBoss, String IBAN, String BIC, String BankName, int familyId) {
         super(id, name, familyId);
         this.registerNumber = registerNumber;
         this.dateOfCreation = dateOfCreation;
-        this.typeOfBusiness = typeOfBusiness;
+        this.capitalSocial = capitalSocial;
         this.legalStatus = legalStatus;
         this.address = address;
 
@@ -76,8 +74,7 @@ public class InvestorLP extends Investor {
         this.emailBoss = emailBoss;
         this.phoneNumberBoss = phoneNumberBoss;
         this.addressBoss = addressBoss;
-        this.fiscalcountryBoss = fiscalcountryBoss;
-        this.taxIdNumberBoss = taxIdNumberBoss;
+        this.villeRCS = villeRCS;
         this.roleBoss = roleBoss;
         this.IBAN = IBAN;
         this.BIC = BIC;
@@ -90,8 +87,8 @@ public class InvestorLP extends Investor {
     public String getDateOfCreation() {
         return dateOfCreation;
     }
-    public String getTypeOfBusiness() {
-        return typeOfBusiness;
+    public String getcapitalSocial() {
+        return capitalSocial;
     }
     public String getLegalStatus() {
         return legalStatus;
@@ -129,11 +126,8 @@ public class InvestorLP extends Investor {
     public String[] getAddressBoss() {
         return addressBoss;
     }
-    public String getFiscalcountryBoss() {
-        return fiscalcountryBoss;
-    }
-    public String getTaxIdNumberBoss() {
-        return taxIdNumberBoss;
+    public String getvilleRCS() {
+        return villeRCS;
     }
     public String getRoleBoss() {
         return roleBoss;
@@ -153,8 +147,8 @@ public class InvestorLP extends Investor {
     public void setDateOfCreation(String dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
-    public void setTypeOfBusiness(String typeOfBusiness) {
-        this.typeOfBusiness = typeOfBusiness;
+    public void setcapitalSocial(String capitalSocial) {
+        this.capitalSocial = capitalSocial;
     }
     public void setLegalStatus(String legalStatus) {
         this.legalStatus = legalStatus;
@@ -189,11 +183,8 @@ public class InvestorLP extends Investor {
     public void setAddressBoss(String[] addressBoss) {
         this.addressBoss = addressBoss;
     }
-    public void setFiscalcountryBoss(String fiscalcountryBoss) {
-        this.fiscalcountryBoss = fiscalcountryBoss;
-    }
-    public void setTaxIdNumberBoss(String taxIdNumberBoss) {
-        this.taxIdNumberBoss = taxIdNumberBoss;
+    public void setvilleRCS(String villeRCS) {
+        this.villeRCS = villeRCS;
     }
     public void setRoleBoss(String roleBoss) {
         this.roleBoss = roleBoss;

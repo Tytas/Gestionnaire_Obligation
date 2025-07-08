@@ -16,7 +16,6 @@
   "phoneNumberBoss" : "0123456789",
   "addressBoss" : [ "1", "rue de la Paix", "95000", "Paris", "France", "" ],
   "cityRCS" : "France",
-  "taxIdNumberBoss" : "123456789",
   "roleBoss" : "Directeur",
   "bankName" : "LCL",
   "groupId" : 1,
