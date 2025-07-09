@@ -179,10 +179,10 @@ public class ControllerObligations {
                 applicant.removeObligation(selectedObligation.getId());
                 ApplicantInteractor.DeleteApplicant(applicant.getId());
                 ApplicantInteractor.SaveApplicant(applicant);
-                selectedObligation.getInvestors().forEach((investorId, capital) -> {
-                    Investor investor = InvestorInteractor.GetInvestor(investorId);
+                selectedObligation.getInvestors().forEach((investorInfo) -> {
+                    Investor investor = InvestorInteractor.GetInvestor(investorInfo.getInvestorId());
                     investor.removeObligation(selectedObligation.getId());
-                    InvestorInteractor.DeleteInvestor(investorId);
+                    InvestorInteractor.DeleteInvestor(investorInfo.getInvestorId());
                     InvestorInteractor.SaveInvestor(investor);
                 });
                 ObligationInteractor.DeleteObligation(selectedObligation.getId());

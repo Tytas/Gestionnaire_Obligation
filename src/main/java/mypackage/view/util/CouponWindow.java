@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Map;
 import java.awt.Desktop;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -28,6 +27,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
+import mypackage.model.util.InvestorInfo;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -54,9 +54,9 @@ public class CouponWindow {
         Obligation obligationData = ObligationInteractor.GetObligationByName(obligation[2]);
 
         allSouscripteurs.clear();
-        for(Map.Entry<Integer, Long> entry : obligationData.getInvestors().entrySet()) {
-            Integer souscripteurId = entry.getKey();
-            Long amount = entry.getValue();
+        for(InvestorInfo triplet : obligationData.getInvestors()) {
+            Integer souscripteurId = triplet.getInvestorId();
+            Long amount = triplet.getCapital();
             allSouscripteurs.add(new String[]{InvestorInteractor.GetInvestor(souscripteurId).getName(), amount.toString()});
         }
 
@@ -208,7 +208,7 @@ public class CouponWindow {
             Paragraph l1 = new Paragraph("Chère Madame, cher Monsieur,");
             document.add(l1);
             String convertibleString = obligation.getConvertible() ? " convertible(s)" : " non convertible(s)";
-            long nbPart = obligation.getInvestors().get(investor.getId());
+            long nbPart = obligation.getInvestorCapital(investor.getId());
             Paragraph l2 = new Paragraph("Vous êtes titulaire de " + nbPart + " obligation(s) " + convertibleString + " " + obligation.getName() + ".");
             document.add(l2);
             Paragraph l3 = new Paragraph("Nous vous prions de trouver ci-après le détail des opérations réalisées sur vos titres.");

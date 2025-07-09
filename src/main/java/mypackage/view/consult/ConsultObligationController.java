@@ -8,6 +8,7 @@ import mypackage.model.Family;
 import mypackage.model.Investor;
 import mypackage.model.InvestorLP;
 import mypackage.model.InvestorNP;
+import mypackage.model.util.InvestorInfo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,7 +17,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Map;
 import java.awt.Desktop;
 
 import org.apache.poi.ss.usermodel.*;
@@ -56,7 +56,10 @@ public class ConsultObligationController {
 
     public void init() {
         // Initialisation des composants
-        Integer[] investorIdList = obligation.getInvestors().keySet().toArray(new Integer[0]);
+        ArrayList<Integer> investorIdList = new ArrayList<>();
+        for (InvestorInfo investor : obligation.getInvestors()) {
+            investorIdList.add(investor.getInvestorId());
+        }
         ArrayList<Integer> familyIdList = new ArrayList<>();
 
         for (Integer investorId : investorIdList) {
@@ -195,7 +198,7 @@ public class ConsultObligationController {
             obligationRateCell.setCellStyle(headerStyle);
 
             Cell obligationRateCell2 = obligationRateRow.createCell(1);
-            obligationRateCell2.setCellValue(obligation.getRate()[0] + "% / " + obligation.getRate()[1] + "%");
+            obligationRateCell2.setCellValue(obligation.getRate()[1] + "% / " + obligation.getRate()[0] + "%");
             obligationRateCell2.setCellStyle(headerStyle);
 
             Row obligationPeriodicityRow = sheet.createRow(6);
@@ -285,7 +288,7 @@ public class ConsultObligationController {
 
             ArrayList<Cell> headerListCoupon = new ArrayList<>();
 
-            ArrayList<String[]> listCoupon = obligation.getListCoupon();
+            ArrayList<String[]> listCoupon = obligation.listCouponGetter();
 
             Row headerCouponRow = sheet.createRow(8);
             for (int i = 0; i < 3*listCoupon.size(); i+=3) {
@@ -320,7 +323,7 @@ public class ConsultObligationController {
             }
 
             // Remplir les données des souscripteurs
-            Map<Integer, Long> investors = obligation.getInvestors();
+            ArrayList<InvestorInfo> investors = obligation.getInvestors();
             System.out.println("👥 Nombre de souscripteurs trouvés: " + (investors != null ? investors.size() : 0));
             
             if (investors == null || investors.isEmpty()) {
@@ -337,9 +340,9 @@ public class ConsultObligationController {
                 
                 int rowIndex = 10; // Commencer après l'en-tête
 
-                for (Map.Entry<Integer, Long> entry : investors.entrySet()) {
-                    int investorId = entry.getKey();
-                    long nombreParts = entry.getValue();
+                for (InvestorInfo info : investors) {
+                    int investorId = info.getInvestorId();
+                    long nombreParts = info.getCapital();
                     long montantInvesti = nombreParts * obligation.getValeurNominale();
                     long montantInvestiInFine = 0L;
                     double partBrut = montantInvesti * obligation.getRate()[1] / 100.0;
@@ -349,8 +352,8 @@ public class ConsultObligationController {
                     double partPLFInFine = 0.0;
                     double partNetInFine = 0.0;
                     LocalDate obligationEndDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths());
-                    LocalDate couponDate = LocalDate.parse(listCoupon.get(listCoupon.size() - 1)[0]);
-                    if(obligationEndDate.isEqual(couponDate) && !obligation.getProrogationActivated()) {
+                    LocalDate lastCouponDate = LocalDate.parse(listCoupon.get(listCoupon.size() - 1)[0]);
+                    if(obligationEndDate.isEqual(lastCouponDate) && !obligation.getProrogationActivated()) {
                         if(obligation.getRate()[0] != 0) {
                             montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, listCoupon.get(listCoupon.size() - 1)[0]);
                             partBrutInFine = montantInvestiInFine * obligation.getRate()[0] / 100.0;
@@ -360,7 +363,7 @@ public class ConsultObligationController {
 
                     if(obligation.getProrogationActivated()) {
                         obligationEndDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths() + Integer.parseInt(obligation.getProrogation()[0]));
-                        if(obligationEndDate.isEqual(couponDate)) {
+                        if(obligationEndDate.isEqual(lastCouponDate)) {
                             if(obligation.getProrogation()[2] != "0" && obligation.getProrogation()[2] != "") {
                                 montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, listCoupon.get(listCoupon.size() - 1)[0]);
                                 int period = 0;
@@ -483,7 +486,11 @@ public class ConsultObligationController {
 
                     // Calculer la part du coupon
                     for (int i = 0; i < 3*listCoupon.size(); i+=3) {
-                       
+
+                        if(!info.getDate().isEmpty() && LocalDate.parse(info.getDate()).isAfter(LocalDate.parse(listCoupon.get(i)[0]))) {
+                            continue; //TODO prendre en compte le temps entre la date d'arrivée et la date du coupon avec la formule adéquate
+                        }
+                        
                         Cell cellCouponBrut = dataRow.createCell(12 + i);
                         cellCouponBrut.setCellValue(partBrut);
                         cellCouponBrut.setCellStyle(currencyStyle);

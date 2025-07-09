@@ -3,7 +3,6 @@ package mypackage.controllers;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Map;
 import java.io.FileNotFoundException;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,6 +26,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.collections.FXCollections;
 import javafx.stage.Stage;
+
+import mypackage.model.util.InvestorInfo;
 
 import mypackage.MainApp;
 import mypackage.model.Obligation;
@@ -85,7 +86,7 @@ public class ControllerHome {
                     totalCapitaux += obligation.getCapital();
                     totalObligationsRunning += 1;
                     totalInvestors += obligation.getInvestors().size();
-                    rateWeightedAverage += (obligation.getRate()[0] + obligation.getRate()[1]) * obligation.getCapital();
+                    rateWeightedAverage += (obligation.getRate()[1] + obligation.getRate()[0]) * obligation.getCapital();
                     remainDurationDayAverage += obligation.getCapital() * ChronoUnit.DAYS.between(
                         LocalDate.now(),
                         LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()));
@@ -462,7 +463,7 @@ public class ControllerHome {
             }
 
             // Remplir les données des souscripteurs
-            Map<Integer, Long> investors = obligation.getInvestors();
+            ArrayList<InvestorInfo> investors = obligation.getInvestors();
             System.out.println("👥 Nombre de souscripteurs trouvés: " + (investors != null ? investors.size() : 0));
             
             if (investors == null || investors.isEmpty()) {
@@ -480,9 +481,9 @@ public class ControllerHome {
                 
                 int rowIndex = 10;
 
-                for (Map.Entry<Integer, Long> entry : investors.entrySet()) {
-                    int investorId = entry.getKey();
-                    long nombreParts = entry.getValue();
+                for (InvestorInfo info : investors) {
+                    int investorId = info.getInvestorId();
+                    long nombreParts = info.getCapital();
                     long montantInvesti = nombreParts * obligation.getValeurNominale();
                     long montantInvestiInFine = 0L;
                     double partBrut = montantInvesti * obligation.getRate()[1] / 100.0;
@@ -622,17 +623,20 @@ public class ControllerHome {
                     Cell cellBIC = dataRow.createCell(11);
                     cellBIC.setCellValue(investorBIC);
 
-                    Cell cellCouponBrut = dataRow.createCell(12);
-                    cellCouponBrut.setCellValue(partBrut);
-                    cellCouponBrut.setCellStyle(currencyStyle);
+                    if(!(!info.getDate().isEmpty() && LocalDate.parse(info.getDate()).isAfter(LocalDate.parse(item[0])))) {
+                         //TODO prendre en compte le temps entre la date d'arrivée et la date du coupon avec la formule adéquate
+                        Cell cellCouponBrut = dataRow.createCell(12);
+                        cellCouponBrut.setCellValue(partBrut);
+                        cellCouponBrut.setCellStyle(currencyStyle);
 
-                    Cell cellCouponPLF = dataRow.createCell(13);
-                    cellCouponPLF.setCellValue(partPLF);
-                    cellCouponPLF.setCellStyle(currencyStyle);
+                        Cell cellCouponPLF = dataRow.createCell(13);
+                        cellCouponPLF.setCellValue(partPLF);
+                        cellCouponPLF.setCellStyle(currencyStyle);
 
-                    Cell cellCouponNet = dataRow.createCell(14);
-                    cellCouponNet.setCellValue(partNet);
-                    cellCouponNet.setCellStyle(currencyStyle);
+                        Cell cellCouponNet = dataRow.createCell(14);
+                        cellCouponNet.setCellValue(partNet);
+                        cellCouponNet.setCellStyle(currencyStyle);
+                    }
 
                     if(montantInvestiInFine != 0) {
                         Cell cellCouponInfineBrut = dataRow.createCell(15);

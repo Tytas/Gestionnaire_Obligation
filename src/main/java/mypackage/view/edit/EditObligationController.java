@@ -215,10 +215,12 @@ public class EditObligationController {
                 }
             }
             for (TupleStringLongBoolean item : filteredSouscripteurs) {
-                for (int id : currentObligation.getInvestors().keySet()) {
+                for (mypackage.model.util.InvestorInfo info : currentObligation.getInvestors()) {
+                    int id = info.getInvestorId();
                     if (item.getName().equalsIgnoreCase(InvestorInteractor.GetInvestor(id).getName())) {
                         item.selectionneProperty().set(true);
-                        item.capitalProperty().set(String.valueOf(currentObligation.getInvestors().get(id)));
+                        item.capitalProperty().set(String.valueOf(info.getCapital()));
+                        item.setDate(info.getDate());
                         souscripteurListView.getSelectionModel().select(item);
                         if (!selectedSouscripteurs.contains(item)) {
                             selectedSouscripteurs.add(item);
@@ -313,24 +315,48 @@ public class EditObligationController {
                 super.updateItem(item, empty);
                 CheckBox checkBox = new CheckBox();
                 TextField montantField = new TextField();
-                HBox content = new HBox(10, checkBox, montantField);
+                DatePicker datePicker = new DatePicker();
+                datePicker.setPromptText("Date d'investissement");
+                datePicker.setPrefWidth(140);
+                
+                // Liaison bidirectionnelle personnalisée pour le DatePicker
+                datePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
+                    if (newDate != null) {
+                        item.setDate(newDate.toString());
+                    } else {
+                        item.setDate("");
+                    }
+                });
+                
+                HBox content = new HBox(10, checkBox, montantField, datePicker);
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
                     checkBox.setText(item.getName());
-                    checkBox.selectedProperty().unbind();
-                    montantField.textProperty().unbindBidirectional(item.getCapital());
-
+                    
                     checkBox.selectedProperty().bindBidirectional(item.selectionneProperty());
                     montantField.textProperty().bindBidirectional(item.capitalProperty());
 
+                    if (item.getDate() != null && !item.getDate().isEmpty()) {
+                        try {
+                            datePicker.setValue(LocalDate.parse(item.getDate()));
+                        } catch (Exception e) {
+                            datePicker.setValue(null);
+                        }
+                    } else {
+                        datePicker.setValue(null);
+                    }
+                    // Désactiver les champs si non sélectionné
                     montantField.setDisable(!item.getSelectionne());
+                    datePicker.setDisable(!item.getSelectionne());
+                    
                     if (selectionListener != null) {
                         item.selectionneProperty().removeListener(selectionListener);
                     }
 
                     selectionListener = (obs, oldVal, newVal) -> {
                         montantField.setDisable(!newVal);
+                        datePicker.setDisable(!newVal);
                         if (newVal) {
                             if (!selectedSouscripteurs.contains(item)) {
                                 selectedSouscripteurs.add(item);
@@ -700,13 +726,21 @@ public class EditObligationController {
                 
                 // Vérification que l'investisseur avec ce montant n'existe pas déjà
                 Long currentCapital = Long.valueOf(souscripteur.getCapital());
-                if (obligation.getInvestors().containsKey(idInvestor) && 
-                    obligation.getInvestors().get(idInvestor).equals(currentCapital)) {
-                    System.out.println("Investor " + souscripteur.getName() + " with amount " + currentCapital + " already exists in obligation");
-                    continue; // Skip this investor if already exists with same amount
+                boolean investorExists = false;
+                for (mypackage.model.util.InvestorInfo info : obligation.getInvestors()) {
+                    if (info.getInvestorId() == idInvestor && 
+                        info.getCapital().equals(currentCapital)) {
+                        investorExists = true;
+                        System.out.println("Investor " + souscripteur.getName() + " with amount " + currentCapital + " already exists in obligation");
+                        break;
+                    }
                 }
-                
-                obligation.addInvestor(idInvestor, currentCapital);
+                if (!investorExists) {
+                    // Vérifier si la date est définie
+                    String date = souscripteur.getDate() != null && !souscripteur.getDate().isEmpty() ? 
+                                souscripteur.getDate() : "";
+                    obligation.addInvestor(idInvestor, currentCapital, date);
+                }
             }
         }
         System.out.println(cessions + " cessions to process.");

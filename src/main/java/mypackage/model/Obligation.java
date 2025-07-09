@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javafx.beans.property.SimpleStringProperty;
 
 import mypackage.model.util.Replacement;
+import mypackage.model.util.InvestorInfo;
 
 public class Obligation {
     private int id;
@@ -26,7 +27,7 @@ public class Obligation {
     private ArrayList<String> safeties = new ArrayList<>();
     private int ApplicantId;
     private Map<String, Integer> depreciations = new HashMap<>(); // Date -> Pourcentage
-    private Map<Integer, Long> investors = new HashMap<>();
+    private ArrayList<InvestorInfo> investors = new ArrayList<>(); // Liste des informations d'investisseurs
     private ArrayList<Replacement> replacements = new ArrayList<>();
 
     public Obligation() {
@@ -117,11 +118,26 @@ public class Obligation {
     public Map<String, Integer> getDepreciations() {
         return depreciations;
     }
-    public Map<Integer, Long> getInvestors() {
+    public ArrayList<InvestorInfo> getInvestors() {
         return investors;
     }
+    
     public Long getInvestorCapital(int investorId) {
-        return investors.getOrDefault(investorId, 0L);
+        for (InvestorInfo info : investors) {
+            if (info.getInvestorId() == investorId) {
+                return info.getCapital();
+            }
+        }
+        return 0L;
+    }
+    
+    public String getInvestorDate(int investorId) {
+        for (InvestorInfo info : investors) {
+            if (info.getInvestorId() == investorId) {
+                return info.getDate();
+            }
+        }
+        return "";
     }
     public ArrayList<Replacement> getReplacements() {
         return replacements;
@@ -187,14 +203,31 @@ public class Obligation {
     public void removeDepreciation(String date) {
         this.depreciations.remove(date);
     }
-    public void setInvestors(Map<Integer, Long> investors) {
+    public void setInvestors(ArrayList<InvestorInfo> investors) {
         this.investors = investors;
     }
-    public void addInvestor(Integer investor, long capital) {
-        this.investors.put(investor, capital);
+    
+    /**
+     * Convertit l'ancienne structure Map<Integer, Long> en nouvelle structure avec InvestorInfo
+     * @param oldInvestors La map contenant les anciennes données
+     */
+    public void setInvestorsLegacy(Map<Integer, Long> oldInvestors) {
+        this.investors.clear();
+        for (Map.Entry<Integer, Long> entry : oldInvestors.entrySet()) {
+            this.investors.add(new InvestorInfo(entry.getKey(), entry.getValue(), ""));
+        }
     }
+    
+    public void addInvestor(Integer investor, long capital) {
+        this.investors.add(new InvestorInfo(investor, capital, ""));
+    }
+    
+    public void addInvestor(Integer investor, long capital, String date) {
+        this.investors.add(new InvestorInfo(investor, capital, date));
+    }
+    
     public void removeInvestor(Integer investor) {
-        this.investors.remove(investor);
+        this.investors.removeIf(info -> info.getInvestorId().equals(investor));
     }
     public void setReplacements(ArrayList<Replacement> replacements) {
         this.replacements = replacements;
@@ -206,7 +239,7 @@ public class Obligation {
         this.replacements.remove(replacement);
     }
 
-    public ArrayList<String[]> getListCoupon() {
+    public ArrayList<String[]> listCouponGetter() {
         ArrayList<String[]> listCoupon = new ArrayList<>();
         int period = 0;
         if(this.getPeriodicity() != null) {

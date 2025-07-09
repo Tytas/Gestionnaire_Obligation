@@ -14,10 +14,15 @@
   "isin" : "",
   "safeties" : [ ],
   "depreciations" : { },
-  "investors" : {
-    "1" : 12,
-    "2" : 8
-  },
+  "investors" : [ {
+    "investorId" : 1,
+    "capital" : 12,
+    "date" : ""
+  }, {
+    "investorId" : 2,
+    "capital" : 8,
+    "date" : ""
+  } ],
   "replacements" : [ ],
   "applicantId" : 1
 }

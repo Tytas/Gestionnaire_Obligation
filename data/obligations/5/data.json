@@ -9,15 +9,20 @@
   "rate" : [ 12, 0 ],
   "interestBase" : "Jour Réel/365",
   "periodicity" : "Trimestrielle",
-  "prorogation" : [ "", "", "" ], 
+  "prorogation" : [ "", "", "" ],
   "prorogationActivated" : false,
   "isin" : "",
   "safeties" : [ "CAUTION" ],
   "depreciations" : { },
-  "investors" : {
-    "1" : 3,
-    "2" : 10
-  },
+  "investors" : [ {
+    "investorId" : 1,
+    "capital" : 3,
+    "date" : ""
+  }, {
+    "investorId" : 2,
+    "capital" : 10,
+    "date" : "2029-06-29"
+  } ],
   "replacements" : [ ],
   "applicantId" : 3
 }

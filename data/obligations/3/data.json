@@ -14,10 +14,11 @@
   "isin" : "",
   "safeties" : [ ],
   "depreciations" : { },
-  "investors" : {
-    "1" : 5
-  },
+  "investors" : [ {
+    "investorId" : 1,
+    "capital" : 5,
+    "date" : ""
+  } ],
   "replacements" : [ ],
-  "listCoupon" : [ [ "2025-06-28", "50000", "lklklklk" ], [ "2025-12-28", "50000", "lklklklk" ], [ "2026-06-28", "50000", "lklklklk" ], [ "2026-12-28", "50000", "lklklklk" ], [ "2027-06-28", "50000", "lklklklk" ], [ "2027-12-28", "50000", "lklklklk" ], [ "2028-06-28", "50000", "lklklklk" ] ],
   "applicantId" : 2
 }

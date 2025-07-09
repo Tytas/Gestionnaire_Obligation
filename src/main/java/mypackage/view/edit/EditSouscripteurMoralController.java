@@ -460,10 +460,16 @@ public class EditSouscripteurMoralController {
                     
                     // Vérification que l'investisseur avec ce montant n'existe pas déjà dans l'obligation
                     Long defaultAmount = 10L;
-                    if (newObligation.getInvestors().containsKey(Id) && 
-                        newObligation.getInvestors().get(Id).equals(defaultAmount)) {
-                        System.out.println("Investor " + Id + " with amount " + defaultAmount + " already exists in obligation " + idObligation);
-                    } else {
+                    boolean investorExists = false;
+                    for (mypackage.model.util.InvestorInfo info : newObligation.getInvestors()) {
+                        if (info.getInvestorId().equals(Id) && 
+                            info.getCapital().equals(defaultAmount)) {
+                            investorExists = true;
+                            System.out.println("Investor " + Id + " with amount " + defaultAmount + " already exists in obligation " + idObligation);
+                            break;
+                        }
+                    }
+                    if (!investorExists) {
                         newObligation.addInvestor(Id, defaultAmount);
                     }
                     

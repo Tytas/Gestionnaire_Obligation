@@ -9,11 +9,20 @@ public class TupleStringLongBoolean {
     private StringProperty name;
     private StringProperty capital;
     private BooleanProperty selectionne;
+    private StringProperty date; // Nouvelle propriété pour la date
 
     public TupleStringLongBoolean(StringProperty name, StringProperty capital, BooleanProperty selectionne) {
         this.name = name;
         this.capital = capital;
         this.selectionne = selectionne;
+        this.date = new SimpleStringProperty(""); // Valeur par défaut vide
+    }
+
+    public TupleStringLongBoolean(StringProperty name, StringProperty capital, BooleanProperty selectionne, StringProperty date) {
+        this.name = name;
+        this.capital = capital;
+        this.selectionne = selectionne;
+        this.date = date;
     }
 
     public String getName() {
@@ -37,6 +46,13 @@ public class TupleStringLongBoolean {
         return selectionne;
     }
 
+    public String getDate() {
+        return date.get();
+    }
+    public StringProperty dateProperty() {
+        return date;
+    }
+
     public void setName(String name) {
         this.name.set(name);
     }
@@ -46,12 +62,16 @@ public class TupleStringLongBoolean {
     public void setSelectionne(Boolean selectionne) {
         this.selectionne.set(selectionne);
     }
+    public void setDate(String date) {
+        this.date.set(date);
+    }
 
     public TupleStringLongBoolean clone() {
-    return new TupleStringLongBoolean(
-        new SimpleStringProperty(name.get()),
-        new SimpleStringProperty(capital.get()),
-        new SimpleBooleanProperty(false)
-    );
-}
+        return new TupleStringLongBoolean(
+            new SimpleStringProperty(name.get()),
+            new SimpleStringProperty(capital.get()),
+            new SimpleBooleanProperty(false),
+            new SimpleStringProperty(date.get())
+        );
+    }
 }

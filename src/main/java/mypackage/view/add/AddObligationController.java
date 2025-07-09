@@ -194,7 +194,19 @@ public class AddObligationController {
                 super.updateItem(item, empty);
                 CheckBox checkBox = new CheckBox();
                 TextField montantField = new TextField();
-                HBox content = new HBox(10, checkBox, montantField);
+                DatePicker datePicker = new DatePicker();
+                datePicker.setPromptText("Date d'investissement");
+                datePicker.setPrefWidth(140);
+                
+                // Liaison bidirectionnelle personnalisée pour le DatePicker
+                datePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
+                    if (newDate != null) {
+                        item.setDate(newDate.toString());
+                    } else {
+                        item.setDate("");
+                    }
+                });
+                HBox content = new HBox(10, checkBox, montantField, datePicker);
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
@@ -205,13 +217,17 @@ public class AddObligationController {
                     checkBox.selectedProperty().bindBidirectional(item.selectionneProperty());
                     montantField.textProperty().bindBidirectional(item.capitalProperty());
 
+                    // Désactiver les champs si non sélectionné
                     montantField.setDisable(!item.getSelectionne());
+                    datePicker.setDisable(!item.getSelectionne());
+                    
                     if (selectionListener != null) {
                         item.selectionneProperty().removeListener(selectionListener);
                     }
 
                     selectionListener = (obs, oldVal, newVal) -> {
                         montantField.setDisable(!newVal);
+                        datePicker.setDisable(!newVal);
                 };
                 item.selectionneProperty().addListener(selectionListener);
                 setGraphic(content);
@@ -541,7 +557,10 @@ public class AddObligationController {
                     System.out.println("Investor not found: " + souscripteur.getName());
                     continue; // Skip this investor if not found
                 }
-                obligation.addInvestor(idInvestor, Long.valueOf(souscripteur.getCapital()));
+                // Vérifier si la date est définie
+                String date = souscripteur.getDate() != null && !souscripteur.getDate().isEmpty() ? 
+                              souscripteur.getDate() : "";
+                obligation.addInvestor(idInvestor, Long.valueOf(souscripteur.getCapital()), date);
             }
         }
         ObligationInteractor.SaveObligation(obligation);

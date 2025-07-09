@@ -2,7 +2,7 @@
   "id" : 2,
   "name" : "Gentil",
   "familyId" : 1,
-  "obligations" : [ 1, 4 ],
+  "obligations" : [ 1, 4, 5 ],
   "civility" : "Mme.",
   "firstName" : "Louis",
   "nationality" : "FR",
