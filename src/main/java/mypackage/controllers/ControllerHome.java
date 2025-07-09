@@ -624,7 +624,7 @@ public class ControllerHome {
                     cellBIC.setCellValue(investorBIC);
 
                     if(!(!info.getDate().isEmpty() && LocalDate.parse(info.getDate()).isAfter(LocalDate.parse(item[0])))) {
-                         //TODO prendre en compte le temps entre la date d'arrivée et la date du coupon avec la formule adéquate
+                        //TODO prendre en compte le temps entre la date d'arrivée et la date du coupon avec la formule adéquate
                         Cell cellCouponBrut = dataRow.createCell(12);
                         cellCouponBrut.setCellValue(partBrut);
                         cellCouponBrut.setCellStyle(currencyStyle);
