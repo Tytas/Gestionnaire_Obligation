@@ -3,6 +3,7 @@ package mypackage.view.util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.awt.Desktop;
 
@@ -212,7 +213,7 @@ public class CouponWindow {
             document.add(l2);
             Paragraph l3 = new Paragraph("Nous vous prions de trouver ci-après le détail des opérations réalisées sur vos titres.");
             document.add(l3);
-            Paragraph l4 = new Paragraph("Nous vous prions de croire, chère Madame, cher Monsieur, en l’assurance de notre respectueuse considération.");
+            Paragraph l4 = new Paragraph("Nous vous prions de croire, chère Madame, cher Monsieur, en l'assurance de notre respectueuse considération.");
             document.add(l4);
 
             document.add(new Paragraph("\n\n\n"));
@@ -220,6 +221,39 @@ public class CouponWindow {
             Table table2 = new Table(2);
             table2.setWidth(UnitValue.createPercentValue(60));
             table2.setHorizontalAlignment(com.itextpdf.layout.properties.HorizontalAlignment.CENTER);
+
+            long montantInvesti = nbPart * obligation.getValeurNominale();
+            double valeurBrut = 0.0;
+            long montantInvestiInFine = 0;
+            if(obligation.getProrogationActivated()) {
+                valeurBrut = montantInvesti * Long.valueOf(obligation.getProrogation()[1]) / 100.0;
+                if(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()).isEqual(LocalDate.parse(dateCoupon))) {
+                    montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, dateCoupon);
+                        int period = 0;
+                        if(obligation.getPeriodicity().equals("Mensuelle")) {
+                            period = 1;
+                        } else if(obligation.getPeriodicity().equals("Trimestrielle")) {
+                            period = 3;
+                        } else if(obligation.getPeriodicity().equals("Semestrielle")) {
+                            period = 6;
+                        } else if(obligation.getPeriodicity().equals("Annuelle")) {
+                            period = 12;
+                        } else {
+                            System.err.println("Unknown periodicity: " + obligation.getPeriodicity());
+                            period = 12; // Default to annual if unknown
+                        }
+                        for(int i = 0; i < Integer.parseInt(obligation.getProrogation()[0])/period-1; i++) {
+                            montantInvestiInFine = (long) (montantInvestiInFine * (1 + Double.parseDouble(obligation.getProrogation()[1]) / 100.0));
+                        }
+                        valeurBrut += montantInvestiInFine * Double.parseDouble(obligation.getProrogation()[2]) / 100.0;
+                }
+            } else {
+                valeurBrut = montantInvesti * obligation.getRate()[1] / 100.0;
+                if(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()).isEqual(LocalDate.parse(dateCoupon))) {
+                    montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, dateCoupon);
+                    valeurBrut += montantInvestiInFine * obligation.getRate()[0] / 100.0;;
+                }
+            } 
 
             Cell cell1_1 = new Cell().add(new Paragraph("Détail de l'opération").setBold());
             cell1_1.setTextAlignment(com.itextpdf.layout.properties.TextAlignment.CENTER);
@@ -232,13 +266,13 @@ public class CouponWindow {
             cell2_1.setTextAlignment(com.itextpdf.layout.properties.TextAlignment.LEFT);
             Cell cell2_2 = new Cell().add(new Paragraph("\n"));
             if(investor instanceof InvestorNP && ((InvestorNP)investor).getAddress()[4].trim().toUpperCase().equals("FRANCE")) {
-                cell2_2.add(new Paragraph(String.valueOf((double) nbPart * obligation.getValeurNominale() + " €")));
-                cell2_2.add(new Paragraph(String.valueOf(nbPart * obligation.getValeurNominale() * 0.3 + " €")));
-                cell2_2.add(new Paragraph(String.valueOf(nbPart * obligation.getValeurNominale() * 0.7 + " €")));
+                cell2_2.add(new Paragraph(String.valueOf(valeurBrut + " €")));
+                cell2_2.add(new Paragraph(String.valueOf(valeurBrut * 0.3 + " €")));
+                cell2_2.add(new Paragraph(String.valueOf(valeurBrut * 0.7 + " €")));
             } else {
-                cell2_2.add(new Paragraph(String.valueOf(nbPart * obligation.getValeurNominale() + " €")));
+                cell2_2.add(new Paragraph(String.valueOf(valeurBrut + " €")));
                 cell2_2.add(new Paragraph(String.valueOf(" - €")));
-                cell2_2.add(new Paragraph(String.valueOf(nbPart * obligation.getValeurNominale() + " €")));
+                cell2_2.add(new Paragraph(String.valueOf(valeurBrut + " €")));
             }
             cell2_2.setTextAlignment(com.itextpdf.layout.properties.TextAlignment.RIGHT);
 
@@ -278,5 +312,32 @@ public class CouponWindow {
             System.err.println("❌ Erreur générale : " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    static private long MontantInvestiCapitalise(long montantInvesti, Obligation obligation, String CouponDate) {
+        int nbCouponEcoules = 0;
+        LocalDate couponDate = LocalDate.parse(CouponDate);
+        LocalDate startDate = LocalDate.parse(obligation.getStartDate());
+        long nombreDeMois = ChronoUnit.MONTHS.between(startDate, couponDate);
+        int period = 0;
+        if(obligation.getPeriodicity() != null) {
+            if(obligation.getPeriodicity().equals("Mensuelle")) {
+                period = 1;
+            } else if(obligation.getPeriodicity().equals("Trimestrielle")) {
+                period = 3;
+            } else if(obligation.getPeriodicity().equals("Semestrielle")) {
+                period = 6;
+            } else if(obligation.getPeriodicity().equals("Annuelle")) {
+                period = 12;
+            } else {
+                System.err.println("Unknown periodicity: " + obligation.getPeriodicity());
+                return montantInvesti;
+            }
+        }
+        nbCouponEcoules = (int) (nombreDeMois / period);
+        for (int i = 1; i < nbCouponEcoules; i++) {
+            montantInvesti = (long) (montantInvesti * (1 + obligation.getRate()[1] / 100.0));
+        }
+        return montantInvesti;
     }
 }

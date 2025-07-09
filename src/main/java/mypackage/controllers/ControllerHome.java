@@ -131,9 +131,9 @@ public class ControllerHome {
                 continue;
             }
             if(obligation.getRate()[1] != 0){
-                for(int i = 0; i < obligation.getDurationMonths(); i += period) {
+                for(int i = period; i <= obligation.getDurationMonths(); i += period) {
                     LocalDate couponDate = LocalDate.parse(obligation.getStartDate()).plusMonths(i);
-                    if (couponDate.isEqual(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths())) && !obligation.getProrogationActivated()) {
+                    if (obligation.getRate()[0] != 0 && couponDate.isEqual(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths())) && !obligation.getProrogationActivated()) {
                         String[] coupon = new String[3];
                         coupon[0] = couponDate.toString();
                         coupon[1] = String.valueOf((obligation.getRate()[1]+obligation.getRate()[0]) * obligation.getCapital() / 100);
@@ -147,7 +147,7 @@ public class ControllerHome {
                         couponListViewItems.add(coupon);
                     }
                 }
-            } else if(obligation.getRate()[0] != 0) {
+            } else if(obligation.getRate()[0] != 0 && !obligation.getProrogationActivated()) {
                 LocalDate couponDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths());
                 String[] coupon = new String[3];
                 coupon[0] = couponDate.toString();
@@ -155,19 +155,19 @@ public class ControllerHome {
                 coupon[2] = obligation.getName();
                 couponListViewItems.add(coupon);
             }
-            if (obligation.getProrogationActivated() && (obligation.getProrogation()[1] != "0" || obligation.getProrogation()[1] != "")) {
-                for(int i = period; i < Integer.parseInt(obligation.getProrogation()[0]); i+= period) {
+            if (obligation.getProrogationActivated() && (obligation.getProrogation()[1] != "0" || obligation.getProrogation()[1].trim() != "")) {
+                for(int i = period; i <= Integer.parseInt(obligation.getProrogation()[0]); i+= period) {
                     LocalDate prorogationCouponDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths() + i);
-                    if (prorogationCouponDate.isEqual(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths() + Integer.parseInt(obligation.getProrogation()[0])))) {
+                    if ((obligation.getProrogation()[2] != "0" || obligation.getProrogation()[2] != "") && obligation.getProrogation()[1].trim() != "" && prorogationCouponDate.isEqual(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths() + Integer.parseInt(obligation.getProrogation()[0])))) {
                         String[] coupon = new String[3];
                         coupon[0] = prorogationCouponDate.toString();
-                        coupon[1] = String.valueOf((Long.parseLong(obligation.getProrogation()[1]) + obligation.getRate()[0]) * obligation.getCapital() / 100);
+                        coupon[1] = String.valueOf((Long.parseLong(obligation.getProrogation()[1]) + Long.parseLong(obligation.getProrogation()[2])) * obligation.getCapital() / 100);
                         coupon[2] = obligation.getName();
                         couponListViewItems.add(coupon);
                     } else {
                         String[] coupon = new String[3];
                         coupon[0] = prorogationCouponDate.toString();
-                        coupon[1] = String.valueOf((Long.parseLong(obligation.getProrogation()[1]) + obligation.getRate()[0]) * obligation.getCapital() / 100);
+                        coupon[1] = String.valueOf(Long.parseLong(obligation.getProrogation()[1]) * obligation.getCapital() / 100);
                         coupon[2] = obligation.getName();
                         couponListViewItems.add(coupon);
                     }
@@ -186,6 +186,9 @@ public class ControllerHome {
     @FXML
     private void displayCoupon() {
         getCoupons();
+        for(String[] item : couponListViewItems) {
+            System.out.println("Coupon: " + item[0] + ", " + item[1] + " €, " + item[2]);
+        }
         couponListViewItems.sort((a, b) -> {
             LocalDate dateA = LocalDate.parse(a[0]);
             LocalDate dateB = LocalDate.parse(b[0]);
@@ -446,12 +449,15 @@ public class ControllerHome {
             if(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()).isEqual(LocalDate.parse(item[0])) ||
                (obligation.getProrogationActivated() && LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths() + Integer.parseInt(obligation.getProrogation()[0])).isEqual(LocalDate.parse(item[0])))) {
                 Cell headerProrogationCell = headerCouponRow.createCell(15);
+                sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(8, 8, 15, 17));
                 headerProrogationCell.setCellValue("COUPON IN FINE");
                 headerProrogationCell.setCellStyle(headerStyle);
 
                 Cell titleCouponInFineBRUTCell = headerRow.createCell(15);
                 titleCouponInFineBRUTCell.setCellValue("BRUT");
-                Cell titleCouponInFineNETCell = headerRow.createCell(16);
+                Cell titleCouponInFinePLFCell = headerRow.createCell(16);
+                titleCouponInFinePLFCell.setCellValue("PLF");
+                Cell titleCouponInFineNETCell = headerRow.createCell(17);
                 titleCouponInFineNETCell.setCellValue("NET");
             }
 
@@ -482,17 +488,23 @@ public class ControllerHome {
                     double partBrut = montantInvesti * obligation.getRate()[1] / 100.0;
                     double partPLF = 0.0;
                     double partNet = partBrut;
+                    double partBrutInFine = 0.0;
+                    double partPLFInFine = 0.0;
+                    double partNetInFine = 0.0;
                     LocalDate obligationEndDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths());
                     LocalDate couponDate = LocalDate.parse(item[0]);
-                    if(obligationEndDate.isEqual(couponDate)) {
+                    if(obligationEndDate.isEqual(couponDate) && !obligation.getProrogationActivated()) {
                         if(obligation.getRate()[0] != 0) {
                             montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, item[0]);
+                            partBrutInFine = montantInvestiInFine * obligation.getRate()[0] / 100.0;
+                            partNetInFine = partBrutInFine;
                         }
                     }
+
                     if(obligation.getProrogationActivated()) {
                         obligationEndDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths() + Integer.parseInt(obligation.getProrogation()[0]));
                         if(obligationEndDate.isEqual(couponDate)) {
-                            if(obligation.getRate()[0] != 0) {
+                            if(obligation.getProrogation()[2] != "0" && obligation.getProrogation()[2] != "") {
                                 montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, item[0]);
                                 int period = 0;
                                 if(obligation.getPeriodicity().equals("Mensuelle")) {
@@ -507,14 +519,11 @@ public class ControllerHome {
                                     System.err.println("Unknown periodicity: " + obligation.getPeriodicity());
                                     continue;
                                 }
-                                montantInvestiInFine = montantInvesti;
                                 for(int i = 0; i < Integer.parseInt(obligation.getProrogation()[0])/period-1; i++) {
                                     montantInvestiInFine = (long) (montantInvestiInFine * (1 + Double.parseDouble(obligation.getProrogation()[1]) / 100.0));
                                 }
-                                partBrut += montantInvesti * obligation.getRate()[0] / 100.0;
-                                partNet = partBrut;
-                                headerCouponCell.setCellValue("COUPON IN FINE");
-                                headerCouponCell.setCellStyle(yellowStyle);
+                                partBrutInFine = montantInvestiInFine * Double.parseDouble(obligation.getProrogation()[2]) / 100.0;
+                                partNetInFine = partBrutInFine;
                                 System.out.println("📅 Date de coupon égale à la date de fin de l'obligation, ajout du taux In Fine.");
                             }
                         }
@@ -566,6 +575,10 @@ public class ControllerHome {
                         PLF = "0.3";
                         partPLF = partBrut * 0.3;
                         partNet = partBrut - partPLF;
+                        if(montantInvestiInFine != 0) {
+                            partPLFInFine = partBrutInFine * 0.3;
+                            partNetInFine = partBrutInFine - partPLFInFine;
+                        }
                     }
 
                     Row dataRow = sheet.createRow(rowIndex);
@@ -623,12 +636,14 @@ public class ControllerHome {
 
                     if(montantInvestiInFine != 0) {
                         Cell cellCouponInfineBrut = dataRow.createCell(15);
-                        cellCouponInfineBrut.setCellValue(montantInvestiInFine * obligation.getRate()[0] / 100.0);
+                        cellCouponInfineBrut.setCellValue(partBrutInFine);
                         cellCouponInfineBrut.setCellStyle(currencyStyle);
-                        Cell cellCouponInfineNet = dataRow.createCell(16);
-                        cellCouponInfineNet.setCellValue(montantInvestiInFine * obligation.getRate()[0] / 100.0 * 0.3);
+                        Cell cellCouponInfinePLF = dataRow.createCell(16);
+                        cellCouponInfinePLF.setCellValue(partPLFInFine);
+                        cellCouponInfinePLF.setCellStyle(currencyStyle);
+                        Cell cellCouponInfineNet = dataRow.createCell(17);
+                        cellCouponInfineNet.setCellValue(partNetInFine);
                         cellCouponInfineNet.setCellStyle(currencyStyle);
-
                     }
 
                     rowIndex++;
@@ -658,10 +673,22 @@ public class ControllerHome {
                 Cell totalNetCell = totalRow.createCell(14);
                 totalNetCell.setCellFormula("SUM(O11:O" + rowIndex + ")");
                 totalNetCell.setCellStyle(currencyStyle);
+
+                if(obligation.getRate()[0]!=0) {
+                    Cell totalInfineBrutCell = totalRow.createCell(15);
+                    totalInfineBrutCell.setCellFormula("SUM(P11:P" + rowIndex + ")");
+                    totalInfineBrutCell.setCellStyle(currencyStyle);
+                    Cell totalInfinePLFCell = totalRow.createCell(16);
+                    totalInfinePLFCell.setCellFormula("SUM(Q11:Q" + rowIndex + ")");
+                    totalInfinePLFCell.setCellStyle(currencyStyle);
+                    Cell totalInfineNetCell = totalRow.createCell(17);
+                    totalInfineNetCell.setCellFormula("SUM(R11:R" + rowIndex + ")");
+                    totalInfineNetCell.setCellStyle(currencyStyle);
+                }
             } 
 
             // Ajuster la largeur des colonnes
-            for (int i = 0; i <= 15; i++) {
+            for (int i = 0; i <= 17; i++) {
                 sheet.autoSizeColumn(i);
             }
 
@@ -719,7 +746,7 @@ public class ControllerHome {
             }
         }
         nbCouponEcoules = (int) (nombreDeMois / period);
-        for (int i = 0; i < nbCouponEcoules; i++) {
+        for (int i = 1; i < nbCouponEcoules; i++) {
             montantInvesti = (long) (montantInvesti * (1 + obligation.getRate()[1] / 100.0));
         }
         return montantInvesti;

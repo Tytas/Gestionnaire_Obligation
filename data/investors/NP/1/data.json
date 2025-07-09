@@ -2,7 +2,7 @@
   "id" : 1,
   "name" : "Dupont",
   "familyId" : 1,
-  "obligations" : [ 1, 4 ],
+  "obligations" : [ 1, 4, 3 ],
   "civility" : "M",
   "firstName" : "Jean",
   "nationality" : "FR",

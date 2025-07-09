@@ -225,21 +225,53 @@ public class Obligation {
             System.err.println("Periodicity not set for obligation ID: " + this.getId());
             return null;
         }
-        if(this.getRate()[0] != 0){
-            for(int i = 0; i < this.getDurationMonths(); i += period) {
+        if(this.getRate()[1] != 0){
+            for(int i = period; i <= this.getDurationMonths(); i += period) {
                 LocalDate couponDate = LocalDate.parse(this.getStartDate()).plusMonths(i);
-                String[] coupon = new String[3];
-                coupon[0] = couponDate.toString();
-                coupon[1] = String.valueOf(this.getRate()[0] * this.getCapital() / 100);
-                coupon[2] = this.getName();
-                listCoupon.add(coupon);
+                if (this.getRate()[0] != 0 && couponDate.isEqual(LocalDate.parse(this.getStartDate()).plusMonths(this.getDurationMonths())) && !this.getProrogationActivated()) {
+                    String[] coupon = new String[3];
+                    coupon[0] = couponDate.toString();
+                    coupon[1] = String.valueOf((this.getRate()[1]+this.getRate()[0]) * this.getCapital() / 100);
+                    coupon[2] = this.getName();
+                    listCoupon.add(coupon);
+                } else {
+                    String[] coupon = new String[3];
+                    coupon[0] = couponDate.toString();
+                    coupon[1] = String.valueOf(this.getRate()[1] * this.getCapital() / 100);
+                    coupon[2] = this.getName();
+                    listCoupon.add(coupon);
+                }
             }
-        }
-        if(this.getRate()[1] != 0) {
+        } else if(this.getRate()[0] != 0 && !this.getProrogationActivated()) {
             LocalDate couponDate = LocalDate.parse(this.getStartDate()).plusMonths(this.getDurationMonths());
             String[] coupon = new String[3];
             coupon[0] = couponDate.toString();
-            coupon[1] = String.valueOf(this.getRate()[1] * this.getCapital() / 100);
+            coupon[1] = String.valueOf(this.getRate()[0] * this.getCapital() / 100);
+            coupon[2] = this.getName();
+            listCoupon.add(coupon);
+        }
+        if (this.getProrogationActivated() && (this.getProrogation()[1] != "0" || this.getProrogation()[1].trim() != "")) {
+            for(int i = period; i <= Integer.parseInt(this.getProrogation()[0]); i+= period) {
+                LocalDate prorogationCouponDate = LocalDate.parse(this.getStartDate()).plusMonths(this.getDurationMonths() + i);
+                if ((this.getProrogation()[2] != "0" || this.getProrogation()[2] != "") && this.getProrogation()[1].trim() != "" && prorogationCouponDate.isEqual(LocalDate.parse(this.getStartDate()).plusMonths(this.getDurationMonths() + Integer.parseInt(this.getProrogation()[0])))) {
+                    String[] coupon = new String[3];
+                    coupon[0] = prorogationCouponDate.toString();
+                    coupon[1] = String.valueOf((Long.parseLong(this.getProrogation()[1]) + Long.parseLong(this.getProrogation()[2])) * this.getCapital() / 100);
+                    coupon[2] = this.getName();
+                    listCoupon.add(coupon);
+                } else {
+                    String[] coupon = new String[3];
+                    coupon[0] = prorogationCouponDate.toString();
+                    coupon[1] = String.valueOf(Long.parseLong(this.getProrogation()[1]) * this.getCapital() / 100);
+                    coupon[2] = this.getName();
+                    listCoupon.add(coupon);
+                }
+            }
+        } else if(this.getProrogationActivated() && (this.getProrogation()[2] != "0" || this.getProrogation()[2] != "")) {
+            LocalDate prorogationCouponDate = LocalDate.parse(this.getStartDate()).plusMonths(this.getDurationMonths() + Integer.parseInt(this.getProrogation()[0]));
+            String[] coupon = new String[3];
+            coupon[0] = prorogationCouponDate.toString();
+            coupon[1] = String.valueOf((Long.parseLong(this.getProrogation()[2])) * this.getCapital() / 100);
             coupon[2] = this.getName();
             listCoupon.add(coupon);
         }
