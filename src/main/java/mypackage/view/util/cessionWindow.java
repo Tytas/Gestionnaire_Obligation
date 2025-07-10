@@ -1,6 +1,5 @@
 package mypackage.view.util;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -197,7 +196,7 @@ public class cessionWindow {
                 return;
             }
 
-            String dateStr = datePicker.getValue().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            String dateStr = datePicker.getValue().toString();
             Map<String, Long> selectedVendeursMap = new HashMap<>();
             System.out.println("Selected:"+ selectedSouscripteursAcheteurs.get(0).getName());
             for (int i = 0; i < selectedSouscripteursVendeurs.size(); i++) {

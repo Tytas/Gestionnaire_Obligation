@@ -41,6 +41,8 @@ public class ControllerSouscripteurs {
     @FXML
     private Label NameInvestor;
     @FXML
+    private Label FamilyInvestor;
+    @FXML
     private Label NameIBAN;
     @FXML
     private Label NameBIC;
@@ -135,6 +137,8 @@ public class ControllerSouscripteurs {
         if (investor instanceof InvestorNP) {
             String name = investor.getName() + " " + ((InvestorNP) investor).getFirstName();
             NameInvestor.setText(name);
+            String familyName = FamilyInteractor.GetFamily(investor.getFamilyId()).getName();
+            FamilyInvestor.setText(familyName);
             String iban = ((InvestorNP) investor).getIBAN();
             NameIBAN.setText(iban);
             String bic = ((InvestorNP) investor).getBIC();
@@ -142,6 +146,8 @@ public class ControllerSouscripteurs {
         } else if (investor instanceof InvestorLP) {
             String name = ((InvestorLP) investor).getName();
             NameInvestor.setText(name);
+            String familyName = FamilyInteractor.GetFamily(investor.getFamilyId()).getName();
+            FamilyInvestor.setText(familyName);
             String iban = ((InvestorLP) investor).getIBAN();
             NameIBAN.setText(iban);
             String bic = ((InvestorLP) investor).getBIC();
@@ -149,6 +155,9 @@ public class ControllerSouscripteurs {
         } else {
             // Clear the details if no person is selected
             NameInvestor.setText("");
+            FamilyInvestor.setText("");
+            NameIBAN.setText("");
+            NameBIC.setText("");
         }
     }
 

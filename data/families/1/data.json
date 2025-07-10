@@ -21,7 +21,7 @@
   "nbAprooval" : "1",
   "contacts" : [ ],
   "alertMail" : "boss@gmail.com",
-  "investors" : [ ],
+  "investors" : [ 4 ],
   "iban" : "FR7612345678901234567890123",
   "bic" : "CRLIFRPP"
 }

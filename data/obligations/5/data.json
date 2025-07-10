@@ -1,12 +1,12 @@
 {
   "id" : 5,
   "name" : "test123",
-  "convertible" : false,
+  "convertible" : true,
   "capital" : 1500000,
   "valeurNominale" : 10000,
   "startDate" : "2025-05-29",
   "durationMonths" : 48,
-  "rate" : [ 12, 0 ],
+  "rate" : [ 0, 10 ],
   "interestBase" : "Jour Réel/365",
   "periodicity" : "Trimestrielle",
   "prorogation" : [ "", "", "" ],
@@ -21,7 +21,7 @@
   }, {
     "investorId" : 2,
     "capital" : 10,
-    "date" : "2029-06-29"
+    "date" : "2026-06-29"
   } ],
   "replacements" : [ ],
   "applicantId" : 3

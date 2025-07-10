@@ -34,6 +34,7 @@ import mypackage.model.Obligation;
 import mypackage.model.Investor;
 import mypackage.model.InvestorNP;
 import mypackage.model.InvestorLP;
+import mypackage.model.util.Replacement;
 import mypackage.model.DataBaseInteractor.ObligationInteractor;
 import mypackage.model.DataBaseInteractor.ApplicantInteractor;
 import mypackage.model.DataBaseInteractor.FamilyInteractor;
@@ -483,7 +484,20 @@ public class ControllerHome {
 
                 for (InvestorInfo info : investors) {
                     int investorId = info.getInvestorId();
+                    ArrayList<Replacement> replacements = obligation.getReplacements();
                     long nombreParts = info.getCapital();
+                    if (replacements != null && !replacements.isEmpty()) {
+                        for (Replacement replacement : replacements) {
+                            if(LocalDate.parse(replacement.getDate()).isBefore(LocalDate.parse(item[0]))) {
+                                if (replacement.getInvestorsBuyersId().containsKey(investorId)) {
+                                    nombreParts += replacement.getInvestorsBuyersId().get(investorId);
+                                }
+                                if (replacement.getInvestorsSalersId().containsKey(investorId)) {
+                                    nombreParts -= replacement.getInvestorsSalersId().get(investorId);
+                                }
+                            }
+                        }
+                    }
                     long montantInvesti = nombreParts * obligation.getValeurNominale();
                     long montantInvestiInFine = 0L;
                     double partBrut = montantInvesti * obligation.getRate()[1] / 100.0;

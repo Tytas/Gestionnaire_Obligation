@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.awt.Desktop;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -28,6 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import mypackage.model.util.InvestorInfo;
+import mypackage.model.util.Replacement;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -111,10 +113,23 @@ public class CouponWindow {
                             montantCapitalise = (double) MontantInvestiCapitalise(Integer.parseInt(item[1]) * obligationData.getValeurNominale(), obligationData, obligation[0]);
                         }
                     }
-                    System.out.println("**************************DATEDATEDATEDATE*****************************: " + obligation[0] + LocalDate.parse(obligationData.getStartDate()).plusMonths(obligationData.getDurationMonths()));
-                    System.out.println("Taux: " + Taux + ", TauxInFine: " + TauxInFine + ", Montant capitalisé: " + montantCapitalise);
+                    int investorId = InvestorInteractor.GetInvestorByName(item[0]);
+                    long nbPart = obligationData.getInvestorCapital(investorId);
+                    ArrayList<Replacement> replacements = obligationData.getReplacements();
+                    if (replacements != null && !replacements.isEmpty()) {
+                        for (Replacement replacement : replacements) {
+                            if(LocalDate.parse(replacement.getDate()).isBefore(LocalDate.parse(obligation[0]))) {
+                                if (replacement.getInvestorsBuyersId().containsKey(investorId)) {
+                                    nbPart += replacement.getInvestorsBuyersId().get(investorId);
+                                }
+                                if (replacement.getInvestorsSalersId().containsKey(investorId)) {
+                                    nbPart -= replacement.getInvestorsSalersId().get(investorId);
+                                }
+                            }
+                        }
+                    }
                     Label nameLabel = new Label(item[0]);
-                    Label amountLabel = new Label(String.format("%.2f €", Integer.parseInt(item[1]) * obligationData.getValeurNominale() * Taux + montantCapitalise * TauxInFine));
+                    Label amountLabel = new Label(String.format("%.2f €", nbPart * obligationData.getValeurNominale() * Taux + montantCapitalise * TauxInFine));
                     Label nameObligLabel = new Label(obligation[2]);
                     Label dateLabel = new Label(obligation[0]);
                     Button buttonAvisdOpere = new Button("A. d'Op");
@@ -246,6 +261,20 @@ public class CouponWindow {
             document.add(l1);
             String convertibleString = obligation.getConvertible() ? " convertible(s)" : " non convertible(s)";
             long nbPart = obligation.getInvestorCapital(investor.getId());
+            int investorId = investor.getId();
+            ArrayList<Replacement> replacements = obligation.getReplacements();
+            if (replacements != null && !replacements.isEmpty()) {
+                for (Replacement replacement : replacements) {
+                    if(LocalDate.parse(replacement.getDate()).isBefore(LocalDate.parse(dateCoupon))) {
+                        if (replacement.getInvestorsBuyersId().containsKey(investorId)) {
+                            nbPart += replacement.getInvestorsBuyersId().get(investorId);
+                        }
+                        if (replacement.getInvestorsSalersId().containsKey(investorId)) {
+                            nbPart -= replacement.getInvestorsSalersId().get(investorId);
+                        }
+                    }
+                }
+            }
             Paragraph l2 = new Paragraph("Vous êtes titulaire de " + nbPart + " obligation(s) " + convertibleString + " " + obligation.getName() + ".");
             document.add(l2);
             Paragraph l3 = new Paragraph("Nous vous prions de trouver ci-après le détail des opérations réalisées sur vos titres.");

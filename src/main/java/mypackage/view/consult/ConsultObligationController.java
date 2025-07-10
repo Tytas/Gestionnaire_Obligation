@@ -9,6 +9,7 @@ import mypackage.model.Investor;
 import mypackage.model.InvestorLP;
 import mypackage.model.InvestorNP;
 import mypackage.model.util.InvestorInfo;
+import mypackage.model.util.Replacement;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -343,6 +344,7 @@ public class ConsultObligationController {
                 for (InvestorInfo info : investors) {
                     int investorId = info.getInvestorId();
                     long nombreParts = info.getCapital();
+                    ArrayList<Replacement> replacements = obligation.getReplacements();
                     long montantInvesti = nombreParts * obligation.getValeurNominale();
                     long montantInvestiInFine = 0L;
                     double partBrut = montantInvesti * obligation.getRate()[1] / 100.0;
@@ -360,7 +362,6 @@ public class ConsultObligationController {
                             partNetInFine = partBrutInFine;
                         }
                     }
-
                     if(obligation.getProrogationActivated()) {
                         obligationEndDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths() + Integer.parseInt(obligation.getProrogation()[0]));
                         if(obligationEndDate.isEqual(lastCouponDate)) {
@@ -486,6 +487,20 @@ public class ConsultObligationController {
 
                     // Calculer la part du coupon
                     for (int i = 0; i < 3*listCoupon.size(); i+=3) {
+                        partBrut = partBrut / nombreParts;
+                        if (replacements != null && !replacements.isEmpty()) { 
+                            for (Replacement replacement : replacements) {
+                                if(LocalDate.parse(replacement.getDate()).isBefore(LocalDate.parse(listCoupon.get(i/3)[0]))) {
+                                    if (replacement.getInvestorsBuyersId().containsKey(investorId)) {
+                                        nombreParts += replacement.getInvestorsBuyersId().get(investorId);
+                                    }
+                                    if (replacement.getInvestorsSalersId().containsKey(investorId)) {
+                                        nombreParts -= replacement.getInvestorsSalersId().get(investorId);
+                                    }
+                                }
+                            }
+                        }
+                        partBrut = partBrut * nombreParts;
                         if(LocalDate.parse(listCoupon.get(i/3)[0]).isAfter(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()))) {
                             partBrut = montantInvesti * Double.parseDouble(obligation.getProrogation()[1]) / 100.0;
                             if(partPLF != 0.0){
@@ -497,7 +512,7 @@ public class ConsultObligationController {
                             }
                         }
 
-                        if(!info.getDate().isEmpty() && LocalDate.parse(info.getDate()).isAfter(LocalDate.parse(listCoupon.get(i)[0]))) {
+                        if(!info.getDate().isEmpty() && LocalDate.parse(info.getDate()).isAfter(LocalDate.parse(listCoupon.get(i/3)[0]))) {
                             continue; //TODO prendre en compte le temps entre la date d'arrivée et la date du coupon avec la formule adéquate
                         }
                         
