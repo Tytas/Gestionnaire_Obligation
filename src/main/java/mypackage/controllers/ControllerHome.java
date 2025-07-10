@@ -582,6 +582,17 @@ public class ControllerHome {
                         }
                     }
 
+                    if(LocalDate.parse(item[0]).isAfter(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()))) {
+                        partBrut = montantInvesti * Double.parseDouble(obligation.getProrogation()[1]) / 100.0;
+                        if(partPLF != 0.0){
+                            partPLF = partBrut * 0.3;
+                            partNet = partBrut - partPLF;
+                        } else {
+                            partPLF = 0.0;
+                            partNet = partBrut;
+                        }
+                    }
+
                     Row dataRow = sheet.createRow(rowIndex);
                     
                     // ID Souscripteur

@@ -486,6 +486,16 @@ public class ConsultObligationController {
 
                     // Calculer la part du coupon
                     for (int i = 0; i < 3*listCoupon.size(); i+=3) {
+                        if(LocalDate.parse(listCoupon.get(i/3)[0]).isAfter(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()))) {
+                            partBrut = montantInvesti * Double.parseDouble(obligation.getProrogation()[1]) / 100.0;
+                            if(partPLF != 0.0){
+                                partPLF = partBrut * 0.3;
+                                partNet = partBrut - partPLF;
+                            } else {
+                                partPLF = 0.0;
+                                partNet = partBrut;
+                            }
+                        }
 
                         if(!info.getDate().isEmpty() && LocalDate.parse(info.getDate()).isAfter(LocalDate.parse(listCoupon.get(i)[0]))) {
                             continue; //TODO prendre en compte le temps entre la date d'arrivée et la date du coupon avec la formule adéquate

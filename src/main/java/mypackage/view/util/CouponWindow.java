@@ -47,6 +47,10 @@ public class CouponWindow {
     private static ObservableList<String[]> allSouscripteurs = FXCollections.observableArrayList();
     private static FilteredList<String[]> filteredSouscripteurs = new FilteredList<>(allSouscripteurs, p -> true);
 
+    private static Double Taux = 0.0;
+    private static Double TauxInFine = 0.0;
+    private static Double montantCapitalise = 0.0;
+
     public static boolean show(String[] obligation) {
         Stage stage = new Stage();
         stage.setTitle("Listes des souscripteurs pour le coupon");
@@ -71,19 +75,52 @@ public class CouponWindow {
             });
         });
         souscripteurListView.setCellFactory(lv -> new ListCell<String[]>() {
+
             @Override
             protected void updateItem(String[] item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
+                    Taux = 0.0;
+                    TauxInFine = 0.0;
+                    montantCapitalise = 0.0;
+                    if(obligationData.getProrogationActivated() && LocalDate.parse(obligationData.getStartDate()).plusMonths(obligationData.getDurationMonths()).isBefore(LocalDate.parse(obligation[0]))) {
+                        Taux = Double.parseDouble(obligationData.getProrogation()[1]) / 100.0;
+                        if(LocalDate.parse(obligationData.getStartDate()).plusMonths(obligationData.getDurationMonths() + Long.parseLong(obligationData.getProrogation()[0])).isEqual(LocalDate.parse(obligation[0]))) {
+                            TauxInFine = Double.parseDouble(obligationData.getProrogation()[2]) / 100.0;
+                            montantCapitalise = (double) MontantInvestiCapitalise(Integer.parseInt(item[1]) * obligationData.getValeurNominale(), obligationData, obligation[0]);
+                            int period = 0;
+                            if(obligationData.getPeriodicity().equals("Mensuelle")) {
+                                period = 1;
+                            } else if(obligationData.getPeriodicity().equals("Trimestrielle")) {
+                                period = 3;
+                            } else if(obligationData.getPeriodicity().equals("Semestrielle")) {
+                                period = 6;
+                            } else if(obligationData.getPeriodicity().equals("Annuelle")) {
+                                period = 12;
+                            }
+                            for(int i = 0; i < Integer.parseInt(obligationData.getProrogation()[0])/period-1; i++) {
+                                montantCapitalise = montantCapitalise * (1 + Double.parseDouble(obligationData.getProrogation()[1]) / 100.0);
+                            }
+                        }
+                    } else {
+                        Taux = obligationData.getRate()[1] / 100.0;
+                        if(LocalDate.parse(obligationData.getStartDate()).plusMonths(obligationData.getDurationMonths()).isEqual(LocalDate.parse(obligation[0]))) {
+                            TauxInFine = obligationData.getRate()[0] / 100.0;
+                            montantCapitalise = (double) MontantInvestiCapitalise(Integer.parseInt(item[1]) * obligationData.getValeurNominale(), obligationData, obligation[0]);
+                        }
+                    }
+                    System.out.println("**************************DATEDATEDATEDATE*****************************: " + obligation[0] + LocalDate.parse(obligationData.getStartDate()).plusMonths(obligationData.getDurationMonths()));
+                    System.out.println("Taux: " + Taux + ", TauxInFine: " + TauxInFine + ", Montant capitalisé: " + montantCapitalise);
                     Label nameLabel = new Label(item[0]);
-                    Label amountLabel = new Label(Integer.parseInt(item[1]) * obligationData.getValeurNominale() + " €");
+                    Label amountLabel = new Label(String.format("%.2f €", Integer.parseInt(item[1]) * obligationData.getValeurNominale() * Taux + montantCapitalise * TauxInFine));
                     Label nameObligLabel = new Label(obligation[2]);
                     Label dateLabel = new Label(obligation[0]);
                     Button buttonAvisdOpere = new Button("A. d'Op");
                     buttonAvisdOpere.setOnAction(event -> {
-                        ShowAvisdOperePDF(item, obligationData, obligation[0]);
+                        ShowAvisdOperePDF(item[0], obligationData, obligation[0],
+                                          Integer.parseInt(item[1]) * obligationData.getValeurNominale() * Taux + montantCapitalise * TauxInFine);
                     });
                     HBox content = new HBox(10, nameLabel, amountLabel, nameObligLabel, dateLabel, buttonAvisdOpere);
                     setGraphic(content);
@@ -114,9 +151,9 @@ public class CouponWindow {
         return result[0];
     }
 
-    private static void ShowAvisdOperePDF(String[] item, Obligation obligation, String dateCoupon) {
+    private static void ShowAvisdOperePDF(String investorName, Obligation obligation, String dateCoupon, double partBrut) {
         Stage stage = new Stage();
-        Investor investor = InvestorInteractor.GetInvestor(InvestorInteractor.GetInvestorByName(item[0]));
+        Investor investor = InvestorInteractor.GetInvestor(InvestorInteractor.GetInvestorByName(investorName));
         Applicant applicant = ApplicantInteractor.GetApplicant(obligation.getApplicantId());
         try {
             // Chemin du fichier PDF
@@ -222,39 +259,6 @@ public class CouponWindow {
             table2.setWidth(UnitValue.createPercentValue(60));
             table2.setHorizontalAlignment(com.itextpdf.layout.properties.HorizontalAlignment.CENTER);
 
-            long montantInvesti = nbPart * obligation.getValeurNominale();
-            double valeurBrut = 0.0;
-            long montantInvestiInFine = 0;
-            if(obligation.getProrogationActivated()) {
-                valeurBrut = montantInvesti * Long.valueOf(obligation.getProrogation()[1]) / 100.0;
-                if(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()).isEqual(LocalDate.parse(dateCoupon))) {
-                    montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, dateCoupon);
-                        int period = 0;
-                        if(obligation.getPeriodicity().equals("Mensuelle")) {
-                            period = 1;
-                        } else if(obligation.getPeriodicity().equals("Trimestrielle")) {
-                            period = 3;
-                        } else if(obligation.getPeriodicity().equals("Semestrielle")) {
-                            period = 6;
-                        } else if(obligation.getPeriodicity().equals("Annuelle")) {
-                            period = 12;
-                        } else {
-                            System.err.println("Unknown periodicity: " + obligation.getPeriodicity());
-                            period = 12; // Default to annual if unknown
-                        }
-                        for(int i = 0; i < Integer.parseInt(obligation.getProrogation()[0])/period-1; i++) {
-                            montantInvestiInFine = (long) (montantInvestiInFine * (1 + Double.parseDouble(obligation.getProrogation()[1]) / 100.0));
-                        }
-                        valeurBrut += montantInvestiInFine * Double.parseDouble(obligation.getProrogation()[2]) / 100.0;
-                }
-            } else {
-                valeurBrut = montantInvesti * obligation.getRate()[1] / 100.0;
-                if(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()).isEqual(LocalDate.parse(dateCoupon))) {
-                    montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, dateCoupon);
-                    valeurBrut += montantInvestiInFine * obligation.getRate()[0] / 100.0;;
-                }
-            } 
-
             Cell cell1_1 = new Cell().add(new Paragraph("Détail de l'opération").setBold());
             cell1_1.setTextAlignment(com.itextpdf.layout.properties.TextAlignment.CENTER);
             Cell cell1_2 = new Cell().add(new Paragraph("Montant").setBold());
@@ -266,13 +270,13 @@ public class CouponWindow {
             cell2_1.setTextAlignment(com.itextpdf.layout.properties.TextAlignment.LEFT);
             Cell cell2_2 = new Cell().add(new Paragraph("\n"));
             if(investor instanceof InvestorNP && ((InvestorNP)investor).getAddress()[4].trim().toUpperCase().equals("FRANCE")) {
-                cell2_2.add(new Paragraph(String.valueOf(valeurBrut + " €")));
-                cell2_2.add(new Paragraph(String.valueOf(valeurBrut * 0.3 + " €")));
-                cell2_2.add(new Paragraph(String.valueOf(valeurBrut * 0.7 + " €")));
+                cell2_2.add(new Paragraph(String.valueOf(String.format("%.2f €", partBrut))));
+                cell2_2.add(new Paragraph(String.valueOf(String.format("%.2f €", partBrut * 0.3))));
+                cell2_2.add(new Paragraph(String.valueOf(String.format("%.2f €", partBrut * 0.7))));
             } else {
-                cell2_2.add(new Paragraph(String.valueOf(valeurBrut + " €")));
+                cell2_2.add(new Paragraph(String.valueOf(String.format("%.2f €", partBrut))));
                 cell2_2.add(new Paragraph(String.valueOf(" - €")));
-                cell2_2.add(new Paragraph(String.valueOf(valeurBrut + " €")));
+                cell2_2.add(new Paragraph(String.valueOf(String.format("%.2f €", partBrut))));
             }
             cell2_2.setTextAlignment(com.itextpdf.layout.properties.TextAlignment.RIGHT);
 
