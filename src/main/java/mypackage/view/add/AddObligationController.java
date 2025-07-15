@@ -51,8 +51,6 @@ public class AddObligationController {
     @FXML
     private TextField taux_TEMP;
     @FXML
-    private ComboBox<String> baseCalculComboBox;
-    @FXML
     private ComboBox<String> periodiciteComboBox;
     @FXML
     private DatePicker dateDebutField;
@@ -85,7 +83,6 @@ public class AddObligationController {
     @FXML private Label capitalErreurField;
     @FXML private Label tauxInFineErreurField;
     @FXML private Label tauxTempErreurField;
-    @FXML private Label baseCalculErreurComboBox;
     @FXML private Label periodiciteErreurComboBox;
     @FXML private Label dateDebutErreurField;
     @FXML private Label dureeErreurField;
@@ -146,7 +143,6 @@ public class AddObligationController {
 
     public void initialize() {
         // Initialisation des ComboBox
-        baseCalculComboBox.getItems().addAll("30/360", "Jour Réel/365");
         periodiciteComboBox.getItems().addAll("Mensuelle", "Trimestrielle", "Semestrielle", "Annuelle");
         ArrayList<Integer> investorsId = InvestorInteractor.GetAllInvestorId();
         for (Integer id : investorsId) {
@@ -413,14 +409,6 @@ public class AddObligationController {
                 }
             }
 
-            String baseCalcul = baseCalculComboBox.getValue();
-            if (baseCalcul == null || baseCalcul.isEmpty()) {
-                showError(baseCalculErreurComboBox, "Base requise");
-                hasError = true;
-            } else {
-                hideError(baseCalculErreurComboBox);
-            }
-
             String periodicite = periodiciteComboBox.getValue();
             if (periodicite == null || periodicite.isEmpty()) {
                 showError(periodiciteErreurComboBox, "Périodicité requise");
@@ -497,7 +485,7 @@ public class AddObligationController {
 
             if (!hasError) {
                 CreateObligation(nom, capital, valeurNominale, new int[]{tauxInFine, tauxTemp}, isConvertible,
-                    baseCalcul, periodicite, isProrogation, TauxProrogationField.getText(), TauxProrogationInfineField.getText(), DureeProrogationField.getText(),
+                    periodicite, isProrogation, TauxProrogationField.getText(), TauxProrogationInfineField.getText(), DureeProrogationField.getText(),
                     numeroIsin, duree, dateDebutString, allSouscripteurs, emetteur, suretes, amortissements);
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
@@ -526,7 +514,7 @@ public class AddObligationController {
 
 
     private void CreateObligation(String nom, Long capital, Integer valeurNominale, int[] taux, Boolean isConvertible,
-                                  String baseCalcul, String periodicite, Boolean isProrogation,String tauxProrogation,
+                                  String periodicite, Boolean isProrogation,String tauxProrogation,
                                   String tauxProrogationInfine, String dureeProrogation, String numeroIsin, Integer duree,
                                   String dateDebut, ObservableList<TupleStringLongBoolean> souscripteursList, String emetteurName,
                                   ObservableList<String> suretes, ObservableList<String[]> amortissements) {
@@ -546,7 +534,7 @@ public class AddObligationController {
                 System.out.println("Invalid amortissement format: " + amortissement);
             }
         }
-        Obligation obligation = new Obligation(newId, new SimpleStringProperty(nom), isConvertible, capital, valeurNominale, dateDebut, duree, taux, baseCalcul, periodicite,
+        Obligation obligation = new Obligation(newId, new SimpleStringProperty(nom), isConvertible, capital, valeurNominale, dateDebut, duree, taux, periodicite,
                                                 new String[]{dureeProrogation, tauxProrogation, tauxProrogationInfine}, false, numeroIsin, new ArrayList<>(suretes), amortissementsMap, idApplicant);
         for (TupleStringLongBoolean souscripteur : souscripteursList) {
             System.out.println("Adding investor: " + souscripteur.getName());

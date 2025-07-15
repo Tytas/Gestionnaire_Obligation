@@ -3,10 +3,12 @@ package mypackage.controllers;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.io.FileNotFoundException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.awt.Desktop;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -103,7 +105,7 @@ public class ControllerHome {
         Integer remainMonths = (int) (remainDurationDayAverage / 30);
         Integer remainDays = (int) (remainDurationDayAverage % 30);
 
-        totalCapitauxLabel.setText(String.valueOf(totalCapitaux));
+        setNumberLabel(totalCapitauxLabel, String.valueOf(totalCapitaux));
         totalObligationsRunningLabel.setText(String.valueOf(totalObligationsRunning));
         totalInvestorsLabel.setText(String.valueOf(totalInvestors));
         rateWeightedAverageLabel.setText(String.valueOf(rateWeightedAverage) + " %");
@@ -226,7 +228,7 @@ public class ControllerHome {
                     setGraphic(null);
                 } else {
                     dateLabel.setText(item[0]);
-                    amountLabel.setText(" " + item[1] +  " €");
+                    setNumberLabel(amountLabel, item[1]);
                     obligationNameLabel.setText(" " + item[2] +  " ");
                     buttonOuvrir.setOnAction(event -> {
                         CouponWindow.show(item);
@@ -498,9 +500,23 @@ public class ControllerHome {
                             }
                         }
                     }
+                    int period = 0;
+                    if(obligation.getPeriodicity().equals("Mensuelle")) {
+                        period = 1;
+                    } else if(obligation.getPeriodicity().equals("Trimestrielle")) {
+                        period = 3;
+                    } else if(obligation.getPeriodicity().equals("Semestrielle")) {
+                        period = 6;
+                    } else if(obligation.getPeriodicity().equals("Annuelle")) {
+                        period = 12;
+                    } else {
+                        System.err.println("Unknown periodicity: " + obligation.getPeriodicity());
+                        continue;
+                    }
                     long montantInvesti = nombreParts * obligation.getValeurNominale();
                     long montantInvestiInFine = 0L;
                     double partBrut = montantInvesti * obligation.getRate()[1] / 100.0;
+                    partBrut /= 12.0 / period;
                     double partPLF = 0.0;
                     double partNet = partBrut;
                     double partBrutInFine = 0.0;
@@ -521,19 +537,6 @@ public class ControllerHome {
                         if(obligationEndDate.isEqual(couponDate)) {
                             if(obligation.getProrogation()[2] != "0" && obligation.getProrogation()[2] != "") {
                                 montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, item[0]);
-                                int period = 0;
-                                if(obligation.getPeriodicity().equals("Mensuelle")) {
-                                    period = 1;
-                                } else if(obligation.getPeriodicity().equals("Trimestrielle")) {
-                                    period = 3;
-                                } else if(obligation.getPeriodicity().equals("Semestrielle")) {
-                                    period = 6;
-                                } else if(obligation.getPeriodicity().equals("Annuelle")) {
-                                    period = 12;
-                                } else {
-                                    System.err.println("Unknown periodicity: " + obligation.getPeriodicity());
-                                    continue;
-                                }
                                 for(int i = 0; i < Integer.parseInt(obligation.getProrogation()[0])/period-1; i++) {
                                     montantInvestiInFine = (long) (montantInvestiInFine * (1 + Double.parseDouble(obligation.getProrogation()[1]) / 100.0));
                                 }
@@ -648,20 +651,25 @@ public class ControllerHome {
                     Cell cellBIC = dataRow.createCell(11);
                     cellBIC.setCellValue(investorBIC);
 
-                    if(!(!info.getDate().isEmpty() && LocalDate.parse(info.getDate()).isAfter(LocalDate.parse(item[0])))) {
-                        //TODO prendre en compte le temps entre la date d'arrivée et la date du coupon avec la formule adéquate
-                        Cell cellCouponBrut = dataRow.createCell(12);
-                        cellCouponBrut.setCellValue(partBrut);
-                        cellCouponBrut.setCellStyle(currencyStyle);
-
-                        Cell cellCouponPLF = dataRow.createCell(13);
-                        cellCouponPLF.setCellValue(partPLF);
-                        cellCouponPLF.setCellStyle(currencyStyle);
-
-                        Cell cellCouponNet = dataRow.createCell(14);
-                        cellCouponNet.setCellValue(partNet);
-                        cellCouponNet.setCellStyle(currencyStyle);
+                    if(!info.getDate().isEmpty() && LocalDate.parse(item[0]).isAfter(LocalDate.parse(info.getDate()))) {
+                        long daysBetween = ChronoUnit.DAYS.between(LocalDate.parse(info.getDate()), LocalDate.parse(item[0]));
+                        if(daysBetween < period * 31) {
+                            partBrut = (partBrut / 365) * daysBetween;
+                            partPLF = (partPLF / 365) * daysBetween;
+                            partNet = (partNet / 365) * daysBetween;
+                        } 
                     }
+                    Cell cellCouponBrut = dataRow.createCell(12);
+                    cellCouponBrut.setCellValue(partBrut);
+                    cellCouponBrut.setCellStyle(currencyStyle);
+
+                    Cell cellCouponPLF = dataRow.createCell(13);
+                    cellCouponPLF.setCellValue(partPLF);
+                    cellCouponPLF.setCellStyle(currencyStyle);
+
+                    Cell cellCouponNet = dataRow.createCell(14);
+                    cellCouponNet.setCellValue(partNet);
+                    cellCouponNet.setCellStyle(currencyStyle);
 
                     if(montantInvestiInFine != 0) {
                         Cell cellCouponInfineBrut = dataRow.createCell(15);
@@ -897,6 +905,26 @@ public class ControllerHome {
         } catch (Exception e) {
             System.err.println("❌ Erreur générale : " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    public void setNumberLabel(Label label, String numberAsString) {
+        try {
+            // Nettoyer la chaîne d'entrée (enlever espaces existants, virgules, etc.)
+            String cleanString = numberAsString.replaceAll("[\\s,]", "");
+            
+            // Convertir en nombre
+            double value = Double.parseDouble(cleanString);
+            
+            // Formater avec espaces
+            NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+            format.setGroupingUsed(true);
+            label.setText(format.format(value) + " €");
+        } catch (NumberFormatException e) {
+            // En cas d'erreur de format, afficher la chaîne originale ou gérer l'erreur
+            label.setText(numberAsString);
+            // Ou bien : 
+            // label.setText("Format invalide");
         }
     }
 }

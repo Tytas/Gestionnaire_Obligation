@@ -10,10 +10,10 @@
 
 <AnchorPane maxHeight="Infinity" maxWidth="Infinity" minHeight="600.0" minWidth="800.0" prefHeight="768.0" prefWidth="1024.0" styleClass="content-container" stylesheets="@../../styles/menu-styles.css, @../../styles/main-pages-styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mypackage.controllers.ControllerHome">
    <children>
-      <GridPane layoutX="14.0" layoutY="110.0" maxHeight="648.0" maxWidth="430.0" prefHeight="648.0" prefWidth="430.0" styleClass="dashboard-card" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="600.0" AnchorPane.topAnchor="40.0">
+      <GridPane layoutX="14.0" layoutY="110.0" maxHeight="648.0" maxWidth="410.0" prefHeight="648.0" prefWidth="410.0" styleClass="dashboard-card" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="574.0" AnchorPane.topAnchor="40.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="180.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" prefWidth="180.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" percentWidth="40.0" prefWidth="180.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="10.0" percentWidth="60.0" prefWidth="180.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -23,21 +23,22 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label styleClass="dashboard-title" text="Total Capitaux" />
-            <Label prefWidth="91.0" styleClass="dashboard-title" text="Taux Moyen Pondéré" wrapText="true" GridPane.rowIndex="2" />
-            <Label styleClass="dashboard-title" text="Nombre d'obligations en cours" wrapText="true" GridPane.rowIndex="1" />
-            <Label styleClass="dashboard-title" text="Nombre Total de Souscripteurs" wrapText="true" GridPane.rowIndex="3" />
-            <Label styleClass="dashboard-title" text="Durée Restante Moyenne" wrapText="true" GridPane.rowIndex="4" />
-            <Label fx:id="totalCapitauxLabel" styleClass="dashboard-value" text="Label" GridPane.columnIndex="1" />
-            <Label fx:id="totalObligationsRunningLabel" styleClass="dashboard-value" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="rateWeightedAverageLabel" styleClass="dashboard-value" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="totalInvestorsLabel" styleClass="dashboard-value" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label fx:id="remainDurationAverageLabel" styleClass="dashboard-value" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label styleClass="row-separator" text="Total Capitaux" />
+            <Label prefWidth="91.0" styleClass="row-separator" text="Taux Moyen Pondéré" wrapText="true" GridPane.rowIndex="2" />
+            <Label styleClass="row-separator" text="Nombre d'obligations en cours" wrapText="true" GridPane.rowIndex="1" />
+            <Label styleClass="row-separator" text="Nombre Total de Souscripteurs" wrapText="true" GridPane.rowIndex="3" />
+            <Label styleClass="row-separator" text="Durée Restante Moyenne" wrapText="true" GridPane.rowIndex="4" />
+            <Label fx:id="totalCapitauxLabel" styleClass="row-separator" text="Label" GridPane.columnIndex="1" />
+            <Label fx:id="totalObligationsRunningLabel" styleClass="row-separator" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="rateWeightedAverageLabel" styleClass="row-separator" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="totalInvestorsLabel" styleClass="row-separator" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="remainDurationAverageLabel" styleClass="row-separator" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
       <ListView fx:id="couponListView" layoutX="370.0" layoutY="50.0" prefHeight="400.0" prefWidth="500.0" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0" />
       <Label layoutX="650.0" layoutY="10.0" styleClass="title" text="COUPON" textAlignment="CENTER" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="10.0">
       </Label>
       <Button layoutX="200.0" layoutY="500.0" mnemonicParsing="false" onAction="#generateSimplePDF" styleClass="button-primary" text="Générer PDF" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="200.0" />
+      <Label layoutX="286.0" styleClass="subtitle" text="Obligations en cours" />
    </children>
 </AnchorPane>

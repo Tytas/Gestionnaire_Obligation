@@ -46,22 +46,6 @@
     -fx-max-height: Infinity;
 }
 
-/* Styles génériques pour les AnchorPane */
-.anchor-pane-left {
-    -fx-background-color: #ecf0f1;
-    -fx-padding: 20;
-    -fx-min-width: 100%;
-    -fx-min-height: 100%;
-}
-
-.anchor-pane-right {
-    -fx-background-color: #ffffff;
-    -fx-padding: 10;
-    -fx-min-width: 100%;
-    -fx-min-height: 100%;
-}
-
-
 /* TableView compacte pour 1/3 de l'écran */
 .compact-table {
     -fx-background-color: white;
@@ -91,13 +75,35 @@
     -fx-alignment: center-left;
 }
 
-.compact-table .table-row-cell:selected {
-    -fx-background-color: #3498db;
-    -fx-text-fill: white;
+.percentage-low {
+    -fx-background-color: rgb(251, 151, 151);
+}
+
+.percentage-medium {
+    -fx-background-color: rgb(255, 226, 133);
+}
+
+.percentage-high {
+    -fx-background-color: rgb(143, 231, 164);
+}
+
+.percentage-full {
+    -fx-background-color: rgb(255, 0, 0);
+}
+
+.percentage-error {
+    -fx-background-color: rgb(109, 76, 255);
+}
+
+.compact-table .table-row-cell:selected,
+.compact-table .table-row-cell:selected .table-cell {
+    -fx-background-color: #3498db !important;
+    -fx-text-fill: white !important;
+    -fx-font-weight: bold !important;
 }
 
 .compact-table .table-row-cell:hover {
-    -fx-background-color: #ebf3fd;
+    -fx-background-color: #797979 !important;
 }
 
 /* ==============================================
@@ -220,23 +226,6 @@
     -fx-background-color: #219955;
 }
 
-/* Styles pour les labels dans les cellules de ListView (Home) */
-.coupon-list-date {
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-}
-
-.coupon-list-amount {
-    -fx-font-size: 12px;
-    -fx-text-fill: #2c3e50;
-}
-
-.coupon-list-obligation {
-    -fx-font-size: 12px;
-    -fx-font-style: italic;
-    -fx-text-fill: #7f8c8d;
-}
-
 /* Style pour le conteneur de cellule */
 .coupon-list-cell {
     -fx-padding: 10px;
@@ -248,8 +237,15 @@
 
 /* Style spécifique pour les rangées */
 .row-separator {
-    -fx-border-color: transparent transparent #e0e6ed transparent;
-    -fx-border-width: 0 0 1 0;
-    -fx-padding: 5 0;
-}
+    -fx-min-width: -1;
+    -fx-pref-width: -1;
+    -fx-max-width: Infinity;
+    -fx-min-height: 45px;
+    -fx-pref-height: 45px;
+    -fx-max-height: 45px;
+    -fx-border-color: rgba(99, 67, 168, 0.47);
+    -fx-border-width: 2px;
+    -fx-border-radius: 4px;
+    -fx-padding: 2 0;
+}   
 

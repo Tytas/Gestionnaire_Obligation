@@ -3,11 +3,10 @@
   "name" : "lklklklk",
   "convertible" : false,
   "capital" : 500000,
-  "valeurNominale" : 1000,
+  "valeurNominale" : 10000,
   "startDate" : "2025-06-28",
   "durationMonths" : 36,
   "rate" : [ 10, 10 ],
-  "interestBase" : "Jour Réel/365",
   "periodicity" : "Semestrielle",
   "prorogation" : [ "24", "20", "20" ],
   "prorogationActivated" : true,
@@ -16,7 +15,7 @@
   "depreciations" : { },
   "investors" : [ {
     "investorId" : 1,
-    "capital" : 5,
+    "capital" : 25,
     "date" : ""
   }, {
     "investorId" : 4,

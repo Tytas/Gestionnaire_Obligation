@@ -47,10 +47,6 @@
          <GridPane.margin>
             <Insets bottom="15.0" />
          </GridPane.margin></Label>
-      <Label prefWidth="76.0" text="Base de Calcul" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets bottom="15.0" />
-         </GridPane.margin></Label>
       <Label prefHeight="41.0" prefWidth="76.0" text="Périodicité du coupon" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets bottom="15.0" />
@@ -178,12 +174,6 @@
          <children>
             <ComboBox fx:id="periodiciteComboBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" promptText="Choisir une périodicité" />
             <Label fx:id="periodiciteErreurComboBox" text="Label" visible="false" />
-         </children>
-      </VBox>
-      <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
-         <children>
-            <ComboBox fx:id="baseCalculComboBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" promptText="Choisir la base de calcul" />
-            <Label fx:id="baseCalculErreurComboBox" text="Label" visible="false" />
          </children>
       </VBox>
       <VBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2">

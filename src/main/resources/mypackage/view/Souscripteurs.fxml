@@ -22,8 +22,8 @@
                   <Label layoutX="199.0" layoutY="34.0" styleClass="subtitle" text="Souscripteur Details" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                   <GridPane layoutX="20.0" layoutY="71.4" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="71.4">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.20001220703125" minWidth="10.0" prefWidth="65.20001220703125" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="213.20001220703125" minWidth="10.0" prefWidth="202.79998779296875" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.20001220703125" minWidth="10.0" percentWidth="40.0" prefWidth="65.20001220703125" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="213.20001220703125" minWidth="10.0" percentWidth="60.0" prefWidth="202.79998779296875" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />

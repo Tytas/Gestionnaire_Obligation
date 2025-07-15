@@ -2,9 +2,11 @@ package mypackage.view.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.awt.Desktop;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -63,7 +65,7 @@ public class CouponWindow {
         for(InvestorInfo triplet : obligationData.getInvestors()) {
             Integer souscripteurId = triplet.getInvestorId();
             Long amount = triplet.getCapital();
-            allSouscripteurs.add(new String[]{InvestorInteractor.GetInvestor(souscripteurId).getName(), amount.toString()});
+            allSouscripteurs.add(new String[]{InvestorInteractor.GetInvestor(souscripteurId).getName(), amount.toString(), });
         }
 
         souscripteurListView.setItems(filteredSouscripteurs);
@@ -87,21 +89,22 @@ public class CouponWindow {
                     Taux = 0.0;
                     TauxInFine = 0.0;
                     montantCapitalise = 0.0;
+                    int period = 0;
+                    if(obligationData.getPeriodicity().equals("Mensuelle")) {
+                        period = 1;
+                    } else if(obligationData.getPeriodicity().equals("Trimestrielle")) {
+                        period = 3;
+                    } else if(obligationData.getPeriodicity().equals("Semestrielle")) {
+                        period = 6;
+                    } else if(obligationData.getPeriodicity().equals("Annuelle")) {
+                        period = 12;
+                    }
                     if(obligationData.getProrogationActivated() && LocalDate.parse(obligationData.getStartDate()).plusMonths(obligationData.getDurationMonths()).isBefore(LocalDate.parse(obligation[0]))) {
                         Taux = Double.parseDouble(obligationData.getProrogation()[1]) / 100.0;
                         if(LocalDate.parse(obligationData.getStartDate()).plusMonths(obligationData.getDurationMonths() + Long.parseLong(obligationData.getProrogation()[0])).isEqual(LocalDate.parse(obligation[0]))) {
                             TauxInFine = Double.parseDouble(obligationData.getProrogation()[2]) / 100.0;
                             montantCapitalise = (double) MontantInvestiCapitalise(Integer.parseInt(item[1]) * obligationData.getValeurNominale(), obligationData, obligation[0]);
-                            int period = 0;
-                            if(obligationData.getPeriodicity().equals("Mensuelle")) {
-                                period = 1;
-                            } else if(obligationData.getPeriodicity().equals("Trimestrielle")) {
-                                period = 3;
-                            } else if(obligationData.getPeriodicity().equals("Semestrielle")) {
-                                period = 6;
-                            } else if(obligationData.getPeriodicity().equals("Annuelle")) {
                                 period = 12;
-                            }
                             for(int i = 0; i < Integer.parseInt(obligationData.getProrogation()[0])/period-1; i++) {
                                 montantCapitalise = montantCapitalise * (1 + Double.parseDouble(obligationData.getProrogation()[1]) / 100.0);
                             }
@@ -128,14 +131,23 @@ public class CouponWindow {
                             }
                         }
                     }
+                    double partBrut = nbPart * obligationData.getValeurNominale() * Taux + montantCapitalise * TauxInFine;
+                    if(obligationData.getInvestorDate(investorId).trim() != "" && LocalDate.parse(obligation[0]).isAfter(LocalDate.parse(obligationData.getInvestorDate(investorId)))){
+                        LocalDate startDateInvestor = LocalDate.parse(obligationData.getInvestorDate(investorId));
+                        long daysBetween = ChronoUnit.DAYS.between(startDateInvestor, LocalDate.parse(obligation[0]));
+                        if(daysBetween < period * 31) {
+                            partBrut = (partBrut / 365) * daysBetween;
+                        } 
+                    }
                     Label nameLabel = new Label(item[0]);
-                    Label amountLabel = new Label(String.format("%.2f €", nbPart * obligationData.getValeurNominale() * Taux + montantCapitalise * TauxInFine));
+                    Label amountLabel = new Label();
+                    setNumberLabel(amountLabel, String.valueOf(partBrut));
                     Label nameObligLabel = new Label(obligation[2]);
                     Label dateLabel = new Label(obligation[0]);
                     Button buttonAvisdOpere = new Button("A. d'Op");
+                    double finalPartBrut = partBrut;
                     buttonAvisdOpere.setOnAction(event -> {
-                        ShowAvisdOperePDF(item[0], obligationData, obligation[0],
-                                          Integer.parseInt(item[1]) * obligationData.getValeurNominale() * Taux + montantCapitalise * TauxInFine);
+                        ShowAvisdOperePDF(item[0], obligationData, obligation[0], finalPartBrut);
                     });
                     HBox content = new HBox(10, nameLabel, amountLabel, nameObligLabel, dateLabel, buttonAvisdOpere);
                     setGraphic(content);
@@ -298,14 +310,25 @@ public class CouponWindow {
             cell2_1.add(new Paragraph("    Net en euros"));
             cell2_1.setTextAlignment(com.itextpdf.layout.properties.TextAlignment.LEFT);
             Cell cell2_2 = new Cell().add(new Paragraph("\n"));
+            NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+            format.setGroupingUsed(true);
+            format.setMinimumFractionDigits(2);
+            format.setMaximumFractionDigits(2);
+
+            String formatted = format.format(1234567.89);
+            // Affiche chaque caractère et son code unicode pour vérifier
+            for (char c : formatted.toCharArray()) {
+                System.out.println("'" + c + "' : " + (int)c);
+            }
+
             if(investor instanceof InvestorNP && ((InvestorNP)investor).getAddress()[4].trim().toUpperCase().equals("FRANCE")) {
-                cell2_2.add(new Paragraph(String.valueOf(String.format("%.2f €", partBrut))));
-                cell2_2.add(new Paragraph(String.valueOf(String.format("%.2f €", partBrut * 0.3))));
-                cell2_2.add(new Paragraph(String.valueOf(String.format("%.2f €", partBrut * 0.7))));
+                cell2_2.add(new Paragraph(format.format(partBrut).replace('\u202F', ' ') + " €"));
+                cell2_2.add(new Paragraph(format.format(partBrut * 0.3).replace('\u202F', ' ') + " €"));
+                cell2_2.add(new Paragraph(format.format(partBrut * 0.7).replace('\u202F', ' ') + " €"));
             } else {
-                cell2_2.add(new Paragraph(String.valueOf(String.format("%.2f €", partBrut))));
+                cell2_2.add(new Paragraph(format.format(partBrut).replace('\u202F', ' ') + " €"));
                 cell2_2.add(new Paragraph(String.valueOf(" - €")));
-                cell2_2.add(new Paragraph(String.valueOf(String.format("%.2f €", partBrut))));
+                cell2_2.add(new Paragraph(format.format(partBrut).replace('\u202F', ' ') + " €"));
             }
             cell2_2.setTextAlignment(com.itextpdf.layout.properties.TextAlignment.RIGHT);
 
@@ -372,5 +395,25 @@ public class CouponWindow {
             montantInvesti = (long) (montantInvesti * (1 + obligation.getRate()[1] / 100.0));
         }
         return montantInvesti;
+    }
+
+    static public void setNumberLabel(Label label, String numberAsString) {
+        try {
+            // Nettoyer la chaîne d'entrée (enlever espaces existants, virgules, etc.)
+            String cleanString = numberAsString.replaceAll("[\\s,]", "");
+            
+            // Convertir en nombre
+            double value = Double.parseDouble(cleanString);
+            
+            // Formater avec espaces
+            NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+            format.setGroupingUsed(true);
+            label.setText(format.format(value) + " €");
+        } catch (NumberFormatException e) {
+            // En cas d'erreur de format, afficher la chaîne originale ou gérer l'erreur
+            label.setText(numberAsString);
+            // Ou bien : 
+            // label.setText("Format invalide");
+        }
     }
 }

@@ -2,7 +2,7 @@
   "id" : 4,
   "name" : "Méchant",
   "familyId" : 1,
-  "obligations" : [ 3 ],
+  "obligations" : [ 3, 4 ],
   "civility" : "M.",
   "firstName" : "Gentil",
   "nationality" : "Française",
@@ -12,6 +12,6 @@
   "phoneNumber" : "0623151417",
   "address" : [ "12", "chemin des troubadours", "45555", "paris", "France", "coucou" ],
   "bankName" : "LCL",
-  "iban" : "JGI5161KJBNJN",
-  "bic" : "DFGHUN"
+  "bic" : "DFGHUN",
+  "iban" : "JGI5161KJBNJN"
 }

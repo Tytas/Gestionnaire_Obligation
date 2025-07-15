@@ -1,5 +1,7 @@
 package mypackage.controllers;
 
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -65,7 +67,11 @@ public class ControllerObligations {
     @FXML
     private TableColumn<Obligation, String> listObligName;
     @FXML
-    private TableColumn<Obligation, String> listObligId;
+    private TableColumn<Obligation, String> listObligDate;
+    @FXML
+    private TableColumn<Obligation, Long> listObligCapital;
+    @FXML
+    private TableColumn<Obligation, String> listObligEtat;
 
     private MainApp mainApp;
 
@@ -94,12 +100,93 @@ public class ControllerObligations {
             }
         }
         this.listObligName.setCellValueFactory(new PropertyValueFactory<Obligation, String>("name"));
-        this.listObligId.setCellValueFactory(new PropertyValueFactory<Obligation, String>("id"));
+        this.listObligDate.setCellValueFactory(new PropertyValueFactory<Obligation, String>("startDate"));
+        this.listObligCapital.setCellValueFactory(new PropertyValueFactory<Obligation, Long>("capital"));
+        
+        this.listObligCapital.setCellFactory(column -> new javafx.scene.control.TableCell<Obligation, Long>() {
+            @Override
+            protected void updateItem(Long item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    try {
+                        double value = item.doubleValue();
+                        NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+                        format.setGroupingUsed(true);
+                        String formatted = format.format(value);
+                        setText(formatted + " €");
+                    } catch (Exception e) {
+                        setText(item.toString());
+                    }
+                }
+            }
+        });
+
+        // Nouvelle colonne avec valeur calculée/personnalisée
+        this.listObligEtat.setCellValueFactory(cellData -> {
+            Obligation obligation = cellData.getValue();
+            // Exemple : calculer le statut basé sur plusieurs propriétés
+            String status = calculateStatus(obligation);
+            return new javafx.beans.property.SimpleStringProperty(status);
+        });
+        tableObligations.setRowFactory(tv -> {
+            javafx.scene.control.TableRow<Obligation> row = new javafx.scene.control.TableRow<>();
+            row.itemProperty().addListener((obs, oldObligation, newObligation) -> {
+                row.getStyleClass().removeAll("percentage-low", "percentage-medium", "percentage-high", "percentage-full", "percentage-error");
+                if (newObligation != null) {
+                    String status = calculateStatus(newObligation);
+                    if (status.contains("%")) {
+                        try {
+                            String percentageStr = status.replace("%", "").replace(",", ".");
+                            double percentage = Double.parseDouble(percentageStr);
+                            
+                            if (percentage < 50.0) {
+                                row.getStyleClass().add("percentage-low");
+                            } else if (percentage < 80.0) {
+                                row.getStyleClass().add("percentage-medium");
+                            } else if (percentage < 100.0) {
+                                row.getStyleClass().add("percentage-high");
+                            } else if (percentage >= 100.0) {
+                                row.getStyleClass().add("percentage-full");
+                            }
+                            
+                        } catch (NumberFormatException e) {
+                            row.getStyleClass().add("percentage-error");
+                        }
+                    }
+                }
+            });
+            return row;
+        });
 
         displayObligation(null);
     
         tableObligations.getSelectionModel().selectedItemProperty().addListener(
             (observable, oldValue, newValue) -> displayObligation(newValue));
+    }
+
+    private String calculateStatus(Obligation obligation) {
+        // Exemple : déterminer le statut de l'obligation
+        Long capital = obligation.getCapital();
+        Long capitalSouscripteur = obligation.getInvestors().stream()
+            .mapToLong(investorInfo -> investorInfo.getCapital())
+            .sum() * obligation.getValeurNominale();
+        Double pourcentRemplissage = (double) capitalSouscripteur / capital * 100;
+        if(pourcentRemplissage != 100){
+            return String.format("%.2f%%", pourcentRemplissage);
+        }
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = LocalDate.parse(obligation.getStartDate());
+        LocalDate endDate = startDate.plusMonths(obligation.getDurationMonths());
+        
+        if (now.isBefore(startDate)) {
+            return "À venir";
+        } else if (now.isAfter(endDate)) {
+            return "Terminée";
+        } else {
+            return "En cours";
+        }
     }
 
     public ObservableList<Obligation> getObligations() {
@@ -114,9 +201,9 @@ public class ControllerObligations {
         this.selectedObligation = oblig;
         if(oblig != null) {
             // Update the person details in the label
-            NameObligation.setText(oblig.getName());
-            capitalObligation.setText(String.valueOf(oblig.getCapital()));
-            PartObligation.setText(String.valueOf(oblig.getValeurNominale()));
+            setNumberLabel(NameObligation, oblig.getName());
+            setNumberLabel(capitalObligation, String.valueOf(oblig.getCapital()));
+            setNumberLabel(PartObligation, String.valueOf(oblig.getValeurNominale()));
             EmetteurObligation.setText(ApplicantInteractor.GetApplicant(oblig.getApplicantId()).getName());
             if(oblig.getConvertible()) {
                 OS_OCAObligation.setText("OCA");
@@ -295,6 +382,26 @@ public class ControllerObligations {
             }
         } else {
             System.out.println("No obligation selected to consult.");
+        }
+    }
+
+    public void setNumberLabel(Label label, String numberAsString) {
+        try {
+            // Nettoyer la chaîne d'entrée (enlever espaces existants, virgules, etc.)
+            String cleanString = numberAsString.replaceAll("[\\s,]", "");
+            
+            // Convertir en nombre
+            double value = Double.parseDouble(cleanString);
+            
+            // Formater avec espaces
+            NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+            format.setGroupingUsed(true);
+            label.setText(format.format(value) + " €");
+        } catch (NumberFormatException e) {
+            // En cas d'erreur de format, afficher la chaîne originale ou gérer l'erreur
+            label.setText(numberAsString);
+            // Ou bien : 
+            // label.setText("Format invalide");
         }
     }
 

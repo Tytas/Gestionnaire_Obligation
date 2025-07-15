@@ -345,9 +345,23 @@ public class ConsultObligationController {
                     int investorId = info.getInvestorId();
                     long nombreParts = info.getCapital();
                     ArrayList<Replacement> replacements = obligation.getReplacements();
+                    int period = 0;
+                    if(obligation.getPeriodicity().equals("Mensuelle")) {
+                        period = 1;
+                    } else if(obligation.getPeriodicity().equals("Trimestrielle")) {
+                        period = 3;
+                    } else if(obligation.getPeriodicity().equals("Semestrielle")) {
+                        period = 6;
+                    } else if(obligation.getPeriodicity().equals("Annuelle")) {
+                        period = 12;
+                    } else {
+                        System.err.println("Unknown periodicity: " + obligation.getPeriodicity());
+                        continue;
+                    }
                     long montantInvesti = nombreParts * obligation.getValeurNominale();
                     long montantInvestiInFine = 0L;
                     double partBrut = montantInvesti * obligation.getRate()[1] / 100.0;
+                    partBrut /= 12.0 / period;
                     double partPLF = 0.0;
                     double partNet = partBrut;
                     double partBrutInFine = 0.0;
@@ -367,19 +381,6 @@ public class ConsultObligationController {
                         if(obligationEndDate.isEqual(lastCouponDate)) {
                             if(obligation.getProrogation()[2] != "0" && obligation.getProrogation()[2] != "") {
                                 montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, listCoupon.get(listCoupon.size() - 1)[0]);
-                                int period = 0;
-                                if(obligation.getPeriodicity().equals("Mensuelle")) {
-                                    period = 1;
-                                } else if(obligation.getPeriodicity().equals("Trimestrielle")) {
-                                    period = 3;
-                                } else if(obligation.getPeriodicity().equals("Semestrielle")) {
-                                    period = 6;
-                                } else if(obligation.getPeriodicity().equals("Annuelle")) {
-                                    period = 12;
-                                } else {
-                                    System.err.println("Unknown periodicity: " + obligation.getPeriodicity());
-                                    continue;
-                                }
                                 for(int i = 0; i < Integer.parseInt(obligation.getProrogation()[0])/period-1; i++) {
                                     montantInvestiInFine = (long) (montantInvestiInFine * (1 + Double.parseDouble(obligation.getProrogation()[1]) / 100.0));
                                 }
@@ -389,7 +390,6 @@ public class ConsultObligationController {
                             }
                         }
                     }
-
                     Investor investor = InvestorInteractor.GetInvestor(investorId);
                     String investorName = investor != null ? investor.getName() : "Inconnu";
                     String investorPMorPP = investor != null ? (investor instanceof InvestorNP ? "PP" : "PM") : "Inconnu";
@@ -511,22 +511,49 @@ public class ConsultObligationController {
                                 partNet = partBrut;
                             }
                         }
-
                         if(!info.getDate().isEmpty() && LocalDate.parse(info.getDate()).isAfter(LocalDate.parse(listCoupon.get(i/3)[0]))) {
-                            continue; //TODO prendre en compte le temps entre la date d'arrivée et la date du coupon avec la formule adéquate
+                            continue;
+                        } 
+                        if(!info.getDate().isEmpty() && LocalDate.parse(listCoupon.get(i/3)[0]).isAfter(LocalDate.parse(info.getDate()))) {
+                            long daysBetween = ChronoUnit.DAYS.between(LocalDate.parse(info.getDate()), LocalDate.parse(listCoupon.get(i/3)[0]));
+                            if(daysBetween < period * 31) {
+                                Cell cellCouponBrut = dataRow.createCell(12 + i);
+                                cellCouponBrut.setCellValue((partBrut / 365) * daysBetween);
+                                cellCouponBrut.setCellStyle(currencyStyle);
+
+                                Cell cellCouponPLF = dataRow.createCell(13 + i);
+                                cellCouponPLF.setCellValue((partPLF / 365) * daysBetween);
+                                cellCouponPLF.setCellStyle(currencyStyle);
+
+                                Cell cellCouponNet = dataRow.createCell(14 + i);
+                                cellCouponNet.setCellValue((partNet / 365) * daysBetween);
+                                cellCouponNet.setCellStyle(currencyStyle);
+                            }else {
+                                Cell cellCouponBrut = dataRow.createCell(12 + i);
+                                cellCouponBrut.setCellValue(partBrut);
+                                cellCouponBrut.setCellStyle(currencyStyle);
+
+                                Cell cellCouponPLF = dataRow.createCell(13 + i);
+                                cellCouponPLF.setCellValue(partPLF);
+                                cellCouponPLF.setCellStyle(currencyStyle);
+
+                                Cell cellCouponNet = dataRow.createCell(14 + i);
+                                cellCouponNet.setCellValue(partNet);
+                                cellCouponNet.setCellStyle(currencyStyle);
+                            }
+                        } else {
+                            Cell cellCouponBrut = dataRow.createCell(12 + i);
+                            cellCouponBrut.setCellValue(partBrut);
+                            cellCouponBrut.setCellStyle(currencyStyle);
+
+                            Cell cellCouponPLF = dataRow.createCell(13 + i);
+                            cellCouponPLF.setCellValue(partPLF);
+                            cellCouponPLF.setCellStyle(currencyStyle);
+
+                            Cell cellCouponNet = dataRow.createCell(14 + i);
+                            cellCouponNet.setCellValue(partNet);
+                            cellCouponNet.setCellStyle(currencyStyle);
                         }
-                        
-                        Cell cellCouponBrut = dataRow.createCell(12 + i);
-                        cellCouponBrut.setCellValue(partBrut);
-                        cellCouponBrut.setCellStyle(currencyStyle);
-
-                        Cell cellCouponPLF = dataRow.createCell(13 + i);
-                        cellCouponPLF.setCellValue(partPLF);
-                        cellCouponPLF.setCellStyle(currencyStyle);
-
-                        Cell cellCouponNet = dataRow.createCell(14 + i);
-                        cellCouponNet.setCellValue(partNet);
-                        cellCouponNet.setCellStyle(currencyStyle);
                     }
 
                     if(montantInvestiInFine != 0) {

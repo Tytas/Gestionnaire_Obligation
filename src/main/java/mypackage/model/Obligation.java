@@ -19,7 +19,6 @@ public class Obligation {
     private String startDate;   
     private int durationMonths;
     private int[] rate = {0, 0}; // [In Fine, mensuelle]
-    private String interestBase;
     private String periodicity;
     private String[] prorogation; // [Durée de prorogation, nouveau taux, nouveau taux In Fine]
     private Boolean prorogationActivated = false;
@@ -38,7 +37,6 @@ public class Obligation {
         this.startDate = "";
         this.durationMonths = 0;
         this.rate = new int[]{0, 0};
-        this.interestBase = "";
         this.periodicity = "";
         this.prorogation = new String[]{"", "", ""}; // [Durée de prorogation, nouveau taux, nouveau taux In Fine]
         this.prorogationActivated = false;
@@ -47,7 +45,7 @@ public class Obligation {
     }
 
     public Obligation(int id, SimpleStringProperty name, Boolean convertible, long capital, Integer valeurNominale,
-                      String startDate, int durationMonths, int[] rate, String interestBase, String periodicity, String[] prorogation, 
+                      String startDate, int durationMonths, int[] rate, String periodicity, String[] prorogation, 
                       Boolean prorogationActivated, String isin, ArrayList<String> safeties, Map<String, Integer> depreciations, int applicantId) {
         this.id = id;
         this.name = name;
@@ -57,7 +55,6 @@ public class Obligation {
         this.startDate = startDate;
         this.durationMonths = durationMonths;
         this.rate = rate;
-        this.interestBase = interestBase;
         this.periodicity = periodicity;
         this.prorogation = prorogation;
         this.prorogationActivated = prorogationActivated;
@@ -93,9 +90,6 @@ public class Obligation {
     }
     public int[] getRate() {
         return rate;
-    }
-    public String getInterestBase() {
-        return interestBase;
     }
     public String getPeriodicity() {
         return periodicity;
@@ -166,9 +160,6 @@ public class Obligation {
     }
     public void setRate(int[] rate) {
         this.rate = rate;
-    }
-    public void setInterestBase(String interestBase) {
-        this.interestBase = interestBase;
     }
     public void setPeriodicity(String periodicity) {
         this.periodicity = periodicity;
