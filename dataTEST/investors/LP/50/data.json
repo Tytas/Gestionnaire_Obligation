@@ -1,0 +1,39 @@
+{
+  "id": 50,
+  "name": "POINT K",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société par actions simplifiée (SAS)",
+  "address": [
+    "BD de Gouazon",
+    "",
+    "",
+    "",
+    "35400.0 SAINT MALO",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "VERVEL",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "SAINT MALO",
+  "roleBoss": "Gérante",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

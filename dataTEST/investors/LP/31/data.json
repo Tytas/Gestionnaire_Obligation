@@ -1,0 +1,39 @@
+{
+  "id": 31,
+  "name": "KHO INVEST",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société par actions simplifiée unipersonnelle (SASU)",
+  "address": [
+    "rue de Kerellec",
+    "",
+    "",
+    "",
+    "22560.0 Trébeuden",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "LE BERRE",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "Trébeuden",
+  "roleBoss": "Présidente",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

@@ -1,0 +1,39 @@
+{
+  "id": 61,
+  "name": "SCI Alphonse de Neuville",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société civile immobilière (SCI)",
+  "address": [
+    "rue alphonse de neuville",
+    "",
+    "",
+    "",
+    "75017.0 Paris",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "Guerin",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "Paris",
+  "roleBoss": "Gérant",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

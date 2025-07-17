@@ -1,0 +1,39 @@
+{
+  "id": 5,
+  "name": "BELLEVUE",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société à responsabilité limitée (SARL)",
+  "address": [
+    "allée océan et foret",
+    "",
+    "",
+    "",
+    "64600.0 Anglet",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "Schmohl",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "Anglet",
+  "roleBoss": "Family Officer",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

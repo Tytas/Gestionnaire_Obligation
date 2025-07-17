@@ -1,0 +1,24 @@
+{
+  "id": 101,
+  "name": "ANTOUN",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "",
+  "nationality": "",
+  "dateOfBirth": "1947-07-18",
+  "placeOfBirth": "Marseille",
+  "email": "jcantoun@gmail.com",
+  "phoneNumber": "",
+  "address": [
+    "",
+    "rue du Commandant Rolland",
+    "13008",
+    "Marseille",
+    "France",
+    ""
+  ],
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

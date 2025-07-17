@@ -1,0 +1,24 @@
+{
+  "id": 145,
+  "name": "ROSSELIN",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "",
+  "nationality": "",
+  "dateOfBirth": "1995-06-02",
+  "placeOfBirth": "Croix",
+  "email": "vic.rosselin@gmail.com",
+  "phoneNumber": "",
+  "address": [
+    "",
+    "Rue Jean Jacques Rousseau",
+    "59800",
+    "Lille",
+    "France",
+    ""
+  ],
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

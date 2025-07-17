@@ -174,58 +174,155 @@ public class EditSouscripteurMoralController {
         // Set default values for the fields if currentObligation is not null
         System.out.println("Initializing EditEmetteurController with current emetteur: " + currentSouscripteur);
         if (currentSouscripteur != null) {
-            nomField.setText(currentSouscripteur.getName());
-            numRegistreField.setText(String.valueOf(currentSouscripteur.getRegisterNumber()));
-            dateCreationField.setValue(LocalDate.parse(currentSouscripteur.getDateOfCreation()));
-            capitalSocialField.setText(currentSouscripteur.getcapitalSocial());
-            formeJuridiqueComboBox.setValue(currentSouscripteur.getLegalStatus());
-            numeroAdresseField.setText(currentSouscripteur.getAddress()[0]);
-            rueAdresseField.setText(currentSouscripteur.getAddress()[1]);
-            codePostalAdresseField.setText(currentSouscripteur.getAddress()[2]);
-            villeAdresseField.setText(currentSouscripteur.getAddress()[3]);
-            paysAdresseField.setText(currentSouscripteur.getAddress()[4]);
-            complementAdresseField.setText(currentSouscripteur.getAddress()[5]);
-            if (currentSouscripteur.getCivilityBoss() != null) {
-                if( currentSouscripteur.getCivilityBoss().equals("M.")) {
-                    sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(0)); // Monsieur
-                } else if (currentSouscripteur.getCivilityBoss().equals("Mme.")) {
-                    sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(1)); // Madame
-                } else {
-                    sexeDirigeantToggleGroup.selectToggle(null); // Aucun
+            try {
+                // Initialisation sécurisée des champs
+                if (currentSouscripteur.getName() != null) {
+                    nomField.setText(currentSouscripteur.getName());
                 }
-            }
-            nomDirigeantField.setText(currentSouscripteur.getNameBoss());
-            prenomDirigeantField.setText(currentSouscripteur.getFirstNameBoss());
-            nationaliteDirigeantComboBox.setValue(currentSouscripteur.getNationalityBoss());
-            dateNaissanceDirigeantField.setValue(LocalDate.parse(currentSouscripteur.getDateOfBirthBoss()));
-            lieuNaissanceDirigeantField.setText(currentSouscripteur.getPlaceOfBirthBoss());
-            emailDirigeantField.setText(currentSouscripteur.getEmailBoss());
-            telephoneDirigeantField.setText(currentSouscripteur.getPhoneNumberBoss());
-            numeroAdresseDirigeantField.setText(currentSouscripteur.getAddressBoss()[0]);
-            rueAdresseDirigeantField.setText(currentSouscripteur.getAddressBoss()[1]);
-            codePostalAdresseDirigeantField.setText(currentSouscripteur.getAddressBoss()[2]);
-            villeAdresseDirigeantField.setText(currentSouscripteur.getAddressBoss()[3]);
-            paysAdresseDirigeantField.setText(currentSouscripteur.getAddressBoss()[4]);
-            complementAdresseDirigeantField.setText(currentSouscripteur.getAddressBoss()[5]);
-            fonctionDirigeantField.setText(currentSouscripteur.getRoleBoss());
-            villeRCSField.setText(currentSouscripteur.getvilleRCS());
-            bicField.setText(currentSouscripteur.getBIC());
-            ibanField.setText(currentSouscripteur.getIBAN());
-            banqueField.setText(currentSouscripteur.getBankName());
-            for(String[] obligation : filteredObligations) {
-                for(int id : souscripteur.getObligations()) {
-                    if (obligation[0].equalsIgnoreCase(ObligationInteractor.GetObligation(id).getName())) {
-                        obligation[1] = "true"; // Mark as selected
-                        //obligationListView.getSelectionModel().select(obligation);
+                
+                numRegistreField.setText(String.valueOf(currentSouscripteur.getRegisterNumber()));
+                
+                if (currentSouscripteur.getDateOfCreation() != null && !currentSouscripteur.getDateOfCreation().isEmpty()) {
+                    try {
+                        dateCreationField.setValue(LocalDate.parse(currentSouscripteur.getDateOfCreation()));
+                    } catch (Exception e) {
+                        System.err.println("Erreur lors du parsing de la date de création: " + e.getMessage());
                     }
                 }
-            }
-            for (int i = 0; i < familyListView.getItems().size(); i++) {
-                if (familyListView.getItems().get(i).equals(FamilyInteractor.GetFamily(currentSouscripteur.getFamilyId()).getName())) {
-                    familyListView.getSelectionModel().select(i);
-                    selectedFamily = familyListView.getItems().get(i);
-                    break;
+                
+                if (currentSouscripteur.getcapitalSocial() != null) {
+                    capitalSocialField.setText(currentSouscripteur.getcapitalSocial());
                 }
+                
+                if (currentSouscripteur.getLegalStatus() != null) {
+                    formeJuridiqueComboBox.setValue(currentSouscripteur.getLegalStatus());
+                }
+                
+                // Gestion sécurisée de l'adresse
+                String[] address = currentSouscripteur.getAddress();
+                if (address != null) {
+                    if (address.length > 0 && address[0] != null) numeroAdresseField.setText(address[0]);
+                    if (address.length > 1 && address[1] != null) rueAdresseField.setText(address[1]);
+                    if (address.length > 2 && address[2] != null) codePostalAdresseField.setText(address[2]);
+                    if (address.length > 3 && address[3] != null) villeAdresseField.setText(address[3]);
+                    if (address.length > 4 && address[4] != null) paysAdresseField.setText(address[4]);
+                    if (address.length > 5 && address[5] != null) complementAdresseField.setText(address[5]);
+                }
+                
+                if (currentSouscripteur.getCivilityBoss() != null) {
+                    if( currentSouscripteur.getCivilityBoss().equals("M.")) {
+                        sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(0)); // Monsieur
+                    } else if (currentSouscripteur.getCivilityBoss().equals("Mme.")) {
+                        sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(1)); // Madame
+                    } else {
+                        sexeDirigeantToggleGroup.selectToggle(null); // Aucun
+                    }
+                }
+                
+                if (currentSouscripteur.getNameBoss() != null) {
+                    nomDirigeantField.setText(currentSouscripteur.getNameBoss());
+                }
+                
+                if (currentSouscripteur.getFirstNameBoss() != null) {
+                    prenomDirigeantField.setText(currentSouscripteur.getFirstNameBoss());
+                }
+                
+                if (currentSouscripteur.getNationalityBoss() != null) {
+                    nationaliteDirigeantComboBox.setValue(currentSouscripteur.getNationalityBoss());
+                }
+                
+                if (currentSouscripteur.getDateOfBirthBoss() != null && !currentSouscripteur.getDateOfBirthBoss().isEmpty()) {
+                    try {
+                        dateNaissanceDirigeantField.setValue(LocalDate.parse(currentSouscripteur.getDateOfBirthBoss()));
+                    } catch (Exception e) {
+                        System.err.println("Erreur lors du parsing de la date de naissance du dirigeant: " + e.getMessage());
+                    }
+                }
+                
+                if (currentSouscripteur.getPlaceOfBirthBoss() != null) {
+                    lieuNaissanceDirigeantField.setText(currentSouscripteur.getPlaceOfBirthBoss());
+                }
+                
+                if (currentSouscripteur.getEmailBoss() != null) {
+                    emailDirigeantField.setText(currentSouscripteur.getEmailBoss());
+                }
+                
+                if (currentSouscripteur.getPhoneNumberBoss() != null) {
+                    telephoneDirigeantField.setText(currentSouscripteur.getPhoneNumberBoss());
+                }
+                
+                // Gestion sécurisée de l'adresse du dirigeant
+                String[] addressBoss = currentSouscripteur.getAddressBoss();
+                if (addressBoss != null) {
+                    if (addressBoss.length > 0 && addressBoss[0] != null) numeroAdresseDirigeantField.setText(addressBoss[0]);
+                    if (addressBoss.length > 1 && addressBoss[1] != null) rueAdresseDirigeantField.setText(addressBoss[1]);
+                    if (addressBoss.length > 2 && addressBoss[2] != null) codePostalAdresseDirigeantField.setText(addressBoss[2]);
+                    if (addressBoss.length > 3 && addressBoss[3] != null) villeAdresseDirigeantField.setText(addressBoss[3]);
+                    if (addressBoss.length > 4 && addressBoss[4] != null) paysAdresseDirigeantField.setText(addressBoss[4]);
+                    if (addressBoss.length > 5 && addressBoss[5] != null) complementAdresseDirigeantField.setText(addressBoss[5]);
+                }
+                
+                if (currentSouscripteur.getRoleBoss() != null) {
+                    fonctionDirigeantField.setText(currentSouscripteur.getRoleBoss());
+                }
+                
+                if (currentSouscripteur.getvilleRCS() != null) {
+                    villeRCSField.setText(currentSouscripteur.getvilleRCS());
+                }
+                
+                if (currentSouscripteur.getBIC() != null) {
+                    bicField.setText(currentSouscripteur.getBIC());
+                }
+                
+                if (currentSouscripteur.getIBAN() != null) {
+                    ibanField.setText(currentSouscripteur.getIBAN());
+                }
+                
+                if (currentSouscripteur.getBankName() != null) {
+                    banqueField.setText(currentSouscripteur.getBankName());
+                }
+                
+                // Gestion sécurisée des obligations
+                if (filteredObligations != null && souscripteur.getObligations() != null) {
+                    for(String[] obligation : filteredObligations) {
+                        if (obligation != null) {
+                            for(int id : souscripteur.getObligations()) {
+                                try {
+                                    Obligation obligationObj = ObligationInteractor.GetObligation(id);
+                                    if (obligationObj != null && obligationObj.getName() != null && 
+                                        obligation.length > 0 && obligation[0] != null &&
+                                        obligation[0].equalsIgnoreCase(obligationObj.getName())) {
+                                        if (obligation.length > 1) {
+                                            obligation[1] = "true"; // Mark as selected
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    System.err.println("Erreur lors de la récupération de l'obligation ID " + id + ": " + e.getMessage());
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Gestion sécurisée de la famille
+                try {
+                    Family family = FamilyInteractor.GetFamily(currentSouscripteur.getFamilyId());
+                    if (family != null && family.getName() != null && familyListView != null) {
+                        for (int i = 0; i < familyListView.getItems().size(); i++) {
+                            if (familyListView.getItems().get(i) != null && 
+                                familyListView.getItems().get(i).equals(family.getName())) {
+                                familyListView.getSelectionModel().select(i);
+                                selectedFamily = familyListView.getItems().get(i);
+                                break;
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erreur lors de la récupération de la famille: " + e.getMessage());
+                }
+            } catch (Exception e) {
+                System.err.println("Erreur lors de l'initialisation des données du souscripteur moral: " + e.getMessage());
+                e.printStackTrace();
             }
         }
     }

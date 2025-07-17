@@ -1,0 +1,39 @@
+{
+  "id": 68,
+  "name": "VNMC BV",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société coopérative à responsabilité limitée",
+  "address": [
+    "Paasleliedreef",
+    "",
+    "",
+    "",
+    "9031.0 GENT",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "VAN NIMMEN",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "GENT",
+  "roleBoss": "Président",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

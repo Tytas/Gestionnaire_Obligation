@@ -1,0 +1,39 @@
+{
+  "id": 43,
+  "name": "NEREIDES ADVISORY",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société à responsabilité limitée (SARL)",
+  "address": [
+    "rue d'Orchampt",
+    "",
+    "",
+    "",
+    "75018.0 Paris",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "Durand",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "Paris",
+  "roleBoss": "Gérant",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

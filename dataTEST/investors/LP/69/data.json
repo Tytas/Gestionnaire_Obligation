@@ -1,0 +1,39 @@
+{
+  "id": 69,
+  "name": "YD PARTICIPATIONS",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société par actions simplifiée (SAS)",
+  "address": [
+    "PLACE MESGLOAGUEN",
+    "",
+    "",
+    "",
+    "29000.0 QUIMPER",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "DREO",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "QUIMPER",
+  "roleBoss": "GERANT",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

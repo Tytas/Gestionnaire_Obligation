@@ -1,0 +1,39 @@
+{
+  "id": 51,
+  "name": "POINT V",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société Civile",
+  "address": [
+    "Boulevard Gouazon",
+    "",
+    "",
+    "",
+    "35400.0 SAINT MALO",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "VERVEL",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "SAINT MALO",
+  "roleBoss": "Gérante",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

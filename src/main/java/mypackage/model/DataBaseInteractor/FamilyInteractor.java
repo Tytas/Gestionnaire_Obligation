@@ -14,7 +14,7 @@ public class FamilyInteractor {
 
     public static Family GetFamily(int id){
         ObjectMapper objectMapper = new ObjectMapper();
-        String baseDir = "data/families/";
+        String baseDir = "dataTEST/families/";
         SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         System.out.println("Dossier trouvé : " + name.get());
         try {
@@ -33,7 +33,7 @@ public class FamilyInteractor {
     }
 
     public static Boolean SaveFamily(Family family){
-        String baseDir = "data/families/";
+        String baseDir = "dataTEST/families/";
         String familyName = Integer.toString(family.getId());
         Path familyFolder = Path.of(baseDir, familyName);
 
@@ -58,7 +58,7 @@ public class FamilyInteractor {
     }
 
     public static ArrayList<Integer> GetAllFamiliesId(){
-        File[] ListFamFiles = new File("data/families/").listFiles(File::isDirectory);
+        File[] ListFamFiles = new File("dataTEST/families/").listFiles(File::isDirectory);
         ArrayList<Integer> ListFamId = new ArrayList<>();
         for (File file : ListFamFiles) {
             try {
@@ -71,7 +71,7 @@ public class FamilyInteractor {
     }
 
     public static Boolean DeleteFamily(int id){
-        String baseDir = "data/families/";
+        String baseDir = "dataTEST/families/";
         String familyName = Integer.toString(id);
         Path familyFolder = Path.of(baseDir, familyName);
 

@@ -1,0 +1,39 @@
+{
+  "id": 26,
+  "name": "JBR Holding",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société par actions simplifiée (SAS)",
+  "address": [
+    "Rue Bertrand Robidou",
+    "",
+    "",
+    "",
+    "35000.0 RENNES",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "REROLLE",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "RENNES",
+  "roleBoss": "Président",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

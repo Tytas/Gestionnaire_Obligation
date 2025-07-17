@@ -1,0 +1,39 @@
+{
+  "id": 21,
+  "name": "HAE HOLDING",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société par actions simplifiée (SAS)",
+  "address": [
+    "allée des Maraichers",
+    "",
+    "",
+    "",
+    "22100.0 DINAN",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "JUBAULT",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "DINAN",
+  "roleBoss": "gérant",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

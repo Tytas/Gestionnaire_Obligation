@@ -16,7 +16,7 @@ public class InvestorInteractor {
 
     public static InvestorNP GetInvestorNP(int id){
         ObjectMapper objectMapper = new ObjectMapper();
-        String baseDir = "data/investors/NP/";
+        String baseDir = "dataTEST/investors/NP/";
         SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
@@ -33,7 +33,7 @@ public class InvestorInteractor {
     }
 
     public static Boolean SaveInvestorNP(InvestorNP investor){
-        String baseDir = "data/investors/NP/";
+        String baseDir = "dataTEST/investors/NP/";
         String investorName = Integer.toString(investor.getId());
         Path investorFolder = Path.of(baseDir, investorName);
 
@@ -59,7 +59,7 @@ public class InvestorInteractor {
 
     public static InvestorLP GetInvestorLP(int id){
         ObjectMapper objectMapper = new ObjectMapper();
-        String baseDir = "data/investors/LP/";
+        String baseDir = "dataTEST/investors/LP/";
         SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
@@ -76,7 +76,7 @@ public class InvestorInteractor {
     }
 
     public static Boolean SaveInvestorLP(InvestorLP investor){
-        String baseDir = "data/investors/LP/";
+        String baseDir = "dataTEST/investors/LP/";
         String investorName = Integer.toString(investor.getId());
         Path investorFolder = Path.of(baseDir, investorName);
 
@@ -110,7 +110,7 @@ public class InvestorInteractor {
     }
     
     public static Boolean DeleteInvestorNP(int id){
-        String baseDir = "data/investors/NP/";
+        String baseDir = "dataTEST/investors/NP/";
         String InvestorNPName = Integer.toString(id);
         Path InvestorNPFolder = Path.of(baseDir, InvestorNPName);
 
@@ -137,7 +137,7 @@ public class InvestorInteractor {
 
 
     public static Boolean DeleteInvestorLP(int id){
-        String baseDir = "data/investors/LP/";
+        String baseDir = "dataTEST/investors/LP/";
         String InvestorLPName = Integer.toString(id);
         Path InvestorLPFolder = Path.of(baseDir, InvestorLPName);
 
@@ -175,8 +175,8 @@ public class InvestorInteractor {
     }
 
     public static ArrayList<Integer> GetAllInvestorId(){
-        File[] ListInvestorLPFiles = new File("data/investors/LP/").listFiles(File::isDirectory);
-        File[] ListInvestorNPFiles = new File("data/investors/NP/").listFiles(File::isDirectory);
+        File[] ListInvestorLPFiles = new File("dataTEST/investors/LP/").listFiles(File::isDirectory);
+        File[] ListInvestorNPFiles = new File("dataTEST/investors/NP/").listFiles(File::isDirectory);
         ArrayList<Integer> ListInvestorId = new ArrayList<>();
         for (File file : ListInvestorLPFiles) {
             try {

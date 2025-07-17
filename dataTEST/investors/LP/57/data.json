@@ -1,0 +1,39 @@
+{
+  "id": 57,
+  "name": "SAS LA TANIA",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société par actions simplifiée (SAS)",
+  "address": [
+    "Chemin de l'Amiral",
+    "",
+    "",
+    "",
+    "83400.0 HYERES",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "Pancera",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "HYERES",
+  "roleBoss": "Président",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

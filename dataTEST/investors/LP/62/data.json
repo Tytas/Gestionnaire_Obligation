@@ -1,0 +1,39 @@
+{
+  "id": 62,
+  "name": "SEBASTIEN HOLDING",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société par actions simplifiée (SAS)",
+  "address": [
+    "",
+    "",
+    "",
+    "",
+    "nan",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "",
+  "roleBoss": "",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

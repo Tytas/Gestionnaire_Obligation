@@ -30,11 +30,17 @@ public class MainApp extends Application {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mypackage/view/Menu.fxml"));
             rootLayout = (BorderPane) loader.load();
-
+            
+            // Récupérer le contrôleur du menu
+            mypackage.controllers.ControllerMenu menuController = loader.getController();
+            
             // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
+            
+            // Ouvrir automatiquement la page Home en appelant la méthode du bouton Home
+            menuController.handleMenuHome();
         } catch (IOException e) {
             System.err.println("Erreur lors du chargement de Menu.fxml: " + e.getMessage());
             e.printStackTrace();

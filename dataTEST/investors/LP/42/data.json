@@ -1,0 +1,39 @@
+{
+  "id": 42,
+  "name": "NECILTO",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société à responsabilité limitée (SARL)",
+  "address": [
+    "Cours Mirabeau",
+    "",
+    "",
+    "",
+    "13100.0 AIX-EN-PROVENCE",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "MERIAUDEAU",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "AIX-EN-PROVENCE",
+  "roleBoss": "Gérant",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

@@ -1,0 +1,24 @@
+{
+  "id": 134,
+  "name": "LUCAS",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "",
+  "nationality": "",
+  "dateOfBirth": "1955-01-13",
+  "placeOfBirth": "Paris 8ème",
+  "email": "stephanelucas@hotmail.com",
+  "phoneNumber": "",
+  "address": [
+    "",
+    "Avenue du Moulyn",
+    "64200",
+    "Biarritz",
+    "France",
+    ""
+  ],
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

@@ -1,0 +1,39 @@
+{
+  "id": 3,
+  "name": "AELIS GESTION PRIVEE",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société à responsabilité limitée (SARL)",
+  "address": [
+    "rue de Lorient",
+    "",
+    "",
+    "",
+    "35039.0 RENNES",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "RENNES",
+  "roleBoss": "",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

@@ -165,92 +165,201 @@ public class EditObligationController {
         // Set default values for the fields if currentObligation is not null
         System.out.println("Initializing EditObligationController with current obligation: " + currentObligation);
         if (currentObligation != null) {
-            nomField.setText(currentObligation.getName());
-            capitalField.setText(String.valueOf(currentObligation.getCapital()));
-            valeurNominaleField.setText(String.valueOf(currentObligation.getValeurNominale()));
-            dureeField.setText(String.valueOf(currentObligation.getDurationMonths()));
-            periodiciteComboBox.setValue(currentObligation.getPeriodicity());
-            dateDebutField.setValue(LocalDate.parse(currentObligation.getStartDate()));
-            ProrogationActivee.setSelected(currentObligation.getProrogationActivated());
-            if(currentObligation.getProrogation()[0] != "") {
-                prorogationOui.setSelected(true);
-                TauxProrogationField.setText(currentObligation.getProrogation()[1]);
-                TauxProrogationInfineField.setText(currentObligation.getProrogation()[2]);
-                DureeProrogationField.setText(currentObligation.getProrogation()[0]);
-            } else {
-                prorogationNon.setSelected(true);
-            }
-            if(currentObligation.getIsin() != "") {
-                isinOui.setSelected(true);
-                numeroIsinField.setText(currentObligation.getIsin());
-            } else {
-                isinNon.setSelected(true);
-                numeroIsinField.setDisable(true);
-                numeroIsinField.setText("");
-            }
-            if(currentObligation.getConvertible()) {
-                convertible.selectToggle(convertible.getToggles().get(0)); // Assuming the first toggle is "OCA"
-            } else {
-                convertible.selectToggle(convertible.getToggles().get(1)); // Assuming the second toggle is "Non Convertible"
-            }
-            if(currentObligation.getRate()[0] != 0) {
-                taux_INFINE.setText(String.valueOf(currentObligation.getRate()[0]));
-            } else {
-                taux_INFINE.setText("0");
-            } 
-            if(currentObligation.getRate()[1] != 0){
-                taux_TEMP.setText(String.valueOf(currentObligation.getRate()[1]));
-            } else {
-                taux_TEMP.setText("0");
-            }
-            for (int i = 0; i < emetteurListView.getItems().size(); i++) {
-                if (emetteurListView.getItems().get(i).equals(ApplicantInteractor.GetApplicant(currentObligation.getApplicantId()).getName())) {
-                    emetteurListView.getSelectionModel().select(i);
-                    selectedEmetteur = emetteurListView.getItems().get(i);
-                    break;
+            try {
+                // Initialisation sécurisée des champs
+                if (currentObligation.getName() != null) {
+                    nomField.setText(currentObligation.getName());
                 }
-            }
-            for (TupleStringLongBoolean item : filteredSouscripteurs) {
-                for (mypackage.model.util.InvestorInfo info : currentObligation.getInvestors()) {
-                    int id = info.getInvestorId();
-                    if (item.getName().equalsIgnoreCase(InvestorInteractor.GetInvestor(id).getName())) {
-                        item.selectionneProperty().set(true);
-                        item.capitalProperty().set(String.valueOf(info.getCapital()));
-                        item.setDate(info.getDate());
-                        souscripteurListView.getSelectionModel().select(item);
-                        if (!selectedSouscripteurs.contains(item)) {
-                            selectedSouscripteurs.add(item);
+                
+                capitalField.setText(String.valueOf(currentObligation.getCapital()));
+                valeurNominaleField.setText(String.valueOf(currentObligation.getValeurNominale()));
+                dureeField.setText(String.valueOf(currentObligation.getDurationMonths()));
+                
+                if (currentObligation.getPeriodicity() != null) {
+                    periodiciteComboBox.setValue(currentObligation.getPeriodicity());
+                }
+                
+                if (currentObligation.getStartDate() != null && !currentObligation.getStartDate().isEmpty()) {
+                    try {
+                        dateDebutField.setValue(LocalDate.parse(currentObligation.getStartDate()));
+                    } catch (Exception e) {
+                        System.err.println("Erreur lors du parsing de la date de début: " + e.getMessage());
+                    }
+                }
+                
+                ProrogationActivee.setSelected(currentObligation.getProrogationActivated());
+                
+                // Gestion sécurisée des prorogations
+                String[] prorogation = currentObligation.getProrogation();
+                if (prorogation != null && prorogation.length > 0 && prorogation[0] != null && !prorogation[0].isEmpty()) {
+                    prorogationOui.setSelected(true);
+                    if (prorogation.length > 1 && prorogation[1] != null) {
+                        TauxProrogationField.setText(prorogation[1]);
+                    }
+                    if (prorogation.length > 2 && prorogation[2] != null) {
+                        TauxProrogationInfineField.setText(prorogation[2]);
+                    }
+                    DureeProrogationField.setText(prorogation[0]);
+                } else {
+                    prorogationNon.setSelected(true);
+                }
+                
+                // Gestion sécurisée de l'ISIN
+                String isin = currentObligation.getIsin();
+                if (isin != null && !isin.isEmpty()) {
+                    isinOui.setSelected(true);
+                    numeroIsinField.setText(isin);
+                } else {
+                    isinNon.setSelected(true);
+                    numeroIsinField.setDisable(true);
+                    numeroIsinField.setText("");
+                }
+                
+                // Gestion sécurisée de la convertibilité
+                if (currentObligation.getConvertible()) {
+                    if (convertible.getToggles().size() > 0) {
+                        convertible.selectToggle(convertible.getToggles().get(0)); // Assuming the first toggle is "OCA"
+                    }
+                } else {
+                    if (convertible.getToggles().size() > 1) {
+                        convertible.selectToggle(convertible.getToggles().get(1)); // Assuming the second toggle is "Non Convertible"
+                    }
+                }
+                
+                // Gestion sécurisée des taux
+                int[] rates = currentObligation.getRate();
+                if (rates != null) {
+                    if (rates.length > 0) {
+                        if (rates[0] != 0) {
+                            taux_INFINE.setText(String.valueOf(rates[0]));
+                        } else {
+                            taux_INFINE.setText("0");
+                        }
+                    }
+                    if (rates.length > 1) {
+                        if (rates[1] != 0) {
+                            taux_TEMP.setText(String.valueOf(rates[1]));
+                        } else {
+                            taux_TEMP.setText("0");
                         }
                     }
                 }
-            }
-            for (Map.Entry<String, Integer> entry : currentObligation.getDepreciations().entrySet()) {
-                String[] amortissementArray = new String[2];
-                amortissementArray[0] = entry.getKey();
-                amortissementArray[1] = String.valueOf(entry.getValue());
-                amortissements.add(amortissementArray);
-            }
-            for (String surete : currentObligation.getSafeties()) {
-                suretes.add(surete);
-            }
-            for (Replacement cession : currentObligation.getReplacements()) {
-                Map<Integer, Long> vendeurs = cession.getInvestorsSalersId();
-                Map<Integer, Long> acheteurs = cession.getInvestorsBuyersId();
-                Map<String, Long> vendeursStringKey = new HashMap<>();
-                Map<String, Long> acheteursStringKey = new HashMap<>();
-                // Transformation des Map<Integer, Long> en Map<String, Long>
-                for (Map.Entry<Integer, Long> entry : vendeurs.entrySet()) {
-                    vendeursStringKey.put(String.valueOf(entry.getKey()), entry.getValue());
+                
+                // Gestion sécurisée de l'émetteur
+                try {
+                    Applicant applicant = ApplicantInteractor.GetApplicant(currentObligation.getApplicantId());
+                    if (applicant != null && applicant.getName() != null && emetteurListView != null) {
+                        for (int i = 0; i < emetteurListView.getItems().size(); i++) {
+                            if (emetteurListView.getItems().get(i) != null && 
+                                emetteurListView.getItems().get(i).equals(applicant.getName())) {
+                                emetteurListView.getSelectionModel().select(i);
+                                selectedEmetteur = emetteurListView.getItems().get(i);
+                                break;
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erreur lors de la récupération de l'émetteur: " + e.getMessage());
                 }
-                for (Map.Entry<Integer, Long> entry : acheteurs.entrySet()) {
-                    acheteursStringKey.put(String.valueOf(entry.getKey()), entry.getValue());
+                
+                // Gestion sécurisée des souscripteurs
+                if (filteredSouscripteurs != null && currentObligation.getInvestors() != null) {
+                    for (TupleStringLongBoolean item : filteredSouscripteurs) {
+                        if (item != null) {
+                            for (mypackage.model.util.InvestorInfo info : currentObligation.getInvestors()) {
+                                if (info != null) {
+                                    try {
+                                        int id = info.getInvestorId();
+                                        Investor investor = InvestorInteractor.GetInvestor(id);
+                                        if (investor != null && investor.getName() != null && 
+                                            item.getName() != null && item.getName().equalsIgnoreCase(investor.getName())) {
+                                            item.selectionneProperty().set(true);
+                                            item.capitalProperty().set(String.valueOf(info.getCapital()));
+                                            if (info.getDate() != null) {
+                                                item.setDate(info.getDate());
+                                            }
+                                            if (souscripteurListView != null) {
+                                                souscripteurListView.getSelectionModel().select(item);
+                                            }
+                                            if (!selectedSouscripteurs.contains(item)) {
+                                                selectedSouscripteurs.add(item);
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        System.err.println("Erreur lors de la récupération du souscripteur ID " + info.getInvestorId() + ": " + e.getMessage());
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                TupleStringMapMap tupleCession = new TupleStringMapMap(cession.getDate(), vendeursStringKey, acheteursStringKey);
-                cessions.add(tupleCession);
+                
+                // Gestion sécurisée des amortissements
+                if (currentObligation.getDepreciations() != null) {
+                    for (Map.Entry<String, Integer> entry : currentObligation.getDepreciations().entrySet()) {
+                        if (entry != null && entry.getKey() != null && entry.getValue() != null) {
+                            String[] amortissementArray = new String[2];
+                            amortissementArray[0] = entry.getKey();
+                            amortissementArray[1] = String.valueOf(entry.getValue());
+                            amortissements.add(amortissementArray);
+                        }
+                    }
+                }
+                
+                // Gestion sécurisée des sûretés
+                if (currentObligation.getSafeties() != null) {
+                    for (String surete : currentObligation.getSafeties()) {
+                        if (surete != null) {
+                            suretes.add(surete);
+                        }
+                    }
+                }
+                
+                // Gestion sécurisée des cessions
+                if (currentObligation.getReplacements() != null) {
+                    for (Replacement cession : currentObligation.getReplacements()) {
+                        if (cession != null) {
+                            try {
+                                Map<Integer, Long> vendeurs = cession.getInvestorsSalersId();
+                                Map<Integer, Long> acheteurs = cession.getInvestorsBuyersId();
+                                Map<String, Long> vendeursStringKey = new HashMap<>();
+                                Map<String, Long> acheteursStringKey = new HashMap<>();
+                                
+                                // Transformation des Map<Integer, Long> en Map<String, Long>
+                                if (vendeurs != null) {
+                                    for (Map.Entry<Integer, Long> entry : vendeurs.entrySet()) {
+                                        if (entry != null && entry.getKey() != null && entry.getValue() != null) {
+                                            vendeursStringKey.put(String.valueOf(entry.getKey()), entry.getValue());
+                                        }
+                                    }
+                                }
+                                
+                                if (acheteurs != null) {
+                                    for (Map.Entry<Integer, Long> entry : acheteurs.entrySet()) {
+                                        if (entry != null && entry.getKey() != null && entry.getValue() != null) {
+                                            acheteursStringKey.put(String.valueOf(entry.getKey()), entry.getValue());
+                                        }
+                                    }
+                                }
+                                
+                                String date = cession.getDate() != null ? cession.getDate() : "";
+                                TupleStringMapMap tupleCession = new TupleStringMapMap(date, vendeursStringKey, acheteursStringKey);
+                                cessions.add(tupleCession);
+                            } catch (Exception e) {
+                                System.err.println("Erreur lors du traitement de la cession: " + e.getMessage());
+                            }
+                        }
+                    }
+                }
+                
+                // Rafraîchissement des listes
+                if (suretesListView != null) suretesListView.refresh();
+                if (amortissementsListView != null) amortissementsListView.refresh();
+                if (cessionListView != null) cessionListView.refresh();
+            } catch (Exception e) {
+                System.err.println("Erreur lors de l'initialisation des données de l'obligation: " + e.getMessage());
+                e.printStackTrace();
             }
-            suretesListView.refresh();
-            amortissementsListView.refresh();
-            cessionListView.refresh();
         }
     }
 

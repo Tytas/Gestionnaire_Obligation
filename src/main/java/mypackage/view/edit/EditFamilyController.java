@@ -139,42 +139,119 @@ public class EditFamilyController {
         // Set default values for the fields if currentObligation is not null
         System.out.println("Initializing EditFamilyController with current family: " + currentFamily);
         if (currentFamily != null) {
-            nomField.setText(currentFamily.getName());
-            numRegistreField.setText(String.valueOf(currentFamily.getRegisterNumber()));
-            dateCreationField.setValue(LocalDate.parse(currentFamily.getDateOfCreation()));
-            capitalSocialField.setText(currentFamily.getSocialCapital());
-            formeJuridiqueComboBox.setValue(currentFamily.getLegalStatus());
-            nbApproovalField.setText(String.valueOf(currentFamily.getNbAprooval()));
-            distributionTypeField.setValue(currentFamily.getdistributionType());
-            numeroAdresseField.setText(currentFamily.getAddress()[0]);
-            rueAdresseField.setText(currentFamily.getAddress()[1]);
-            codePostalAdresseField.setText(currentFamily.getAddress()[2]);
-            villeAdresseField.setText(currentFamily.getAddress()[3]);
-            paysAdresseField.setText(currentFamily.getAddress()[4]);
-            complementAdresseField.setText(currentFamily.getAddress()[5]);
-            if (currentFamily.getCivilityBoss() != null) {
-                if( currentFamily.getCivilityBoss().equals("M.")) {
-                    sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(0)); // Monsieur
-                } else if (currentFamily.getCivilityBoss().equals("Mme.")) {
-                    sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(1)); // Madame
-                } else {
-                    sexeDirigeantToggleGroup.selectToggle(null); // Aucun
+            try {
+                // Initialisation sécurisée des champs
+                if (currentFamily.getName() != null) {
+                    nomField.setText(currentFamily.getName());
                 }
-            }
-            nomDirigeantField.setText(currentFamily.getNameBoss());
-            prenomDirigeantField.setText(currentFamily.getFirstNameBoss());
-            nationaliteDirigeantComboBox.setValue(currentFamily.getNationalityBoss());
-            dateNaissanceDirigeantField.setValue(LocalDate.parse(currentFamily.getDateOfBirthBoss()));
-            lieuNaissanceDirigeantField.setText(currentFamily.getPlaceOfBirthBoss());
-            emailDirigeantField.setText(currentFamily.getEmailBoss());
-            telephoneDirigeantField.setText(currentFamily.getPhoneNumberBoss());
-            fonctionDirigeantField.setText(currentFamily.getRoleBoss());
-            villeRCSField.setText(currentFamily.getvilleRCS());
-            bicField.setText(currentFamily.getBIC());
-            ibanField.setText(currentFamily.getIBAN());
-            banqueField.setText(currentFamily.getBankName());
-            for (String[] contact : currentFamily.getContacts()) {
-                contacts.add(contact);
+                
+                numRegistreField.setText(String.valueOf(currentFamily.getRegisterNumber()));
+                
+                if (currentFamily.getDateOfCreation() != null && !currentFamily.getDateOfCreation().isEmpty()) {
+                    try {
+                        dateCreationField.setValue(LocalDate.parse(currentFamily.getDateOfCreation()));
+                    } catch (Exception e) {
+                        System.err.println("Erreur lors du parsing de la date de création: " + e.getMessage());
+                    }
+                }
+                
+                if (currentFamily.getSocialCapital() != null) {
+                    capitalSocialField.setText(currentFamily.getSocialCapital());
+                }
+                
+                if (currentFamily.getLegalStatus() != null) {
+                    formeJuridiqueComboBox.setValue(currentFamily.getLegalStatus());
+                }
+                
+                nbApproovalField.setText(String.valueOf(currentFamily.getNbAprooval()));
+                
+                if (currentFamily.getdistributionType() != null) {
+                    distributionTypeField.setValue(currentFamily.getdistributionType());
+                }
+                
+                // Gestion sécurisée de l'adresse
+                String[] address = currentFamily.getAddress();
+                if (address != null) {
+                    if (address.length > 0 && address[0] != null) numeroAdresseField.setText(address[0]);
+                    if (address.length > 1 && address[1] != null) rueAdresseField.setText(address[1]);
+                    if (address.length > 2 && address[2] != null) codePostalAdresseField.setText(address[2]);
+                    if (address.length > 3 && address[3] != null) villeAdresseField.setText(address[3]);
+                    if (address.length > 4 && address[4] != null) paysAdresseField.setText(address[4]);
+                    if (address.length > 5 && address[5] != null) complementAdresseField.setText(address[5]);
+                }
+                
+                if (currentFamily.getCivilityBoss() != null) {
+                    if( currentFamily.getCivilityBoss().equals("M.")) {
+                        sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(0)); // Monsieur
+                    } else if (currentFamily.getCivilityBoss().equals("Mme.")) {
+                        sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(1)); // Madame
+                    } else {
+                        sexeDirigeantToggleGroup.selectToggle(null); // Aucun
+                    }
+                }
+                
+                if (currentFamily.getNameBoss() != null) {
+                    nomDirigeantField.setText(currentFamily.getNameBoss());
+                }
+                
+                if (currentFamily.getFirstNameBoss() != null) {
+                    prenomDirigeantField.setText(currentFamily.getFirstNameBoss());
+                }
+                
+                if (currentFamily.getNationalityBoss() != null) {
+                    nationaliteDirigeantComboBox.setValue(currentFamily.getNationalityBoss());
+                }
+                
+                if (currentFamily.getDateOfBirthBoss() != null && !currentFamily.getDateOfBirthBoss().isEmpty()) {
+                    try {
+                        dateNaissanceDirigeantField.setValue(LocalDate.parse(currentFamily.getDateOfBirthBoss()));
+                    } catch (Exception e) {
+                        System.err.println("Erreur lors du parsing de la date de naissance du dirigeant: " + e.getMessage());
+                    }
+                }
+                
+                if (currentFamily.getPlaceOfBirthBoss() != null) {
+                    lieuNaissanceDirigeantField.setText(currentFamily.getPlaceOfBirthBoss());
+                }
+                
+                if (currentFamily.getEmailBoss() != null) {
+                    emailDirigeantField.setText(currentFamily.getEmailBoss());
+                }
+                
+                if (currentFamily.getPhoneNumberBoss() != null) {
+                    telephoneDirigeantField.setText(currentFamily.getPhoneNumberBoss());
+                }
+                
+                if (currentFamily.getRoleBoss() != null) {
+                    fonctionDirigeantField.setText(currentFamily.getRoleBoss());
+                }
+                
+                if (currentFamily.getvilleRCS() != null) {
+                    villeRCSField.setText(currentFamily.getvilleRCS());
+                }
+                
+                if (currentFamily.getBIC() != null) {
+                    bicField.setText(currentFamily.getBIC());
+                }
+                
+                if (currentFamily.getIBAN() != null) {
+                    ibanField.setText(currentFamily.getIBAN());
+                }
+                
+                if (currentFamily.getBankName() != null) {
+                    banqueField.setText(currentFamily.getBankName());
+                }
+                
+                if (currentFamily.getContacts() != null) {
+                    for (String[] contact : currentFamily.getContacts()) {
+                        if (contact != null) {
+                            contacts.add(contact);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Erreur lors de l'initialisation des données de la famille: " + e.getMessage());
+                e.printStackTrace();
             }
         }
     }

@@ -1,0 +1,31 @@
+{
+  "id" : 5,
+  "name" : "test123",
+  "convertible" : true,
+  "capital" : 1500000,
+  "valeurNominale" : 50000,
+  "startDate" : "2025-05-29",
+  "durationMonths" : 48,
+  "rate" : [ 0, 10 ],
+  "periodicity" : "Annuelle",
+  "prorogation" : [ "", "", "" ],
+  "prorogationActivated" : false,
+  "isin" : "12345678",
+  "safeties" : [ "CAUTION" ],
+  "depreciations" : { },
+  "investors" : [ {
+    "investorId" : 1,
+    "capital" : 10,
+    "date" : ""
+  }, {
+    "investorId" : 2,
+    "capital" : 10,
+    "date" : ""
+  }, {
+    "investorId" : 3,
+    "capital" : 10,
+    "date" : ""
+  } ],
+  "replacements" : [ ],
+  "applicantId" : 3
+}

@@ -1,0 +1,39 @@
+{
+  "id": 48,
+  "name": "PELEAT",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société civile immobilière (SCI)",
+  "address": [
+    "Rue de la Croix",
+    "",
+    "",
+    "",
+    "27680.0 TROUVILLE-LA-HAULE",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "SAYAC",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "TROUVILLE-LA-HAULE",
+  "roleBoss": "Président",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

@@ -1,0 +1,39 @@
+{
+  "id": 9,
+  "name": "CAIBIAN CAPITAL",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société à responsabilité limitée (SARL)",
+  "address": [
+    "rue Cousté",
+    "",
+    "",
+    "",
+    "94230.0 Cachan",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "ZING",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "Cachan",
+  "roleBoss": "Gérant",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

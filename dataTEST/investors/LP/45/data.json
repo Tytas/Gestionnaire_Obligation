@@ -1,0 +1,39 @@
+{
+  "id": 45,
+  "name": "OR AUDIT ET CONSEILS",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société à responsabilité limitée (SARL)",
+  "address": [
+    "IMPASSE DES MOUETTES",
+    "",
+    "",
+    "",
+    "29900.0 CONCNARNEAU",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "CONCNARNEAU",
+  "roleBoss": "",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

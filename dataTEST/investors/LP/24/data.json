@@ -1,0 +1,39 @@
+{
+  "id": 24,
+  "name": "Holding jpsc",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société civile immobilière (SCI)",
+  "address": [
+    "29 rue de lorient",
+    "",
+    "",
+    "",
+    "35000.0 rennes",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "rennes",
+  "roleBoss": "",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

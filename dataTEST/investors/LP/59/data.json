@@ -1,0 +1,39 @@
+{
+  "id": 59,
+  "name": "SATRAS CORP",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société à responsabilité limitée (SARL)",
+  "address": [
+    "LAMBELL - RUE GARENN AR LOUATEZ",
+    "",
+    "",
+    "",
+    "29910.0 TREGUNC",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "THUAULT",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "TREGUNC",
+  "roleBoss": "GERANT",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

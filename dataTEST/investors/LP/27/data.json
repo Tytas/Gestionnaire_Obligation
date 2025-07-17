@@ -1,0 +1,39 @@
+{
+  "id": 27,
+  "name": "JSA EXCELLENCE",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société par actions simplifiée (SAS)",
+  "address": [
+    "bis Rue Escudier",
+    "",
+    "",
+    "",
+    "92100.0 BOULOGNE-BILLANCOURT",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "ARCIS",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "BOULOGNE-BILLANCOURT",
+  "roleBoss": "Président",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

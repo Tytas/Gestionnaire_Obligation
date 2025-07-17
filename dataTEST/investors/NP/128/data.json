@@ -1,0 +1,24 @@
+{
+  "id": 128,
+  "name": "LERCHE",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "",
+  "nationality": "",
+  "dateOfBirth": "1962-09-12",
+  "placeOfBirth": "LAGNY SUR MARNE",
+  "email": "thierry.lerche@wanadoo.fr",
+  "phoneNumber": "",
+  "address": [
+    "",
+    "RUE DU CHATEAU",
+    "45680",
+    "DORDIVES",
+    "France",
+    ""
+  ],
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

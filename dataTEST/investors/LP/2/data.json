@@ -1,0 +1,39 @@
+{
+  "id": 2,
+  "name": "ADRINE",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société par actions simplifiée (SAS)",
+  "address": [
+    "Rue Michelet",
+    "",
+    "",
+    "",
+    "35400.0 SAINT-MALO",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "ABADIE",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "SAINT-MALO",
+  "roleBoss": "DG",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

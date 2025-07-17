@@ -1,0 +1,39 @@
+{
+  "id": 19,
+  "name": "GLEV",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société Civile",
+  "address": [
+    "La Place",
+    "",
+    "",
+    "",
+    "59270.0 Godewaersvelde",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "Godewaersvelde",
+  "roleBoss": "",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

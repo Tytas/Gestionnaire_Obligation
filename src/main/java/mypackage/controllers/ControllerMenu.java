@@ -77,7 +77,7 @@ public class ControllerMenu {
     }
 
     @FXML
-    private void handleMenuHome() {
+    public void handleMenuHome() {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/mypackage/view/Home.fxml"));

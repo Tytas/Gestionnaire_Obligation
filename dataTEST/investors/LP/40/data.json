@@ -1,0 +1,39 @@
+{
+  "id": 40,
+  "name": "MAYAPAR",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société à responsabilité limitée (SARL)",
+  "address": [
+    "rue du Dernier Sol",
+    "",
+    "",
+    "",
+    "2543.0 Luxembourg",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "CERF",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "Luxembourg",
+  "roleBoss": "Gérant",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

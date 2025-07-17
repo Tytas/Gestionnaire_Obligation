@@ -1,0 +1,39 @@
+{
+  "id": 13,
+  "name": "DUBREUIL",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société Civile",
+  "address": [
+    "ROUTE DE ROUGEOU",
+    "",
+    "",
+    "",
+    "41230.0 GY EN SOLOGNE",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "DUBREUIL",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "GY EN SOLOGNE",
+  "roleBoss": "GERANT",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

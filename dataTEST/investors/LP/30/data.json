@@ -1,0 +1,39 @@
+{
+  "id": 30,
+  "name": "KERSHALL",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société par actions simplifiée (SAS)",
+  "address": [
+    "Rue Coat An Ed",
+    "",
+    "",
+    "",
+    "29290.0 SAINT RENAN",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "MORVAN",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "SAINT RENAN",
+  "roleBoss": "PRESIDENT",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

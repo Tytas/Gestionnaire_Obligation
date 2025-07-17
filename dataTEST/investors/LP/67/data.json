@@ -1,0 +1,39 @@
+{
+  "id": 67,
+  "name": "TRINITAS",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société par actions simplifiée (SAS)",
+  "address": [
+    "Boulevard Senard",
+    "",
+    "",
+    "",
+    "92210.0 Saint-Cloud",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "De Lignaud de Lussac",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "Saint-Cloud",
+  "roleBoss": "Gérant",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

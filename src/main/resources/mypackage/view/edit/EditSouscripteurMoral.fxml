@@ -73,22 +73,25 @@
         <Label text="ADRESSE LÉGALE" />
         <Label nodeOrientation="LEFT_TO_RIGHT" text="Numéro">
           <VBox.margin>
-            <Insets top="20.0" />
+            <Insets bottom="25.0" />
           </VBox.margin>
         </Label>
       </children>
     </VBox>
     <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" GridPane.rowIndex="6">
       <children>
-        <Label text="DIRIGEANT" />
+        <Label text="DIRIGEANT">
+               <VBox.margin>
+                  <Insets bottom="25.0" />
+               </VBox.margin></Label>
         <Label nodeOrientation="LEFT_TO_RIGHT" text="Nom" textAlignment="CENTER" wrapText="true">
           <VBox.margin>
-            <Insets top="5.0" />
+            <Insets bottom="25.0" top="5.0" />
           </VBox.margin>
         </Label>
         <Label text="Prénom">
           <VBox.margin>
-            <Insets top="5.0" />
+            <Insets bottom="15.0" top="5.0" />
           </VBox.margin>
         </Label>
       </children>
@@ -135,7 +138,7 @@
         </Label>
         <Label text="Telephone">
           <VBox.margin>
-            <Insets top="15.0" />
+            <Insets bottom="20.0" top="30.0" />
           </VBox.margin>
         </Label>
       </children>
@@ -161,7 +164,7 @@
         <Label text="ADRESSE" />
         <Label nodeOrientation="LEFT_TO_RIGHT" text="Numéro">
           <VBox.margin>
-            <Insets top="20.0" />
+            <Insets bottom="25.0" />
           </VBox.margin>
         </Label>
       </children>

@@ -1,0 +1,39 @@
+{
+  "id": 36,
+  "name": "LFT EVOLUTION",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Entreprise unipersonnelle à responsabilité limitée (EURL)",
+  "address": [
+    "6 rue de Sureau,",
+    "",
+    "",
+    "",
+    "35520.0 LA MEZIERE",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "ERDEM",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "LA MEZIERE",
+  "roleBoss": "Gérant",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

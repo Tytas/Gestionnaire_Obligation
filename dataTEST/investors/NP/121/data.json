@@ -1,0 +1,24 @@
+{
+  "id": 121,
+  "name": "GUILBERT",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "",
+  "nationality": "",
+  "dateOfBirth": "1961-10-24",
+  "placeOfBirth": "Calais",
+  "email": "fabrice.guilbert61@gmail.com",
+  "phoneNumber": "",
+  "address": [
+    "",
+    "rue du Grand Crêt",
+    "01170",
+    "Crozet",
+    "France",
+    ""
+  ],
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

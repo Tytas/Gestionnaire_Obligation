@@ -1,0 +1,39 @@
+{
+  "id": 25,
+  "name": "ILIADE",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société Civile",
+  "address": [
+    "rue des Dames Augustines",
+    "",
+    "",
+    "",
+    "92200.0 Neuilly sur Seine",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "Lavenac",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "Neuilly sur Seine",
+  "roleBoss": "Gérant",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

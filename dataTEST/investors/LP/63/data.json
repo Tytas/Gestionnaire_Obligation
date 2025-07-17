@@ -1,0 +1,39 @@
+{
+  "id": 63,
+  "name": "SEBASTIEN HOLDING",
+  "familyId": "",
+  "obligations": [],
+  "registerNumber": "",
+  "dateOfCreation": "",
+  "capitalSocial": "",
+  "legalStatus": "Société par actions simplifiée (SAS)",
+  "address": [
+    "Haut Villatta-Zonza Lieu-Dit Ferrulajolo",
+    "",
+    "",
+    "",
+    "20144.0 Sainte Lucie de Porto Vecchio",
+    ""
+  ],
+  "civilityBoss": "",
+  "nameBoss": "Belaid",
+  "firstNameBoss": "",
+  "nationalityBoss": "",
+  "dateOfBirthBoss": "",
+  "placeOfBirthBoss": "",
+  "emailBoss": "",
+  "phoneNumberBoss": "",
+  "addressBoss": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "villeRCS": "Sainte Lucie de Porto Vecchio",
+  "roleBoss": "Président",
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

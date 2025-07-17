@@ -149,48 +149,134 @@ public class EditEmetteurController {
         // Set default values for the fields if currentObligation is not null
         System.out.println("Initializing EditEmetteurController with current emetteur: " + currentEmetteur);
         if (currentEmetteur != null) {
-            nomField.setText(currentEmetteur.getName());
-            numRegistreField.setText(String.valueOf(currentEmetteur.getRegisterNumber()));
-            dateCreationField.setValue(LocalDate.parse(currentEmetteur.getDateOfCreation()));
-            capitalSocialField.setText(currentEmetteur.getsocialCapital());
-            formeJuridiqueComboBox.setValue(currentEmetteur.getLegalStatus());
-            numeroAdresseField.setText(currentEmetteur.getAddress()[0]);
-            rueAdresseField.setText(currentEmetteur.getAddress()[1]);
-            codePostalAdresseField.setText(currentEmetteur.getAddress()[2]);
-            villeAdresseField.setText(currentEmetteur.getAddress()[3]);
-            paysAdresseField.setText(currentEmetteur.getAddress()[4]);
-            complementAdresseField.setText(currentEmetteur.getAddress()[5]);
-            if (currentEmetteur.getCivilityBoss() != null) {
-                if( currentEmetteur.getCivilityBoss().equals("M.")) {
-                    sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(0)); // Monsieur
-                } else if (currentEmetteur.getCivilityBoss().equals("Mme.")) {
-                    sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(1)); // Madame
-                } else {
-                    sexeDirigeantToggleGroup.selectToggle(null); // Aucun
+            try {
+                // Initialisation sécurisée des champs
+                if (currentEmetteur.getName() != null) {
+                    nomField.setText(currentEmetteur.getName());
                 }
+                
+                numRegistreField.setText(String.valueOf(currentEmetteur.getRegisterNumber()));
+                
+                if (currentEmetteur.getDateOfCreation() != null && !currentEmetteur.getDateOfCreation().isEmpty()) {
+                    try {
+                        dateCreationField.setValue(LocalDate.parse(currentEmetteur.getDateOfCreation()));
+                    } catch (Exception e) {
+                        System.err.println("Erreur lors du parsing de la date de création: " + e.getMessage());
+                    }
+                }
+                
+                if (currentEmetteur.getsocialCapital() != null) {
+                    capitalSocialField.setText(currentEmetteur.getsocialCapital());
+                }
+                
+                if (currentEmetteur.getLegalStatus() != null) {
+                    formeJuridiqueComboBox.setValue(currentEmetteur.getLegalStatus());
+                }
+                
+                // Gestion sécurisée de l'adresse
+                String[] address = currentEmetteur.getAddress();
+                if (address != null) {
+                    if (address.length > 0 && address[0] != null) numeroAdresseField.setText(address[0]);
+                    if (address.length > 1 && address[1] != null) rueAdresseField.setText(address[1]);
+                    if (address.length > 2 && address[2] != null) codePostalAdresseField.setText(address[2]);
+                    if (address.length > 3 && address[3] != null) villeAdresseField.setText(address[3]);
+                    if (address.length > 4 && address[4] != null) paysAdresseField.setText(address[4]);
+                    if (address.length > 5 && address[5] != null) complementAdresseField.setText(address[5]);
+                }
+                
+                if (currentEmetteur.getCivilityBoss() != null) {
+                    if( currentEmetteur.getCivilityBoss().equals("M.")) {
+                        sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(0)); // Monsieur
+                    } else if (currentEmetteur.getCivilityBoss().equals("Mme.")) {
+                        sexeDirigeantToggleGroup.selectToggle(sexeDirigeantToggleGroup.getToggles().get(1)); // Madame
+                    } else {
+                        sexeDirigeantToggleGroup.selectToggle(null); // Aucun
+                    }
+                }
+                
+                if (currentEmetteur.getNameBoss() != null) {
+                    nomDirigeantField.setText(currentEmetteur.getNameBoss());
+                }
+                
+                if (currentEmetteur.getFirstNameBoss() != null) {
+                    prenomDirigeantField.setText(currentEmetteur.getFirstNameBoss());
+                }
+                
+                if (currentEmetteur.getNationalityBoss() != null) {
+                    nationaliteDirigeantComboBox.setValue(currentEmetteur.getNationalityBoss());
+                }
+                
+                if (currentEmetteur.getDateOfBirthBoss() != null && !currentEmetteur.getDateOfBirthBoss().isEmpty()) {
+                    try {
+                        dateNaissanceDirigeantField.setValue(LocalDate.parse(currentEmetteur.getDateOfBirthBoss()));
+                    } catch (Exception e) {
+                        System.err.println("Erreur lors du parsing de la date de naissance du dirigeant: " + e.getMessage());
+                    }
+                }
+                
+                if (currentEmetteur.getPlaceOfBirthBoss() != null) {
+                    lieuNaissanceDirigeantField.setText(currentEmetteur.getPlaceOfBirthBoss());
+                }
+                
+                if (currentEmetteur.getEmailBoss() != null) {
+                    emailDirigeantField.setText(currentEmetteur.getEmailBoss());
+                }
+                
+                if (currentEmetteur.getPhoneNumberBoss() != null) {
+                    telephoneDirigeantField.setText(currentEmetteur.getPhoneNumberBoss());
+                }
+                
+                // Gestion sécurisée de l'adresse du dirigeant
+                String[] addressBoss = currentEmetteur.getAddressBoss();
+                if (addressBoss != null) {
+                    if (addressBoss.length > 0 && addressBoss[0] != null) numeroAdresseDirigeantField.setText(addressBoss[0]);
+                    if (addressBoss.length > 1 && addressBoss[1] != null) rueAdresseDirigeantField.setText(addressBoss[1]);
+                    if (addressBoss.length > 2 && addressBoss[2] != null) codePostalAdresseDirigeantField.setText(addressBoss[2]);
+                    if (addressBoss.length > 3 && addressBoss[3] != null) villeAdresseDirigeantField.setText(addressBoss[3]);
+                    if (addressBoss.length > 4 && addressBoss[4] != null) paysAdresseDirigeantField.setText(addressBoss[4]);
+                    if (addressBoss.length > 5 && addressBoss[5] != null) complementAdresseDirigeantField.setText(addressBoss[5]);
+                }
+                
+                if (currentEmetteur.getRoleBoss() != null) {
+                    fonctionDirigeantField.setText(currentEmetteur.getRoleBoss());
+                }
+                
+                if (currentEmetteur.getcityRCS() != null) {
+                    villeRCSField.setText(currentEmetteur.getcityRCS());
+                }
+                
+                if (currentEmetteur.getBIC() != null) {
+                    bicField.setText(currentEmetteur.getBIC());
+                }
+                
+                if (currentEmetteur.getIBAN() != null) {
+                    ibanField.setText(currentEmetteur.getIBAN());
+                }
+                
+                if (currentEmetteur.getBankName() != null) {
+                    banqueField.setText(currentEmetteur.getBankName());
+                }
+                
+                // Gestion sécurisée du groupe
+                try {
+                    if(currentEmetteur.getGroupId() != 0) {
+                        Group group = GroupInteractor.GetGroup(currentEmetteur.getGroupId());
+                        if (group != null && group.getName() != null) {
+                            groupeComboBox.setValue(group.getName());
+                        } else {
+                            groupeComboBox.setValue("Aucun Groupe");
+                        }
+                    } else {
+                        groupeComboBox.setValue("Aucun Groupe");
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erreur lors de la récupération du groupe: " + e.getMessage());
+                    groupeComboBox.setValue("Aucun Groupe");
+                }
+            } catch (Exception e) {
+                System.err.println("Erreur lors de l'initialisation des données de l'émetteur: " + e.getMessage());
+                e.printStackTrace();
             }
-            nomDirigeantField.setText(currentEmetteur.getNameBoss());
-            prenomDirigeantField.setText(currentEmetteur.getFirstNameBoss());
-            nationaliteDirigeantComboBox.setValue(currentEmetteur.getNationalityBoss());
-            dateNaissanceDirigeantField.setValue(LocalDate.parse(currentEmetteur.getDateOfBirthBoss()));
-            lieuNaissanceDirigeantField.setText(currentEmetteur.getPlaceOfBirthBoss());
-            emailDirigeantField.setText(currentEmetteur.getEmailBoss());
-            telephoneDirigeantField.setText(currentEmetteur.getPhoneNumberBoss());
-            numeroAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[0]);
-            rueAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[1]);
-            codePostalAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[2]);
-            villeAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[3]);
-            paysAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[4]);
-            complementAdresseDirigeantField.setText(currentEmetteur.getAddressBoss()[5]);
-            fonctionDirigeantField.setText(currentEmetteur.getRoleBoss());
-            villeRCSField.setText(currentEmetteur.getcityRCS());
-            bicField.setText(currentEmetteur.getBIC());
-            ibanField.setText(currentEmetteur.getIBAN());
-            banqueField.setText(currentEmetteur.getBankName());
-            if(currentEmetteur.getGroupId() != 0)
-                groupeComboBox.setValue(GroupInteractor.GetGroup(currentEmetteur.getGroupId()).getName());
-            else
-                groupeComboBox.setValue("Aucun Groupe");
         }
     }
 

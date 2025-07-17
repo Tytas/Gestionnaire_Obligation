@@ -1,0 +1,24 @@
+{
+  "id": 103,
+  "name": "BIDOLI",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "",
+  "nationality": "",
+  "dateOfBirth": "1976-05-13",
+  "placeOfBirth": "Versailles",
+  "email": "ybidoli@hotmail.com",
+  "phoneNumber": "",
+  "address": [
+    "",
+    "rue de maintenon",
+    "28320",
+    "Gallardon",
+    "France",
+    ""
+  ],
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

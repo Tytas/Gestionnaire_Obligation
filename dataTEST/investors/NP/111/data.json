@@ -1,0 +1,24 @@
+{
+  "id": 111,
+  "name": "DE DEMANDOLX",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "",
+  "nationality": "",
+  "dateOfBirth": "1996-08-05",
+  "placeOfBirth": "Paris 15ième arrondissement",
+  "email": "philippe22mandolx@live.fr",
+  "phoneNumber": "",
+  "address": [
+    "",
+    "Stamford Street",
+    "SE1 9DJ",
+    "London",
+    "Royaume-Uni",
+    ""
+  ],
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}

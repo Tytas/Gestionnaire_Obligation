@@ -1,0 +1,31 @@
+{
+  "id" : 3,
+  "name" : "lklklklk",
+  "convertible" : false,
+  "capital" : 500000,
+  "valeurNominale" : 10000,
+  "startDate" : "2025-06-28",
+  "durationMonths" : 36,
+  "rate" : [ 10, 10 ],
+  "periodicity" : "Semestrielle",
+  "prorogation" : [ "24", "20", "20" ],
+  "prorogationActivated" : true,
+  "isin" : "",
+  "safeties" : [ ],
+  "depreciations" : { },
+  "investors" : [ {
+    "investorId" : 1,
+    "capital" : 25,
+    "date" : ""
+  }, {
+    "investorId" : 4,
+    "capital" : 10,
+    "date" : ""
+  }, {
+    "investorId" : 1,
+    "capital" : 10,
+    "date" : ""
+  } ],
+  "replacements" : [ ],
+  "applicantId" : 2
+}

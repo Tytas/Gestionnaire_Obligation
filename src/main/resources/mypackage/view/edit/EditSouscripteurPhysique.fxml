@@ -52,15 +52,18 @@
     <Separator prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="4" />
     <VBox alignment="CENTER" prefHeight="97.0" prefWidth="118.0">
       <children>
-        <Label text="Civilité" />
+        <Label text="Civilité">
+               <VBox.margin>
+                  <Insets bottom="35.0" />
+               </VBox.margin></Label>
         <Label nodeOrientation="LEFT_TO_RIGHT" text="Nom" textAlignment="CENTER" wrapText="true">
           <VBox.margin>
-            <Insets top="5.0" />
+            <Insets bottom="30.0" />
           </VBox.margin>
         </Label>
         <Label text="Prénom">
           <VBox.margin>
-            <Insets top="5.0" />
+            <Insets bottom="20.0" top="5.0" />
           </VBox.margin>
         </Label>
       </children>
@@ -123,21 +126,21 @@
     <Label text="Complément d'adresse" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="3" />
     <Label text="Ville" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="3" />
     <Label text="Obligations" GridPane.columnIndex="4" GridPane.rowIndex="5" />
-    <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="5">
+    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="5">
       <children>
         <Label nodeOrientation="LEFT_TO_RIGHT" text="BIC" textAlignment="CENTER" wrapText="true">
           <VBox.margin>
-            <Insets />
+            <Insets bottom="35.0" />
           </VBox.margin>
         </Label>
         <Label text="IBAN">
           <VBox.margin>
-            <Insets top="5.0" />
+            <Insets bottom="30.0" top="5.0" />
           </VBox.margin>
         </Label>
           <Label text="Banque">
                <VBox.margin>
-                  <Insets top="5.0" />
+                  <Insets bottom="10.0" top="5.0" />
                </VBox.margin>
             </Label>
       </children>
@@ -222,15 +225,30 @@
       </VBox>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4">
          <children>
-          <Label text="Date de naissance" />
-          <Label text="Lieu de naissance" textAlignment="CENTER" wrapText="true" />
-          <Label text="Nationnalité" />
+          <Label text="Date de naissance" textAlignment="CENTER" wrapText="true">
+               <VBox.margin>
+                  <Insets bottom="25.0" />
+               </VBox.margin></Label>
+          <Label text="Lieu de naissance" textAlignment="CENTER" wrapText="true">
+               <VBox.margin>
+                  <Insets bottom="25.0" />
+               </VBox.margin></Label>
+          <Label text="Nationnalité">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin></Label>
          </children>
       </VBox>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
          <children>
-        <Label nodeOrientation="LEFT_TO_RIGHT" text="Email" textAlignment="CENTER" wrapText="true" />
-        <Label text="Telephone" />
+        <Label nodeOrientation="LEFT_TO_RIGHT" text="Email" textAlignment="CENTER" wrapText="true">
+               <VBox.margin>
+                  <Insets bottom="40.0" />
+               </VBox.margin></Label>
+        <Label text="Telephone">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></Label>
          </children>
       </VBox>
   </children>

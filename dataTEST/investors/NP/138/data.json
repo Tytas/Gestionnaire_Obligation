@@ -1,0 +1,24 @@
+{
+  "id": 138,
+  "name": "NGO",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Madame",
+  "firstName": "",
+  "nationality": "",
+  "dateOfBirth": "1983-11-06",
+  "placeOfBirth": "PARIS",
+  "email": "celinengo94@gmail.com",
+  "phoneNumber": "",
+  "address": [
+    "",
+    "RUE DU 103EME REGIMENT D'INFANTERIE",
+    "77138",
+    "LUZANCY",
+    "France",
+    ""
+  ],
+  "bankName": "",
+  "bic": "",
+  "iban": ""
+}
