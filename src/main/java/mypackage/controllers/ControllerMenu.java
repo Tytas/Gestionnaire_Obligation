@@ -66,6 +66,17 @@ public class ControllerMenu {
     }
 
     @FXML
+    private void handleMenuGroups() {
+        try {
+            // Load root layout from fxml file.
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/mypackage/view/Group.fxml"));
+            mainPane.setCenter(loader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void handleMenuHome() {
         try {
             // Load root layout from fxml file.

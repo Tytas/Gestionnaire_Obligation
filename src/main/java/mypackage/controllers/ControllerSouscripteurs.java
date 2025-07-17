@@ -18,8 +18,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mypackage.MainApp;
@@ -46,6 +46,10 @@ public class ControllerSouscripteurs {
     private Label NameIBAN;
     @FXML
     private Label NameBIC;
+    @FXML
+    private Label PhoneLabel;
+    @FXML
+    private Label EmailLabel;
     @FXML
     private ListView<Obligation> listViewObligation;
     @FXML
@@ -123,12 +127,17 @@ public class ControllerSouscripteurs {
                 super.updateItem(item, empty);
                 Label nameField = new Label();
                 Label montantField = new Label();
-                HBox content = new HBox(10, nameField, montantField);
+                Label montantEuroField = new Label();
+                AnchorPane content = new AnchorPane(nameField, montantField, montantEuroField);
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
                     nameField.setText(item.getName());
-                    montantField.setText(String.valueOf(item.getInvestorCapital(investor.getId())));
+                    montantField.setText(String.valueOf(item.getInvestorCapital(investor.getId()) + " obligations"));
+                    montantEuroField.setText(String.valueOf(item.getInvestorCapital(investor.getId()) * item.getValeurNominale() + " €"));
+                    AnchorPane.setLeftAnchor(nameField, 10.0);
+                    AnchorPane.setLeftAnchor(montantField, 200.0);
+                    AnchorPane.setLeftAnchor(montantEuroField, 400.0);
                     setGraphic(content);
                 }
             }
@@ -143,6 +152,10 @@ public class ControllerSouscripteurs {
             NameIBAN.setText(iban);
             String bic = ((InvestorNP) investor).getBIC();
             NameBIC.setText(bic);
+            String phone = ((InvestorNP) investor).getPhoneNumber();
+            PhoneLabel.setText(phone);
+            String email = ((InvestorNP) investor).getEmail();
+            EmailLabel.setText(email);
         } else if (investor instanceof InvestorLP) {
             String name = ((InvestorLP) investor).getName();
             NameInvestor.setText(name);
@@ -152,12 +165,18 @@ public class ControllerSouscripteurs {
             NameIBAN.setText(iban);
             String bic = ((InvestorLP) investor).getBIC();
             NameBIC.setText(bic);
+            String phone = ((InvestorLP) investor).getPhoneNumberBoss();
+            PhoneLabel.setText(phone);
+            String email = ((InvestorLP) investor).getEmailBoss();
+            EmailLabel.setText(email);
         } else {
             // Clear the details if no person is selected
             NameInvestor.setText("");
             FamilyInvestor.setText("");
             NameIBAN.setText("");
             NameBIC.setText("");
+            PhoneLabel.setText("");
+            EmailLabel.setText("");
         }
     }
 

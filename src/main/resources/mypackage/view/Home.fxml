@@ -39,6 +39,6 @@
       <Label layoutX="650.0" layoutY="10.0" styleClass="title" text="COUPON" textAlignment="CENTER" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="10.0">
       </Label>
       <Button layoutX="200.0" layoutY="500.0" mnemonicParsing="false" onAction="#generateSimplePDF" styleClass="button-primary" text="Générer PDF" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="200.0" />
-      <Label layoutX="286.0" styleClass="subtitle" text="Obligations en cours" />
+      <Label layoutX="286.0" styleClass="subtitle" text="Obligations en cours" AnchorPane.leftAnchor="75.0" />
    </children>
 </AnchorPane>

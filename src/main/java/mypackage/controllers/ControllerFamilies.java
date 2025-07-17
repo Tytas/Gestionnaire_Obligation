@@ -1,6 +1,8 @@
 package mypackage.controllers;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ListView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,7 +36,11 @@ public class ControllerFamilies {
     @FXML
     private Label NameFamily;
     @FXML
-    private Label capitalFamily;
+    private Label ValueFamily;
+    @FXML
+    private Label NbSouscripteursFamily;
+    @FXML
+    private ListView<String[]> listViewContact;
     @FXML
     private TableView<Family> tableFamily;
     @FXML
@@ -49,8 +56,6 @@ public class ControllerFamilies {
     private MainApp mainApp;
 
     private Stage stage;
-    
-    private ObservableList<Family> listFamily = FXCollections.observableArrayList();
 
     private ObservableList<Family> listFam = FXCollections.observableArrayList();
 
@@ -93,11 +98,18 @@ public class ControllerFamilies {
         this.selectedFamily = fam;
 
         ObservableList<Investor> investors = FXCollections.observableArrayList();
+        ObservableList<String[]> contacts = FXCollections.observableArrayList();
+        int totalSouscriptions = 0;
         if (fam != null) {
+            contacts.addAll(fam.getContacts());
             for (Integer investorId : fam.getInvestors()) {
                 Investor investor = InvestorInteractor.GetInvestor(investorId);
                 if (investor != null) {
                     investors.add(investor);
+                    for (int idObligation : investor.getObligations()) {
+                        totalSouscriptions += ObligationInteractor.GetObligation(idObligation).getInvestorCapital(investorId) 
+                                            * ObligationInteractor.GetObligation(idObligation).getValeurNominale();
+                    }   
                 }
             }
         }
@@ -118,12 +130,60 @@ public class ControllerFamilies {
             }
         });
 
+        listViewContact.getItems().clear();
+        listViewContact.setItems(contacts);
+        listViewContact.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(String[] item, boolean empty) {
+                super.updateItem(item, empty);
+                Label nameField = new Label();
+                Label emailField = new Label();
+                Label phoneField = new Label();
+                AnchorPane content = new AnchorPane(nameField, emailField, phoneField);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    nameField.setText(item[1] + " " + item[0]); 
+                    emailField.setText(item[2]); 
+                    phoneField.setText(item[3]); 
+                    AnchorPane.setLeftAnchor(nameField, 1.0);
+                    AnchorPane.setLeftAnchor(emailField, 150.0);
+                    AnchorPane.setLeftAnchor(phoneField, 400.0);
+                    setGraphic(content);
+                }
+            }
+        });
+
         if(fam != null) {
             // Update the person details in the label
             NameFamily.setText(fam.getName());
+            setNumberLabel(ValueFamily, String.valueOf(totalSouscriptions));
+            NbSouscripteursFamily.setText(String.valueOf(fam.getInvestors().size()));
         } else {
             // Clear the details if no person is selected
             NameFamily.setText("");
+            ValueFamily.setText("");
+            NbSouscripteursFamily.setText("");
+        }
+    }
+
+    public void setNumberLabel(Label label, String numberAsString) {
+        try {
+            // Nettoyer la chaîne d'entrée (enlever espaces existants, virgules, etc.)
+            String cleanString = numberAsString.replaceAll("[\\s,]", "");
+            
+            // Convertir en nombre
+            double value = Double.parseDouble(cleanString);
+            
+            // Formater avec espaces
+            NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+            format.setGroupingUsed(true);
+            label.setText(format.format(value) + " €");
+        } catch (NumberFormatException e) {
+            // En cas d'erreur de format, afficher la chaîne originale ou gérer l'erreur
+            label.setText(numberAsString);
+            // Ou bien : 
+            // label.setText("Format invalide");
         }
     }
 
@@ -164,12 +224,12 @@ public class ControllerFamilies {
             if (addFamilyWindow.getResult()) {
                 // Refresh the list of families
                 ids = FamilyInteractor.GetAllFamiliesId();
-                listFamily.clear();
+                listFam.clear();
                 for (Integer id : ids) {
-                    listFamily.add(FamilyInteractor.GetFamily(id));
+                    listFam.add(FamilyInteractor.GetFamily(id));
                 }
             }
-            tableFamily.setItems(listFamily);
+            tableFamily.setItems(listFam);
             selectedFamily = null; // Reset selected family
             displayFamily(null); // Clear displayed family details
         } catch (Exception e) {
@@ -198,12 +258,12 @@ public class ControllerFamilies {
                 if (editFamilyWindow.getResult()) {
                     // Refresh the list of families
                     ids = FamilyInteractor.GetAllFamiliesId();
-                    listFamily.clear();
+                    listFam.clear();
                     for (Integer id : ids) {
-                        listFamily.add(FamilyInteractor.GetFamily(id));
+                        listFam.add(FamilyInteractor.GetFamily(id));
                     }
                 }
-                tableFamily.setItems(listFamily);
+                tableFamily.setItems(listFam);
             } catch (Exception e) {
                 e.printStackTrace();
             }

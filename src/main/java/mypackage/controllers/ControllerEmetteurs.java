@@ -1,6 +1,8 @@
 package mypackage.controllers;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +38,11 @@ public class ControllerEmetteurs {
     @FXML
     private Label NameApplicant;
     @FXML
-    private Label capitalApplicant;
+    private Label GroupApplicant;
+    @FXML
+    private Label DirigeantApplicant;
+    @FXML
+    private Label ValeurObligationsApplicant;
     @FXML
     private ListView<Obligation> listViewObligation;
     @FXML
@@ -122,9 +128,49 @@ public class ControllerEmetteurs {
         if(applicant != null) {
             // Update the person details in the label
             NameApplicant.setText(applicant.getName());
+            Group group = GroupInteractor.GetGroup(applicant.getGroupId());
+            if (group != null) {
+                GroupApplicant.setText(group.getName());
+            } else {
+                GroupApplicant.setText("Aucun groupe");
+            }
+            DirigeantApplicant.setText(applicant.getFirstNameBoss() + " " + applicant.getNameBoss());
+            int totalObligationValue = 0;
+            for(Integer obligationId : applicant.getObligations()) {
+                Obligation obligation = ObligationInteractor.GetObligation(obligationId);
+                if (obligation != null) {
+                    totalObligationValue += obligation.getCapital();
+                } else {
+                    System.out.println("Obligation not found for ID: " + obligationId);
+                }
+            }
+            setNumberLabel(ValeurObligationsApplicant, String.valueOf(totalObligationValue));
         } else {
             // Clear the details if no person is selected
             NameApplicant.setText("");
+            GroupApplicant.setText("");
+            DirigeantApplicant.setText("");
+            ValeurObligationsApplicant.setText("");
+        }
+    }
+
+    public void setNumberLabel(Label label, String numberAsString) {
+        try {
+            // Nettoyer la chaîne d'entrée (enlever espaces existants, virgules, etc.)
+            String cleanString = numberAsString.replaceAll("[\\s,]", "");
+            
+            // Convertir en nombre
+            double value = Double.parseDouble(cleanString);
+            
+            // Formater avec espaces
+            NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+            format.setGroupingUsed(true);
+            label.setText(format.format(value) + " €");
+        } catch (NumberFormatException e) {
+            // En cas d'erreur de format, afficher la chaîne originale ou gérer l'erreur
+            label.setText(numberAsString);
+            // Ou bien : 
+            // label.setText("Format invalide");
         }
     }
 

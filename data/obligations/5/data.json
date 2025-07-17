@@ -1,7 +1,7 @@
 {
   "id" : 5,
   "name" : "test123",
-  "convertible" : false,
+  "convertible" : true,
   "capital" : 1500000,
   "valeurNominale" : 50000,
   "startDate" : "2025-05-29",
@@ -15,12 +15,16 @@
   "depreciations" : { },
   "investors" : [ {
     "investorId" : 1,
-    "capital" : 3,
+    "capital" : 10,
     "date" : ""
   }, {
     "investorId" : 2,
-    "capital" : 25,
-    "date" : "2026-09-29"
+    "capital" : 10,
+    "date" : ""
+  }, {
+    "investorId" : 3,
+    "capital" : 10,
+    "date" : ""
   } ],
   "replacements" : [ ],
   "applicantId" : 3

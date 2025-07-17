@@ -21,6 +21,14 @@
     "investorId" : 2,
     "capital" : 8,
     "date" : ""
+  }, {
+    "investorId" : 2,
+    "capital" : 10,
+    "date" : ""
+  }, {
+    "investorId" : 1,
+    "capital" : 10,
+    "date" : ""
   } ],
   "replacements" : [ ],
   "applicantId" : 1

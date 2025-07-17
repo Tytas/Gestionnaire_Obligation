@@ -1,0 +1,27 @@
+{
+  "id" : 6,
+  "name" : "2emeoblig",
+  "convertible" : false,
+  "capital" : 5000000,
+  "valeurNominale" : 75000,
+  "startDate" : "2025-07-02",
+  "durationMonths" : 36,
+  "rate" : [ 3, 10 ],
+  "periodicity" : "Annuelle",
+  "prorogation" : [ "", "", "" ],
+  "prorogationActivated" : false,
+  "isin" : "",
+  "safeties" : [ ],
+  "depreciations" : { },
+  "investors" : [ {
+    "investorId" : 2,
+    "capital" : 15,
+    "date" : ""
+  }, {
+    "investorId" : 4,
+    "capital" : 25,
+    "date" : ""
+  } ],
+  "replacements" : [ ],
+  "applicantId" : 3
+}

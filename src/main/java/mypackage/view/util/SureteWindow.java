@@ -8,10 +8,9 @@ import javafx.scene.layout.VBox;
 public class SureteWindow {
     public static boolean showDialog(ObservableList<String> suretes) {
         ObservableList<String> availableSuretes = javafx.collections.FXCollections.observableArrayList(
-                "GAPD", "CAUTION", "FIDUCIE SUR TITRES",
-            "FIDUCIE SUR IMMEUBLE", "HYPOTHEQUE 1ER RANG",
-            "HYPOTHEQUE 1ER RANG","NANTISSEMENT", 
-            "CONVERTIBLE", "GAGE"
+            "GAPD", "CAUTION HOLDING", "CAUTION DIRIGEANT",
+            "FIDUCIE SUR TITRES", "FIDUCIE SUR IMMEUBLE", "HYPOTHEQUE 1ER RANG",
+            "HYPOTHEQUE 2ND RANG","NANTISSEMENT", "GAGE"
         );
         Dialog<String> sureteDialog = new Dialog<>();
         sureteDialog.setHeaderText("Ajouter une sureté");

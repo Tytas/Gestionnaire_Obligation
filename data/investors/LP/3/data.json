@@ -2,7 +2,7 @@
   "id" : 3,
   "name" : "test",
   "familyId" : 1,
-  "obligations" : [ 1 ],
+  "obligations" : [ 5 ],
   "registerNumber" : 78,
   "dateOfCreation" : "2025-06-02",
   "capitalSocial" : "75",

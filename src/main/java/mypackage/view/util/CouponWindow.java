@@ -105,7 +105,7 @@ public class CouponWindow {
                             TauxInFine = Double.parseDouble(obligationData.getProrogation()[2]) / 100.0;
                             montantCapitalise = (double) MontantInvestiCapitalise(Integer.parseInt(item[1]) * obligationData.getValeurNominale(), obligationData, obligation[0]);
                                 period = 12;
-                            for(int i = 0; i < Integer.parseInt(obligationData.getProrogation()[0])/period-1; i++) {
+                            for(int i = 0; i < Integer.parseInt(obligationData.getProrogation()[0])/12-1; i++) {
                                 montantCapitalise = montantCapitalise * (1 + Double.parseDouble(obligationData.getProrogation()[1]) / 100.0);
                             }
                         }
@@ -287,7 +287,7 @@ public class CouponWindow {
                     }
                 }
             }
-            Paragraph l2 = new Paragraph("Vous êtes titulaire de " + nbPart + " obligation(s) " + convertibleString + " " + obligation.getName() + ".");
+            Paragraph l2 = new Paragraph("Vous êtes titulaire de " + nbPart + " obligation(s) " + convertibleString + " " + obligation.getName() + " en actions.");
             document.add(l2);
             Paragraph l3 = new Paragraph("Nous vous prions de trouver ci-après le détail des opérations réalisées sur vos titres.");
             document.add(l3);
@@ -323,7 +323,7 @@ public class CouponWindow {
 
             if(investor instanceof InvestorNP && ((InvestorNP)investor).getAddress()[4].trim().toUpperCase().equals("FRANCE")) {
                 cell2_2.add(new Paragraph(format.format(partBrut).replace('\u202F', ' ') + " €"));
-                cell2_2.add(new Paragraph(format.format(partBrut * 0.3).replace('\u202F', ' ') + " €"));
+                cell2_2.add(new Paragraph("- " + format.format(partBrut * 0.3).replace('\u202F', ' ') + " €"));
                 cell2_2.add(new Paragraph(format.format(partBrut * 0.7).replace('\u202F', ' ') + " €"));
             } else {
                 cell2_2.add(new Paragraph(format.format(partBrut).replace('\u202F', ' ') + " €"));
@@ -371,28 +371,11 @@ public class CouponWindow {
     }
 
     static private long MontantInvestiCapitalise(long montantInvesti, Obligation obligation, String CouponDate) {
-        int nbCouponEcoules = 0;
         LocalDate couponDate = LocalDate.parse(CouponDate);
         LocalDate startDate = LocalDate.parse(obligation.getStartDate());
         long nombreDeMois = ChronoUnit.MONTHS.between(startDate, couponDate);
-        int period = 0;
-        if(obligation.getPeriodicity() != null) {
-            if(obligation.getPeriodicity().equals("Mensuelle")) {
-                period = 1;
-            } else if(obligation.getPeriodicity().equals("Trimestrielle")) {
-                period = 3;
-            } else if(obligation.getPeriodicity().equals("Semestrielle")) {
-                period = 6;
-            } else if(obligation.getPeriodicity().equals("Annuelle")) {
-                period = 12;
-            } else {
-                System.err.println("Unknown periodicity: " + obligation.getPeriodicity());
-                return montantInvesti;
-            }
-        }
-        nbCouponEcoules = (int) (nombreDeMois / period);
-        for (int i = 1; i < nbCouponEcoules; i++) {
-            montantInvesti = (long) (montantInvesti * (1 + obligation.getRate()[1] / 100.0));
+        for (int i = 1; i < nombreDeMois/12; i++) {
+            montantInvesti = (long) (montantInvesti * (1 + obligation.getRate()[0] / 100.0));
         }
         return montantInvesti;
     }

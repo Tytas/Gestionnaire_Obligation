@@ -20,7 +20,6 @@ public class Family {
     private String placeOfBirthBoss;
     private String emailBoss;
     private String phoneNumberBoss;
-    private String[] addressBoss = new String[6]; // Numéro, rue, code postal, ville, pays, Complement d'adresse
     private String socialCapital;
     private String roleBoss;
     private String IBAN;
@@ -28,7 +27,7 @@ public class Family {
     private String bankName;
     private String nbAprooval;
     private ArrayList<String[]> contacts = new ArrayList<>(); // [Nom, Prénom, Email, Téléphone]
-    private String alertMail;
+    private String distributionType;
 
     private ArrayList<Integer> investors = new ArrayList<>();
 
@@ -49,25 +48,21 @@ public class Family {
         this.placeOfBirthBoss = "";
         this.emailBoss = "";
         this.phoneNumberBoss = "";
-        for (int i = 0; i < addressBoss.length; i++) {
-            addressBoss[i] = "";
-        }
         this.socialCapital = "";
         this.roleBoss = "";
         this.IBAN = "";
         this.BIC = "";
         this.bankName = "";
         this.nbAprooval = "";
-        this.alertMail = "";
+        this.distributionType = "";
     }
     public Family(int id, SimpleStringProperty name, int registerNumber, String dateOfCreation,
                   String villeRCS, String legalStatus, String[] address,
                   String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss,
                   String nationalityBoss, String dateOfBirthBoss, String placeOfBirthBoss,
-                  String emailBoss, String phoneNumberBoss,
-                  String[] addressBoss, String socialCapital,
+                  String emailBoss, String phoneNumberBoss, String socialCapital,
                   String roleBoss, String IBAN, String BIC, String bankName,
-                  String nbAprooval, String alertMail) {
+                  String nbAprooval, String distributionType) {
         this.id = id;
         this.name = name;
         this.registerNumber = registerNumber;
@@ -83,14 +78,13 @@ public class Family {
         this.placeOfBirthBoss = placeOfBirthBoss;
         this.emailBoss = emailBoss;
         this.phoneNumberBoss = phoneNumberBoss;
-        this.addressBoss = addressBoss;
         this.socialCapital = socialCapital;
         this.roleBoss = roleBoss;
         this.IBAN = IBAN;
         this.BIC = BIC;
         this.bankName = bankName;
         this.nbAprooval = nbAprooval;
-        this.alertMail = alertMail;
+        this.distributionType = distributionType;
     }
 
     public int getId() {
@@ -144,9 +138,6 @@ public class Family {
     public String getPhoneNumberBoss() {
         return phoneNumberBoss;
     }
-    public String[] getAddressBoss() {
-        return addressBoss;
-    }
     public String getSocialCapital() {
         return socialCapital;
     }
@@ -168,8 +159,8 @@ public class Family {
     public ArrayList<String[]> getContacts() {
         return contacts;
     }
-    public String getAlertMail() {
-        return alertMail;
+    public String getdistributionType() {
+        return distributionType;
     }
     public ArrayList<Integer> getInvestors() {
         return investors;
@@ -219,9 +210,6 @@ public class Family {
     public void setPhoneNumberBoss(String phoneNumberBoss) {
         this.phoneNumberBoss = phoneNumberBoss;
     }
-    public void setAddressBoss(String[] addressBoss) {
-        this.addressBoss = addressBoss;
-    }
     public void setSocialCapital(String socialCapital) {
         this.socialCapital = socialCapital;
     }
@@ -249,8 +237,8 @@ public class Family {
     public void removeContacts(String[] contact){
         this.contacts.remove(contact);
     }
-    public void setAlertMail(String alertMail) {
-        this.alertMail = alertMail;
+    public void setdistributionType(String distributionType) {
+        this.distributionType = distributionType;
     }
     public void setInvestors(ArrayList<Integer> investors) {
         this.investors = investors;

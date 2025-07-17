@@ -84,8 +84,10 @@ public class ControllerHome {
 
         for (Integer obligationId : obligationsId) {
             Obligation obligation = ObligationInteractor.GetObligation(obligationId);
+            String status = calculateStatus(obligation);
             if (obligation != null) {
-                if(LocalDate.now().isBefore(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()))) {
+                if(LocalDate.now().isBefore(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths())) && 
+                   status.equals("En cours")) {
                     totalCapitaux += obligation.getCapital();
                     totalObligationsRunning += 1;
                     totalInvestors += obligation.getInvestors().size();
@@ -110,6 +112,29 @@ public class ControllerHome {
         totalInvestorsLabel.setText(String.valueOf(totalInvestors));
         rateWeightedAverageLabel.setText(String.valueOf(rateWeightedAverage) + " %");
         remainDurationAverageLabel.setText(String.valueOf(remainMonths + " mois " + remainDays + " jours"));
+    }
+
+    private String calculateStatus(Obligation obligation) {
+        // Exemple : déterminer le statut de l'obligation
+        Long capital = obligation.getCapital();
+        Long capitalSouscripteur = obligation.getInvestors().stream()
+            .mapToLong(investorInfo -> investorInfo.getCapital())
+            .sum() * obligation.getValeurNominale();
+        Double pourcentRemplissage = (double) capitalSouscripteur / capital * 100;
+        if(pourcentRemplissage != 100){
+            return String.format("%.2f%%", pourcentRemplissage);
+        }
+        LocalDate now = LocalDate.now();
+        LocalDate startDate = LocalDate.parse(obligation.getStartDate());
+        LocalDate endDate = startDate.plusMonths(obligation.getDurationMonths());
+        
+        if (now.isBefore(startDate)) {
+            return "À venir";
+        } else if (now.isAfter(endDate)) {
+            return "Terminée";
+        } else {
+            return "En cours";
+        }
     }
 
     private void getCoupons() {
@@ -253,7 +278,7 @@ public class ControllerHome {
             // Configuration du FileChooser pour Excel
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Enregistrer la liste des souscripteurs");
-            fileChooser.setInitialFileName("souscripteurs_coupon_" + LocalDate.now() + ".xlsx");
+            fileChooser.setInitialFileName( item[2] + "_Coupon_" + item[0] + ".xlsx");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
 
             File selectedFile = fileChooser.showSaveDialog(stage);
@@ -372,11 +397,14 @@ public class ControllerHome {
 
             if (obligation.getProrogation()[0] != "") {
                 Cell obligationProrogationDateCell = obligationDateRow.createCell(2);
-                obligationProrogationDateCell.setCellValue("PROROGATION : " + LocalDate.parse(obligation.getStartDate()).plusMonths( obligation.getDurationMonths() + Integer.parseInt(obligation.getProrogation()[0])).toString());
+                obligationProrogationDateCell.setCellValue("PROROGATION : " +
+                                                           LocalDate.parse(obligation.getStartDate()).plusMonths( obligation.getDurationMonths() +
+                                                           Integer.parseInt(obligation.getProrogation()[0])).toString());
                 obligationProrogationDateCell.setCellStyle(headerStyle);
 
                 Cell obligationProrogationRateCell = obligationRateRow.createCell(2);
-                obligationProrogationRateCell.setCellValue("Taux Prorogation : " + obligation.getProrogation()[1] + "%" + " + " + obligation.getProrogation()[2] + "% INFINE");
+                obligationProrogationRateCell.setCellValue("Taux Prorogation : " + obligation.getProrogation()[1] +
+                                                           "%" + " + " + obligation.getProrogation()[2] + "% INFINE");
                 obligationProrogationRateCell.setCellStyle(headerStyle);
             
                 Cell obligationProrogationDurationCell = obligationDurationRow.createCell(2);
@@ -537,8 +565,8 @@ public class ControllerHome {
                         if(obligationEndDate.isEqual(couponDate)) {
                             if(obligation.getProrogation()[2] != "0" && obligation.getProrogation()[2] != "") {
                                 montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, item[0]);
-                                for(int i = 0; i < Integer.parseInt(obligation.getProrogation()[0])/period-1; i++) {
-                                    montantInvestiInFine = (long) (montantInvestiInFine * (1 + Double.parseDouble(obligation.getProrogation()[1]) / 100.0));
+                                for(int i = 0; i < Integer.parseInt(obligation.getProrogation()[0])/12-1; i++) {
+                                    montantInvestiInFine = (long) (montantInvestiInFine * (1 + Double.parseDouble(obligation.getProrogation()[2]) / 100.0));
                                 }
                                 partBrutInFine = montantInvestiInFine * Double.parseDouble(obligation.getProrogation()[2]) / 100.0;
                                 partNetInFine = partBrutInFine;
@@ -763,28 +791,11 @@ public class ControllerHome {
     }
 
     private long MontantInvestiCapitalise(long montantInvesti, Obligation obligation, String CouponDate) {
-        int nbCouponEcoules = 0;
         LocalDate couponDate = LocalDate.parse(CouponDate);
         LocalDate startDate = LocalDate.parse(obligation.getStartDate());
         long nombreDeMois = ChronoUnit.MONTHS.between(startDate, couponDate);
-        int period = 0;
-        if(obligation.getPeriodicity() != null) {
-            if(obligation.getPeriodicity().equals("Mensuelle")) {
-                period = 1;
-            } else if(obligation.getPeriodicity().equals("Trimestrielle")) {
-                period = 3;
-            } else if(obligation.getPeriodicity().equals("Semestrielle")) {
-                period = 6;
-            } else if(obligation.getPeriodicity().equals("Annuelle")) {
-                period = 12;
-            } else {
-                System.err.println("Unknown periodicity: " + obligation.getPeriodicity());
-                return montantInvesti;
-            }
-        }
-        nbCouponEcoules = (int) (nombreDeMois / period);
-        for (int i = 1; i < nbCouponEcoules; i++) {
-            montantInvesti = (long) (montantInvesti * (1 + obligation.getRate()[1] / 100.0));
+        for (int i = 1; i < nombreDeMois / 12; i++) {
+            montantInvesti = (long) (montantInvesti * (1 + obligation.getRate()[0] / 100.0));
         }
         return montantInvesti;
     }

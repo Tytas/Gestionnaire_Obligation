@@ -69,19 +69,6 @@ public class EditFamilyController {
     private TextField telephoneDirigeantField;
 
     @FXML
-    private TextField numeroAdresseDirigeantField;
-    @FXML
-    private TextField rueAdresseDirigeantField;
-    @FXML
-    private TextField codePostalAdresseDirigeantField;
-    @FXML
-    private TextField villeAdresseDirigeantField;
-    @FXML
-    private TextField paysAdresseDirigeantField;
-    @FXML
-    private TextField complementAdresseDirigeantField;
-
-    @FXML
     private TextField fonctionDirigeantField;
     @FXML
     private TextField villeRCSField;
@@ -94,7 +81,7 @@ public class EditFamilyController {
     @FXML
     private TextField nbApproovalField;
     @FXML
-    private TextField alertMailField;
+    private ComboBox<String> distributionTypeField;
 
     @FXML
     private Button addContactButton;
@@ -109,7 +96,7 @@ public class EditFamilyController {
     @FXML private Label formeJuridiqueErreurComboBox;
     @FXML private Label familyTypeErreurComboBox;
     @FXML private Label nbApproovalErreurField;
-    @FXML private Label alertMailErreurField;
+    @FXML private Label distributionTypeErreurField;
 
     @FXML private Label numeroAdresseErreurField;
     @FXML private Label rueAdresseErreurField;
@@ -127,13 +114,6 @@ public class EditFamilyController {
     @FXML private Label langueDirigeantErreurComboBox;
     @FXML private Label emailDirigeantErreurField;
     @FXML private Label telephoneDirigeantErreurField;
-
-    @FXML private Label numeroAdresseDirigeantErreurField;
-    @FXML private Label rueAdresseDirigeantErreurField;
-    @FXML private Label codePostalAdresseDirigeantErreurField;
-    @FXML private Label villeAdresseDirigeantErreurField;
-    @FXML private Label paysAdresseDirigeantErreurField;
-    @FXML private Label complementAdresseDirigeantErreurField;
 
     @FXML private Label fonctionDirigeantErreurField;
     @FXML private Label villeRCSErreurField;
@@ -165,7 +145,7 @@ public class EditFamilyController {
             capitalSocialField.setText(currentFamily.getSocialCapital());
             formeJuridiqueComboBox.setValue(currentFamily.getLegalStatus());
             nbApproovalField.setText(String.valueOf(currentFamily.getNbAprooval()));
-            alertMailField.setText(currentFamily.getAlertMail());
+            distributionTypeField.setValue(currentFamily.getdistributionType());
             numeroAdresseField.setText(currentFamily.getAddress()[0]);
             rueAdresseField.setText(currentFamily.getAddress()[1]);
             codePostalAdresseField.setText(currentFamily.getAddress()[2]);
@@ -188,12 +168,6 @@ public class EditFamilyController {
             lieuNaissanceDirigeantField.setText(currentFamily.getPlaceOfBirthBoss());
             emailDirigeantField.setText(currentFamily.getEmailBoss());
             telephoneDirigeantField.setText(currentFamily.getPhoneNumberBoss());
-            numeroAdresseDirigeantField.setText(currentFamily.getAddressBoss()[0]);
-            rueAdresseDirigeantField.setText(currentFamily.getAddressBoss()[1]);
-            codePostalAdresseDirigeantField.setText(currentFamily.getAddressBoss()[2]);
-            villeAdresseDirigeantField.setText(currentFamily.getAddressBoss()[3]);
-            paysAdresseDirigeantField.setText(currentFamily.getAddressBoss()[4]);
-            complementAdresseDirigeantField.setText(currentFamily.getAddressBoss()[5]);
             fonctionDirigeantField.setText(currentFamily.getRoleBoss());
             villeRCSField.setText(currentFamily.getvilleRCS());
             bicField.setText(currentFamily.getBIC());
@@ -208,8 +182,9 @@ public class EditFamilyController {
     
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
-        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("CIF","PSI","BANQUE"));
+        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SAS", "SA"));
         nationaliteDirigeantComboBox.setItems(FXCollections.observableArrayList("Française", "Américaine", "Allemande", "Espagnole"));
+        distributionTypeField.setItems(FXCollections.observableArrayList("CIF", "PSI", "BANQUE"));
 
         contactsListView.setItems(contacts);
         contactsListView.setCellFactory(lv -> new ListCell<String[]>() {
@@ -246,7 +221,7 @@ public class EditFamilyController {
             boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
             boolean capitalSocialOK = validateField(capitalSocialField, capitalSocialErreurField, "text");
             boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
-            boolean alertMailOK = validateField(alertMailField, alertMailErreurField, "email");
+            boolean distributionTypeOK = validateField(distributionTypeField, distributionTypeErreurField, "");
 
 
             boolean numeroAdresseOK = validateField(numeroAdresseField, numeroAdresseErreurField, "text");
@@ -266,12 +241,6 @@ public class EditFamilyController {
             boolean lieuNaissanceDirigeantOK = validateField(lieuNaissanceDirigeantField, lieuNaissanceDirigeantErreurField, "text");
             boolean emailDirigeantOK = validateField(emailDirigeantField, emailDirigeantErreurField, "email");
             boolean telephoneDirigeantOK = validateField(telephoneDirigeantField, telephoneDirigeantErreurField, "text");
-
-            boolean numeroAdresseDirigeantOK = validateField(numeroAdresseDirigeantField, numeroAdresseDirigeantErreurField, "text");
-            boolean rueAdresseDirigeantOK = validateField(rueAdresseDirigeantField, rueAdresseDirigeantErreurField, "text");
-            boolean codePostalAdresseDirigeantOK = validateField(codePostalAdresseDirigeantField, codePostalAdresseDirigeantErreurField, "text");
-            boolean villeAdresseDirigeantOK = validateField(villeAdresseDirigeantField, villeAdresseDirigeantErreurField, "text");
-            boolean paysAdresseDirigeantOK = validateField(paysAdresseDirigeantField, paysAdresseDirigeantErreurField, "text");
             
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
             boolean villeRCSOK = validateField(villeRCSField, villeRCSErreurField, "text");
@@ -283,10 +252,7 @@ public class EditFamilyController {
                 numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK &&
                 sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
-                numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
-                paysAdresseDirigeantOK && alertMailOK &&
-                fonctionDirigeantOK && villeRCSOK &&
-                banqueOK;
+                distributionTypeOK && fonctionDirigeantOK && villeRCSOK && banqueOK;
 
             if (formulaireValide) {
                 String sexeDirigeant = "";
@@ -316,21 +282,13 @@ public class EditFamilyController {
                     lieuNaissanceDirigeantField.getText().trim(),
                     emailDirigeantField.getText().trim(),
                     telephoneDirigeantField.getText().trim(),
-                    new String[]{
-                        numeroAdresseDirigeantField.getText().trim(),
-                        rueAdresseDirigeantField.getText().trim(),
-                        codePostalAdresseDirigeantField.getText().trim(),
-                        villeAdresseDirigeantField.getText().trim(),
-                        paysAdresseDirigeantField.getText().trim(),
-                        complementAdresseDirigeantField.getText().trim()
-                    },
                     villeRCSField.getText().trim(),
                     fonctionDirigeantField.getText().trim(),
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
                     banqueField.getText().trim(), 
                     nbApproovalField.getText().trim(),
-                    alertMailField.getText().trim(),
+                    distributionTypeField.getValue(),
                     contacts
                 );
                 result = true;
@@ -351,17 +309,17 @@ public class EditFamilyController {
                     String SocialCapital, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
-                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String villeRCSBoss,
+                    String emailBoss, String phoneNumberBoss, String villeRCSBoss,
                     String roleBoss, String IBAN, String BIC, String BankName,
-                    String nbAprooval, String alertMail, ObservableList<String[]> contacts) {
+                    String nbAprooval, String distributionType, ObservableList<String[]> contacts) {
         int Id = currentFamily.getId();
         Family family = new Family(Id, name, registerNumber, dateOfCreation,
                 SocialCapital, legalStatus, address,
                 civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
                 dateOfBirthBoss, placeOfBirthBoss,
-                emailBoss, phoneNumberBoss, addressBoss, villeRCSBoss,
+                emailBoss, phoneNumberBoss, villeRCSBoss,
                 roleBoss, IBAN, BIC, BankName,
-                nbAprooval, alertMail);
+                nbAprooval, distributionType);
         System.out.println("Creating family with the following details:");
         if(contacts != null) {
             for (String[] contact : contacts) {
@@ -391,6 +349,7 @@ public class EditFamilyController {
         } else {
             System.out.println("No contacts provided.");
         }
+        family.setInvestors(FamilyInteractor.GetFamily(Id).getInvestors());
 
         FamilyInteractor.DeleteFamily(Id);
         FamilyInteractor.SaveFamily(family);

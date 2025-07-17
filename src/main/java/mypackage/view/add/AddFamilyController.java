@@ -65,19 +65,6 @@ public class AddFamilyController {
     private TextField telephoneDirigeantField;
 
     @FXML
-    private TextField numeroAdresseDirigeantField;
-    @FXML
-    private TextField rueAdresseDirigeantField;
-    @FXML
-    private TextField codePostalAdresseDirigeantField;
-    @FXML
-    private TextField villeAdresseDirigeantField;
-    @FXML
-    private TextField paysAdresseDirigeantField;
-    @FXML
-    private TextField complementAdresseDirigeantField;
-
-    @FXML
     private TextField fonctionDirigeantField;
     @FXML
     private TextField capitalSocialField;
@@ -90,7 +77,7 @@ public class AddFamilyController {
     @FXML
     private TextField nbApproovalField;
     @FXML
-    private TextField alertMailField;
+    private ComboBox<String> distributionTypeField;
 
     @FXML
     private Button addContactButton;
@@ -105,7 +92,7 @@ public class AddFamilyController {
     @FXML private Label formeJuridiqueErreurComboBox;
     @FXML private Label familyTypeErreurComboBox;
     @FXML private Label nbApproovalErreurField;
-    @FXML private Label alertMailErreurField;
+    @FXML private Label distributionTypeErreurField;
 
     @FXML private Label numeroAdresseErreurField;
     @FXML private Label rueAdresseErreurField;
@@ -122,13 +109,6 @@ public class AddFamilyController {
     @FXML private Label lieuNaissanceDirigeantErreurField;
     @FXML private Label emailDirigeantErreurField;
     @FXML private Label telephoneDirigeantErreurField;
-
-    @FXML private Label numeroAdresseDirigeantErreurField;
-    @FXML private Label rueAdresseDirigeantErreurField;
-    @FXML private Label codePostalAdresseDirigeantErreurField;
-    @FXML private Label villeAdresseDirigeantErreurField;
-    @FXML private Label paysAdresseDirigeantErreurField;
-    @FXML private Label complementAdresseDirigeantErreurField;
 
     @FXML private Label fonctionDirigeantErreurField;
     @FXML private Label capitalSocialErreurField;
@@ -151,7 +131,8 @@ public class AddFamilyController {
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
         nationaliteDirigeantComboBox.setItems(FXCollections.observableArrayList("Française", "Américaine", "Allemande", "Espagnole"));
-        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("CIF", "PSI", "BANQUE"));
+        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SAS", "SA"));
+        distributionTypeField.setItems(FXCollections.observableArrayList("CIF", "PSI", "BANQUE"));
 
         contactsListView.setItems(contacts);
         contactsListView.setCellFactory(lv -> new ListCell<String[]>() {
@@ -188,7 +169,7 @@ public class AddFamilyController {
             boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
             boolean villeRCSOK = validateField(villeRCSField, villeRCSErreurField, "text");
             boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
-            boolean alertMailOK = validateField(alertMailField, alertMailErreurField, "email");
+            boolean distributionTypeOK = validateField(distributionTypeField, distributionTypeErreurField, "");
 
             boolean numeroAdresseOK = validateField(numeroAdresseField, numeroAdresseErreurField, "text");
             boolean rueAdresseOK = validateField(rueAdresseField, rueAdresseErreurField, "text");
@@ -210,13 +191,6 @@ public class AddFamilyController {
             boolean emailDirigeantOK = validateField(emailDirigeantField, emailDirigeantErreurField, "email");
             boolean telephoneDirigeantOK = validateField(telephoneDirigeantField, telephoneDirigeantErreurField, "text");
 
-            boolean numeroAdresseDirigeantOK = validateField(numeroAdresseDirigeantField, numeroAdresseDirigeantErreurField, "text");
-            boolean rueAdresseDirigeantOK = validateField(rueAdresseDirigeantField, rueAdresseDirigeantErreurField, "text");
-            boolean codePostalAdresseDirigeantOK = validateField(codePostalAdresseDirigeantField, codePostalAdresseDirigeantErreurField, "text");
-            boolean villeAdresseDirigeantOK = validateField(villeAdresseDirigeantField, villeAdresseDirigeantErreurField, "text");
-            boolean paysAdresseDirigeantOK = validateField(paysAdresseDirigeantField, paysAdresseDirigeantErreurField, "text");
-            boolean complementAdresseDirigeantOK = validateField(complementAdresseDirigeantField, complementAdresseDirigeantErreurField, "text");
-
             boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
             boolean capitalSocialOK = validateField(capitalSocialField, capitalSocialErreurField, "text");
             boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
@@ -227,10 +201,8 @@ public class AddFamilyController {
                 numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK && complementAdresseOK &&
                 sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
                 lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
-                numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
-                paysAdresseDirigeantOK && complementAdresseDirigeantOK &&
                 fonctionDirigeantOK && capitalSocialOK &&
-                banqueOK && alertMailOK;
+                banqueOK && distributionTypeOK;
 
             if (formulaireValide) {
                 String sexeDirigeant = ((RadioButton) sexeDirigeantToggleGroup.getSelectedToggle()).getText();
@@ -256,21 +228,13 @@ public class AddFamilyController {
                     lieuNaissanceDirigeantField.getText().trim(),
                     emailDirigeantField.getText().trim(),
                     telephoneDirigeantField.getText().trim(),
-                    new String[]{
-                        numeroAdresseDirigeantField.getText().trim(),
-                        rueAdresseDirigeantField.getText().trim(),
-                        codePostalAdresseDirigeantField.getText().trim(),
-                        villeAdresseDirigeantField.getText().trim(),
-                        paysAdresseDirigeantField.getText().trim(),
-                        complementAdresseDirigeantField.getText().trim()
-                    },
                     capitalSocialField.getText().trim(),
                     fonctionDirigeantField.getText().trim(),
                     ibanField.getText().trim(), 
                     bicField.getText().trim(), 
                     banqueField.getText().trim(),
                     nbApproovalField.getText().trim(),
-                    alertMailField.getText().trim(),
+                    distributionTypeField.getValue(),
                     contacts
                 );
                 result = true;
@@ -291,17 +255,17 @@ public class AddFamilyController {
                     String villeRCS, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
-                    String emailBoss, String phoneNumberBoss, String[] addressBoss, String SocialCapital,
+                    String emailBoss, String phoneNumberBoss, String SocialCapital,
                     String roleBoss, String IBAN, String BIC, String BankName,
-                    String nbAprooval, String alertMail, ObservableList<String[]> contacts) {
+                    String nbAprooval, String distributionType, ObservableList<String[]> contacts) {
         int newId = FamilyInteractor.generateNewId();
         Family family = new Family(newId, name, registerNumber, dateOfCreation,
                 villeRCS, legalStatus, address,
                 civilityBoss, nameBoss, firstNameBoss, nationalityBoss,
                 dateOfBirthBoss, placeOfBirthBoss,
-                emailBoss, phoneNumberBoss, addressBoss, SocialCapital,
+                emailBoss, phoneNumberBoss, SocialCapital,
                 roleBoss, IBAN, BIC, BankName,
-                nbAprooval, alertMail);
+                nbAprooval, distributionType);
         if(contacts != null) {
             for (String[] contact : contacts) {
                 if (contact != null && contact.length >= 4) {

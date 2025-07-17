@@ -13,6 +13,7 @@
             <Button layoutX="10.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleMenuSouscripteurs" styleClass="nav-button" text="Souscripteurs" />
             <Button layoutX="66.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleMenuFamilies" styleClass="nav-button" text="Families" />
             <Button layoutX="122.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleMenuEmetteurs" styleClass="nav-button" text="Emetteurs" />
+            <Button mnemonicParsing="false" onAction="#handleMenuGroups" styleClass="nav-button" text="Groupes" />
         </items>
       </ToolBar>
    </top>

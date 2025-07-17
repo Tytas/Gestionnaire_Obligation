@@ -82,12 +82,7 @@ public class ConsultObligationController {
             boolean hasError = false;
 
             String selectedFamilyName = familyComboBox.getSelectionModel().getSelectedItem();
-            if (selectedFamilyName == "Toutes") {
-                ShowExcel(true);
-            } else {
-                ShowExcel(false);
-            }
-
+            ShowExcel(selectedFamilyName);
             if (!hasError) {
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
@@ -104,7 +99,7 @@ public class ConsultObligationController {
         return result;
     }
 
-    private void ShowExcel(boolean isAllFamilies) {
+    private void ShowExcel(String selectedFamilyName) {
         System.out.println("🔄 Début de création du fichier Excel pour le coupon:");
         System.out.println("   - Date: " + obligation.getStartDate());
         System.out.println("   - Montant: " + obligation.getValeurNominale());
@@ -115,7 +110,10 @@ public class ConsultObligationController {
             // Configuration du FileChooser pour Excel
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Enregistrer la liste des souscripteurs");
-            fileChooser.setInitialFileName("souscripteurs_coupon_" + LocalDate.now() + ".xlsx");
+            fileChooser.setInitialFileName( obligation.getName() + "_consultation.xlsx");
+            if(selectedFamilyName != null && !selectedFamilyName.equals("Toutes")) {
+                fileChooser.setInitialFileName(obligation.getName() + "_consultation_" + selectedFamilyName + ".xlsx");
+            }
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
 
             File selectedFile = fileChooser.showSaveDialog(stage);
@@ -326,6 +324,9 @@ public class ConsultObligationController {
             // Remplir les données des souscripteurs
             ArrayList<InvestorInfo> investors = obligation.getInvestors();
             System.out.println("👥 Nombre de souscripteurs trouvés: " + (investors != null ? investors.size() : 0));
+            if(!selectedFamilyName.equals("Toutes")) {
+                investors.removeIf(investor -> !FamilyInteractor.GetFamily(InvestorInteractor.GetInvestor(investor.getInvestorId()).getFamilyId()).getName().equals(selectedFamilyName));
+            }
             
             if (investors == null || investors.isEmpty()) {
                 System.err.println("⚠️ Aucun souscripteur trouvé pour l'obligation : " + obligation.getName());
@@ -381,7 +382,7 @@ public class ConsultObligationController {
                         if(obligationEndDate.isEqual(lastCouponDate)) {
                             if(obligation.getProrogation()[2] != "0" && obligation.getProrogation()[2] != "") {
                                 montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, listCoupon.get(listCoupon.size() - 1)[0]);
-                                for(int i = 0; i < Integer.parseInt(obligation.getProrogation()[0])/period-1; i++) {
+                                for(int i = 0; i < Integer.parseInt(obligation.getProrogation()[0])/12-1; i++) {
                                     montantInvestiInFine = (long) (montantInvestiInFine * (1 + Double.parseDouble(obligation.getProrogation()[1]) / 100.0));
                                 }
                                 partBrutInFine = montantInvestiInFine * Double.parseDouble(obligation.getProrogation()[2]) / 100.0;
@@ -656,28 +657,11 @@ public class ConsultObligationController {
     }
 
     private long MontantInvestiCapitalise(long montantInvesti, Obligation obligation, String CouponDate) {
-        int nbCouponEcoules = 0;
         LocalDate couponDate = LocalDate.parse(CouponDate);
         LocalDate startDate = LocalDate.parse(obligation.getStartDate());
         long nombreDeMois = ChronoUnit.MONTHS.between(startDate, couponDate);
-        int period = 0;
-        if(obligation.getPeriodicity() != null) {
-            if(obligation.getPeriodicity().equals("Mensuelle")) {
-                period = 1;
-            } else if(obligation.getPeriodicity().equals("Trimestrielle")) {
-                period = 3;
-            } else if(obligation.getPeriodicity().equals("Semestrielle")) {
-                period = 6;
-            } else if(obligation.getPeriodicity().equals("Annuelle")) {
-                period = 12;
-            } else {
-                System.err.println("Unknown periodicity: " + obligation.getPeriodicity());
-                return montantInvesti;
-            }
-        }
-        nbCouponEcoules = (int) (nombreDeMois / period);
-        for (int i = 1; i < nbCouponEcoules; i++) {
-            montantInvesti = (long) (montantInvesti * (1 + obligation.getRate()[1] / 100.0));
+        for (int i = 1; i < nombreDeMois / 12; i++) {
+            montantInvesti = (long) (montantInvesti * (1 + obligation.getRate()[0] / 100.0));
         }
         return montantInvesti;
     }
