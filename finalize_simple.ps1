@@ -1,6 +1,6 @@
 Write-Host "=== Configuration finale de Locif Gestion ===" -ForegroundColor Green
 
-$currentDir = Get-Location
+$currentDir = (Get-Location).Path
 $desktopPath = [Environment]::GetFolderPath("Desktop")
 
 # Chemins des fichiers
@@ -50,14 +50,14 @@ if (Test-Path $exeToRemove) {
 Write-Host ""
 Write-Host "=== Configuration terminee ===" -ForegroundColor Green
 Write-Host "Votre application est accessible via:" -ForegroundColor Cyan
-Write-Host "• Locif Gestion dans le dossier du projet" -ForegroundColor White
-Write-Host "• Locif Gestion sur le Bureau" -ForegroundColor White
+Write-Host "- Locif Gestion dans le dossier du projet" -ForegroundColor White
+Write-Host "- Locif Gestion sur le Bureau" -ForegroundColor White
 Write-Host ""
 Write-Host "Caracteristiques:" -ForegroundColor Cyan
-Write-Host "✓ Logo Lucky Oldstone comme icone" -ForegroundColor White
-Write-Host "✓ Nom propre sans extension" -ForegroundColor White
-Write-Host "✓ Ecran de chargement avec logo" -ForegroundColor White
-Write-Host "✓ Aucun terminal visible" -ForegroundColor White
-Write-Host "✓ Application au premier plan" -ForegroundColor White
+Write-Host "- Logo Lucky Oldstone comme icone" -ForegroundColor White
+Write-Host "- Nom propre sans extension" -ForegroundColor White
+Write-Host "- Ecran de chargement avec logo" -ForegroundColor White
+Write-Host "- Aucun terminal visible" -ForegroundColor White
+Write-Host "- Application au premier plan" -ForegroundColor White
 Write-Host ""
 pause

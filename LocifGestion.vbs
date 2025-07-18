@@ -3,7 +3,7 @@ Set fso = CreateObject("Scripting.FileSystemObject")
 
 ' Obtenir le chemin vers l'image
 currentDir = fso.GetParentFolderName(WScript.ScriptFullName)
-imagePath = currentDir & "\src\main\resources\images\lucky_oldstone_logo.jpeg"
+imagePath = currentDir & "\src\main\resources\images\GroupeTurquoise.png"
 
 ' Créer un script PowerShell temporaire pour afficher l'image de chargement
 psScript = currentDir & "\temp_loading.ps1"
@@ -28,7 +28,7 @@ psFile.WriteLine "$form.Controls.Add($pictureBox)"
 psFile.WriteLine ""
 psFile.WriteLine "$form.Show()"
 psFile.WriteLine "$form.Refresh()"
-psFile.WriteLine "Start-Sleep -Seconds 3"
+psFile.WriteLine "Start-Sleep -Seconds 4"
 psFile.WriteLine "$form.Close()"
 psFile.Close
 
@@ -36,8 +36,10 @@ psFile.Close
 WshShell.Run "powershell.exe -WindowStyle Hidden -ExecutionPolicy Bypass -File """ & psScript & """", 0, False
 
 ' Attendre un peu puis lancer l'application
-WScript.Sleep 500
-WshShell.Run chr(34) & "LocifGestion.bat" & chr(34), 0
+WScript.Sleep 100
+
+WshShell.CurrentDirectory = currentDir
+WshShell.Run chr(34) & currentDir & "\LocifGestion.bat" & chr(34), 0
 
 ' Attendre que l'application se lance et la mettre au premier plan
 WScript.Sleep 4000
