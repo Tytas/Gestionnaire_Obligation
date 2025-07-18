@@ -14,7 +14,7 @@ public class ObligationInteractor {
 
     public static Obligation GetObligation(int id){
         ObjectMapper objectMapper = new ObjectMapper();
-        String baseDir = "dataTEST/obligations/";
+        String baseDir = "data/obligations/";
         SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
@@ -42,7 +42,7 @@ public class ObligationInteractor {
     }
 
     public static ArrayList<Integer> GetAllObligationsId(){
-        File[] ListObligFiles = new File("dataTEST/obligations/").listFiles(File::isDirectory);
+        File[] ListObligFiles = new File("data/obligations/").listFiles(File::isDirectory);
         ArrayList<Integer> ListObligId = new ArrayList<>();
         if (ListObligFiles == null) {
             return ListObligId; // Retourner une liste vide si aucun dossier n'est trouvé
@@ -58,7 +58,7 @@ public class ObligationInteractor {
     }
 
     public static Boolean SaveObligation(Obligation oblig){
-        String baseDir = "dataTEST/obligations/";
+        String baseDir = "data/obligations/";
         String obligationName = Integer.toString(oblig.getId());
         Path obligationFolder = Path.of(baseDir, obligationName);
 
@@ -83,7 +83,7 @@ public class ObligationInteractor {
     }
 
     public static Boolean DeleteObligation(int id){
-        String baseDir = "dataTEST/obligations/";
+        String baseDir = "data/obligations/";
         String obligationName = Integer.toString(id);
         Path obligationFolder = Path.of(baseDir, obligationName);
 

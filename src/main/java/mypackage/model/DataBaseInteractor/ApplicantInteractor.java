@@ -15,7 +15,7 @@ public class ApplicantInteractor {
 
     public static Applicant GetApplicant(int id){
         ObjectMapper objectMapper = new ObjectMapper();
-        String baseDir = "dataTEST/applicants/";
+        String baseDir = "data/applicants/";
         SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
@@ -32,7 +32,7 @@ public class ApplicantInteractor {
     }
 
     public static Boolean SaveApplicant(Applicant applicant){
-        String baseDir = "dataTEST/applicants/";
+        String baseDir = "data/applicants/";
         String applicantName = Integer.toString(applicant.getId());
         Path applicantFolder = Path.of(baseDir, applicantName);
 
@@ -57,7 +57,7 @@ public class ApplicantInteractor {
     }
 
     public static ArrayList<Integer> GetAllApplicantsId(){
-        File[] ListApplicantFiles = new File("dataTEST/applicants/").listFiles(File::isDirectory);
+        File[] ListApplicantFiles = new File("data/applicants/").listFiles(File::isDirectory);
         ArrayList<Integer> ListApplicantId = new ArrayList<>();
         for (File file : ListApplicantFiles) {
             try {
@@ -70,7 +70,7 @@ public class ApplicantInteractor {
     }
 
     public static Boolean DeleteApplicant(int id){
-        String baseDir = "dataTEST/applicants/";
+        String baseDir = "data/applicants/";
         String ApplicantName = Integer.toString(id);
         Path ApplicantFolder = Path.of(baseDir, ApplicantName);
 

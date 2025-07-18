@@ -27,6 +27,7 @@ import mypackage.model.Investor;
 import mypackage.model.DataBaseInteractor.*;
 import mypackage.view.add.AddFamilyController;
 import mypackage.view.edit.EditFamilyController;
+import mypackage.view.consult.ConsultFamilyController;
 import mypackage.view.util.ConfirmWindow;
 
 
@@ -269,6 +270,32 @@ public class ControllerFamilies {
             }
         } else {
             System.out.println("No obligation selected to edit.");
+        }
+    }
+
+    @FXML
+    private void consultFamily() {
+        if (selectedFamily != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/mypackage/view/consult/ConsultFamily.fxml"));
+                Parent root = loader.load();
+                
+                // Récupère le contrôleur lié au FXML (instancié automatiquement)
+                ConsultFamilyController consultFamilyWindow = loader.getController();
+                consultFamilyWindow.setFamily(selectedFamily);
+                consultFamilyWindow.init(); // Initialise les événements des boutons
+
+                stage = new Stage();
+                stage.setTitle("Consulter une famille");
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL); // bloque la fenêtre principale
+                stage.showAndWait(); // attend que la fenêtre se ferme
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("No family selected to consult.");
         }
     }
 

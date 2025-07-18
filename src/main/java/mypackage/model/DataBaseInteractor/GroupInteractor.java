@@ -15,7 +15,7 @@ public class GroupInteractor {
 
     public static Group GetGroup(int id){
         ObjectMapper objectMapper = new ObjectMapper();
-        String baseDir = "dataTEST/groups/";
+        String baseDir = "data/groups/";
         SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
@@ -32,7 +32,7 @@ public class GroupInteractor {
     }
 
     public static Boolean SaveGroup(Group group){
-        String baseDir = "dataTEST/groups/";
+        String baseDir = "data/groups/";
         String groupName = Integer.toString(group.getId());
         Path groupFolder = Path.of(baseDir, groupName);
 
@@ -57,7 +57,7 @@ public class GroupInteractor {
     }
 
     public static Boolean DeleteGroup(int id){
-        String baseDir = "dataTEST/groups/";
+        String baseDir = "data/groups/";
         String groupName = Integer.toString(id);
         Path groupFolder = Path.of(baseDir, groupName);
 
@@ -82,7 +82,7 @@ public class GroupInteractor {
     }
 
     public static ArrayList<Integer> GetAllGroupsId(){
-        File[] ListGroupFiles = new File("dataTEST/groups/").listFiles(File::isDirectory);
+        File[] ListGroupFiles = new File("data/groups/").listFiles(File::isDirectory);
         ArrayList<Integer> ListGroupId = new ArrayList<>();
         for (File file : ListGroupFiles) {
             try {

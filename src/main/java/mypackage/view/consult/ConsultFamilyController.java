@@ -1,10 +1,12 @@
 package mypackage.view.consult;
 
-import mypackage.model.Group;
-import mypackage.model.Applicant;
+import mypackage.model.Family;
 import mypackage.model.Obligation;
-import mypackage.model.DataBaseInteractor.ApplicantInteractor;
+import mypackage.model.InvestorLP;
+import mypackage.model.InvestorNP;
+import mypackage.model.util.InvestorInfo;
 import mypackage.model.DataBaseInteractor.ObligationInteractor;
+import mypackage.model.DataBaseInteractor.InvestorInteractor;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,25 +23,23 @@ import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-
-public class ConsultGroupController {
-
+public class ConsultFamilyController {
     private boolean result = false;
 
-    private Group group;
+    private Family family;
     @FXML
     private Button validerButton;
     @FXML
     private Button annulerButton;
 
 
-    public ConsultGroupController() {
+    public ConsultFamilyController() {
     }
     public void initialize() {
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setFamily(Family family) {
+        this.family = family;
     }
 
     public void init() {
@@ -64,14 +64,14 @@ public class ConsultGroupController {
     }
 
     private void ShowExcel() {
-        System.out.println("🔄 Début de création du fichier Excel pour le groupe: " + group.getName());
-        
+        System.out.println("🔄 Début de création du fichier Excel pour le family : " + family.getName());
+
         Stage stage = new Stage();
         try {
             // Configuration du FileChooser pour Excel
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Enregistrer la liste des obligations du groupe");
-            fileChooser.setInitialFileName(group.getName() + "_Group.xlsx");
+            fileChooser.setTitle("Enregistrer la liste des obligations du family");
+            fileChooser.setInitialFileName(family.getName() + "_Obligations.xlsx");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
 
             File selectedFile = fileChooser.showSaveDialog(stage);
@@ -82,52 +82,71 @@ public class ConsultGroupController {
             }
 
             String filename = selectedFile.getAbsolutePath();
-            
-            // Récupérer tous les émetteurs du groupe et leurs obligations
-            System.out.println("🔍 Recherche des émetteurs du groupe: " + group.getName());
-            ArrayList<Integer> memberIds = group.getMembers();
+
+            // Récupérer tous les souscripteurs du family et leurs obligations
+            System.out.println("🔍 Recherche des souscripteurs du family : " + family.getName());
+            ArrayList<Integer> memberIds = family.getInvestors();
             if (memberIds == null || memberIds.isEmpty()) {
-                System.err.println("⚠️ Aucun émetteur trouvé dans le groupe : " + group.getName());
+                System.err.println("⚠️ Aucun souscripteur trouvé dans le family : " + family.getName());
                 return;
             }
+
+            // Collecter toutes les obligations auxquelles les souscripteurs du family ont souscrit
+            ArrayList<ObligationSubscriptionData> subscriptionsList = new ArrayList<>();
             
-            // Collecter toutes les obligations de tous les émetteurs du groupe
-            ArrayList<ObligationData> obligationsList = new ArrayList<>();
+            // Récupérer toutes les obligations existantes
+            ArrayList<Integer> obligationIds = ObligationInteractor.GetAllObligationsId();
             
-            for (Integer memberId : memberIds) {
-                Applicant applicant = ApplicantInteractor.GetApplicant(memberId);
-                if (applicant != null) {
-                    System.out.println("📋 Traitement de l'émetteur: " + applicant.getName());
-                    
-                    // Récupérer toutes les obligations de cet émetteur
-                    ArrayList<Integer> obligationIds = ObligationInteractor.GetAllObligationsId();
-                    for (Integer obligationId : obligationIds) {
-                        Obligation obligation = ObligationInteractor.GetObligation(obligationId);
-                        if (obligation != null && obligation.getApplicantId() == memberId) {
-                            // Créer un objet contenant toutes les infos nécessaires
-                            ObligationData data = new ObligationData();
-                            data.emetteurName = applicant.getName();
-                            data.obligationName = obligation.getName();
-                            data.capital = obligation.getCapital();
-                            data.taux = obligation.getRate()[1] + "% / " + obligation.getRate()[0] + "%"; // taux mensuel / taux in fine
-                            data.duree = obligation.getDurationMonths() + " mois";
-                            data.dateDebut = obligation.getStartDate();
-                            data.dateFin = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()).toString();
-                            
-                            obligationsList.add(data);
+            for (Integer obligationId : obligationIds) {
+                Obligation obligation = ObligationInteractor.GetObligation(obligationId);
+                if (obligation != null) {
+                    // Vérifier si des membres du family ont souscrit à cette obligation
+                    ArrayList<InvestorInfo> investors = obligation.getInvestors();
+                    if (investors != null) {
+                        for (InvestorInfo investorInfo : investors) {
+                            if (memberIds.contains(investorInfo.getInvestorId())) {
+                                // Un membre du family a souscrit à cette obligation
+                                ObligationSubscriptionData data = new ObligationSubscriptionData();
+                                data.obligationName = obligation.getName();
+                                data.montantParticipation = investorInfo.getCapital() * obligation.getValeurNominale();
+                                data.taux = obligation.getRate()[1] + "% / " + obligation.getRate()[0] + "%"; // taux mensuel / taux in fine
+                                data.dateDebut = obligation.getStartDate();
+                                data.dateFin = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()).toString();
+                                
+                                // Récupérer le nom et type du souscripteur
+                                Integer investorId = investorInfo.getInvestorId();
+                                
+                                // Vérifier s'il s'agit d'un investisseur LP ou NP
+                                InvestorLP investorLP = InvestorInteractor.GetInvestorLP(investorId);
+                                if (investorLP != null) {
+                                    data.nomSouscripteur = investorLP.getName();
+                                    data.typeSouscripteur = "PM";
+                                } else {
+                                    InvestorNP investorNP = InvestorInteractor.GetInvestorNP(investorId);
+                                    if (investorNP != null) {
+                                        data.nomSouscripteur = investorNP.getName() + " " + investorNP.getFirstName();
+                                        data.typeSouscripteur = "PP";
+                                    } else {
+                                        data.nomSouscripteur = "Souscripteur inconnu (ID: " + investorId + ")";
+                                        data.typeSouscripteur = "Inconnu";
+                                    }
+                                }
+                                
+                                subscriptionsList.add(data);
+                            }
                         }
                     }
                 }
             }
             
-            if (obligationsList.isEmpty()) {
-                System.err.println("⚠️ Aucune obligation trouvée pour les émetteurs du groupe : " + group.getName());
+            if (subscriptionsList.isEmpty()) {
+                System.err.println("⚠️ Aucune souscription trouvée pour les membres du family : " + family.getName());
                 return;
             }
 
             // Créer le classeur Excel
             Workbook workbook = new XSSFWorkbook();
-            Sheet sheet = workbook.createSheet("Obligations du Groupe");
+            Sheet sheet = workbook.createSheet("Souscriptions du Family");
 
             // Style pour l'en-tête
             CellStyle headerStyle = workbook.createCellStyle();
@@ -143,14 +162,14 @@ public class ConsultGroupController {
             DataFormat format = workbook.createDataFormat();
             currencyStyle.setDataFormat(format.getFormat("#,##0.00 €"));
 
-            // Créer l'en-tête d'information du groupe
+            // Créer l'en-tête d'information du family
             Row titleRow = sheet.createRow(0);
             Cell titleCell = titleRow.createCell(0);
-            titleCell.setCellValue("GROUPE");
+            titleCell.setCellValue("FAMILY");
             titleCell.setCellStyle(headerStyle);
 
             Cell titleCell2 = titleRow.createCell(1);
-            titleCell2.setCellValue(group.getName());
+            titleCell2.setCellValue(family.getName());
             titleCell2.setCellStyle(headerStyle);
 
             // Ligne vide
@@ -160,23 +179,23 @@ public class ConsultGroupController {
             Row headerRow = sheet.createRow(2);
 
             Cell headerCell1 = headerRow.createCell(0);
-            headerCell1.setCellValue("Nom de l'Émetteur");
+            headerCell1.setCellValue("Nom de l'Obligation");
             headerCell1.setCellStyle(headerStyle);
 
             Cell headerCell2 = headerRow.createCell(1);
-            headerCell2.setCellValue("Nom de l'Obligation");
+            headerCell2.setCellValue("Nom du Souscripteur");
             headerCell2.setCellStyle(headerStyle);
 
             Cell headerCell3 = headerRow.createCell(2);
-            headerCell3.setCellValue("Capital");
+            headerCell3.setCellValue("Type de Souscripteur");
             headerCell3.setCellStyle(headerStyle);
 
             Cell headerCell4 = headerRow.createCell(3);
-            headerCell4.setCellValue("Taux (Mensuel / In Fine)");
+            headerCell4.setCellValue("Montant de Participation");
             headerCell4.setCellStyle(headerStyle);
 
             Cell headerCell5 = headerRow.createCell(4);
-            headerCell5.setCellValue("Durée");
+            headerCell5.setCellValue("Taux (Mensuel / In Fine)");
             headerCell5.setCellStyle(headerStyle);
 
             Cell headerCell6 = headerRow.createCell(5);
@@ -187,28 +206,28 @@ public class ConsultGroupController {
             headerCell7.setCellValue("Date de Fin");
             headerCell7.setCellStyle(headerStyle);
 
-            // Remplir les données des obligations
-            System.out.println("📊 Nombre d'obligations trouvées: " + obligationsList.size());
+            // Remplir les données des souscriptions
+            System.out.println("📊 Nombre de souscriptions trouvées: " + subscriptionsList.size());
             
             int rowIndex = 3;
-            for (ObligationData data : obligationsList) {
+            for (ObligationSubscriptionData data : subscriptionsList) {
                 Row dataRow = sheet.createRow(rowIndex++);
                 
                 Cell cell1 = dataRow.createCell(0);
-                cell1.setCellValue(data.emetteurName);
+                cell1.setCellValue(data.obligationName);
                 
                 Cell cell2 = dataRow.createCell(1);
-                cell2.setCellValue(data.obligationName);
+                cell2.setCellValue(data.nomSouscripteur);
                 
                 Cell cell3 = dataRow.createCell(2);
-                cell3.setCellValue(data.capital);
-                cell3.setCellStyle(currencyStyle);
+                cell3.setCellValue(data.typeSouscripteur);
                 
                 Cell cell4 = dataRow.createCell(3);
-                cell4.setCellValue(data.taux);
+                cell4.setCellValue(data.montantParticipation);
+                cell4.setCellStyle(currencyStyle);
                 
                 Cell cell5 = dataRow.createCell(4);
-                cell5.setCellValue(data.duree);
+                cell5.setCellValue(data.taux);
                 
                 Cell cell6 = dataRow.createCell(5);
                 cell6.setCellValue(data.dateDebut);
@@ -241,16 +260,14 @@ public class ConsultGroupController {
         }
     }
     
-    // Classe interne pour organiser les données des obligations
-    private static class ObligationData {
-        String emetteurName;
+    // Classe interne pour organiser les données des souscriptions
+    private static class ObligationSubscriptionData {
         String obligationName;
-        long capital;
+        String nomSouscripteur;
+        String typeSouscripteur;
+        long montantParticipation;
         String taux;
-        String duree;
         String dateDebut;
         String dateFin;
     }
 }
-
-

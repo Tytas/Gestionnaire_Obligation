@@ -26,7 +26,7 @@ Gestionnaire_Obligation/
 ├── src/                                 ← Code source JavaFX
 │   ├── main/java/mypackage/            ← Classes Java
 │   └── main/resources/                  ← Ressources (FXML, CSS, images)
-├── dataTEST/                                ← Données de l'application
+├── data/                                ← Données de l'application
 └── target/                              ← Fichiers compilés
 ```
 

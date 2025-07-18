@@ -50,10 +50,11 @@
                         <Insets />
                      </opaqueInsets>
                   </GridPane>
-                  <ButtonBar layoutX="94.0" layoutY="234.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                  <ButtonBar layoutX="94.0" layoutY="234.0" prefHeight="40.0" prefWidth="297.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0">
                     <buttons>
-                        <Button mnemonicParsing="false" onAction="#editFamily" text="Modifier" />
+                        <Button mnemonicParsing="false" onAction="#consultFamily" text="Consulter" />
                         <Button mnemonicParsing="false" onAction="#deleteFamily" text="Supprimer" />
+                        <Button mnemonicParsing="false" onAction="#editFamily" text="Modifier" />
                     </buttons>
                   </ButtonBar>
                </children>
