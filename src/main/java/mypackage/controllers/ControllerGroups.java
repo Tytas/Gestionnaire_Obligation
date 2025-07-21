@@ -17,7 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ListView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mypackage.MainApp;
@@ -42,7 +42,7 @@ public class ControllerGroups {
     @FXML
     private Label ValeurObligationsGroup;
     @FXML
-    private ListView<Applicant> listViewEmetteur;
+    private ListView<Obligation> listviewObligation;
     @FXML
     private TableView<Group> tableGroups;
     @FXML
@@ -80,7 +80,12 @@ public class ControllerGroups {
         this.listGroupName.setCellValueFactory(new PropertyValueFactory<Group, String>("name"));
         this.listGroupId.setCellValueFactory(new PropertyValueFactory<Group, String>("id"));
 
-        displayGroup(null);
+        // Vérifier que les composants FXML sont bien injectés avant de les utiliser
+        if (listviewObligation != null) {
+            displayGroup(null);
+        } else {
+            System.out.println("listviewObligation is not initialized.");
+        }
     
         tableGroups.getSelectionModel().selectedItemProperty().addListener(
             (observable, oldValue, newValue) -> displayGroup(newValue));
@@ -89,27 +94,45 @@ public class ControllerGroups {
     private void displayGroup(Group group) {
         this.selectedGroup = group;
 
-        ObservableList<Applicant> applicants = FXCollections.observableArrayList();
+        ObservableList<Obligation> obligations = FXCollections.observableArrayList();
         if (group != null) {
             for (Integer memberId : group.getMembers()) {
                 Applicant applicant = ApplicantInteractor.GetApplicant(memberId);
                 if (applicant != null) {
-                    applicants.add(applicant);
+                    for (Integer obligationId : applicant.getObligations()) {
+                        Obligation obligation = ObligationInteractor.GetObligation(obligationId);
+                        if (obligation != null) {
+                            obligations.add(obligation);
+                        }
+                    }
                 }
             }
         }
-        listViewEmetteur.getItems().clear();
-        listViewEmetteur.setItems(applicants);
-        listViewEmetteur.setCellFactory(lv -> new ListCell<>() {
+        listviewObligation.getItems().clear();
+        listviewObligation.setItems(obligations);
+        listviewObligation.setCellFactory(lv -> new ListCell<>() {
             @Override
-            protected void updateItem(Applicant item, boolean empty) {
+            protected void updateItem(Obligation item, boolean empty) {
                 super.updateItem(item, empty);
-                Label nameField = new Label();
-                HBox content = new HBox(10, nameField);
+                Label nomField = new Label();
+                Label tauxField = new Label();
+                Label capitalField = new Label();
+                Label dateField = new Label();
+                Label nomEmetteurField = new Label();
+                AnchorPane content = new AnchorPane(nomField, tauxField, capitalField, dateField, nomEmetteurField);
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
-                    nameField.setText(item.getName());
+                    nomField.setText(item.getName());
+                    tauxField.setText(item.getRate()[1] + "%" + " + " + item.getRate()[0] + "% IN FINE");
+                    setNumberLabel(capitalField, String.valueOf(item.getCapital()));
+                    dateField.setText(item.getStartDate() + " - " + item.getEndDate());
+                    nomEmetteurField.setText(ApplicantInteractor.GetApplicant(item.getApplicantId()).getName());
+                    AnchorPane.setLeftAnchor(nomField, 1.0);
+                    AnchorPane.setLeftAnchor(tauxField, 100.0);
+                    AnchorPane.setLeftAnchor(capitalField, 225.0);
+                    AnchorPane.setLeftAnchor(dateField, 350.0);
+                    AnchorPane.setLeftAnchor(nomEmetteurField, 550.0);
                     setGraphic(content);
                 }
             }
@@ -120,15 +143,9 @@ public class ControllerGroups {
             NameGroup.setText(group.getName());
             DirigeantGroup.setText(group.getBossFirstName() + " " + group.getBossName());
             int totalObligationValue = 0;
-            for (Applicant applicant : applicants) {
-                for(Integer obligationId : applicant.getObligations()) {
-                    Obligation obligation = ObligationInteractor.GetObligation(obligationId);
-                    if (obligation != null) {
-                        totalObligationValue += obligation.getCapital();
-                    } else {
-                        System.out.println("Obligation not found for ID: " + obligationId);
-                    }
-                }
+            for (Obligation obligation : obligations) {
+                totalObligationValue += obligation.getCapital();
+                System.out.println("Obligation not found for ID: " + obligation.getId());
             }
             setNumberLabel(ValeurObligationsGroup, String.valueOf(totalObligationValue));
         } else {

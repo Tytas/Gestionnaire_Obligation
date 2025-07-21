@@ -17,10 +17,10 @@ public class Obligation {
     private long capital;
     private Integer valeurNominale;
     private String startDate;   
-    private int durationMonths;
+    private String endDate;
     private int[] rate = {0, 0}; // [In Fine, mensuelle]
     private String periodicity;
-    private String[] prorogation; // [Durée de prorogation, nouveau taux, nouveau taux In Fine]
+    private String[] prorogation; // [Date de fin prorogation, nouveau taux, nouveau taux In Fine]
     private Boolean prorogationActivated = false;
     private String isin; //[numero ISIN]
     private ArrayList<String> safeties = new ArrayList<>();
@@ -35,7 +35,7 @@ public class Obligation {
         this.capital = 0;
         this.valeurNominale = 0;
         this.startDate = "";
-        this.durationMonths = 0;
+        this.endDate = "";
         this.rate = new int[]{0, 0};
         this.periodicity = "";
         this.prorogation = new String[]{"", "", ""}; // [Durée de prorogation, nouveau taux, nouveau taux In Fine]
@@ -45,7 +45,7 @@ public class Obligation {
     }
 
     public Obligation(int id, SimpleStringProperty name, Boolean convertible, long capital, Integer valeurNominale,
-                      String startDate, int durationMonths, int[] rate, String periodicity, String[] prorogation, 
+                      String startDate, String endDate, int[] rate, String periodicity, String[] prorogation, 
                       Boolean prorogationActivated, String isin, ArrayList<String> safeties, Map<String, Integer> depreciations, int applicantId) {
         this.id = id;
         this.name = name;
@@ -53,7 +53,7 @@ public class Obligation {
         this.capital = capital;
         this.valeurNominale = valeurNominale;
         this.startDate = startDate;
-        this.durationMonths = durationMonths;
+        this.endDate = endDate;
         this.rate = rate;
         this.periodicity = periodicity;
         this.prorogation = prorogation;
@@ -85,8 +85,8 @@ public class Obligation {
     public String getStartDate() {
         return startDate;
     }
-    public int getDurationMonths() {
-        return durationMonths;
+    public String getEndDate() {
+        return endDate;
     }
     public int[] getRate() {
         return rate;
@@ -155,8 +155,8 @@ public class Obligation {
     public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
-    public void setDurationMonths(int durationMonths) {
-        this.durationMonths = durationMonths;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
     public void setRate(int[] rate) {
         this.rate = rate;
@@ -209,10 +209,6 @@ public class Obligation {
         }
     }
     
-    public void addInvestor(Integer investor, long capital) {
-        this.investors.add(new InvestorInfo(investor, capital, ""));
-    }
-    
     public void addInvestor(Integer investor, long capital, String date) {
         this.investors.add(new InvestorInfo(investor, capital, date));
     }
@@ -250,9 +246,14 @@ public class Obligation {
             return null;
         }
         if(this.getRate()[1] != 0){
-            for(int i = period; i <= this.getDurationMonths(); i += period) {
-                LocalDate couponDate = LocalDate.parse(this.getStartDate()).plusMonths(i);
-                if (this.getRate()[0] != 0 && couponDate.isEqual(LocalDate.parse(this.getStartDate()).plusMonths(this.getDurationMonths())) && !this.getProrogationActivated()) {
+            LocalDate startDate = LocalDate.parse(this.getStartDate());
+            LocalDate endDate = LocalDate.parse(this.getEndDate());
+            
+            for(LocalDate couponDate = startDate.plusMonths(period); 
+                couponDate.isBefore(endDate) || couponDate.isEqual(endDate); 
+                couponDate = couponDate.plusMonths(period)) {
+                
+                if (this.getRate()[0] != 0 && couponDate.isEqual(endDate) && !this.getProrogationActivated()) {
                     String[] coupon = new String[3];
                     coupon[0] = couponDate.toString();
                     coupon[1] = String.valueOf((this.getRate()[1]+this.getRate()[0]) * this.getCapital() / 100);
@@ -267,7 +268,7 @@ public class Obligation {
                 }
             }
         } else if(this.getRate()[0] != 0 && !this.getProrogationActivated()) {
-            LocalDate couponDate = LocalDate.parse(this.getStartDate()).plusMonths(this.getDurationMonths());
+            LocalDate couponDate = LocalDate.parse(this.getEndDate());
             String[] coupon = new String[3];
             coupon[0] = couponDate.toString();
             coupon[1] = String.valueOf(this.getRate()[0] * this.getCapital() / 100);
@@ -275,24 +276,29 @@ public class Obligation {
             listCoupon.add(coupon);
         }
         if (this.getProrogationActivated() && (this.getProrogation()[1] != "0" || this.getProrogation()[1].trim() != "")) {
-            for(int i = period; i <= Integer.parseInt(this.getProrogation()[0]); i+= period) {
-                LocalDate prorogationCouponDate = LocalDate.parse(this.getStartDate()).plusMonths(this.getDurationMonths() + i);
-                if ((this.getProrogation()[2] != "0" || this.getProrogation()[2] != "") && this.getProrogation()[1].trim() != "" && prorogationCouponDate.isEqual(LocalDate.parse(this.getStartDate()).plusMonths(this.getDurationMonths() + Integer.parseInt(this.getProrogation()[0])))) {
+            LocalDate endDate = LocalDate.parse(this.getEndDate());
+            LocalDate prorogationEndDate = LocalDate.parse(this.getProrogation()[0]); // maintenant c'est une date de fin de prorogation
+            
+            for(LocalDate couponDate = endDate.plusMonths(period); 
+                couponDate.isBefore(prorogationEndDate) || couponDate.isEqual(prorogationEndDate); 
+                couponDate = couponDate.plusMonths(period)) {
+                
+                if ((this.getProrogation()[2] != "0" || this.getProrogation()[2] != "") && this.getProrogation()[1].trim() != "" && couponDate.isEqual(prorogationEndDate)) {
                     String[] coupon = new String[3];
-                    coupon[0] = prorogationCouponDate.toString();
+                    coupon[0] = couponDate.toString();
                     coupon[1] = String.valueOf((Long.parseLong(this.getProrogation()[1]) + Long.parseLong(this.getProrogation()[2])) * this.getCapital() / 100);
                     coupon[2] = this.getName();
                     listCoupon.add(coupon);
                 } else {
                     String[] coupon = new String[3];
-                    coupon[0] = prorogationCouponDate.toString();
+                    coupon[0] = couponDate.toString();
                     coupon[1] = String.valueOf(Long.parseLong(this.getProrogation()[1]) * this.getCapital() / 100);
                     coupon[2] = this.getName();
                     listCoupon.add(coupon);
                 }
             }
         } else if(this.getProrogationActivated() && (this.getProrogation()[2] != "0" || this.getProrogation()[2] != "")) {
-            LocalDate prorogationCouponDate = LocalDate.parse(this.getStartDate()).plusMonths(this.getDurationMonths() + Integer.parseInt(this.getProrogation()[0]));
+            LocalDate prorogationCouponDate = LocalDate.parse(this.getProrogation()[0]); // date de fin de prorogation
             String[] coupon = new String[3];
             coupon[0] = prorogationCouponDate.toString();
             coupon[1] = String.valueOf((Long.parseLong(this.getProrogation()[2])) * this.getCapital() / 100);

@@ -3,7 +3,9 @@ package mypackage.view.edit;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -26,7 +28,9 @@ import mypackage.model.Obligation;
 import mypackage.model.Family;
 import mypackage.model.DataBaseInteractor.InvestorInteractor;
 import mypackage.model.DataBaseInteractor.ObligationInteractor;
+import mypackage.model.util.NationalityUtils;
 import mypackage.model.DataBaseInteractor.FamilyInteractor;
+import mypackage.view.util.listviewObjects.TupleStringLongBoolean;
 
 public class EditSouscripteurPhysiqueController {
     private boolean result = false;
@@ -96,11 +100,12 @@ public class EditSouscripteurPhysiqueController {
     @FXML private Label familyErreurLabel;
     
     @FXML
-    private ListView<String[]> obligationListView;
+    private ListView<TupleStringLongBoolean> obligationListView;
     @FXML
     private TextField obligationSearchField;
-    private ObservableList<String[]> allObligations = FXCollections.observableArrayList();
-    private FilteredList<String[]> filteredObligations;
+    private ObservableList<TupleStringLongBoolean> allObligations = FXCollections.observableArrayList();
+    private FilteredList<TupleStringLongBoolean> filteredObligations;
+    private ChangeListener<Boolean> selectionListener;
 
     @FXML
     private ListView<String> familyListView;
@@ -118,7 +123,7 @@ public class EditSouscripteurPhysiqueController {
     public boolean getResult() {
         return result;
     }
-    public ListView<String[]> getObligationListView() {
+    public ListView<TupleStringLongBoolean> getObligationListView() {
         return obligationListView;
     }
     public ListView<String> getFamilyListView() {
@@ -207,17 +212,17 @@ public class EditSouscripteurPhysiqueController {
                 
                 // Gestion sécurisée des obligations
                 if (filteredObligations != null && souscripteur.getObligations() != null) {
-                    for(String[] obligation : filteredObligations) {
+                    for(TupleStringLongBoolean obligation : filteredObligations) {
                         if (obligation != null) {
                             for(int id : souscripteur.getObligations()) {
                                 try {
                                     Obligation obligationObj = ObligationInteractor.GetObligation(id);
                                     if (obligationObj != null && obligationObj.getName() != null && 
-                                        obligation.length > 0 && obligation[0] != null &&
-                                        obligation[0].equalsIgnoreCase(obligationObj.getName())) {
-                                        if (obligation.length > 1) {
-                                            obligation[1] = "true"; // Mark as selected
-                                        }
+                                        obligation != null &&
+                                        obligation.getName().equalsIgnoreCase(obligationObj.getName())) {
+                                        obligation.setSelectionne(true);
+                                        obligation.setCapital(String.valueOf(obligationObj.getInvestorCapital(currentSouscripteur.getId())));
+                                        obligation.setDate(obligationObj.getInvestorDate(currentSouscripteur.getId()));
                                     }
                                 } catch (Exception e) {
                                     System.err.println("Erreur lors de la récupération de l'obligation ID " + id + ": " + e.getMessage());
@@ -252,7 +257,7 @@ public class EditSouscripteurPhysiqueController {
 
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
-        nationaliteField.setItems(FXCollections.observableArrayList("Française", "Américaine", "Allemande", "Espagnole"));
+        nationaliteField.setItems(NationalityUtils.getNationalities());
 
         ArrayList<Integer> familyId = FamilyInteractor.GetAllFamiliesId();
         for (Integer id : familyId) {
@@ -288,10 +293,10 @@ public class EditSouscripteurPhysiqueController {
         for (Integer id : obligationId) {
             Obligation obligation = ObligationInteractor.GetObligation(id);
             if (obligation != null) {
-                String[] obligationData = new String[2];
-                obligationData[0] = obligation.getName();
-                obligationData[1] = String.valueOf(false);
-                allObligations.add(obligationData);
+                TupleStringLongBoolean tuple = new TupleStringLongBoolean(new SimpleStringProperty(obligation.getName()),
+                                                                          new SimpleStringProperty("0"),
+                                                                          new SimpleBooleanProperty(false));
+                allObligations.add(tuple);
             }
         }
         // Initialize the obligation list view
@@ -305,24 +310,62 @@ public class EditSouscripteurPhysiqueController {
                     return true; // Show all obligations if search is empty
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
-                return obligation[0].toLowerCase().contains(lowerCaseFilter);
+                return obligation.getName().toLowerCase().contains(lowerCaseFilter);
             });
         });
         obligationListView.setCellFactory(lv -> new ListCell<>() {
             @Override
-            protected void updateItem(String[] item, boolean empty) {
+            protected void updateItem(TupleStringLongBoolean item, boolean empty) {
                 super.updateItem(item, empty);
                 CheckBox checkBox = new CheckBox();
-                HBox content = new HBox(10, checkBox);
+                TextField montantField = new TextField();
+                DatePicker datePicker = new DatePicker();
+                datePicker.setStyle("-fx-pref-width: 115px; -fx-pref-height: 25px; -fx-min-height: 25px;" +
+                                     "-fx-max-height: 25px; -fx-font-size: 12px; -fx-padding: 0px;");
+                montantField.setStyle("-fx-pref-width: 50px; -fx-pref-height: 25px; -fx-min-height: 25px;" +
+                                      "-fx-max-height: 25px; -fx-font-size: 14px; -fx-padding: 0px;");
+
+                // Liaison bidirectionnelle personnalisée pour le DatePicker
+                datePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
+                    if (newDate != null) {
+                        item.setDate(newDate.toString());
+                    } else {
+                        item.setDate("");
+                    }
+                });
+                
+                HBox content = new HBox(10, checkBox, montantField, datePicker);
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
-                    checkBox.setText(item[0]);
-                    checkBox.setSelected(Boolean.parseBoolean(item[1])); 
-                    checkBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-                        item[1] = String.valueOf(isNowSelected);
-                    });
-                setGraphic(content);
+                    checkBox.setText(item.getName());
+                    
+                    checkBox.selectedProperty().bindBidirectional(item.selectionneProperty());
+                    montantField.textProperty().bindBidirectional(item.capitalProperty());
+
+                    if (item.getDate() != null && !item.getDate().isEmpty()) {
+                        try {
+                            datePicker.setValue(LocalDate.parse(item.getDate()));
+                        } catch (Exception e) {
+                            datePicker.setValue(null);
+                        }
+                    } else {
+                        datePicker.setValue(null);
+                    }
+                    // Désactiver les champs si non sélectionné
+                    montantField.setDisable(!item.getSelectionne());
+                    datePicker.setDisable(!item.getSelectionne());
+                    
+                    if (selectionListener != null) {
+                        item.selectionneProperty().removeListener(selectionListener);
+                    }
+
+                    selectionListener = (obs, oldVal, newVal) -> {
+                        montantField.setDisable(!newVal);
+                        datePicker.setDisable(!newVal);
+                    };
+                    item.selectionneProperty().addListener(selectionListener);
+                    setGraphic(content);
                 }
             }
         });
@@ -422,35 +465,35 @@ public class EditSouscripteurPhysiqueController {
                 emailBoss, phoneNumberBoss, addressBoss, 
                 IBAN, BIC, BankName, familyId);
         System.out.println("Creating investorNP with the following details:");
-        for (String[] obligation : allObligations) {
-            if (Boolean.parseBoolean(obligation[1])) {
-                System.out.println(ObligationInteractor.GetObligationByName(obligation[0]).getId());
-                int obligationId = ObligationInteractor.GetObligationByName(obligation[0]).getId();
+        for (TupleStringLongBoolean obligation : allObligations) {
+            if (obligation.getSelectionne()) {
+                System.out.println(ObligationInteractor.GetObligationByName(obligation.getName()).getId());
+                int obligationId = ObligationInteractor.GetObligationByName(obligation.getName()).getId();
                 
                 // Vérification que l'obligation n'existe pas déjà dans l'investor
                 if (!investorNP.getObligations().contains(obligationId)) {
                     investorNP.addObligation(obligationId);
-                } else {
-                    System.out.println("Obligation " + obligationId + " already exists in investor " + id);
                 }
                 
-                int idObligation = ObligationInteractor.GetObligationByName(obligation[0]).getId();
+                int idObligation = ObligationInteractor.GetObligationByName(obligation.getName()).getId();
                 if (idObligation != -1) {
                     Obligation newObligation = ObligationInteractor.GetObligation(idObligation);
                     
                     // Vérification que l'investisseur avec ce montant n'existe pas déjà dans l'obligation
-                    Long defaultAmount = 10L;
+                    Long investmentAmount = Long.valueOf(obligation.getCapital());
                     boolean investorExists = false;
                     for (mypackage.model.util.InvestorInfo info : newObligation.getInvestors()) {
                         if (info.getInvestorId().equals(id) && 
-                            info.getCapital().equals(defaultAmount)) {
+                            info.getCapital().equals(investmentAmount) && 
+                            info.getDate().equals(obligation.getDate())) {
                             investorExists = true;
-                            System.out.println("Investor " + id + " with amount " + defaultAmount + " already exists in obligation " + idObligation);
+                            System.out.println("Investor " + id + " with amount " + investmentAmount + " already exists in obligation " + idObligation);
                             break;
                         }
                     }
                     if (!investorExists) {
-                        newObligation.addInvestor(id, defaultAmount);
+                        newObligation.removeInvestor(id);
+                        newObligation.addInvestor(id, investmentAmount, obligation.getDate());
                     }
                     
                     ObligationInteractor.DeleteObligation(idObligation);

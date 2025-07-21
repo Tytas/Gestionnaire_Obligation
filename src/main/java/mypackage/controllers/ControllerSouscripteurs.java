@@ -1,6 +1,8 @@
 package mypackage.controllers;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Optional;
 
 import javafx.collections.FXCollections;
@@ -57,7 +59,9 @@ public class ControllerSouscripteurs {
     @FXML
     private TableColumn<Investor, String> listInvestorName;
     @FXML
-    private TableColumn<Investor, String> listInvestorId;
+    private TableColumn<Investor, String> listInvestorStatut;
+    @FXML
+    private TableColumn<Investor, String> listInvestorCountry;
 
     @FXML
     private Button deleteButton;
@@ -92,7 +96,26 @@ public class ControllerSouscripteurs {
             tableInvestors.setItems(listInvestor);
         }
         this.listInvestorName.setCellValueFactory(new PropertyValueFactory<Investor, String>("name"));
-        this.listInvestorId.setCellValueFactory(new PropertyValueFactory<Investor, String>("id"));
+
+        this.listInvestorStatut.setCellValueFactory(cellData -> {
+            Investor investor = cellData.getValue();
+            if (investor instanceof InvestorNP) {
+                return new javafx.beans.property.SimpleStringProperty("PP");
+            } else if (investor instanceof InvestorLP) {
+                return new javafx.beans.property.SimpleStringProperty("PM");
+            }
+            return new javafx.beans.property.SimpleStringProperty("");
+        });
+
+        this.listInvestorCountry.setCellValueFactory(cellData -> {
+            Investor investor = cellData.getValue();
+            if (investor instanceof InvestorNP) {
+                return new javafx.beans.property.SimpleStringProperty(((InvestorNP) investor).getAddress()[4]); 
+            } else if (investor instanceof InvestorLP) {
+                return new javafx.beans.property.SimpleStringProperty(((InvestorLP) investor).getAddress()[4]);
+            }
+            return new javafx.beans.property.SimpleStringProperty("");
+        });
 
         displayInvestor(null);
     
@@ -134,7 +157,7 @@ public class ControllerSouscripteurs {
                 } else {
                     nameField.setText(item.getName());
                     montantField.setText(String.valueOf(item.getInvestorCapital(investor.getId()) + " obligations"));
-                    montantEuroField.setText(String.valueOf(item.getInvestorCapital(investor.getId()) * item.getValeurNominale() + " €"));
+                    setNumberLabel(montantEuroField, String.valueOf(item.getInvestorCapital(investor.getId()) * item.getValeurNominale()));
                     AnchorPane.setLeftAnchor(nameField, 10.0);
                     AnchorPane.setLeftAnchor(montantField, 200.0);
                     AnchorPane.setLeftAnchor(montantEuroField, 400.0);
@@ -352,6 +375,26 @@ public class ControllerSouscripteurs {
             }
         } else {
             System.out.println("No obligation selected to edit.");
+        }
+    }
+
+    public void setNumberLabel(Label label, String numberAsString) {
+        try {
+            // Nettoyer la chaîne d'entrée (enlever espaces existants, virgules, etc.)
+            String cleanString = numberAsString.replaceAll("[\\s,]", "");
+            
+            // Convertir en nombre
+            double value = Double.parseDouble(cleanString);
+            
+            // Formater avec espaces
+            NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+            format.setGroupingUsed(true);
+            label.setText(format.format(value) + " €");
+        } catch (NumberFormatException e) {
+            // En cas d'erreur de format, afficher la chaîne originale ou gérer l'erreur
+            label.setText(numberAsString);
+            // Ou bien : 
+            // label.setText("Format invalide");
         }
     }
 

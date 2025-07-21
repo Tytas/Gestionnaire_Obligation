@@ -68,9 +68,7 @@
     -fx-background-radius: 4px;
     -fx-padding: 3px 4px;
     -fx-font-size: 14px;
-    -fx-min-height: 30px;
     -fx-pref-height: 40px;
-    -fx-max-height: 40px;
     -fx-pref-width: 200px;
 }
 

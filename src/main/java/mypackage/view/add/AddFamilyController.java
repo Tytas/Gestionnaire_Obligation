@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import mypackage.model.DataBaseInteractor.FamilyInteractor;
 import mypackage.view.util.ContactWindow;
 import mypackage.model.Family;
+import mypackage.model.util.NationalityUtils;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Button;
@@ -131,7 +132,7 @@ public class AddFamilyController {
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
         nationaliteDirigeantComboBox.setItems(FXCollections.observableArrayList("Française", "Américaine", "Allemande", "Espagnole"));
-        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SAS", "SA"));
+        formeJuridiqueComboBox.setItems(NationalityUtils.getLegalForms());
         distributionTypeField.setItems(FXCollections.observableArrayList("CIF", "PSI", "BANQUE"));
 
         contactsListView.setItems(contacts);

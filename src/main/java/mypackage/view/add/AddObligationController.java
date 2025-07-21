@@ -55,7 +55,7 @@ public class AddObligationController {
     @FXML
     private DatePicker dateDebutField;
     @FXML
-    private TextField dureeField; 
+    private DatePicker dateFinField; 
     @FXML
     private ToggleGroup prorogation;
     @FXML
@@ -67,7 +67,7 @@ public class AddObligationController {
     @FXML
     private TextField TauxProrogationInfineField;
     @FXML
-    private TextField DureeProrogationField; 
+    private DatePicker DateFinProrogationField; 
     @FXML
     private TextField valeurNominaleField;
     @FXML
@@ -85,10 +85,10 @@ public class AddObligationController {
     @FXML private Label tauxTempErreurField;
     @FXML private Label periodiciteErreurComboBox;
     @FXML private Label dateDebutErreurField;
-    @FXML private Label dureeErreurField;
+    @FXML private Label dateFinErreurField;
     @FXML private Label tauxProrogationErreurField;
     @FXML private Label tauxProrogationInfineErreurField;
-    @FXML private Label dureeProrogationErreurField;
+    @FXML private Label dateFinProrogationErreurField;
     @FXML private Label emetteurErreurLabel;
     @FXML private Label valeurNominaleErreurField;
     @FXML private Label isinErreurToggle;
@@ -158,11 +158,11 @@ public class AddObligationController {
             if (newToggle == prorogationOui) {
                 TauxProrogationField.setDisable(false);
                 TauxProrogationInfineField.setDisable(false);
-                DureeProrogationField.setDisable(false);
+                DateFinProrogationField.setDisable(false);
             } else if (newToggle == prorogationNon) {
                 TauxProrogationField.setDisable(true);
                 TauxProrogationInfineField.setDisable(true);
-                DureeProrogationField.setDisable(true);
+                DateFinProrogationField.setDisable(true);
             }
         });
         isinToggle.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
@@ -191,9 +191,11 @@ public class AddObligationController {
                 CheckBox checkBox = new CheckBox();
                 TextField montantField = new TextField();
                 DatePicker datePicker = new DatePicker();
-                datePicker.setPromptText("Date d'investissement");
-                datePicker.setPrefWidth(140);
-                
+                datePicker.setStyle("-fx-pref-width: 115px; -fx-pref-height: 25px; -fx-min-height: 25px;" +
+                                     "-fx-max-height: 25px; -fx-font-size: 12px; -fx-padding: 0px;");
+                montantField.setStyle("-fx-pref-width: 50px; -fx-pref-height: 25px; -fx-min-height: 25px;" +
+                                      "-fx-max-height: 25px; -fx-font-size: 14px; -fx-padding: 0px;");
+
                 // Liaison bidirectionnelle personnalisée pour le DatePicker
                 datePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
                     if (newDate != null) {
@@ -202,17 +204,26 @@ public class AddObligationController {
                         item.setDate("");
                     }
                 });
+                
                 HBox content = new HBox(10, checkBox, montantField, datePicker);
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
                     checkBox.setText(item.getName());
-                    checkBox.selectedProperty().unbind();
-                    montantField.textProperty().unbindBidirectional(item.getCapital());
-
+                    
                     checkBox.selectedProperty().bindBidirectional(item.selectionneProperty());
                     montantField.textProperty().bindBidirectional(item.capitalProperty());
 
+                    if (item.getDate() != null && !item.getDate().isEmpty()) {
+                        try {
+                            datePicker.setValue(java.time.LocalDate.parse(item.getDate()));
+                        } catch (Exception e) {
+                            datePicker.setValue(null);
+                        }
+                    } else {
+                        datePicker.setValue(null);
+                    }
+                    
                     // Désactiver les champs si non sélectionné
                     montantField.setDisable(!item.getSelectionne());
                     datePicker.setDisable(!item.getSelectionne());
@@ -224,9 +235,9 @@ public class AddObligationController {
                     selectionListener = (obs, oldVal, newVal) -> {
                         montantField.setDisable(!newVal);
                         datePicker.setDisable(!newVal);
-                };
-                item.selectionneProperty().addListener(selectionListener);
-                setGraphic(content);
+                    };
+                    item.selectionneProperty().addListener(selectionListener);
+                    setGraphic(content);
                 }
             }
         });
@@ -394,19 +405,13 @@ public class AddObligationController {
                 }
             }
 
-            String dureeString = dureeField.getText();
-            Integer duree = null;
-            if (dureeString == null || dureeString.isEmpty()) {
-                showError(dureeErreurField, "Durée requise");
+            String dateFinString = null;
+            if (dateFinField.getValue() == null) {
+                showError(dateFinErreurField, "Date de fin requise");
                 hasError = true;
             } else {
-                try {
-                    duree = Integer.parseInt(dureeString);
-                    hideError(dureeErreurField);
-                } catch (NumberFormatException e) {
-                    showError(dureeErreurField, "Durée invalide");
-                    hasError = true;
-                }
+                dateFinString = dateFinField.getValue().toString();
+                hideError(dateFinErreurField);
             }
 
             String periodicite = periodiciteComboBox.getValue();
@@ -447,15 +452,15 @@ public class AddObligationController {
                     hideError(tauxProrogationInfineErreurField);
                 }
 
-                if (DureeProrogationField.getText().trim().isEmpty()) {
-                    showError(dureeProrogationErreurField, "Durée requise");
+                if (DateFinProrogationField.getValue() == null) {
+                    showError(dateFinProrogationErreurField, "Date de fin de prorogation requise");
                     hasError = true;
                 } else {
-                    hideError(dureeProrogationErreurField);
+                    hideError(dateFinProrogationErreurField);
                 }
             } else {
                 hideError(tauxProrogationErreurField);
-                hideError(dureeProrogationErreurField);
+                hideError(dateFinProrogationErreurField);
             }
 
             Toggle selectedIsin = isinToggle.getSelectedToggle();
@@ -485,8 +490,9 @@ public class AddObligationController {
 
             if (!hasError) {
                 CreateObligation(nom, capital, valeurNominale, new int[]{tauxInFine, tauxTemp}, isConvertible,
-                    periodicite, isProrogation, TauxProrogationField.getText(), TauxProrogationInfineField.getText(), DureeProrogationField.getText(),
-                    numeroIsin, duree, dateDebutString, allSouscripteurs, emetteur, suretes, amortissements);
+                    periodicite, isProrogation, TauxProrogationField.getText(), TauxProrogationInfineField.getText(), 
+                    DateFinProrogationField.getValue() != null ? DateFinProrogationField.getValue().toString() : "",
+                    numeroIsin, dateFinString, dateDebutString, allSouscripteurs, emetteur, suretes, amortissements);
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
             }
@@ -515,7 +521,7 @@ public class AddObligationController {
 
     private void CreateObligation(String nom, Long capital, Integer valeurNominale, int[] taux, Boolean isConvertible,
                                   String periodicite, Boolean isProrogation,String tauxProrogation,
-                                  String tauxProrogationInfine, String dureeProrogation, String numeroIsin, Integer duree,
+                                  String tauxProrogationInfine, String dateFinProrogation, String numeroIsin, String dateFin,
                                   String dateDebut, ObservableList<TupleStringLongBoolean> souscripteursList, String emetteurName,
                                   ObservableList<String> suretes, ObservableList<String[]> amortissements) {
         int newId = ObligationInteractor.generateNewId(); // Generate a new ID for the obligation
@@ -534,8 +540,8 @@ public class AddObligationController {
                 System.out.println("Invalid amortissement format: " + amortissement);
             }
         }
-        Obligation obligation = new Obligation(newId, new SimpleStringProperty(nom), isConvertible, capital, valeurNominale, dateDebut, duree, taux, periodicite,
-                                                new String[]{dureeProrogation, tauxProrogation, tauxProrogationInfine}, false, numeroIsin, new ArrayList<>(suretes), amortissementsMap, idApplicant);
+        Obligation obligation = new Obligation(newId, new SimpleStringProperty(nom), isConvertible, capital, valeurNominale, dateDebut, dateFin, taux, periodicite,
+                                                new String[]{dateFinProrogation, tauxProrogation, tauxProrogationInfine}, false, numeroIsin, new ArrayList<>(suretes), amortissementsMap, idApplicant);
         for (TupleStringLongBoolean souscripteur : souscripteursList) {
             System.out.println("Adding investor: " + souscripteur.getName());
             if (souscripteur.getName() != null && !souscripteur.getName().isEmpty() && souscripteur.getSelectionne()) {

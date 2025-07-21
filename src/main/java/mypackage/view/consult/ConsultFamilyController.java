@@ -71,7 +71,7 @@ public class ConsultFamilyController {
             // Configuration du FileChooser pour Excel
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Enregistrer la liste des obligations du family");
-            fileChooser.setInitialFileName(family.getName() + "_Obligations.xlsx");
+            fileChooser.setInitialFileName(family.getName() + "_" + LocalDate.now() + "_Obligations.xlsx");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
 
             File selectedFile = fileChooser.showSaveDialog(stage);
@@ -111,8 +111,12 @@ public class ConsultFamilyController {
                                 data.montantParticipation = investorInfo.getCapital() * obligation.getValeurNominale();
                                 data.taux = obligation.getRate()[1] + "% / " + obligation.getRate()[0] + "%"; // taux mensuel / taux in fine
                                 data.dateDebut = obligation.getStartDate();
-                                data.dateFin = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()).toString();
-                                
+                                if(obligation.getProrogationActivated()) {
+                                    data.dateFin = obligation.getProrogation()[0];
+                                } else  {
+                                    data.dateFin = obligation.getEndDate();
+                                }
+
                                 // Récupérer le nom et type du souscripteur
                                 Integer investorId = investorInfo.getInvestorId();
                                 

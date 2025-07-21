@@ -99,9 +99,9 @@ public class CouponWindow {
                     } else if(obligationData.getPeriodicity().equals("Annuelle")) {
                         period = 12;
                     }
-                    if(obligationData.getProrogationActivated() && LocalDate.parse(obligationData.getStartDate()).plusMonths(obligationData.getDurationMonths()).isBefore(LocalDate.parse(obligation[0]))) {
+                    if(obligationData.getProrogationActivated() && LocalDate.parse(obligationData.getEndDate()).isBefore(LocalDate.parse(obligation[0]))) {
                         Taux = Double.parseDouble(obligationData.getProrogation()[1]) / 100.0;
-                        if(LocalDate.parse(obligationData.getStartDate()).plusMonths(obligationData.getDurationMonths() + Long.parseLong(obligationData.getProrogation()[0])).isEqual(LocalDate.parse(obligation[0]))) {
+                        if(LocalDate.parse(obligationData.getProrogation()[0]).isEqual(LocalDate.parse(obligation[0]))) {
                             TauxInFine = Double.parseDouble(obligationData.getProrogation()[2]) / 100.0;
                             montantCapitalise = (double) MontantInvestiCapitalise(Integer.parseInt(item[1]) * obligationData.getValeurNominale(), obligationData, obligation[0]);
                                 period = 12;
@@ -111,7 +111,7 @@ public class CouponWindow {
                         }
                     } else {
                         Taux = obligationData.getRate()[1] / 100.0;
-                        if(LocalDate.parse(obligationData.getStartDate()).plusMonths(obligationData.getDurationMonths()).isEqual(LocalDate.parse(obligation[0]))) {
+                        if(LocalDate.parse(obligationData.getEndDate()).isEqual(LocalDate.parse(obligation[0]))) {
                             TauxInFine = obligationData.getRate()[0] / 100.0;
                             montantCapitalise = (double) MontantInvestiCapitalise(Integer.parseInt(item[1]) * obligationData.getValeurNominale(), obligationData, obligation[0]);
                         }

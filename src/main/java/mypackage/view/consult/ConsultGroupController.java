@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.awt.Desktop;
 
@@ -71,7 +72,7 @@ public class ConsultGroupController {
             // Configuration du FileChooser pour Excel
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Enregistrer la liste des obligations du groupe");
-            fileChooser.setInitialFileName(group.getName() + "_Group.xlsx");
+            fileChooser.setInitialFileName(group.getName() + "_" + LocalDate.now() + "_Group.xlsx");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Excel", "*.xlsx"));
 
             File selectedFile = fileChooser.showSaveDialog(stage);
@@ -110,10 +111,23 @@ public class ConsultGroupController {
                             data.obligationName = obligation.getName();
                             data.capital = obligation.getCapital();
                             data.taux = obligation.getRate()[1] + "% / " + obligation.getRate()[0] + "%"; // taux mensuel / taux in fine
-                            data.duree = obligation.getDurationMonths() + " mois";
-                            data.dateDebut = obligation.getStartDate();
-                            data.dateFin = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()).toString();
                             
+                            // Calculer la durée en mois pour l'affichage
+                            LocalDate startDate = LocalDate.parse(obligation.getStartDate());
+                            LocalDate endDate;
+                            if(obligation.getProrogationActivated()) {
+                                // Si la prorogation est activée, on utilise la date de fin de la prorogation
+                                endDate = LocalDate.parse(obligation.getProrogation()[0]);
+                            } else {
+                                // Sinon, on utilise la date de fin normale
+                                endDate = LocalDate.parse(obligation.getEndDate());
+                            }
+                            long durationInMonths = ChronoUnit.MONTHS.between(startDate, endDate);
+                            data.duree = durationInMonths + " mois";
+                            
+                            data.dateDebut = obligation.getStartDate();
+                            data.dateFin = obligation.getEndDate();
+
                             obligationsList.add(data);
                         }
                     }

@@ -4,6 +4,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.time.temporal.ChronoUnit;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -178,7 +179,7 @@ public class ControllerObligations {
         }
         LocalDate now = LocalDate.now();
         LocalDate startDate = LocalDate.parse(obligation.getStartDate());
-        LocalDate endDate = startDate.plusMonths(obligation.getDurationMonths());
+        LocalDate endDate = LocalDate.parse(obligation.getEndDate());
         
         if (now.isBefore(startDate)) {
             return "À venir";
@@ -211,10 +212,9 @@ public class ControllerObligations {
                 OS_OCAObligation.setText("Obligation Simple");
             }
             ISINObligation.setText(oblig.getIsin());
-            DureeObligation.setText(String.valueOf(oblig.getDurationMonths()+" mois"));
+            DureeObligation.setText(String.valueOf(ChronoUnit.MONTHS.between(LocalDate.parse(oblig.getStartDate()), LocalDate.parse(oblig.getEndDate()))) + " mois");
             DateDebutObligation.setText(oblig.getStartDate());
-            LocalDate dateFin = LocalDate.parse(oblig.getStartDate()).plusMonths(oblig.getDurationMonths());
-            DateFinObligation.setText(dateFin.toString());
+            DateFinObligation.setText(oblig.getEndDate());
             if(oblig.getRate()[0] != 0 && oblig.getRate()[1] != 0) {
                 TauxObligation.setText(String.valueOf(oblig.getRate()[1]) + "%" + " + " + String.valueOf(oblig.getRate()[0]) + "% INFINE");
             } else {

@@ -27,6 +27,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import mypackage.model.Applicant;
 import mypackage.model.Investor;
+import mypackage.model.InvestorNP;
+import mypackage.model.InvestorLP;
 import mypackage.model.Obligation;
 import mypackage.model.DataBaseInteractor.ApplicantInteractor;
 import mypackage.model.DataBaseInteractor.InvestorInteractor;
@@ -57,7 +59,7 @@ public class EditObligationController {
     @FXML
     private DatePicker dateDebutField;
     @FXML
-    private TextField dureeField; 
+    private DatePicker dateFinField; 
     @FXML
     private ToggleGroup prorogation;
     @FXML
@@ -69,7 +71,7 @@ public class EditObligationController {
     @FXML
     private TextField TauxProrogationInfineField;
     @FXML
-    private TextField DureeProrogationField; 
+    private DatePicker DateFinProrogationField; 
     @FXML
     private CheckBox ProrogationActivee;
 
@@ -127,10 +129,10 @@ public class EditObligationController {
     @FXML private Label tauxTempErreurField;
     @FXML private Label periodiciteErreurComboBox;
     @FXML private Label dateDebutErreurField;
-    @FXML private Label dureeErreurField;
+    @FXML private Label dateFinErreurField;
     @FXML private Label tauxProrogationErreurField;
     @FXML private Label tauxProrogationInfineErreurField;
-    @FXML private Label dureeProrogationErreurField;
+    @FXML private Label dateFinProrogationErreurField;
     @FXML private Label emetteurErreurLabel;
     @FXML private Label valeurNominaleErreurField;
     @FXML private Label isinErreurToggle;
@@ -173,7 +175,14 @@ public class EditObligationController {
                 
                 capitalField.setText(String.valueOf(currentObligation.getCapital()));
                 valeurNominaleField.setText(String.valueOf(currentObligation.getValeurNominale()));
-                dureeField.setText(String.valueOf(currentObligation.getDurationMonths()));
+                
+                if (currentObligation.getEndDate() != null && !currentObligation.getEndDate().isEmpty()) {
+                    try {
+                        dateFinField.setValue(LocalDate.parse(currentObligation.getEndDate()));
+                    } catch (Exception e) {
+                        System.err.println("Erreur lors du parsing de la date de fin: " + e.getMessage());
+                    }
+                }
                 
                 if (currentObligation.getPeriodicity() != null) {
                     periodiciteComboBox.setValue(currentObligation.getPeriodicity());
@@ -199,7 +208,13 @@ public class EditObligationController {
                     if (prorogation.length > 2 && prorogation[2] != null) {
                         TauxProrogationInfineField.setText(prorogation[2]);
                     }
-                    DureeProrogationField.setText(prorogation[0]);
+                    if (prorogation[0] != null && !prorogation[0].isEmpty()) {
+                        try {
+                            DateFinProrogationField.setValue(LocalDate.parse(prorogation[0]));
+                        } catch (Exception e) {
+                            System.err.println("Erreur lors du parsing de la date de fin de prorogation: " + e.getMessage());
+                        }
+                    }
                 } else {
                     prorogationNon.setSelected(true);
                 }
@@ -271,8 +286,12 @@ public class EditObligationController {
                                     try {
                                         int id = info.getInvestorId();
                                         Investor investor = InvestorInteractor.GetInvestor(id);
-                                        if (investor != null && investor.getName() != null && 
-                                            item.getName() != null && item.getName().equalsIgnoreCase(investor.getName())) {
+                                        String investorName = investor != null ? investor.getName() : null;
+                                        if(investor instanceof InvestorNP) {
+                                            investorName = ((InvestorNP) investor).getFirstName() + " " + investor.getName();
+                                        }
+                                        if (investor != null && investor.getName() != null && item.getName() != null && 
+                                            item.getName().equalsIgnoreCase(investorName)) {
                                             item.selectionneProperty().set(true);
                                             item.capitalProperty().set(String.valueOf(info.getCapital()));
                                             if (info.getDate() != null) {
@@ -368,9 +387,17 @@ public class EditObligationController {
         periodiciteComboBox.getItems().addAll("Mensuelle", "Trimestrielle", "Semestrielle", "Annuelle");
         ArrayList<Integer> investorsId = InvestorInteractor.GetAllInvestorId();
         for (Integer id : investorsId) {
-            Investor investor = InvestorInteractor.GetInvestorNP(id);
-            if (investor != null) {
-                TupleStringLongBoolean tuple = new TupleStringLongBoolean(new SimpleStringProperty(investor.getName()), 
+            Investor investor = InvestorInteractor.GetInvestor(id);
+            if (investor instanceof InvestorNP) {
+                InvestorNP investorNP = (InvestorNP) investor;
+                TupleStringLongBoolean tuple = new TupleStringLongBoolean(new SimpleStringProperty(investorNP.getFirstName() + " " + investorNP.getName()), 
+                                                                          new SimpleStringProperty("0"), 
+                                                                          new SimpleBooleanProperty(false));
+                allSouscripteurs.add(tuple);
+            }
+            if (investor instanceof InvestorLP) {
+                InvestorLP investorLP = (InvestorLP) investor;
+                TupleStringLongBoolean tuple = new TupleStringLongBoolean(new SimpleStringProperty(investorLP.getName()), 
                                                                           new SimpleStringProperty("0"), 
                                                                           new SimpleBooleanProperty(false));
                 allSouscripteurs.add(tuple);
@@ -379,16 +406,16 @@ public class EditObligationController {
         prorogation.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
             if (newToggle == prorogationOui) {
                 TauxProrogationField.setDisable(false);
-                DureeProrogationField.setDisable(false);
+                DateFinProrogationField.setDisable(false);
                 TauxProrogationInfineField.setDisable(false);
                 ProrogationActivee.setDisable(false);
             } else if (newToggle == prorogationNon) {
                 TauxProrogationField.setDisable(true);
-                DureeProrogationField.setDisable(true);
+                DateFinProrogationField.setDisable(true);
                 TauxProrogationInfineField.setDisable(true);
                 ProrogationActivee.setDisable(true);
                 TauxProrogationField.setText("");
-                DureeProrogationField.setText("");
+                DateFinProrogationField.setValue(null);
                 TauxProrogationInfineField.setText("");
                 ProrogationActivee.setSelected(false);
             }
@@ -420,9 +447,11 @@ public class EditObligationController {
                 CheckBox checkBox = new CheckBox();
                 TextField montantField = new TextField();
                 DatePicker datePicker = new DatePicker();
-                datePicker.setPromptText("Date d'investissement");
-                datePicker.setPrefWidth(140);
-                
+                datePicker.setStyle("-fx-pref-width: 115px; -fx-pref-height: 25px; -fx-min-height: 25px;" +
+                                     "-fx-max-height: 25px; -fx-font-size: 12px; -fx-padding: 0px;");
+                montantField.setStyle("-fx-pref-width: 50px; -fx-pref-height: 25px; -fx-min-height: 25px;" +
+                                      "-fx-max-height: 25px; -fx-font-size: 14px; -fx-padding: 0px;");
+
                 // Liaison bidirectionnelle personnalisée pour le DatePicker
                 datePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
                     if (newDate != null) {
@@ -673,19 +702,13 @@ public class EditObligationController {
                 }
             }
 
-            String dureeString = dureeField.getText();
-            Integer duree = null;
-            if (dureeString == null || dureeString.isEmpty()) {
-                showError(dureeErreurField, "Durée requise");
+            String dateFinString = null;
+            if (dateFinField.getValue() == null) {
+                showError(dateFinErreurField, "Date de fin requise");
                 hasError = true;
             } else {
-                try {
-                    duree = Integer.parseInt(dureeString);
-                    hideError(dureeErreurField);
-                } catch (NumberFormatException e) {
-                    showError(dureeErreurField, "Durée invalide");
-                    hasError = true;
-                }
+                dateFinString = dateFinField.getValue().toString();
+                hideError(dateFinErreurField);
             }
 
             String periodicite = periodiciteComboBox.getValue();
@@ -726,15 +749,15 @@ public class EditObligationController {
                     hideError(tauxProrogationInfineErreurField);
                 }
 
-                if (DureeProrogationField.getText().trim().isEmpty()) {
-                    showError(dureeProrogationErreurField, "Durée requise");
+                if (DateFinProrogationField.getValue() == null) {
+                    showError(dateFinProrogationErreurField, "Date de fin de prorogation requise");
                     hasError = true;
                 } else {
-                    hideError(dureeProrogationErreurField);
+                    hideError(dateFinProrogationErreurField);
                 }
             } else {
                 hideError(tauxProrogationErreurField);
-                hideError(dureeProrogationErreurField);
+                hideError(dateFinProrogationErreurField);
             }
 
             Toggle selectedIsin = isinToggle.getSelectedToggle();
@@ -762,8 +785,9 @@ public class EditObligationController {
 
             if (!hasError) {
                 EditObligation(nom, capital, valeurNominale, new int[]{tauxInFine, tauxTemp}, isConvertible, periodicite, isProrogation, 
-                    TauxProrogationField.getText(), TauxProrogationInfineField.getText(), ProrogationActivee.isSelected(), DureeProrogationField.getText(), 
-                    numeroIsinField.getText(), duree, dateDebutString, allSouscripteurs, emetteur, suretes, amortissements);
+                    TauxProrogationField.getText(), TauxProrogationInfineField.getText(), ProrogationActivee.isSelected(), 
+                    DateFinProrogationField.getValue() != null ? DateFinProrogationField.getValue().toString() : "",
+                    numeroIsinField.getText(), dateFinString, dateDebutString, allSouscripteurs, emetteur, suretes, amortissements);
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();
             }
@@ -792,7 +816,7 @@ public class EditObligationController {
 
     private void EditObligation(String nom, Long capital, Integer valeurNominale, int[] taux, Boolean isConvertible,
                                   String periodicite, Boolean isProrogation,
-                                  String tauxProrogation, String tauxProrogationInfine, Boolean prorogationActivated, String dureeProrogation, String isin, Integer duree,
+                                  String tauxProrogation, String tauxProrogationInfine, Boolean prorogationActivated, String dateFinProrogation, String isin, String dateFin,
                                   String dateDebut, ObservableList<TupleStringLongBoolean> souscripteursList, String emetteurName,
                                   ObservableList<String> suretes, ObservableList<String[]> amortissements) {
         int idApplicant = ApplicantInteractor.GetApplicantByName(emetteurName);
@@ -810,13 +834,18 @@ public class EditObligationController {
                 System.out.println("Invalid amortissement format: " + amortissement);
             }
         }
-        Obligation obligation = new Obligation(currentObligation.getId(), new SimpleStringProperty(nom), isConvertible, capital, valeurNominale, dateDebut, duree, taux, periodicite,
-                                                new String[]{dureeProrogation, tauxProrogation, tauxProrogationInfine}, prorogationActivated, isin, new ArrayList<>(suretes), amortissementsMap, idApplicant);
+        Obligation obligation = new Obligation(currentObligation.getId(), new SimpleStringProperty(nom), isConvertible, capital, valeurNominale, dateDebut, dateFin, taux, periodicite,
+                                                new String[]{dateFinProrogation, tauxProrogation, tauxProrogationInfine}, prorogationActivated, isin, new ArrayList<>(suretes), amortissementsMap, idApplicant);
         for (TupleStringLongBoolean souscripteur : souscripteursList) {
             if (souscripteur.getName() != null && !souscripteur.getName().isEmpty() && souscripteur.getSelectionne()) {
-                int idInvestor = InvestorInteractor.GetInvestorByName(souscripteur.getName());
+                String souscripteurName = souscripteur.getName();
+                String[] nameParts = souscripteurName.split(" ", 2);
+                if (nameParts.length > 1) {
+                    souscripteurName = nameParts[1];
+                }
+                int idInvestor = InvestorInteractor.GetInvestorByName(souscripteurName);
                 if (idInvestor == -1) {
-                    System.out.println("Investor not found: " + souscripteur.getName());
+                    System.out.println("Investor not found: " + souscripteurName);
                     continue; // Skip this investor if not found
                 }
                 

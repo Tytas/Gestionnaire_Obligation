@@ -3,7 +3,6 @@ package mypackage.view.edit;
 import java.time.LocalDate;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -13,6 +12,7 @@ import mypackage.model.Applicant;
 import mypackage.model.Group;
 import mypackage.model.DataBaseInteractor.ApplicantInteractor;
 import mypackage.model.DataBaseInteractor.GroupInteractor;
+import mypackage.model.util.NationalityUtils;
 import mypackage.view.util.GroupeWindow;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
@@ -283,8 +283,8 @@ public class EditEmetteurController {
     
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
-        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SA", "SAS"));
-        nationaliteDirigeantComboBox.setItems(FXCollections.observableArrayList("Française", "Américaine", "Allemande", "Espagnole"));
+        formeJuridiqueComboBox.setItems(NationalityUtils.getLegalForms());
+        nationaliteDirigeantComboBox.setItems(NationalityUtils.getNationalities());
 
         nouveauGroupeButton.setOnAction(event -> {
             // Open a new window to create a new group

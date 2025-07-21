@@ -37,8 +37,8 @@
                         <Label fx:id="NameGroup" styleClass="row-separator" text="Label" GridPane.columnIndex="1" />
                         <Label styleClass="row-separator" text="Dirigeant" GridPane.rowIndex="1" />
                         <Label fx:id="DirigeantGroup" styleClass="row-separator" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label styleClass="list-header" text="Emetteurs" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                        <ListView fx:id="listViewEmetteur" prefHeight="168.0" prefWidth="272.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                        <Label styleClass="list-header" text="Obligations" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                        <ListView fx:id="listviewObligation" prefHeight="168.0" prefWidth="272.0" GridPane.columnSpan="2" GridPane.rowIndex="4" />
                         <Label styleClass="row-separator" text="Valeur des Obligations" GridPane.rowIndex="2" />
                         <Label fx:id="ValeurObligationsGroup" styleClass="row-separator" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                      </children>

@@ -21,6 +21,6 @@
   "contacts" : [ [ "jack", "jack", "coucou@gmail.com", "0606060606" ] ],
   "distributionType" : "PSI",
   "investors" : [ 3, 1, 2, 4 ],
-  "bic" : "CRLIFRPP",
-  "iban" : "FR7612345678901234567890123"
+  "iban" : "FR7612345678901234567890123",
+  "bic" : "CRLIFRPP"
 }

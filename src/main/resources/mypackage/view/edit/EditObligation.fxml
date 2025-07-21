@@ -186,14 +186,14 @@
          <children>
             <DatePicker fx:id="dateDebutField" />
             <Label fx:id="dateDebutErreurField" text="Label" visible="false" />
-            <TextField fx:id="dureeField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" />
-            <Label fx:id="dureeErreurField" text="Label" visible="false" />
+            <DatePicker fx:id="dateFinField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" />
+            <Label fx:id="dateFinErreurField" text="Label" visible="false" />
          </children>
       </VBox>
       <VBox GridPane.columnIndex="3" GridPane.rowIndex="5">
          <children>
-            <TextField fx:id="DureeProrogationField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" />
-            <Label fx:id="dureeProrogationErreurField" text="Label" visible="false" />
+            <DatePicker fx:id="DateFinProrogationField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" />
+            <Label fx:id="dateFinProrogationErreurField" text="Label" visible="false" />
          </children>
       </VBox>
       <VBox GridPane.columnIndex="5" GridPane.rowIndex="5">
@@ -251,7 +251,7 @@
       <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="4" GridPane.rowIndex="3">
          <children>
             <Label text="Date Début" />
-            <Label text="Durée">
+            <Label text="Date Fin">
                <VBox.margin>
                   <Insets bottom="20.0" top="35.0" />
                </VBox.margin>

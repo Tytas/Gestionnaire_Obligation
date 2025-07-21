@@ -86,7 +86,7 @@ public class ControllerHome {
             Obligation obligation = ObligationInteractor.GetObligation(obligationId);
             String status = calculateStatus(obligation);
             if (obligation != null) {
-                if(LocalDate.now().isBefore(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths())) && 
+                if(LocalDate.now().isBefore(LocalDate.parse(obligation.getEndDate())) && 
                    status.equals("En cours")) {
                     totalCapitaux += obligation.getCapital();
                     totalObligationsRunning += 1;
@@ -94,7 +94,7 @@ public class ControllerHome {
                     rateWeightedAverage += (obligation.getRate()[1] + obligation.getRate()[0]) * obligation.getCapital();
                     remainDurationDayAverage += obligation.getCapital() * ChronoUnit.DAYS.between(
                         LocalDate.now(),
-                        LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()));
+                        LocalDate.parse(obligation.getEndDate()));
                 }
             } else {
                 System.err.println("Obligation with ID " + obligationId + " not found.");
@@ -126,7 +126,7 @@ public class ControllerHome {
         }
         LocalDate now = LocalDate.now();
         LocalDate startDate = LocalDate.parse(obligation.getStartDate());
-        LocalDate endDate = startDate.plusMonths(obligation.getDurationMonths());
+        LocalDate endDate = LocalDate.parse(obligation.getEndDate());
         
         if (now.isBefore(startDate)) {
             return "À venir";
@@ -160,9 +160,14 @@ public class ControllerHome {
                 continue;
             }
             if(obligation.getRate()[1] != 0){
-                for(int i = period; i <= obligation.getDurationMonths(); i += period) {
-                    LocalDate couponDate = LocalDate.parse(obligation.getStartDate()).plusMonths(i);
-                    if (obligation.getRate()[0] != 0 && couponDate.isEqual(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths())) && !obligation.getProrogationActivated()) {
+                LocalDate startDate = LocalDate.parse(obligation.getStartDate());
+                LocalDate endDate = LocalDate.parse(obligation.getEndDate());
+                
+                for(LocalDate couponDate = startDate.plusMonths(period); 
+                    couponDate.isBefore(endDate) || couponDate.isEqual(endDate); 
+                    couponDate = couponDate.plusMonths(period)) {
+                    
+                    if (obligation.getRate()[0] != 0 && couponDate.isEqual(endDate) && !obligation.getProrogationActivated()) {
                         String[] coupon = new String[3];
                         coupon[0] = couponDate.toString();
                         coupon[1] = String.valueOf((obligation.getRate()[1]+obligation.getRate()[0]) * obligation.getCapital() / 100);
@@ -177,7 +182,7 @@ public class ControllerHome {
                     }
                 }
             } else if(obligation.getRate()[0] != 0 && !obligation.getProrogationActivated()) {
-                LocalDate couponDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths());
+                LocalDate couponDate = LocalDate.parse(obligation.getEndDate());
                 String[] coupon = new String[3];
                 coupon[0] = couponDate.toString();
                 coupon[1] = String.valueOf(obligation.getRate()[0] * obligation.getCapital() / 100);
@@ -185,24 +190,29 @@ public class ControllerHome {
                 couponListViewItems.add(coupon);
             }
             if (obligation.getProrogationActivated() && (obligation.getProrogation()[1] != "0" || obligation.getProrogation()[1].trim() != "")) {
-                for(int i = period; i <= Integer.parseInt(obligation.getProrogation()[0]); i+= period) {
-                    LocalDate prorogationCouponDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths() + i);
-                    if ((obligation.getProrogation()[2] != "0" || obligation.getProrogation()[2] != "") && obligation.getProrogation()[1].trim() != "" && prorogationCouponDate.isEqual(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths() + Integer.parseInt(obligation.getProrogation()[0])))) {
+                LocalDate endDate = LocalDate.parse(obligation.getEndDate());
+                LocalDate prorogationEndDate = LocalDate.parse(obligation.getProrogation()[0]); // date de fin de prorogation
+                
+                for(LocalDate couponDate = endDate.plusMonths(period); 
+                    couponDate.isBefore(prorogationEndDate) || couponDate.isEqual(prorogationEndDate); 
+                    couponDate = couponDate.plusMonths(period)) {
+                    
+                    if ((obligation.getProrogation()[2] != "0" || obligation.getProrogation()[2] != "") && obligation.getProrogation()[1].trim() != "" && couponDate.isEqual(prorogationEndDate)) {
                         String[] coupon = new String[3];
-                        coupon[0] = prorogationCouponDate.toString();
+                        coupon[0] = couponDate.toString();
                         coupon[1] = String.valueOf((Long.parseLong(obligation.getProrogation()[1]) + Long.parseLong(obligation.getProrogation()[2])) * obligation.getCapital() / 100);
                         coupon[2] = obligation.getName();
                         couponListViewItems.add(coupon);
                     } else {
                         String[] coupon = new String[3];
-                        coupon[0] = prorogationCouponDate.toString();
+                        coupon[0] = couponDate.toString();
                         coupon[1] = String.valueOf(Long.parseLong(obligation.getProrogation()[1]) * obligation.getCapital() / 100);
                         coupon[2] = obligation.getName();
                         couponListViewItems.add(coupon);
                     }
                 }
             } else if(obligation.getProrogationActivated() && (obligation.getProrogation()[2] != "0" || obligation.getProrogation()[2] != "")) {
-                LocalDate prorogationCouponDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths() + Integer.parseInt(obligation.getProrogation()[0]));
+                LocalDate prorogationCouponDate = LocalDate.parse(obligation.getProrogation()[0]); // date de fin de prorogation
                 String[] coupon = new String[3];
                 coupon[0] = prorogationCouponDate.toString();
                 coupon[1] = String.valueOf((Long.parseLong(obligation.getProrogation()[2])) * obligation.getCapital() / 100);
@@ -365,7 +375,7 @@ public class ControllerHome {
             obligationDateCell.setCellStyle(headerStyle);
 
             Cell obligationDateCell2 = obligationDateRow.createCell(1);
-            obligationDateCell2.setCellValue(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()).toString());
+            obligationDateCell2.setCellValue(obligation.getEndDate());
             obligationDateCell2.setCellStyle(headerStyle);
 
             Row obligationRateRow = sheet.createRow(5);
@@ -374,7 +384,7 @@ public class ControllerHome {
             obligationRateCell.setCellStyle(headerStyle);
 
             Cell obligationRateCell2 = obligationRateRow.createCell(1);
-            obligationRateCell2.setCellValue(obligation.getRate()[0] + "% / " + obligation.getRate()[1] + "%");
+            obligationRateCell2.setCellValue(obligation.getRate()[1] + "% / " + obligation.getRate()[0] + "%");
             obligationRateCell2.setCellStyle(headerStyle);
 
             Row obligationPeriodicityRow = sheet.createRow(6);
@@ -392,14 +402,16 @@ public class ControllerHome {
             obligationDurationCell.setCellStyle(headerStyle);
 
             Cell obligationDurationCell2 = obligationDurationRow.createCell(1);
-            obligationDurationCell2.setCellValue(obligation.getDurationMonths() + " mois");
+            // Calculer la durée en mois pour l'affichage
+            LocalDate startDate = LocalDate.parse(obligation.getStartDate());
+            LocalDate endDate = LocalDate.parse(obligation.getEndDate());
+            long durationInMonths = ChronoUnit.MONTHS.between(startDate, endDate);
+            obligationDurationCell2.setCellValue(durationInMonths + " mois");
             obligationDurationCell2.setCellStyle(headerStyle);
 
             if (obligation.getProrogation()[0] != "") {
                 Cell obligationProrogationDateCell = obligationDateRow.createCell(2);
-                obligationProrogationDateCell.setCellValue("PROROGATION : " +
-                                                           LocalDate.parse(obligation.getStartDate()).plusMonths( obligation.getDurationMonths() +
-                                                           Integer.parseInt(obligation.getProrogation()[0])).toString());
+                obligationProrogationDateCell.setCellValue("PROROGATION : " + obligation.getProrogation()[0]);
                 obligationProrogationDateCell.setCellStyle(headerStyle);
 
                 Cell obligationProrogationRateCell = obligationRateRow.createCell(2);
@@ -478,8 +490,8 @@ public class ControllerHome {
             Cell titleCouponNetCell = headerRow.createCell(14);
             titleCouponNetCell.setCellValue("NET");
 
-            if(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()).isEqual(LocalDate.parse(item[0])) ||
-               (obligation.getProrogationActivated() && LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths() + Integer.parseInt(obligation.getProrogation()[0])).isEqual(LocalDate.parse(item[0])))) {
+            if(LocalDate.parse(obligation.getEndDate()).isEqual(LocalDate.parse(item[0])) ||
+               (obligation.getProrogationActivated() && LocalDate.parse(obligation.getProrogation()[0]).isEqual(LocalDate.parse(item[0])))) {
                 Cell headerProrogationCell = headerCouponRow.createCell(15);
                 sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(8, 8, 15, 17));
                 headerProrogationCell.setCellValue("COUPON IN FINE");
@@ -550,7 +562,7 @@ public class ControllerHome {
                     double partBrutInFine = 0.0;
                     double partPLFInFine = 0.0;
                     double partNetInFine = 0.0;
-                    LocalDate obligationEndDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths());
+                    LocalDate obligationEndDate = LocalDate.parse(obligation.getEndDate());
                     LocalDate couponDate = LocalDate.parse(item[0]);
                     if(obligationEndDate.isEqual(couponDate) && !obligation.getProrogationActivated()) {
                         if(obligation.getRate()[0] != 0) {
@@ -561,11 +573,17 @@ public class ControllerHome {
                     }
 
                     if(obligation.getProrogationActivated()) {
-                        obligationEndDate = LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths() + Integer.parseInt(obligation.getProrogation()[0]));
+                        obligationEndDate = LocalDate.parse(obligation.getProrogation()[0]); // date de fin de prorogation
                         if(obligationEndDate.isEqual(couponDate)) {
                             if(obligation.getProrogation()[2] != "0" && obligation.getProrogation()[2] != "") {
                                 montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, item[0]);
-                                for(int i = 0; i < Integer.parseInt(obligation.getProrogation()[0])/12-1; i++) {
+                                
+                                // Calculer la durée de prorogation en années
+                                LocalDate obligEndDate = LocalDate.parse(obligation.getEndDate());
+                                LocalDate prorogEndDate = LocalDate.parse(obligation.getProrogation()[0]);
+                                long prorogationYears = ChronoUnit.YEARS.between(obligEndDate, prorogEndDate);
+                                
+                                for(int i = 0; i < prorogationYears - 1; i++) {
                                     montantInvestiInFine = (long) (montantInvestiInFine * (1 + Double.parseDouble(obligation.getProrogation()[2]) / 100.0));
                                 }
                                 partBrutInFine = montantInvestiInFine * Double.parseDouble(obligation.getProrogation()[2]) / 100.0;
@@ -627,7 +645,7 @@ public class ControllerHome {
                         }
                     }
 
-                    if(LocalDate.parse(item[0]).isAfter(LocalDate.parse(obligation.getStartDate()).plusMonths(obligation.getDurationMonths()))) {
+                    if(LocalDate.parse(item[0]).isAfter(LocalDate.parse(obligation.getEndDate()))) {
                         partBrut = montantInvesti * Double.parseDouble(obligation.getProrogation()[1]) / 100.0;
                         if(partPLF != 0.0){
                             partPLF = partBrut * 0.3;

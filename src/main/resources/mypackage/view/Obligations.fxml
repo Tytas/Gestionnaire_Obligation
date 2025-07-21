@@ -41,12 +41,12 @@
                         <Label fx:id="NameObligation" styleClass="row-separator" text="vide" GridPane.columnIndex="1" />
                         <Label styleClass="row-separator" text="capital" GridPane.rowIndex="1" />
                         <Label fx:id="capitalObligation" styleClass="row-separator" text="vide" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label styleClass="row-separator" text="Durée" GridPane.rowIndex="3" />
+                        <Label styleClass="row-separator" text="Date Fin" GridPane.rowIndex="3" />
                         <Label styleClass="row-separator" text="Nouveaux Taux" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="7" />
                         <Label styleClass="row-separator" text="Date de Début" wrapText="true" GridPane.rowIndex="4" />
                         <Label styleClass="row-separator" text="Date de Fin" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                         <Label styleClass="row-separator" text="Taux" GridPane.rowIndex="5" />
-                        <Label styleClass="row-separator" text="Durée" GridPane.rowIndex="7" />
+                        <Label styleClass="row-separator" text="Date Fin Prorogation" GridPane.rowIndex="7" />
                         <Label styleClass="row-separator" text="Nombres de Souscripteurs" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                         <Label styleClass="row-separator" text="Prorogation :" wrapText="true" GridPane.rowIndex="6" />
                         <Label styleClass="row-separator" text="Emetteur" GridPane.columnIndex="2" />

@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import mypackage.model.Family;
 import mypackage.model.DataBaseInteractor.FamilyInteractor;
+import mypackage.model.util.NationalityUtils;
 import mypackage.view.util.ContactWindow;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.RadioButton;
@@ -259,7 +260,7 @@ public class EditFamilyController {
     
     public void initialize() {
         // Initialize the ComboBoxes and other UI elements if needed
-        formeJuridiqueComboBox.setItems(FXCollections.observableArrayList("SARL", "SAS", "SA"));
+        formeJuridiqueComboBox.setItems(NationalityUtils.getLegalForms());
         nationaliteDirigeantComboBox.setItems(FXCollections.observableArrayList("Française", "Américaine", "Allemande", "Espagnole"));
         distributionTypeField.setItems(FXCollections.observableArrayList("CIF", "PSI", "BANQUE"));
 

@@ -67,8 +67,9 @@
                <children>
                   <TableView fx:id="tableInvestors" layoutX="0.8" layoutY="14.0" prefHeight="398.0" prefWidth="296.0" styleClass="compact-table" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn fx:id="listInvestorName" prefWidth="232.80005186796188" text="Liste Souscripteurs" />
-                      <TableColumn fx:id="listInvestorId" prefWidth="62.39988708496094" text="Id" />
+                      <TableColumn fx:id="listInvestorName" prefWidth="310.40002447366714" text="Liste Souscripteurs" />
+                      <TableColumn fx:id="listInvestorStatut" prefWidth="63.99993896484375" text="PP/PM" />
+                        <TableColumn fx:id="listInvestorCountry" prefWidth="92.800048828125" text="Pays" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

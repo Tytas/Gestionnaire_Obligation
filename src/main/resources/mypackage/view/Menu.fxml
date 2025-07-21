@@ -8,12 +8,12 @@
    <top>
       <ToolBar maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" BorderPane.alignment="CENTER">
         <items>
-            <Button contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleMenuHome" prefHeight="50.0" prefWidth="50.0" styleClass="home-button" />
-          <Button mnemonicParsing="false" onAction="#handleMenuObligations" styleClass="nav-button" text="Obligations" />
-            <Button layoutX="10.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleMenuSouscripteurs" styleClass="nav-button" text="Souscripteurs" />
-            <Button layoutX="66.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleMenuFamilies" styleClass="nav-button" text="Families" />
-            <Button layoutX="122.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleMenuEmetteurs" styleClass="nav-button" text="Emetteurs" />
-            <Button mnemonicParsing="false" onAction="#handleMenuGroups" styleClass="nav-button" text="Groupes" />
+            <Button fx:id="homeButton" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="home-button" />
+          <Button fx:id="obligationsButton" mnemonicParsing="false" styleClass="nav-button" text="Obligations" />
+            <Button fx:id="investorsButton" layoutX="10.0" layoutY="12.0" mnemonicParsing="false" styleClass="nav-button" text="Souscripteurs" />
+            <Button fx:id="familiesButton" layoutX="66.0" layoutY="12.0" mnemonicParsing="false" styleClass="nav-button" text="Families" />
+            <Button fx:id="applicantsButton" layoutX="122.0" layoutY="12.0" mnemonicParsing="false" styleClass="nav-button" text="Emetteurs" />
+            <Button fx:id="groupsButton" mnemonicParsing="false" styleClass="nav-button" text="Groupes" />
         </items>
       </ToolBar>
    </top>
