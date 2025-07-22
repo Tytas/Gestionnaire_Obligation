@@ -16,7 +16,10 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
@@ -50,6 +53,8 @@ public class ControllerFamilies {
     private TableColumn<Family, String> listFamName;
     @FXML
     private TableColumn<Family, String> listFamId;
+    @FXML
+    private TextField searchFieldFamily;
 
     @FXML
     private Button deleteButton;
@@ -59,6 +64,7 @@ public class ControllerFamilies {
     private Stage stage;
 
     private ObservableList<Family> listFam = FXCollections.observableArrayList();
+    private FilteredList<Family> filteredFamilies;
 
     private ArrayList<Integer> ids = new ArrayList<>();
 
@@ -74,9 +80,38 @@ public class ControllerFamilies {
         for (Integer id : ids) {
             listFam.add(FamilyInteractor.GetFamily(id));
         }
+        
+        // Setup filtered list
+        filteredFamilies = new FilteredList<>(listFam, p -> true);
+        
+        // Setup search functionality
+        if (searchFieldFamily != null) {
+            searchFieldFamily.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredFamilies.setPredicate(family -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+                    
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    
+                    if (family.getName() != null && family.getName().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    if (String.valueOf(family.getId()).contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    return false;
+                });
+            });
+        }
+        
+        // Wrap the FilteredList in a SortedList
+        SortedList<Family> sortedFamilies = new SortedList<>(filteredFamilies);
+        sortedFamilies.comparatorProperty().bind(tableFamily.comparatorProperty());
+        
         if (!listFam.isEmpty()) {
             System.out.println("Families loaded: " + listFam.size());
-            tableFamily.setItems(listFam);
+            tableFamily.setItems(sortedFamilies);
         }
         this.listFamName.setCellValueFactory(new PropertyValueFactory<Family, String>("name"));
         this.listFamId.setCellValueFactory(new PropertyValueFactory<Family, String>("id"));

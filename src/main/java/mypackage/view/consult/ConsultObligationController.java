@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.awt.Desktop;
 
 import org.apache.poi.ss.usermodel.*;
@@ -345,6 +347,7 @@ public class ConsultObligationController {
                 noDataCell.setCellValue("Aucun souscripteur trouvé pour cette obligation");
                 sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(9, 9, 0, 4 + headerListCoupon.size()));
             } else {
+                Map<String, Integer> AmortissementsMap = new HashMap<>(obligation.getDepreciations());
                 System.out.println("💰 Valeur nominale: " + obligation.getValeurNominale());
                 System.out.println("📊 Taux [In Fine, Mensuel]: [" + obligation.getRate()[0] + "%, " + obligation.getRate()[1] + "%]");
                 
@@ -499,7 +502,31 @@ public class ConsultObligationController {
                     cellBIC.setCellValue(investorBIC);
 
                     // Calculer la part du coupon
+                    int index = 0;
+                    boolean[] amortissementApplique = new boolean[AmortissementsMap.size()];
+                    for (int j = 0; j < amortissementApplique.length; j++) {
+                        amortissementApplique[j] = false;
+                    }
                     for (int i = 0; i < 3*listCoupon.size(); i+=3) {
+                        if(AmortissementsMap.isEmpty() || i == 0) {
+                            System.out.println("⚠️ Aucun amortissement trouvé pour l'obligation : " + obligation.getName());
+                        } else {
+                            System.out.println("📉 Amortissements trouvés : " + AmortissementsMap.size());
+                            index = 0;
+                            for (Map.Entry<String, Integer> entry : AmortissementsMap.entrySet()) {
+                                if(LocalDate.parse(entry.getKey()).isBefore(LocalDate.parse(listCoupon.get(i/3)[0])) && !amortissementApplique[index]) {
+                                    amortissementApplique[index] = true;
+                                    partBrut *= (1 - (entry.getValue() / 100.0));
+                                    partPLF *= (1 - (entry.getValue() / 100.0));
+                                    partNet *= (1 - (entry.getValue() / 100.0));
+                                    partBrutInFine *= (1 - (entry.getValue() / 100.0));
+                                    partPLFInFine *= (1 - (entry.getValue() / 100.0));
+                                    partNetInFine *= (1 - (entry.getValue() / 100.0));
+                                    System.out.println("   - Date: " + entry.getKey() + ", Montant: " + entry.getValue());
+                                }
+                                index++;
+                            }
+                        }
                         partBrut = partBrut / nombreParts;
                         if (replacements != null && !replacements.isEmpty()) { 
                             for (Replacement replacement : replacements) {

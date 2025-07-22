@@ -3,7 +3,9 @@ package mypackage.controllers;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.io.FileNotFoundException;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -189,15 +191,14 @@ public class ControllerHome {
                 coupon[2] = obligation.getName();
                 couponListViewItems.add(coupon);
             }
-            if (obligation.getProrogationActivated() && (obligation.getProrogation()[1] != "0" || obligation.getProrogation()[1].trim() != "")) {
+            if (obligation.getProrogationActivated() && !obligation.getProrogation()[1].equals("0")) {
                 LocalDate endDate = LocalDate.parse(obligation.getEndDate());
                 LocalDate prorogationEndDate = LocalDate.parse(obligation.getProrogation()[0]); // date de fin de prorogation
-                
                 for(LocalDate couponDate = endDate.plusMonths(period); 
                     couponDate.isBefore(prorogationEndDate) || couponDate.isEqual(prorogationEndDate); 
                     couponDate = couponDate.plusMonths(period)) {
                     
-                    if ((obligation.getProrogation()[2] != "0" || obligation.getProrogation()[2] != "") && obligation.getProrogation()[1].trim() != "" && couponDate.isEqual(prorogationEndDate)) {
+                    if (!(obligation.getProrogation()[2].equals("0")) && couponDate.isEqual(prorogationEndDate)) {
                         String[] coupon = new String[3];
                         coupon[0] = couponDate.toString();
                         coupon[1] = String.valueOf((Long.parseLong(obligation.getProrogation()[1]) + Long.parseLong(obligation.getProrogation()[2])) * obligation.getCapital() / 100);
@@ -211,7 +212,7 @@ public class ControllerHome {
                         couponListViewItems.add(coupon);
                     }
                 }
-            } else if(obligation.getProrogationActivated() && (obligation.getProrogation()[2] != "0" || obligation.getProrogation()[2] != "")) {
+            } else if(obligation.getProrogationActivated() && !obligation.getProrogation()[2].equals("0")) {
                 LocalDate prorogationCouponDate = LocalDate.parse(obligation.getProrogation()[0]); // date de fin de prorogation
                 String[] coupon = new String[3];
                 coupon[0] = prorogationCouponDate.toString();
@@ -225,9 +226,6 @@ public class ControllerHome {
     @FXML
     private void displayCoupon() {
         getCoupons();
-        for(String[] item : couponListViewItems) {
-            System.out.println("Coupon: " + item[0] + ", " + item[1] + " €, " + item[2]);
-        }
         couponListViewItems.sort((a, b) -> {
             LocalDate dateA = LocalDate.parse(a[0]);
             LocalDate dateB = LocalDate.parse(b[0]);
@@ -240,21 +238,18 @@ public class ControllerHome {
                 super.updateItem(item, empty);
                 setGraphic(null);
                 Label dateLabel = new Label();
-                Label amountLabel = new Label();
                 Label obligationNameLabel = new Label();
                 Button buttonOuvrir = new Button("Ouvrir");
                 Button buttonExcel = new Button("Excel");
                 buttonOuvrir.getStyleClass().add("coupon-list-button");
                 buttonExcel.getStyleClass().addAll("coupon-list-button", "coupon-list-excel-button");
-                AnchorPane content = new AnchorPane(dateLabel, amountLabel, obligationNameLabel, buttonExcel, buttonOuvrir);
+                AnchorPane content = new AnchorPane(dateLabel, obligationNameLabel, buttonExcel, buttonOuvrir);
                 content.getStyleClass().add("coupon-list-cell");
                 AnchorPane.setRightAnchor(buttonOuvrir, 5.0);
                 AnchorPane.setRightAnchor(buttonExcel, 60.0);
                 AnchorPane.setLeftAnchor(dateLabel, 0.0);
-                AnchorPane.setLeftAnchor(amountLabel, 80.0);
                 AnchorPane.setLeftAnchor(obligationNameLabel, 150.0);
                 AnchorPane.setTopAnchor(dateLabel, 5.0);
-                AnchorPane.setTopAnchor(amountLabel, 5.0);
                 AnchorPane.setTopAnchor(obligationNameLabel, 5.0);
                 AnchorPane.setTopAnchor(buttonExcel, 5.0);
                 AnchorPane.setTopAnchor(buttonOuvrir, 5.0);
@@ -263,7 +258,6 @@ public class ControllerHome {
                     setGraphic(null);
                 } else {
                     dateLabel.setText(item[0]);
-                    setNumberLabel(amountLabel, item[1]);
                     obligationNameLabel.setText(" " + item[2] +  " ");
                     buttonOuvrir.setOnAction(event -> {
                         CouponWindow.show(item);
@@ -421,8 +415,8 @@ public class ControllerHome {
             
                 Cell obligationProrogationDurationCell = obligationDurationRow.createCell(2);
                 obligationProrogationDurationCell.setCellValue("Durée Prorogation : " + obligation.getProrogation()[0] + " mois");
-                obligationProrogationDurationCell.setCellStyle(headerStyle);}
-
+                obligationProrogationDurationCell.setCellStyle(headerStyle);
+            }
             // Ligne vide
             sheet.createRow(8);
 
@@ -523,6 +517,7 @@ public class ControllerHome {
                 System.out.println("📊 Taux [In Fine, Mensuel]: [" + obligation.getRate()[0] + "%, " + obligation.getRate()[1] + "%]");
                 
                 int rowIndex = 10;
+                Map<String, Integer> AmortissementsMap = new HashMap<>(obligation.getDepreciations());
 
                 for (InvestorInfo info : investors) {
                     int investorId = info.getInvestorId();
@@ -653,6 +648,32 @@ public class ControllerHome {
                         } else {
                             partPLF = 0.0;
                             partNet = partBrut;
+                        }
+                    }
+
+                    int index = 0;
+                    boolean[] amortissementApplique = new boolean[AmortissementsMap.size()];
+                    for (int j = 0; j < amortissementApplique.length; j++) {
+                        amortissementApplique[j] = false;
+                    }
+                    if(AmortissementsMap.isEmpty() || 
+                       LocalDate.parse(item[0]).isEqual(LocalDate.parse(obligation.getStartDate()).plusMonths(period))) {
+                        System.out.println("⚠️ Aucun amortissement trouvé pour l'obligation : " + obligation.getName());
+                    } else {
+                        System.out.println("📉 Amortissements trouvés : " + AmortissementsMap.size());
+                        index = 0;
+                        for (Map.Entry<String, Integer> entry : AmortissementsMap.entrySet()) {
+                            if(LocalDate.parse(entry.getKey()).isBefore(LocalDate.parse(item[0])) && !amortissementApplique[index]) {
+                                amortissementApplique[index] = true;
+                                partBrut *= (1 - (entry.getValue() / 100.0));
+                                partPLF *= (1 - (entry.getValue() / 100.0));
+                                partNet *= (1 - (entry.getValue() / 100.0));
+                                partBrutInFine *= (1 - (entry.getValue() / 100.0));
+                                partPLFInFine *= (1 - (entry.getValue() / 100.0));
+                                partNetInFine *= (1 - (entry.getValue() / 100.0));
+                                System.out.println("   - Date: " + entry.getKey() + ", Montant: " + entry.getValue());
+                            }
+                            index++;
                         }
                     }
 

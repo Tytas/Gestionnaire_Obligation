@@ -6,7 +6,9 @@ import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.awt.Desktop;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -138,6 +140,27 @@ public class CouponWindow {
                         if(daysBetween < period * 31) {
                             partBrut = (partBrut / 365) * daysBetween;
                         } 
+                    }
+                    Map<String, Integer> AmortissementsMap = new HashMap<>(obligationData.getDepreciations());
+                    int index = 0;
+                    boolean[] amortissementApplique = new boolean[AmortissementsMap.size()];
+                    for (int j = 0; j < amortissementApplique.length; j++) {
+                        amortissementApplique[j] = false;
+                    }
+                    if(AmortissementsMap.isEmpty() || 
+                        LocalDate.parse(obligation[0]).isEqual(LocalDate.parse(obligationData.getStartDate()).plusMonths(period))) {
+                        System.out.println("⚠️ Aucun amortissement trouvé pour l'obligation : " + obligationData.getName());
+                    } else {
+                        System.out.println("📉 Amortissements trouvés : " + AmortissementsMap.size());
+                        index = 0;
+                        for (Map.Entry<String, Integer> entry : AmortissementsMap.entrySet()) {
+                            if(LocalDate.parse(entry.getKey()).isBefore(LocalDate.parse(obligation[0])) && !amortissementApplique[index]) {
+                                amortissementApplique[index] = true;
+                                partBrut *= (1 - (entry.getValue() / 100.0));
+                                System.out.println("   - Date: " + entry.getKey() + ", Montant: " + entry.getValue());
+                            }
+                            index++;
+                        }
                     }
                     Label nameLabel = new Label(item[0]);
                     Label amountLabel = new Label();

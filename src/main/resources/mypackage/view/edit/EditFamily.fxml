@@ -43,7 +43,7 @@
     <Label text="Raison Sociale" />
     <Label text="Ville" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="6" />
     <Label text="Rue" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-    <Label text="Date de création" GridPane.rowIndex="1" />
+    <Label text="Date contractuelle" GridPane.rowIndex="1" />
     <Label text="Capital Social" textAlignment="CENTER" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="11">
       <children>

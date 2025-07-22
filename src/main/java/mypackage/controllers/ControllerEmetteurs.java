@@ -16,7 +16,10 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -51,6 +54,8 @@ public class ControllerEmetteurs {
     private TableColumn<Applicant, String> listApplicantName;
     @FXML
     private TableColumn<Applicant, String> listApplicantId;
+    @FXML
+    private TextField searchFieldApplicants;
 
     @FXML
     private Button deleteButton;
@@ -60,6 +65,7 @@ public class ControllerEmetteurs {
     private Stage stage;
 
     private ObservableList<Applicant> listApplicant = FXCollections.observableArrayList();
+    private FilteredList<Applicant> filteredApplicants;
 
     private ArrayList<Integer> ids = new ArrayList<>();
 
@@ -75,9 +81,38 @@ public class ControllerEmetteurs {
         for (Integer id : ids) {
             listApplicant.add(ApplicantInteractor.GetApplicant(id));
         }
+        
+        // Setup filtered list
+        filteredApplicants = new FilteredList<>(listApplicant, p -> true);
+        
+        // Setup search functionality
+        if (searchFieldApplicants != null) {
+            searchFieldApplicants.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredApplicants.setPredicate(applicant -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+                    
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    
+                    if (applicant.getName() != null && applicant.getName().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    if (String.valueOf(applicant.getId()).contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    return false;
+                });
+            });
+        }
+        
+        // Wrap the FilteredList in a SortedList
+        SortedList<Applicant> sortedApplicants = new SortedList<>(filteredApplicants);
+        sortedApplicants.comparatorProperty().bind(tableApplicants.comparatorProperty());
+        
         if (!listApplicant.isEmpty()) {
             System.out.println("Emetteurs loaded: " + listApplicant.size());
-            tableApplicants.setItems(listApplicant);
+            tableApplicants.setItems(sortedApplicants);
         }
         this.listApplicantName.setCellValueFactory(new PropertyValueFactory<Applicant, String>("name"));
         this.listApplicantId.setCellValueFactory(new PropertyValueFactory<Applicant, String>("id"));

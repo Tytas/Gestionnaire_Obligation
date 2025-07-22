@@ -288,7 +288,7 @@ public class AddObligationController {
                     amortissements.remove(item);
                     amortissementsListView.refresh();
                 });
-                Label montantField = new Label("Année: " + item[0] + ", Taux: " + item[1] + " %");
+                Label montantField = new Label("Date: " + item[0] + ", Taux: " + item[1] + " %");
                 HBox content = new HBox(10, montantField, deleteButton);
                 setGraphic(content);
             }

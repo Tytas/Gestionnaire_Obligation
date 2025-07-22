@@ -16,7 +16,10 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -49,6 +52,8 @@ public class ControllerGroups {
     private TableColumn<Group, String> listGroupName;
     @FXML
     private TableColumn<Group, String> listGroupId;
+    @FXML
+    private TextField searchFieldGroups;
 
     @FXML
     private Button deleteButton;
@@ -58,6 +63,7 @@ public class ControllerGroups {
     private Stage stage;
 
     private ObservableList<Group> listGroup = FXCollections.observableArrayList();
+    private FilteredList<Group> filteredGroups;
 
     private ArrayList<Integer> ids = new ArrayList<>();
 
@@ -73,9 +79,38 @@ public class ControllerGroups {
         for (Integer id : ids) {
             listGroup.add(GroupInteractor.GetGroup(id));
         }
+        
+        // Setup filtered list
+        filteredGroups = new FilteredList<>(listGroup, p -> true);
+        
+        // Setup search functionality
+        if (searchFieldGroups != null) {
+            searchFieldGroups.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredGroups.setPredicate(group -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+                    
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    
+                    if (group.getName() != null && group.getName().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    if (String.valueOf(group.getId()).contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    return false;
+                });
+            });
+        }
+        
+        // Wrap the FilteredList in a SortedList
+        SortedList<Group> sortedGroups = new SortedList<>(filteredGroups);
+        sortedGroups.comparatorProperty().bind(tableGroups.comparatorProperty());
+        
         if (!listGroup.isEmpty()) {
             System.out.println("Groups loaded: " + listGroup.size());
-            tableGroups.setItems(listGroup);
+            tableGroups.setItems(sortedGroups);
         }
         this.listGroupName.setCellValueFactory(new PropertyValueFactory<Group, String>("name"));
         this.listGroupId.setCellValueFactory(new PropertyValueFactory<Group, String>("id"));

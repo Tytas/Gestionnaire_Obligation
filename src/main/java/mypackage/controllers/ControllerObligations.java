@@ -8,6 +8,8 @@ import java.time.temporal.ChronoUnit;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -63,6 +66,9 @@ public class ControllerObligations {
     @FXML
     private Label ProrogationEnCoursObligation;
 
+    
+    @FXML
+    private TextField searchFieldObligations;
     @FXML
     private TableView<Obligation> tableObligations;
     @FXML
@@ -79,6 +85,7 @@ public class ControllerObligations {
     private Stage stage;
 
     private ObservableList<Obligation> listOblig = FXCollections.observableArrayList();
+    private FilteredList<Obligation> filteredOblig;
 
     private ArrayList<Integer> ids = new ArrayList<>();
 
@@ -95,11 +102,40 @@ public class ControllerObligations {
             for (Integer id : ids) {
                 listOblig.add(ObligationInteractor.GetObligation(id));
             }
-            if (!listOblig.isEmpty()) {
-                System.out.println("Obligations loaded: " + listOblig.size());
-                tableObligations.setItems(listOblig);
-            }
         }
+
+        // Setup filtered list
+        filteredOblig = new FilteredList<>(listOblig, p -> true);
+
+        // Setup search functionality
+        if (searchFieldObligations != null) {
+            searchFieldObligations.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredOblig.setPredicate(obligation -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+                    
+                    String lowerCaseFilter = newValue.toLowerCase();
+
+                    if (obligation.getName() != null && obligation.getName().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    if (String.valueOf(obligation.getId()).contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    return false;
+                });
+            });
+        }
+        
+        // Wrap the FilteredList in a SortedList
+        SortedList<Obligation> sortedObligations = new SortedList<>(filteredOblig);
+        sortedObligations.comparatorProperty().bind(tableObligations.comparatorProperty());
+        if (!listOblig.isEmpty()) {
+            System.out.println("Obligations loaded: " + listOblig.size());
+            tableObligations.setItems(sortedObligations);
+        }
+
         this.listObligName.setCellValueFactory(new PropertyValueFactory<Obligation, String>("name"));
         this.listObligDate.setCellValueFactory(new PropertyValueFactory<Obligation, String>("startDate"));
         this.listObligCapital.setCellValueFactory(new PropertyValueFactory<Obligation, Long>("capital"));

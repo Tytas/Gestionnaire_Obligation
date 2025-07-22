@@ -20,8 +20,11 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import mypackage.MainApp;
@@ -62,6 +65,8 @@ public class ControllerSouscripteurs {
     private TableColumn<Investor, String> listInvestorStatut;
     @FXML
     private TableColumn<Investor, String> listInvestorCountry;
+    @FXML
+    private TextField searchFieldInvestors;
 
     @FXML
     private Button deleteButton;
@@ -71,6 +76,7 @@ public class ControllerSouscripteurs {
     private Stage stage;
 
     private ObservableList<Investor> listInvestor = FXCollections.observableArrayList();
+    private FilteredList<Investor> filteredInvestors;
 
     private ArrayList<Integer> ids = new ArrayList<>();
 
@@ -91,9 +97,50 @@ public class ControllerSouscripteurs {
                 listInvestor.add(InvestorInteractor.GetInvestorNP(id));
             }
         }
+        
+        // Setup filtered list
+        filteredInvestors = new FilteredList<>(listInvestor, p -> true);
+        
+        // Setup search functionality
+        if (searchFieldInvestors != null) {
+            searchFieldInvestors.textProperty().addListener((observable, oldValue, newValue) -> {
+                filteredInvestors.setPredicate(investor -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+                    
+                    String lowerCaseFilter = newValue.toLowerCase();
+                    
+                    if (investor.getName() != null && investor.getName().toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    
+                    // Search by country
+                    String country = "";
+                    if (investor instanceof InvestorNP) {
+                        country = ((InvestorNP) investor).getAddress()[4];
+                    } else if (investor instanceof InvestorLP) {
+                        country = ((InvestorLP) investor).getAddress()[4];
+                    }
+                    if (country != null && country.toLowerCase().contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    
+                    if (String.valueOf(investor.getId()).contains(lowerCaseFilter)) {
+                        return true;
+                    }
+                    return false;
+                });
+            });
+        }
+        
+        // Wrap the FilteredList in a SortedList
+        SortedList<Investor> sortedInvestors = new SortedList<>(filteredInvestors);
+        sortedInvestors.comparatorProperty().bind(tableInvestors.comparatorProperty());
+        
         if (!listInvestor.isEmpty()) {
             System.out.println("Investors loaded: " + listInvestor.size());
-            tableInvestors.setItems(listInvestor);
+            tableInvestors.setItems(sortedInvestors);
         }
         this.listInvestorName.setCellValueFactory(new PropertyValueFactory<Investor, String>("name"));
 
