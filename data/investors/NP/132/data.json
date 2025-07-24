@@ -1,0 +1,24 @@
+{
+  "id": 132,
+  "name": "CORENFLOS",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Alain",
+  "nationality": "FR",
+  "dateOfBirth": "1976-01-14",
+  "placeOfBirth": "Arras",
+  "email": "alain.corenflos@gmail.com",
+  "phoneNumber": "+33689483782",
+  "address": [
+    "7",
+    "Rue du Bois Clair",
+    "91620",
+    "Nozay",
+    "FR",
+    ""
+  ],
+  "bankName": "Crédit Lyonnais",
+  "bic": "CRLYFRPP",
+  "iban": "FR92 3000 2090 5800 0000 0418 Q14"
+}

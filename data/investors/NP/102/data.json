@@ -1,0 +1,24 @@
+{
+  "id": 102,
+  "name": "LETANOUX",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Mikaël",
+  "nationality": "FR",
+  "dateOfBirth": "1975-11-02",
+  "placeOfBirth": "st malo",
+  "email": "mikaelletanoux@gmail.com",
+  "phoneNumber": "33615784800",
+  "address": [
+    "17",
+    "rue des Dames",
+    "35000",
+    "rennes",
+    "FR",
+    ""
+  ],
+  "bankName": "CIC",
+  "bic": "CMCIFRPP",
+  "iban": "FR76 3004 7141 0200 0202 9570 128"
+}

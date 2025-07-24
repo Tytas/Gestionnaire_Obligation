@@ -1,0 +1,24 @@
+{
+  "id": 140,
+  "name": "ROSSELIN",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Victor",
+  "nationality": "FR",
+  "dateOfBirth": "1995-02-06",
+  "placeOfBirth": "Croix",
+  "email": "vic.rosselin@gmail.com",
+  "phoneNumber": "+33674600863",
+  "address": [
+    "30",
+    "Rue Jean Jacques Rousseau",
+    "59800",
+    "Lille",
+    "FR",
+    "Résidence L'isle en flandres"
+  ],
+  "bankName": "CCF",
+  "bic": "CCDFFRPPXXX",
+  "iban": "FR76 1807 9592 1602 8160 1504 027"
+}

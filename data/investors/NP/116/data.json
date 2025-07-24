@@ -1,0 +1,24 @@
+{
+  "id": 116,
+  "name": "CECCALDI",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Jérôme",
+  "nationality": "FR",
+  "dateOfBirth": "1966-03-12",
+  "placeOfBirth": "Neuf-Brisach",
+  "email": "ceccaldi.jerome@orange.fr",
+  "phoneNumber": "33681254065.0",
+  "address": [
+    "23",
+    "RUE JEAN BAPTISTE BARRE",
+    "35000",
+    "RENNES",
+    "FR",
+    ""
+  ],
+  "bankName": "Société Générale",
+  "bic": "SOGEFRPP",
+  "iban": "FR76 3000 3040 4200 0507 3667 879"
+}

@@ -1,0 +1,24 @@
+{
+  "id": 104,
+  "name": "LE CALVEZ",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "HERVE",
+  "nationality": "FR",
+  "dateOfBirth": "1956-09-09",
+  "placeOfBirth": "SAINT LOUIS",
+  "email": "herve.lecalvez@hotmail.fr",
+  "phoneNumber": "33610807478",
+  "address": [
+    "8",
+    "rue des frères Tilly",
+    "22700",
+    "PERROS GUIREC",
+    "FR",
+    ""
+  ],
+  "bankName": "BNP",
+  "bic": "BNPAFRPPXXX",
+  "iban": "FR76 3000 4018 8200 0011 5841 622"
+}

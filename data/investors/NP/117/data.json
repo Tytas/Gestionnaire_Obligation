@@ -1,0 +1,24 @@
+{
+  "id": 117,
+  "name": "GIEUX",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Madame",
+  "firstName": "Dorothée",
+  "nationality": "FR",
+  "dateOfBirth": "1985-07-22",
+  "placeOfBirth": "Evreux",
+  "email": "dglupin@yahoo.fr",
+  "phoneNumber": "919650638684",
+  "address": [
+    "A24",
+    "Nizamuddin West",
+    "110013",
+    "New Delhi",
+    "IN",
+    ""
+  ],
+  "bankName": "Société Générale",
+  "bic": "SOGEFRPP",
+  "iban": "FR76 3000 3029 4600 0500 1831 084"
+}

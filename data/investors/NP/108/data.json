@@ -1,0 +1,24 @@
+{
+  "id": 108,
+  "name": "CLAMADIEU",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Jean-Pierre",
+  "nationality": "FR",
+  "dateOfBirth": "1958-08-15",
+  "placeOfBirth": "Chambéry",
+  "email": "jp.clamadieu@gmail.com",
+  "phoneNumber": "+33787342690",
+  "address": [
+    "26",
+    "rue Guynemer",
+    "75006",
+    "Paris",
+    "FR",
+    ""
+  ],
+  "bankName": "BNP PARIBAS FORTIS",
+  "bic": "GEBABEBB",
+  "iban": "BE71 0018 5506 4069"
+}

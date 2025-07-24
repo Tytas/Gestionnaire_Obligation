@@ -1,0 +1,24 @@
+{
+  "id": 146,
+  "name": "PATOU",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Madame",
+  "firstName": "Marie Odile",
+  "nationality": "FR",
+  "dateOfBirth": "1957-07-04",
+  "placeOfBirth": "Valenciennes",
+  "email": "m.odile.patou@gmail.com",
+  "phoneNumber": "+33672361663",
+  "address": [
+    "1",
+    "Rue Corneille Theunissen",
+    "59300",
+    "Valenciennes",
+    "FR",
+    "Appartement 104"
+  ],
+  "bankName": "Caisse d'Epargne",
+  "bic": "CEPAFRPP627",
+  "iban": "FR76 1627 5500 0004 0297 4849 554"
+}

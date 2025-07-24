@@ -1,0 +1,24 @@
+{
+  "id": 131,
+  "name": "ANGEL",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Dominique",
+  "nationality": "CH",
+  "dateOfBirth": "1949-02-26",
+  "placeOfBirth": "France",
+  "email": "jerome.cavard@athenee-investment.com",
+  "phoneNumber": "33687053890",
+  "address": [
+    "12.0",
+    "Grand Rue",
+    "1204",
+    "Genève",
+    "CH",
+    ""
+  ],
+  "bankName": "Edmond de Rothschild Genève",
+  "bic": "PRIBCHGGXXX",
+  "iban": "CH50 0857 1173 4850 1200 1"
+}

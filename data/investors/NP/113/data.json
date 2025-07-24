@@ -1,0 +1,24 @@
+{
+  "id": 113,
+  "name": "ROBERT",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Pierre",
+  "nationality": "FR",
+  "dateOfBirth": "1971-08-06",
+  "placeOfBirth": "LEHON",
+  "email": "prober@hotmail.fr",
+  "phoneNumber": "+33675274435",
+  "address": [
+    "5",
+    "ROUTE DES SANGUINAIRES",
+    "20000",
+    "AJACCIO",
+    "FR",
+    "LES JARDINS DE SANTA LINA"
+  ],
+  "bankName": "LCL",
+  "bic": "CRLYFRPP",
+  "iban": "FR66 3000 2080 5000 0000 0358 G59"
+}

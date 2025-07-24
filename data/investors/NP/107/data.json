@@ -1,0 +1,24 @@
+{
+  "id": 107,
+  "name": "TANG",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Anthony",
+  "nationality": "FR",
+  "dateOfBirth": "1984-05-27",
+  "placeOfBirth": "MONTFERMEIL",
+  "email": "celinengo94@gmail.com, tang.anthony27@gmail.com",
+  "phoneNumber": "+33662942249, +33629381282",
+  "address": [
+    "13",
+    "RUE DU 103EME REGIMENT D'INFANTERIE",
+    "77138",
+    "LUZANCY",
+    "FR",
+    ""
+  ],
+  "bankName": "SG",
+  "bic": "SOGEFRPP",
+  "iban": "FR76 3000 3038 6200 0501 4680 417"
+}

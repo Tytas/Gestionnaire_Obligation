@@ -1,0 +1,24 @@
+{
+  "id": 148,
+  "name": "FALCHI",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Giannandrea",
+  "nationality": "IT",
+  "dateOfBirth": "1951-09-09",
+  "placeOfBirth": "STRASBOURG",
+  "email": "jerome.cavard@athenee-investment.com",
+  "phoneNumber": "+41791765286",
+  "address": [
+    "14",
+    "via Cagliari",
+    "00198",
+    "ROME",
+    "IT",
+    ""
+  ],
+  "bankName": "SWISSQUOTE",
+  "bic": "SWQBCHZZXXX",
+  "iban": "CH8108781000108877200"
+}

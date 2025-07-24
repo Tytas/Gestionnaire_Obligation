@@ -1,0 +1,24 @@
+{
+  "id": 142,
+  "name": "BARTH",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Madame",
+  "firstName": "Delphine",
+  "nationality": "FR",
+  "dateOfBirth": "1973-03-16",
+  "placeOfBirth": "Boulogne-Billancourt",
+  "email": "delphine@peoplenolimit.com",
+  "phoneNumber": "+255749614745",
+  "address": [
+    "9",
+    "Chole Road Masaki",
+    "0",
+    "Dar Es Salaam",
+    "TZ",
+    "Kinondoni District"
+  ],
+  "bankName": "Société Générale",
+  "bic": "SOGEFRPP",
+  "iban": "FR76 3000 3033 8000 0507 0008 881"
+}

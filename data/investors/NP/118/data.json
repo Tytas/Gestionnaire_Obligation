@@ -1,0 +1,24 @@
+{
+  "id": 118,
+  "name": "MILON",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Christophe",
+  "nationality": "FR",
+  "dateOfBirth": "1965-05-31",
+  "placeOfBirth": "Lannion",
+  "email": "xtof.milon@gmail.com",
+  "phoneNumber": "33607617624",
+  "address": [
+    "18",
+    "Chemin ar zan",
+    "22300",
+    "Lannion",
+    "FR",
+    ""
+  ],
+  "bankName": "Banque Populaire de l'Ouest",
+  "bic": "CCBPFRPPNAN",
+  "iban": "FR76 1380 7005 4710 6193 8453 974"
+}

@@ -1,0 +1,24 @@
+{
+  "id": 138,
+  "name": "LERCHE",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "THIERRY",
+  "nationality": "FR",
+  "dateOfBirth": "1962-12-09",
+  "placeOfBirth": "LAGNY SUR MARNE",
+  "email": "thierry.lerche@wanadoo.fr",
+  "phoneNumber": "+33685169213",
+  "address": [
+    "35",
+    "RUE DU CHATEAU",
+    "45680",
+    "DORDIVES",
+    "FR",
+    ""
+  ],
+  "bankName": "CREDIT AGRICOLE",
+  "bic": "AGRIFRPP887",
+  "iban": "FR76 1870 6000 0011 2958 5600 061"
+}

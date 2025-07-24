@@ -1,0 +1,24 @@
+{
+  "id": 121,
+  "name": "CADRO",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "FREDERIC",
+  "nationality": "FR",
+  "dateOfBirth": "1962-05-20",
+  "placeOfBirth": "GUERANDE",
+  "email": "cadro29@gmail.com",
+  "phoneNumber": "33670668700",
+  "address": [
+    "1",
+    "Allée des Cerisiers",
+    "29940",
+    "LA FORET FOUESNANT",
+    "FR",
+    ""
+  ],
+  "bankName": "ODDO BHF",
+  "bic": "ODDOFRPP",
+  "iban": "FR76 4585 0000 0124 4095 0000 155"
+}

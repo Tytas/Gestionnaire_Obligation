@@ -1,0 +1,24 @@
+{
+  "id": 109,
+  "name": "GIEUX",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Gérard",
+  "nationality": "FR",
+  "dateOfBirth": "1948-01-13",
+  "placeOfBirth": "Saint Aubin du Cormier",
+  "email": "ggieux@figie.eu",
+  "phoneNumber": "+32495104119",
+  "address": [
+    "55",
+    "Avenue de la Floride",
+    "1180",
+    "UCCLE",
+    "BE",
+    ""
+  ],
+  "bankName": "Banque de Luxembourg",
+  "bic": "BLUXLULL",
+  "iban": "LU78 0080 3264 6310 2001"
+}

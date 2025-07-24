@@ -1,0 +1,24 @@
+{
+  "id": 103,
+  "name": "LOUGNON",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Thibault",
+  "nationality": "FR",
+  "dateOfBirth": "1981-01-16",
+  "placeOfBirth": "Paris 16",
+  "email": "thibault@contribution.co",
+  "phoneNumber": "33668882626",
+  "address": [
+    "4",
+    "Rue de Cicé",
+    "75006",
+    "Paris",
+    "FR",
+    ""
+  ],
+  "bankName": "Edmond De Rothschild",
+  "bic": "COFIFRPPXXX",
+  "iban": "FR76 4252 9000 0100 2073 5001 047"
+}

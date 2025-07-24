@@ -1,0 +1,24 @@
+{
+  "id": 141,
+  "name": "GUILBERT",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Fabrice",
+  "nationality": "FR",
+  "dateOfBirth": "1961-10-24",
+  "placeOfBirth": "Calais",
+  "email": "fabrice.guilbert61@gmail.com",
+  "phoneNumber": "+33613258154",
+  "address": [
+    "51",
+    "rue du Grand Crêt",
+    "01170",
+    "Crozet",
+    "FR",
+    ""
+  ],
+  "bankName": "Crédit Agricole Centre-Est",
+  "bic": "AGRIFRPP878",
+  "iban": "FR76 1780 6005 8007 5499 8200 088"
+}

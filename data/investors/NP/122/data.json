@@ -1,0 +1,24 @@
+{
+  "id": 122,
+  "name": "PIERRE",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "PRIGENT",
+  "nationality": "FR",
+  "dateOfBirth": "1949-01-21",
+  "placeOfBirth": "PLOUENAN",
+  "email": "pierreprigent@wanadoo.fr",
+  "phoneNumber": "33633477317",
+  "address": [
+    "29",
+    "RUE AMIRAL COURBET",
+    "29680",
+    "ROSCOFF",
+    "FR",
+    ""
+  ],
+  "bankName": "CIC",
+  "bic": "CMCIFRPP",
+  "iban": "FR76 3004 7140 8000 0482 2250 122"
+}

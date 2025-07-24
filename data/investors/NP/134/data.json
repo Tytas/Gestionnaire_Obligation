@@ -1,0 +1,24 @@
+{
+  "id": 134,
+  "name": "PANIJEL",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Eric",
+  "nationality": "FR",
+  "dateOfBirth": "1964-03-24",
+  "placeOfBirth": "Rodez",
+  "email": "eric.panijel@gmail.com",
+  "phoneNumber": "+33660385135",
+  "address": [
+    "12",
+    "avenue Daniel Lesueur",
+    "75007",
+    "Paris",
+    "FR",
+    ""
+  ],
+  "bankName": "CCF",
+  "bic": "CCDFFRPPXXX",
+  "iban": "FR76 1807 9211 8102 4534 8084 089"
+}

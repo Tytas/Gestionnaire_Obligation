@@ -1,0 +1,24 @@
+{
+  "id": 133,
+  "name": "ROSSELIN",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Madame",
+  "firstName": "Charlotte",
+  "nationality": "FR",
+  "dateOfBirth": "1991-12-12",
+  "placeOfBirth": "Croix",
+  "email": "rosselincharlotte@gmail.com",
+  "phoneNumber": "+33645735885",
+  "address": [
+    "17",
+    "Rue Gavarni",
+    "59000",
+    "Lille",
+    "FR",
+    ""
+  ],
+  "bankName": "CCF",
+  "bic": "CCDFFRPPXXX",
+  "iban": "FR76 1807 9592 1602 8160 0834 048"
+}

@@ -1,0 +1,24 @@
+{
+  "id": 130,
+  "name": "BILLOUD",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Christophe",
+  "nationality": "FR",
+  "dateOfBirth": "1968-02-11",
+  "placeOfBirth": "PARIS",
+  "email": "jerome.cavard@athenee-investment.com",
+  "phoneNumber": "33687053890",
+  "address": [
+    "11.0",
+    "Rue de Rambouillet",
+    "75012",
+    "PARIS",
+    "FR",
+    ""
+  ],
+  "bankName": "SWISSQUOTE",
+  "bic": "SWQBCHZZXXX",
+  "iban": "CH98 0878 1000 2013 56500"
+}

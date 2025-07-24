@@ -1,0 +1,24 @@
+{
+  "id": 128,
+  "name": "DELPORTE",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Bruno",
+  "nationality": "FR",
+  "dateOfBirth": "1964-06-23",
+  "placeOfBirth": "DOUAI",
+  "email": "delporteb59@orange.fr",
+  "phoneNumber": "33680008957",
+  "address": [
+    "275.0",
+    "Rue du Faubourg d'Esquerchin",
+    "59553",
+    "Cuincy",
+    "FR",
+    ""
+  ],
+  "bankName": "Crédit Mutuel",
+  "bic": "CMCIFR2A",
+  "iban": "FR76 1562 9027 0100 0197 5144 003"
+}

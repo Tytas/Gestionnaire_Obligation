@@ -1,0 +1,24 @@
+{
+  "id": 124,
+  "name": "SUBER",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "PIETRO",
+  "nationality": "IT",
+  "dateOfBirth": "1964-01-10",
+  "placeOfBirth": "ROME",
+  "email": "jerome.cavard@athenee-investment.com",
+  "phoneNumber": "41225526680",
+  "address": [
+    "2",
+    "VIA SASSOFERRATO",
+    "197",
+    "ROME",
+    "IT",
+    "ITALIE"
+  ],
+  "bankName": "SWISSQUOTE",
+  "bic": "SWQBCHZZXXX",
+  "iban": "CH21 0878 1000 2118 69000"
+}

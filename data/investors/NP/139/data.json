@@ -1,0 +1,24 @@
+{
+  "id": 139,
+  "name": "ANTOUN",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Jean-Claude",
+  "nationality": "FR",
+  "dateOfBirth": "1947-07-18",
+  "placeOfBirth": "Marseille",
+  "email": "jcantoun@gmail.com",
+  "phoneNumber": "+33688059575",
+  "address": [
+    "161",
+    "rue du Commandant Rolland",
+    "13008",
+    "Marseille",
+    "FR",
+    ""
+  ],
+  "bankName": "CIC",
+  "bic": "CMCIFRPP",
+  "iban": "FR76 1009 6188 1300 0205 5170 179"
+}

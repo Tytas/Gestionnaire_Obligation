@@ -1,0 +1,24 @@
+{
+  "id": 115,
+  "name": "DEREGNAUCOURT",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Madame",
+  "firstName": "Anne",
+  "nationality": "FR",
+  "dateOfBirth": "1976-10-08",
+  "placeOfBirth": "Corbeil Essonnes",
+  "email": "annedamour@gmail.com",
+  "phoneNumber": "33642054888.0",
+  "address": [
+    "34",
+    "Avenue Emile Boutroux",
+    "92120",
+    "Montrouge",
+    "FR",
+    ""
+  ],
+  "bankName": "LCL",
+  "bic": "CRLYFRPP",
+  "iban": "FR25 3000 2005 2600 0002 1478 Y12"
+}

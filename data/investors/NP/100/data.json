@@ -1,0 +1,24 @@
+{
+  "id": 100,
+  "name": "LUCAS",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Madame",
+  "firstName": "Florence",
+  "nationality": "FR",
+  "dateOfBirth": "1948-01-14",
+  "placeOfBirth": "Cambrai",
+  "email": "florence.lucas88@sfr.fr",
+  "phoneNumber": "33664912244",
+  "address": [
+    "43",
+    "rue Oberkampf",
+    "75011",
+    "Paris",
+    "FR",
+    ""
+  ],
+  "bankName": "Société Générale",
+  "bic": "SOGEFRPP",
+  "iban": "FR76 3000 3030 1100 0519 5300 974"
+}

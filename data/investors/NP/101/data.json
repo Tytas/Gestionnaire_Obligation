@@ -1,0 +1,24 @@
+{
+  "id": 101,
+  "name": "COUTURIER",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Quentin",
+  "nationality": "FR",
+  "dateOfBirth": "1986-09-18",
+  "placeOfBirth": "Lyon 8ème",
+  "email": "q.couturier@izipizi.com",
+  "phoneNumber": "33662882685",
+  "address": [
+    "8",
+    "IMPASSE DES OEILLETS",
+    "64600",
+    "Anglet",
+    "FR",
+    ""
+  ],
+  "bankName": "Rothschild Martin Maurel",
+  "bic": "BMMMFR2A",
+  "iban": "FR76 1336 9000 0863 0768 0000 134"
+}

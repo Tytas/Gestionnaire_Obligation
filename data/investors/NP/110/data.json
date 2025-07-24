@@ -1,0 +1,24 @@
+{
+  "id": 110,
+  "name": "GOELOU",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Gildas",
+  "nationality": "FR",
+  "dateOfBirth": "1963-07-23",
+  "placeOfBirth": "LANNION",
+  "email": "m.goelou@gmail.com",
+  "phoneNumber": "+33679502595",
+  "address": [
+    "",
+    "Kerdaniou",
+    "22300",
+    "PLOUBEZRE",
+    "FR",
+    ""
+  ],
+  "bankName": "CREDIT AGRICOLE",
+  "bic": "AGRIFRPP882",
+  "iban": "FR76 1220 6045 0082 2973 0700 167"
+}

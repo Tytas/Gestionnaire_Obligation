@@ -1,0 +1,24 @@
+{
+  "id": 135,
+  "name": "MAILLET",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Christophe",
+  "nationality": "FR",
+  "dateOfBirth": "1967-10-20",
+  "placeOfBirth": "SAINTES",
+  "email": "agneschristofourmail@gmail.com",
+  "phoneNumber": "+33688588004",
+  "address": [
+    "1",
+    "chemin de Mez Meur",
+    "22560",
+    "PLEUMEUR-BODOU",
+    "FR",
+    ""
+  ],
+  "bankName": "BPGO",
+  "bic": "CCBPFRPPNAN",
+  "iban": "FR76 1380 7000 1093 3643 0101 566"
+}

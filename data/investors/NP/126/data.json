@@ -1,0 +1,24 @@
+{
+  "id": 126,
+  "name": "BIDOLI",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Yann",
+  "nationality": "FR",
+  "dateOfBirth": "1976-05-13",
+  "placeOfBirth": "Versailles",
+  "email": "ybidoli@hotmail.com",
+  "phoneNumber": "33661985287",
+  "address": [
+    "73 Ter",
+    "rue de maintenon",
+    "28320",
+    "Gallardon",
+    "FR",
+    ""
+  ],
+  "bankName": "LCL",
+  "bic": "CRLYFRPP",
+  "iban": "FR90 3000 2068 4300 0003 9236 P13"
+}

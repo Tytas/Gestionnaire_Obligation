@@ -1,0 +1,24 @@
+{
+  "id": 111,
+  "name": "GIEUX",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Madame",
+  "firstName": "Delphine",
+  "nationality": "FR",
+  "dateOfBirth": "1974-04-02",
+  "placeOfBirth": "Saint-Maur-Des-Fossés",
+  "email": "delphine.gieux@hotmail.com",
+  "phoneNumber": "+33633900870",
+  "address": [
+    "48",
+    "Via Mario Pagano",
+    "20145",
+    "Milano",
+    "IT",
+    ""
+  ],
+  "bankName": "CIC",
+  "bic": "CMCIFRPP",
+  "iban": "FR76 3006 6101 0100 0202 2350 154"
+}

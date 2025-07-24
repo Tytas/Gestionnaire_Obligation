@@ -1,0 +1,24 @@
+{
+  "id": 136,
+  "name": "MORDELET",
+  "familyId": "",
+  "obligations": [],
+  "civility": "Monsieur",
+  "firstName": "Erwan",
+  "nationality": "FR",
+  "dateOfBirth": "1967-05-02",
+  "placeOfBirth": "HARFLEUR",
+  "email": "erwanmordelet@orange.fr",
+  "phoneNumber": "+33686943671",
+  "address": [
+    "7",
+    "Rue d'Apigné",
+    "35650",
+    "LE RHEU",
+    "FR",
+    ""
+  ],
+  "bankName": "CA",
+  "bic": "AGRIFRPP836",
+  "iban": "FR76 1360 6000 7138 3047 0800 043"
+}
