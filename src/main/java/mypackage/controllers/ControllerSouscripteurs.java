@@ -275,6 +275,7 @@ public class ControllerSouscripteurs {
                 System.out.println("Investor deleted: " + ((InvestorNP)selectedInvestor).getName());
                 InvestorInteractor.DeleteInvestorNP(selectedInvestor.getId());
                 listInvestor.remove(selectedInvestor);
+                selectedInvestor = null; // Reset selected investor after deletion
             }
         } else {
             System.out.println("Deletion cancelled.");
@@ -305,8 +306,6 @@ public class ControllerSouscripteurs {
                 }
             }
             tableInvestors.setItems(listInvestor);
-            selectedInvestor = null; // Reset selected investor
-            displayInvestor(null); // Clear displayed investor details
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -335,8 +334,6 @@ public class ControllerSouscripteurs {
                 }
             }
             tableInvestors.setItems(listInvestor);
-            selectedInvestor = null; // Reset selected investor
-            displayInvestor(null); // Clear displayed investor details
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -429,19 +426,14 @@ public class ControllerSouscripteurs {
         try {
             // Nettoyer la chaîne d'entrée (enlever espaces existants, virgules, etc.)
             String cleanString = numberAsString.replaceAll("[\\s,]", "");
-            
             // Convertir en nombre
             double value = Double.parseDouble(cleanString);
-            
             // Formater avec espaces
             NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
             format.setGroupingUsed(true);
             label.setText(format.format(value) + " €");
         } catch (NumberFormatException e) {
-            // En cas d'erreur de format, afficher la chaîne originale ou gérer l'erreur
             label.setText(numberAsString);
-            // Ou bien : 
-            // label.setText("Format invalide");
         }
     }
 

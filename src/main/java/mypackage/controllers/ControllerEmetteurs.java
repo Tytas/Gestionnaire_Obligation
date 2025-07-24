@@ -233,8 +233,6 @@ public class ControllerEmetteurs {
                 }
             }
             tableApplicants.setItems(listApplicant);
-            selectedApplicant = null; // Reset selected applicant
-            displayApplicant(null); // Clear displayed applicant details
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -289,6 +287,7 @@ public class ControllerEmetteurs {
                 });
                 ApplicantInteractor.DeleteApplicant(selectedApplicant.getId());
                 listApplicant.remove(selectedApplicant);
+                selectedApplicant = null; // Reset selected applicant after deletion
             } else {
                 System.out.println("Deletion cancelled.");
                 return;

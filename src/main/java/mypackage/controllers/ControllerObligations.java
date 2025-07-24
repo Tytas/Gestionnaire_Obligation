@@ -310,6 +310,7 @@ public class ControllerObligations {
                 });
                 ObligationInteractor.DeleteObligation(selectedObligation.getId());
                 listOblig.remove(selectedObligation);
+                selectedObligation = null;
             } else {
                 System.out.println("Deletion cancelled.");
                 return;
@@ -343,8 +344,6 @@ public class ControllerObligations {
                 }
             }
             tableObligations.setItems(listOblig);
-            selectedObligation = null; // Reset selected obligation
-            displayObligation(null); // Clear displayed obligation details
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -222,8 +222,6 @@ public class ControllerGroups {
                 listGroup.add(GroupInteractor.GetGroup(id));
             }
             tableGroups.setItems(listGroup);
-            selectedGroup = null; // Reset selected Group
-            displayGroup(null); // Clear displayed Group details
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -242,6 +240,7 @@ public class ControllerGroups {
                 }
                 GroupInteractor.DeleteGroup(selectedGroup.getId());
                 listGroup.remove(selectedGroup);
+                selectedGroup = null; // Reset selected group after deletion
             } else {
                 System.out.println("Deletion cancelled.");
                 return;

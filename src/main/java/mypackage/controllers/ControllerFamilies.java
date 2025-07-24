@@ -233,6 +233,7 @@ public class ControllerFamilies {
                 });
                 FamilyInteractor.DeleteFamily(selectedFamily.getId());
                 listFam.remove(selectedFamily);
+                selectedFamily = null; // Reset selected family after deletion
             } else {
                 System.out.println("Deletion cancelled.");
                 return;
@@ -240,6 +241,9 @@ public class ControllerFamilies {
         } else {
             System.out.println("No Family selected to delete.");
         }
+        tableFamily.setItems(listFam);
+        displayFamily(null); // Clear displayed family details
+        
     }
 
     @FXML
@@ -265,12 +269,10 @@ public class ControllerFamilies {
                     listFam.add(FamilyInteractor.GetFamily(id));
                 }
             }
-            tableFamily.setItems(listFam);
-            selectedFamily = null; // Reset selected family
-            displayFamily(null); // Clear displayed family details
         } catch (Exception e) {
             e.printStackTrace();
         }
+        tableFamily.setItems(listFam);
     }
 
     @FXML
@@ -299,13 +301,13 @@ public class ControllerFamilies {
                         listFam.add(FamilyInteractor.GetFamily(id));
                     }
                 }
-                tableFamily.setItems(listFam);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             System.out.println("No obligation selected to edit.");
         }
+        tableFamily.setItems(listFam);
     }
 
     @FXML
@@ -325,13 +327,13 @@ public class ControllerFamilies {
                 stage.setScene(new Scene(root));
                 stage.initModality(Modality.APPLICATION_MODAL); // bloque la fenêtre principale
                 stage.showAndWait(); // attend que la fenêtre se ferme
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             System.out.println("No family selected to consult.");
         }
+        tableFamily.setItems(listFam);
     }
 
     public void getMainApp() {
