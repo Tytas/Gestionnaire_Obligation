@@ -14,17 +14,31 @@ import mypackage.model.Group;
 public class GroupInteractor {
 
     public static Group GetGroup(int id){
+        if (id <= 0) {
+            System.err.println("ID de groupe invalide : " + id);
+            return null;
+        }
+        
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/groups/";
         SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
-            if (Files.exists(Path.of(baseDir, name.get()))) {
-                Group group = objectMapper.readValue(Path.of(baseDir, name.get()).resolve("data.json").toFile(),
-                                                        Group.class);
-                return group;
+            Path groupPath = Path.of(baseDir, name.get());
+            Path dataPath = groupPath.resolve("data.json");
+            
+            if (Files.exists(groupPath) && Files.exists(dataPath)) {
+                Group group = objectMapper.readValue(dataPath.toFile(), Group.class);
+                if (group != null) {
+                    return group;
+                } else {
+                    System.err.println("Erreur : groupe null après désérialisation pour ID " + id);
+                }
+            } else {
+                System.err.println("Fichier data.json non trouvé pour le groupe ID " + id);
             }
         } catch (IOException e) {
+            System.err.println("Erreur lors de la lecture du groupe ID " + id + " : " + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -82,13 +96,29 @@ public class GroupInteractor {
     }
 
     public static ArrayList<Integer> GetAllGroupsId(){
-        File[] ListGroupFiles = new File("data/groups/").listFiles(File::isDirectory);
+        File groupsDir = new File("data/groups/");
+        if (!groupsDir.exists() || !groupsDir.isDirectory()) {
+            System.err.println("Répertoire des groupes non trouvé : data/groups/");
+            return new ArrayList<>();
+        }
+        
+        File[] ListGroupFiles = groupsDir.listFiles(File::isDirectory);
         ArrayList<Integer> ListGroupId = new ArrayList<>();
+        
+        if (ListGroupFiles == null) {
+            System.err.println("Erreur lors de la lecture du répertoire des groupes");
+            return ListGroupId;
+        }
+        
         for (File file : ListGroupFiles) {
             try {
-                ListGroupId.add(Integer.parseInt(file.getName()));
+                String fileName = file.getName().trim();
+                if (!fileName.isEmpty()) {
+                    ListGroupId.add(Integer.parseInt(fileName));
+                }
             } catch (NumberFormatException e) {
                 // ignorer les dossiers qui ne sont pas des nombres
+                System.err.println("Nom de dossier invalide pour groupe : " + file.getName());
             }
         }
         return ListGroupId;

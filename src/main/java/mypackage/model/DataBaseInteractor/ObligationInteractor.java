@@ -13,17 +13,31 @@ import mypackage.model.Obligation;
 public class ObligationInteractor {
 
     public static Obligation GetObligation(int id){
+        if (id <= 0) {
+            System.err.println("ID d'obligation invalide : " + id);
+            return null;
+        }
+        
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/obligations/";
         SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
-            if (Files.exists(Path.of(baseDir, name.get()))) {
-                Obligation oblig = objectMapper.readValue(Path.of(baseDir, name.get()).resolve("data.json").toFile(),
-                                                        Obligation.class);
-                return oblig;
+            Path obligationPath = Path.of(baseDir, name.get());
+            Path dataPath = obligationPath.resolve("data.json");
+            
+            if (Files.exists(obligationPath) && Files.exists(dataPath)) {
+                Obligation oblig = objectMapper.readValue(dataPath.toFile(), Obligation.class);
+                if (oblig != null) {
+                    return oblig;
+                } else {
+                    System.err.println("Erreur : obligation null après désérialisation pour ID " + id);
+                }
+            } else {
+                System.err.println("Fichier data.json non trouvé pour l'obligation ID " + id);
             }
         } catch (IOException e) {
+            System.err.println("Erreur lors de la lecture de l'obligation ID " + id + " : " + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -31,10 +45,16 @@ public class ObligationInteractor {
     }
 
     public static Obligation GetObligationByName(String name){
+        if (name == null || name.trim().isEmpty()) {
+            System.err.println("Nom d'obligation invalide : " + name);
+            return null;
+        }
+        
+        String trimmedName = name.trim();
         ArrayList<Integer> ids = GetAllObligationsId();
         for (Integer id : ids) {
             Obligation oblig = GetObligation(id);
-            if (oblig != null && oblig.getName().equals(name)) {
+            if (oblig != null && oblig.getName() != null && oblig.getName().trim().equals(trimmedName)) {
                 return oblig;
             }
         }
@@ -42,22 +62,43 @@ public class ObligationInteractor {
     }
 
     public static ArrayList<Integer> GetAllObligationsId(){
-        File[] ListObligFiles = new File("data/obligations/").listFiles(File::isDirectory);
+        File obligationsDir = new File("data/obligations/");
+        if (!obligationsDir.exists() || !obligationsDir.isDirectory()) {
+            System.err.println("Répertoire des obligations non trouvé : data/obligations/");
+            return new ArrayList<>();
+        }
+        
+        File[] ListObligFiles = obligationsDir.listFiles(File::isDirectory);
         ArrayList<Integer> ListObligId = new ArrayList<>();
         if (ListObligFiles == null) {
+            System.err.println("Erreur lors de la lecture du répertoire des obligations");
             return ListObligId; // Retourner une liste vide si aucun dossier n'est trouvé
         }
         for (File file : ListObligFiles) {
             try {
-                ListObligId.add(Integer.parseInt(file.getName()));
+                String fileName = file.getName().trim();
+                if (!fileName.isEmpty()) {
+                    ListObligId.add(Integer.parseInt(fileName));
+                }
             } catch (NumberFormatException e) {
                 // ignorer les dossiers qui ne sont pas des nombres
+                System.err.println("Nom de dossier invalide pour obligation : " + file.getName());
             }
         }
         return ListObligId;
     }
 
     public static Boolean SaveObligation(Obligation oblig){
+        if (oblig == null) {
+            System.err.println("Erreur : obligation null ne peut pas être sauvegardée");
+            return false;
+        }
+        
+        if (oblig.getId() <= 0) {
+            System.err.println("Erreur : ID d'obligation invalide : " + oblig.getId());
+            return false;
+        }
+        
         String baseDir = "data/obligations/";
         String obligationName = Integer.toString(oblig.getId());
         Path obligationFolder = Path.of(baseDir, obligationName);
@@ -77,6 +118,7 @@ public class ObligationInteractor {
 
             return true;
         } catch (IOException e) {
+            System.err.println("Erreur lors de la sauvegarde de l'obligation ID " + oblig.getId() + " : " + e.getMessage());
             e.printStackTrace();
             return false;
         }

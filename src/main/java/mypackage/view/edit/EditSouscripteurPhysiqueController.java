@@ -371,32 +371,32 @@ public class EditSouscripteurPhysiqueController {
         });
 
         validerButton.setOnAction(event -> {
-            boolean sexeOK = sexeToggleGroup.getSelectedToggle() != null;
-            if (!sexeOK) {
-                sexeErreurLabel.setText("Veuillez sélectionner un sexe.");
-                sexeErreurLabel.setVisible(!sexeOK);
-                sexeErreurLabel.setStyle("-fx-text-fill: red; -fx-font-size: 10px;");
-            }
-            else {
-                sexeErreurLabel.setVisible(false);
-            }
+            // boolean sexeOK = sexeToggleGroup.getSelectedToggle() != null;
+            // if (!sexeOK) {
+            //     sexeErreurLabel.setText("Veuillez sélectionner un sexe.");
+            //     sexeErreurLabel.setVisible(!sexeOK);
+            //     sexeErreurLabel.setStyle("-fx-text-fill: red; -fx-font-size: 10px;");
+            // }
+            // else {
+            //     sexeErreurLabel.setVisible(false);
+            // }
             boolean nomOK = validateField(nomField, nomErreurField, "text");
-            boolean prenomOK = validateField(prenomField, prenomErreurField, "text");
-            boolean nationaliteOK = validateField(nationaliteField, nationaliteErreurComboBox, "");
-            boolean dateNaissanceOK = validateField(dateNaissanceField, dateNaissanceErreurField, "");
-            boolean lieuNaissanceOK = validateField(lieuNaissanceField, lieuNaissanceErreurField, "text");
-            boolean emailOK = validateField(emailField, emailErreurField, "email");
-            boolean telephoneOK = validateField(telephoneField, telephoneErreurField, "text");
+            // boolean prenomOK = validateField(prenomField, prenomErreurField, "text");
+            // boolean nationaliteOK = validateField(nationaliteField, nationaliteErreurComboBox, "");
+            // boolean dateNaissanceOK = validateField(dateNaissanceField, dateNaissanceErreurField, "");
+            // boolean lieuNaissanceOK = validateField(lieuNaissanceField, lieuNaissanceErreurField, "text");
+            // boolean emailOK = validateField(emailField, emailErreurField, "email");
+            // boolean telephoneOK = validateField(telephoneField, telephoneErreurField, "text");
 
-            boolean numeroAdresseOK = validateField(numeroAdresseField, numeroAdresseErreurField, "text");
-            boolean rueAdresseOK = validateField(rueAdresseField, rueAdresseErreurField, "text");
-            boolean codePostalOK = validateField(codePostalAdresseField, codePostalAdresseErreurField, "text");
-            boolean villeAdresseOK = validateField(villeAdresseField, villeAdresseErreurField, "text");
-            boolean paysAdresseOK = validateField(paysAdresseField, paysAdresseErreurField, "text");
+            // boolean numeroAdresseOK = validateField(numeroAdresseField, numeroAdresseErreurField, "text");
+            // boolean rueAdresseOK = validateField(rueAdresseField, rueAdresseErreurField, "text");
+            // boolean codePostalOK = validateField(codePostalAdresseField, codePostalAdresseErreurField, "text");
+            // boolean villeAdresseOK = validateField(villeAdresseField, villeAdresseErreurField, "text");
+            // boolean paysAdresseOK = validateField(paysAdresseField, paysAdresseErreurField, "text");
 
-            boolean bicOK = validateField(bicField, bicErreurField, "text");
-            boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
-            boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
+            // boolean bicOK = validateField(bicField, bicErreurField, "text");
+            // boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
+            // boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
 
             boolean familyOK = selectedFamily != null && !selectedFamily.isEmpty();
             if (!familyOK){
@@ -408,37 +408,33 @@ public class EditSouscripteurPhysiqueController {
                 familyErreurLabel.setVisible(false);
             }
 
-            // Vérification globale
-            boolean formulaireValide =
-                sexeOK && nomOK && prenomOK && nationaliteOK && dateNaissanceOK &&
-                lieuNaissanceOK && emailOK && telephoneOK &&
-                numeroAdresseOK && rueAdresseOK && codePostalOK && villeAdresseOK &&
-                paysAdresseOK && familyOK &&
-                bicOK && ibanOK && banqueOK;
+            // Vérification globale - seul le nom est obligatoire
+            boolean formulaireValide = nomOK;
 
             if (formulaireValide) {
-                String sexe = ((RadioButton) sexeToggleGroup.getSelectedToggle()).getText();
+                String sexe = (sexeToggleGroup.getSelectedToggle() != null) ? 
+                    ((RadioButton) sexeToggleGroup.getSelectedToggle()).getText() : "";
                 EditInvestorNP(
                     new SimpleStringProperty(nomField.getText().trim()),
                     sexe,
-                    prenomField.getText().trim(),
-                    nationaliteField.getValue(),
-                    dateNaissanceField.getValue().toString(),
-                    lieuNaissanceField.getText().trim(),
-                    emailField.getText().trim(),
-                    telephoneField.getText().trim(),
+                    prenomField.getText() != null ? prenomField.getText().trim() : "",
+                    nationaliteField.getValue() != null ? nationaliteField.getValue() : "",
+                    (dateNaissanceField.getValue() != null) ? dateNaissanceField.getValue().toString() : "",
+                    lieuNaissanceField.getText() != null ? lieuNaissanceField.getText().trim() : "",
+                    emailField.getText() != null ? emailField.getText().trim() : "",
+                    telephoneField.getText() != null ? telephoneField.getText().trim() : "",
                     new String[]{
-                        numeroAdresseField.getText().trim(),
-                        rueAdresseField.getText().trim(),
-                        codePostalAdresseField.getText().trim(),
-                        villeAdresseField.getText().trim(),
-                        paysAdresseField.getText().trim(),
-                        complementAdresseField.getText().trim()
+                        numeroAdresseField.getText() != null ? numeroAdresseField.getText().trim() : "",
+                        rueAdresseField.getText() != null ? rueAdresseField.getText().trim() : "",
+                        codePostalAdresseField.getText() != null ? codePostalAdresseField.getText().trim() : "",
+                        villeAdresseField.getText() != null ? villeAdresseField.getText().trim() : "",
+                        paysAdresseField.getText() != null ? paysAdresseField.getText().trim() : "",
+                        complementAdresseField.getText() != null ? complementAdresseField.getText().trim() : ""
                     },
-                    ibanField.getText().trim(), 
-                    bicField.getText().trim(), 
-                    banqueField.getText().trim(),
-                    FamilyInteractor.GetFamilyByName(selectedFamily)
+                    ibanField.getText() != null ? ibanField.getText().trim() : "", 
+                    bicField.getText() != null ? bicField.getText().trim() : "", 
+                    banqueField.getText() != null ? banqueField.getText().trim() : "",
+                    (selectedFamily != null) ? FamilyInteractor.GetFamilyByName(selectedFamily) : 0
                 );
                 result = true;
                 ((Stage) validerButton.getScene().getWindow()).close();

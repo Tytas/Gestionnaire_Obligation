@@ -15,17 +15,31 @@ import mypackage.model.Investor;
 public class InvestorInteractor {
 
     public static InvestorNP GetInvestorNP(int id){
+        if (id <= 0) {
+            System.err.println("ID d'investisseur NP invalide : " + id);
+            return null;
+        }
+        
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/investors/NP/";
         SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
-            if (Files.exists(Path.of(baseDir, name.get()))) {
-                InvestorNP investor = objectMapper.readValue(Path.of(baseDir, name.get()).resolve("data.json").toFile(),
-                                                            InvestorNP.class);
-                return investor;
+            Path investorPath = Path.of(baseDir, name.get());
+            Path dataPath = investorPath.resolve("data.json");
+            
+            if (Files.exists(investorPath) && Files.exists(dataPath)) {
+                InvestorNP investor = objectMapper.readValue(dataPath.toFile(), InvestorNP.class);
+                if (investor != null) {
+                    return investor;
+                } else {
+                    System.err.println("Erreur : investisseur NP null après désérialisation pour ID " + id);
+                }
+            } else {
+                System.err.println("Fichier data.json non trouvé pour l'investisseur NP ID " + id);
             }
         } catch (IOException e) {
+            System.err.println("Erreur lors de la lecture de l'investisseur NP ID " + id + " : " + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -58,17 +72,31 @@ public class InvestorInteractor {
     }
 
     public static InvestorLP GetInvestorLP(int id){
+        if (id <= 0) {
+            System.err.println("ID d'investisseur LP invalide : " + id);
+            return null;
+        }
+        
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/investors/LP/";
         SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
-            if (Files.exists(Path.of(baseDir, name.get()))) {
-                InvestorLP investor = objectMapper.readValue(Path.of(baseDir, name.get()).resolve("data.json").toFile(),
-                                                            InvestorLP.class);
-                return investor;
+            Path investorPath = Path.of(baseDir, name.get());
+            Path dataPath = investorPath.resolve("data.json");
+            
+            if (Files.exists(investorPath) && Files.exists(dataPath)) {
+                InvestorLP investor = objectMapper.readValue(dataPath.toFile(), InvestorLP.class);
+                if (investor != null) {
+                    return investor;
+                } else {
+                    System.err.println("Erreur : investisseur LP null après désérialisation pour ID " + id);
+                }
+            } else {
+                System.err.println("Fichier data.json non trouvé pour l'investisseur LP ID " + id);
             }
         } catch (IOException e) {
+            System.err.println("Erreur lors de la lecture de l'investisseur LP ID " + id + " : " + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -175,22 +203,52 @@ public class InvestorInteractor {
     }
 
     public static ArrayList<Integer> GetAllInvestorId(){
-        File[] ListInvestorLPFiles = new File("data/investors/LP/").listFiles(File::isDirectory);
-        File[] ListInvestorNPFiles = new File("data/investors/NP/").listFiles(File::isDirectory);
+        File investorLPDir = new File("data/investors/LP/");
+        File investorNPDir = new File("data/investors/NP/");
         ArrayList<Integer> ListInvestorId = new ArrayList<>();
-        for (File file : ListInvestorLPFiles) {
-            try {
-                ListInvestorId.add(Integer.parseInt(file.getName()));
-            } catch (NumberFormatException e) {
-                // ignorer les dossiers qui ne sont pas des nombres
+        
+        // Vérifier les répertoires LP
+        if (investorLPDir.exists() && investorLPDir.isDirectory()) {
+            File[] ListInvestorLPFiles = investorLPDir.listFiles(File::isDirectory);
+            if (ListInvestorLPFiles != null) {
+                for (File file : ListInvestorLPFiles) {
+                    try {
+                        String fileName = file.getName().trim();
+                        if (!fileName.isEmpty()) {
+                            ListInvestorId.add(Integer.parseInt(fileName));
+                        }
+                    } catch (NumberFormatException e) {
+                        // ignorer les dossiers qui ne sont pas des nombres
+                        System.err.println("Nom de dossier invalide pour investisseur LP : " + file.getName());
+                    }
+                }
+            } else {
+                System.err.println("Erreur lors de la lecture du répertoire des investisseurs LP");
             }
+        } else {
+            System.err.println("Répertoire des investisseurs LP non trouvé : data/investors/LP/");
         }
-        for (File file : ListInvestorNPFiles) {
-            try {
-                ListInvestorId.add(Integer.parseInt(file.getName()));
-            } catch (NumberFormatException e) {
-                // ignorer les dossiers qui ne sont pas des nombres
+        
+        // Vérifier les répertoires NP
+        if (investorNPDir.exists() && investorNPDir.isDirectory()) {
+            File[] ListInvestorNPFiles = investorNPDir.listFiles(File::isDirectory);
+            if (ListInvestorNPFiles != null) {
+                for (File file : ListInvestorNPFiles) {
+                    try {
+                        String fileName = file.getName().trim();
+                        if (!fileName.isEmpty()) {
+                            ListInvestorId.add(Integer.parseInt(fileName));
+                        }
+                    } catch (NumberFormatException e) {
+                        // ignorer les dossiers qui ne sont pas des nombres
+                        System.err.println("Nom de dossier invalide pour investisseur NP : " + file.getName());
+                    }
+                }
+            } else {
+                System.err.println("Erreur lors de la lecture du répertoire des investisseurs NP");
             }
+        } else {
+            System.err.println("Répertoire des investisseurs NP non trouvé : data/investors/NP/");
         }
         return ListInvestorId;
     }

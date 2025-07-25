@@ -162,89 +162,85 @@ public class AddEmetteurController {
 
         validerButton.setOnAction(event -> {
             boolean nomOK = validateField(nomField, nomErreurField, "text");
-            boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
-            boolean capitalSocialOK = validateField(capitalSocialField, capitalSocialErreurField, "text");
-            boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
+            // boolean numRegistreOK = validateField(numRegistreField, numRegistreErreurField, "text");
+            // boolean capitalSocialOK = validateField(capitalSocialField, capitalSocialErreurField, "text");
+            // boolean formeJuridiqueOK = validateField(formeJuridiqueComboBox, formeJuridiqueErreurComboBox, "");
 
-            boolean numeroAdresseOK = validateField(numeroAdresseField, numeroAdresseErreurField, "text");
-            boolean rueAdresseOK = validateField(rueAdresseField, rueAdresseErreurField, "text");
-            boolean codePostalAdresseOK = validateField(codePostalAdresseField, codePostalAdresseErreurField, "text");
-            boolean villeAdresseOK = validateField(villeAdresseField, villeAdresseErreurField, "text");
-            boolean paysAdresseOK = validateField(paysAdresseField, paysAdresseErreurField, "text");
+            // boolean numeroAdresseOK = validateField(numeroAdresseField, numeroAdresseErreurField, "text");
+            // boolean rueAdresseOK = validateField(rueAdresseField, rueAdresseErreurField, "text");
+            // boolean codePostalAdresseOK = validateField(codePostalAdresseField, codePostalAdresseErreurField, "text");
+            // boolean villeAdresseOK = validateField(villeAdresseField, villeAdresseErreurField, "text");
+            // boolean paysAdresseOK = validateField(paysAdresseField, paysAdresseErreurField, "text");
             // Le complément est facultatif ? sinon :
-            boolean complementAdresseOK = validateField(complementAdresseField, complementAdresseErreurField, "text");
+            // boolean complementAdresseOK = validateField(complementAdresseField, complementAdresseErreurField, "text");
 
-            boolean sexeDirigeantOK = sexeDirigeantToggleGroup.getSelectedToggle() != null;
-            if (!sexeDirigeantOK) sexeDirigeantErreurLabel.setText("Veuillez sélectionner un sexe.");
-            sexeDirigeantErreurLabel.setVisible(!sexeDirigeantOK);
+            // boolean sexeDirigeantOK = sexeDirigeantToggleGroup.getSelectedToggle() != null;
+            // if (!sexeDirigeantOK) sexeDirigeantErreurLabel.setText("Veuillez sélectionner un sexe.");
+            // sexeDirigeantErreurLabel.setVisible(!sexeDirigeantOK);
 
-            boolean nomDirigeantOK = validateField(nomDirigeantField, nomDirigeantErreurField, "text");
-            boolean prenomDirigeantOK = validateField(prenomDirigeantField, prenomDirigeantErreurField, "text");
-            boolean nationaliteDirigeantOK = validateField(nationaliteDirigeantComboBox, nationaliteDirigeantErreurComboBox, "");
-            boolean dateNaissanceDirigeantOK = validateField(dateNaissanceDirigeantField, dateNaissanceDirigeantErreurField, "");
-            boolean lieuNaissanceDirigeantOK = validateField(lieuNaissanceDirigeantField, lieuNaissanceDirigeantErreurField, "text");
-            boolean emailDirigeantOK = validateField(emailDirigeantField, emailDirigeantErreurField, "email");
-            boolean telephoneDirigeantOK = validateField(telephoneDirigeantField, telephoneDirigeantErreurField, "text");
+            // boolean nomDirigeantOK = validateField(nomDirigeantField, nomDirigeantErreurField, "text");
+            // boolean prenomDirigeantOK = validateField(prenomDirigeantField, prenomDirigeantErreurField, "text");
+            // boolean nationaliteDirigeantOK = validateField(nationaliteDirigeantComboBox, nationaliteDirigeantErreurComboBox, "");
+            // boolean dateNaissanceDirigeantOK = validateField(dateNaissanceDirigeantField, dateNaissanceDirigeantErreurField, "");
+            // boolean lieuNaissanceDirigeantOK = validateField(lieuNaissanceDirigeantField, lieuNaissanceDirigeantErreurField, "text");
+            // boolean emailDirigeantOK = validateField(emailDirigeantField, emailDirigeantErreurField, "email");
+            // boolean telephoneDirigeantOK = validateField(telephoneDirigeantField, telephoneDirigeantErreurField, "text");
 
-            boolean numeroAdresseDirigeantOK = validateField(numeroAdresseDirigeantField, numeroAdresseDirigeantErreurField, "text");
-            boolean rueAdresseDirigeantOK = validateField(rueAdresseDirigeantField, rueAdresseDirigeantErreurField, "text");
-            boolean codePostalAdresseDirigeantOK = validateField(codePostalAdresseDirigeantField, codePostalAdresseDirigeantErreurField, "text");
-            boolean villeAdresseDirigeantOK = validateField(villeAdresseDirigeantField, villeAdresseDirigeantErreurField, "text");
-            boolean paysAdresseDirigeantOK = validateField(paysAdresseDirigeantField, paysAdresseDirigeantErreurField, "text");
+            // boolean numeroAdresseDirigeantOK = validateField(numeroAdresseDirigeantField, numeroAdresseDirigeantErreurField, "text");
+            // boolean rueAdresseDirigeantOK = validateField(rueAdresseDirigeantField, rueAdresseDirigeantErreurField, "text");
+            // boolean codePostalAdresseDirigeantOK = validateField(codePostalAdresseDirigeantField, codePostalAdresseDirigeantErreurField, "text");
+            // boolean villeAdresseDirigeantOK = validateField(villeAdresseDirigeantField, villeAdresseDirigeantErreurField, "text");
+            // boolean paysAdresseDirigeantOK = validateField(paysAdresseDirigeantField, paysAdresseDirigeantErreurField, "text");
             
-            boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
-            boolean villeRCSOK = validateField(villeRCSField, villeRCSErreurField, "text");
+            // boolean fonctionDirigeantOK = validateField(fonctionDirigeantField, fonctionDirigeantErreurField, "text");
+            // boolean villeRCSOK = validateField(villeRCSField, villeRCSErreurField, "text");
             
-            boolean bicOK = validateField(bicField, bicErreurField, "text");
-            boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
-            boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
+            // boolean bicOK = validateField(bicField, bicErreurField, "text");
+            // boolean ibanOK = validateField(ibanField, ibanErreurField, "text");
+            // boolean banqueOK = validateField(banqueField, banqueErreurField, "text");
 
-            // Vérification globale
-            boolean formulaireValide =
-                nomOK && numRegistreOK && capitalSocialOK && formeJuridiqueOK &&
-                numeroAdresseOK && rueAdresseOK && codePostalAdresseOK && villeAdresseOK && paysAdresseOK && complementAdresseOK &&
-                sexeDirigeantOK && nomDirigeantOK && prenomDirigeantOK && nationaliteDirigeantOK && dateNaissanceDirigeantOK &&
-                lieuNaissanceDirigeantOK && emailDirigeantOK && telephoneDirigeantOK &&
-                numeroAdresseDirigeantOK && rueAdresseDirigeantOK && codePostalAdresseDirigeantOK && villeAdresseDirigeantOK &&
-                paysAdresseDirigeantOK && fonctionDirigeantOK && villeRCSOK && bicOK && ibanOK && banqueOK;
+            // Vérification globale - seul le nom est obligatoire
+            boolean formulaireValide = nomOK;
 
             if (formulaireValide) {
-                String sexeDirigeant = ((RadioButton) sexeDirigeantToggleGroup.getSelectedToggle()).getText();
+                String sexeDirigeant = (sexeDirigeantToggleGroup.getSelectedToggle() != null) ? 
+                    ((RadioButton) sexeDirigeantToggleGroup.getSelectedToggle()).getText() : "";
                 CreateApplicant(
                     new SimpleStringProperty(nomField.getText().trim()),
-                    Integer.parseInt(numRegistreField.getText().trim()),
-                    dateCreationField.getValue().toString(),
-                    capitalSocialField.getText().trim(),
-                    formeJuridiqueComboBox.getValue(),
+                    (numRegistreField.getText() != null && !numRegistreField.getText().trim().isEmpty()) ? 
+                        Integer.parseInt(numRegistreField.getText().trim()) : 0,
+                    (dateCreationField.getValue() != null) ? dateCreationField.getValue().toString() : "",
+                    capitalSocialField.getText() != null ? capitalSocialField.getText().trim() : "",
+                    formeJuridiqueComboBox.getValue() != null ? formeJuridiqueComboBox.getValue() : "",
                     new String[]{
-                        numeroAdresseField.getText().trim(),
-                        rueAdresseField.getText().trim(),
-                        codePostalAdresseField.getText().trim(),
-                        villeAdresseField.getText().trim(),
-                        paysAdresseField.getText().trim(),
-                        complementAdresseField.getText().trim()
+                        numeroAdresseField.getText() != null ? numeroAdresseField.getText().trim() : "",
+                        rueAdresseField.getText() != null ? rueAdresseField.getText().trim() : "",
+                        codePostalAdresseField.getText() != null ? codePostalAdresseField.getText().trim() : "",
+                        villeAdresseField.getText() != null ? villeAdresseField.getText().trim() : "",
+                        paysAdresseField.getText() != null ? paysAdresseField.getText().trim() : "",
+                        complementAdresseField.getText() != null ? complementAdresseField.getText().trim() : ""
                     },
                     sexeDirigeant,
-                    new SimpleStringProperty(nomDirigeantField.getText().trim()),
-                    prenomDirigeantField.getText().trim(),
-                    nationaliteDirigeantComboBox.getValue(),
-                    dateNaissanceDirigeantField.getValue().toString(),
-                    lieuNaissanceDirigeantField.getText().trim(),
-                    emailDirigeantField.getText().trim(),
-                    telephoneDirigeantField.getText().trim(),
+                    new SimpleStringProperty(nomDirigeantField.getText() != null ? nomDirigeantField.getText().trim() : ""),
+                    prenomDirigeantField.getText() != null ? prenomDirigeantField.getText().trim() : "",
+                    nationaliteDirigeantComboBox.getValue() != null ? nationaliteDirigeantComboBox.getValue() : "",
+                    (dateNaissanceDirigeantField.getValue() != null) ? dateNaissanceDirigeantField.getValue().toString() : "",
+                    lieuNaissanceDirigeantField.getText() != null ? lieuNaissanceDirigeantField.getText().trim() : "",
+                    emailDirigeantField.getText() != null ? emailDirigeantField.getText().trim() : "",
+                    telephoneDirigeantField.getText() != null ? telephoneDirigeantField.getText().trim() : "",
                     new String[]{
-                        numeroAdresseDirigeantField.getText().trim(),
-                        rueAdresseDirigeantField.getText().trim(),
-                        codePostalAdresseDirigeantField.getText().trim(),
-                        villeAdresseDirigeantField.getText().trim(),
-                        paysAdresseDirigeantField.getText().trim(),
-                        complementAdresseDirigeantField.getText().trim()
+                        numeroAdresseDirigeantField.getText() != null ? numeroAdresseDirigeantField.getText().trim() : "",
+                        rueAdresseDirigeantField.getText() != null ? rueAdresseDirigeantField.getText().trim() : "",
+                        codePostalAdresseDirigeantField.getText() != null ? codePostalAdresseDirigeantField.getText().trim() : "",
+                        villeAdresseDirigeantField.getText() != null ? villeAdresseDirigeantField.getText().trim() : "",
+                        paysAdresseDirigeantField.getText() != null ? paysAdresseDirigeantField.getText().trim() : "",
+                        complementAdresseDirigeantField.getText() != null ? complementAdresseDirigeantField.getText().trim() : ""
                     },
-                    villeRCSField.getText().trim(),
-                    fonctionDirigeantField.getText().trim(),
-                    ibanField.getText().trim(), 
-                    bicField.getText().trim(), 
-                    banqueField.getText().trim(), 
+                    villeRCSField.getText() != null ? villeRCSField.getText().trim() : "",
+                    fonctionDirigeantField.getText() != null ? fonctionDirigeantField.getText().trim() : "",
+                    ibanField.getText() != null ? ibanField.getText().trim() : "", 
+                    bicField.getText() != null ? bicField.getText().trim() : "", 
+                    banqueField.getText() != null ? banqueField.getText().trim() : "", 
                     0 // Assuming groupId is managed elsewhere
                 );
                 result = true;

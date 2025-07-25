@@ -14,17 +14,31 @@ public class ApplicantInteractor {
 
 
     public static Applicant GetApplicant(int id){
+        if (id <= 0) {
+            System.err.println("ID de candidat invalide : " + id);
+            return null;
+        }
+        
         ObjectMapper objectMapper = new ObjectMapper();
         String baseDir = "data/applicants/";
         SimpleStringProperty name = new SimpleStringProperty(Integer.toString(id));
         try {
             // Vérifier si le dossier existe
-            if (Files.exists(Path.of(baseDir, name.get()))) {
-                Applicant applicant = objectMapper.readValue(Path.of(baseDir, name.get()).resolve("data.json").toFile(),
-                                                        Applicant.class);
-                return applicant;
+            Path applicantPath = Path.of(baseDir, name.get());
+            Path dataPath = applicantPath.resolve("data.json");
+            
+            if (Files.exists(applicantPath) && Files.exists(dataPath)) {
+                Applicant applicant = objectMapper.readValue(dataPath.toFile(), Applicant.class);
+                if (applicant != null) {
+                    return applicant;
+                } else {
+                    System.err.println("Erreur : candidat null après désérialisation pour ID " + id);
+                }
+            } else {
+                System.err.println("Fichier data.json non trouvé pour le candidat ID " + id);
             }
         } catch (IOException e) {
+            System.err.println("Erreur lors de la lecture du candidat ID " + id + " : " + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -57,13 +71,29 @@ public class ApplicantInteractor {
     }
 
     public static ArrayList<Integer> GetAllApplicantsId(){
-        File[] ListApplicantFiles = new File("data/applicants/").listFiles(File::isDirectory);
+        File applicantsDir = new File("data/applicants/");
+        if (!applicantsDir.exists() || !applicantsDir.isDirectory()) {
+            System.err.println("Répertoire des candidats non trouvé : data/applicants/");
+            return new ArrayList<>();
+        }
+        
+        File[] ListApplicantFiles = applicantsDir.listFiles(File::isDirectory);
         ArrayList<Integer> ListApplicantId = new ArrayList<>();
+        
+        if (ListApplicantFiles == null) {
+            System.err.println("Erreur lors de la lecture du répertoire des candidats");
+            return ListApplicantId;
+        }
+        
         for (File file : ListApplicantFiles) {
             try {
-                ListApplicantId.add(Integer.parseInt(file.getName()));
+                String fileName = file.getName().trim();
+                if (!fileName.isEmpty()) {
+                    ListApplicantId.add(Integer.parseInt(fileName));
+                }
             } catch (NumberFormatException e) {
                 // ignorer les dossiers qui ne sont pas des nombres
+                System.err.println("Nom de dossier invalide pour candidat : " + file.getName());
             }
         }
         return ListApplicantId;
