@@ -1,7 +1,7 @@
 {
   "id": 137,
   "name": "BILLOUD",
-  "familyId": "",
+  "familyId": 0,
   "obligations": [],
   "civility": "Monsieur",
   "firstName": "Christophe",

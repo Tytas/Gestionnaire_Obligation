@@ -13,8 +13,12 @@ import mypackage.model.Family;
 public class FamilyInteractor {
 
     public static Family GetFamily(int id){
-        if (id <= 0) {
+        if (id < 0) {
             System.err.println("ID de famille invalide : " + id);
+            return null;
+        }
+        else if( id == 0) {
+            System.err.println("Pas de famille");
             return null;
         }
         

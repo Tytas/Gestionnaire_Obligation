@@ -344,7 +344,9 @@ public class CouponWindow {
                 System.out.println("'" + c + "' : " + (int)c);
             }
 
-            if(investor instanceof InvestorNP && ((InvestorNP)investor).getAddress()[4].trim().toUpperCase().equals("FRANCE")) {
+            if(investor instanceof InvestorNP &&
+               ((InvestorNP) investor).getAddress()[4].toUpperCase(Locale.FRANCE).equals("FRANCE") ||
+               ((InvestorNP) investor).getAddress()[4].toUpperCase(Locale.FRANCE).equals("FR")) {
                 cell2_2.add(new Paragraph(format.format(partBrut).replace('\u202F', ' ') + " €"));
                 cell2_2.add(new Paragraph("- " + format.format(partBrut * 0.3).replace('\u202F', ' ') + " €"));
                 cell2_2.add(new Paragraph(format.format(partBrut * 0.7).replace('\u202F', ' ') + " €"));
@@ -398,7 +400,7 @@ public class CouponWindow {
         LocalDate startDate = LocalDate.parse(obligation.getStartDate());
         long nombreDeMois = ChronoUnit.MONTHS.between(startDate, couponDate);
         for (int i = 1; i < nombreDeMois/12; i++) {
-            montantInvesti = (long) (montantInvesti * (1 + obligation.getRate()[0] / 100.0));
+            montantInvesti += (long) (montantInvesti * (1 + obligation.getRate()[0] / 100.0));
         }
         return montantInvesti;
     }

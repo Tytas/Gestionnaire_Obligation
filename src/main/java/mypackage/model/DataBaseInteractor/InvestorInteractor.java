@@ -35,9 +35,7 @@ public class InvestorInteractor {
                 } else {
                     System.err.println("Erreur : investisseur NP null après désérialisation pour ID " + id);
                 }
-            } else {
-                System.err.println("Fichier data.json non trouvé pour l'investisseur NP ID " + id);
-            }
+            } 
         } catch (IOException e) {
             System.err.println("Erreur lors de la lecture de l'investisseur NP ID " + id + " : " + e.getMessage());
             e.printStackTrace();
@@ -92,9 +90,7 @@ public class InvestorInteractor {
                 } else {
                     System.err.println("Erreur : investisseur LP null après désérialisation pour ID " + id);
                 }
-            } else {
-                System.err.println("Fichier data.json non trouvé pour l'investisseur LP ID " + id);
-            }
+            } 
         } catch (IOException e) {
             System.err.println("Erreur lors de la lecture de l'investisseur LP ID " + id + " : " + e.getMessage());
             e.printStackTrace();

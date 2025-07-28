@@ -1,7 +1,7 @@
 {
   "id" : 3,
   "name" : "jj",
-  "registerNumber" : 78,
+  "registerNumber" : "78",
   "dateOfCreation" : "2025-06-14",
   "socialCapital" : "75",
   "legalStatus" : "SARL",

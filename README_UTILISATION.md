@@ -2,6 +2,11 @@
 
 ## 🚀 Lancement de l'application
 
+# 🖥️ Installation & Prérequis
+
+- **Java 17** (LTS) doit être installé : [Télécharger Java](https://adoptium.net/)
+- **Maven 3.x** : [Télécharger Maven](https://maven.apache.org/download.cgi)
+- Fonctionne sous **Windows**, **Linux** et **macOS** (profils automatiques)
 ### Méthode recommandée
 Double-cliquez sur **"LocifGestion.bat"**
 
@@ -11,12 +16,13 @@ Double-cliquez sur le raccourci **"Locif Gestion.lnk"**
 ### Fonctionnalités
 - ✅ Lancement automatique (aucune touche à presser)
 - ✅ Aucun terminal visible pendant l'utilisation
-- ✅ Interface JavaFX complète avec toutes les fonctionnalités
-- ✅ Support PDF (iText) et Excel (Apache POI)
-- ✅ Configuration Maven moderne et optimisée
 
-## 📁 Structure du projet
+# 📦 Lancement avancé
 
+Après compilation, le JAR exécutable est disponible dans `target/` :
+```bash
+java -jar target/Locif-Gestion-1.0.0-executable.jar
+```
 ```
 Gestionnaire_Obligation/
 ├── LocifGestion.bat                     ← Lanceur principal ⭐
@@ -30,6 +36,9 @@ Gestionnaire_Obligation/
 └── target/                              ← Fichiers compilés
 ```
 
+# 🗄️ Structure des données
+
+Les dossiers `data/applicants`, `data/families`, `data/groups`, `data/investors`, `data/obligations` contiennent les fichiers JSON de chaque entité métier.
 ## 🔧 Développement avec Maven
 
 ### Compilation
@@ -57,17 +66,32 @@ mvn clean package
 mvn clean package -P production
 ```
 
+# 🧩 Modules principaux
+
+- **Contrôleurs** : ControllerSouscripteurs, ControllerObligations, ControllerGroups, ControllerFamilies, ControllerEmetteurs, ControllerMenu, ControllerHome
+- **Modèles** : Applicant, Family, Group, InvestorLP, InvestorNP, Obligation
+- **Vues** : Fichiers FXML pour chaque opération (consultation, ajout, édition)
 ## 📚 Bibliothèques incluses
 
-### JavaFX (21.0.1)
-- `javafx-controls` - Composants UI
-- `javafx-fxml` - Support FXML
-- `javafx-media` - Médias (images, sons)
-- `javafx-web` - Composants web
-
 ### Fonctionnalités métier
+# 🔒 Sécurité & Confidentialité
+
+- Toutes les données sont stockées localement en JSON.
+- Aucune transmission externe, respect de la confidentialité.
+
+# ⚠️ Limitations
+
+- Pas de gestion multi-utilisateur.
+- Pas de synchronisation cloud.
+
+# 📞 Support
+
+Pour toute question : dev@locif.com
+
+# 📄 Licence
+
+Licence propriétaire Locif. Voir [licence](https://locif.com/licence).
 - **Apache POI (5.2.5)** - Génération et lecture Excel
-- **iText (8.0.2)** - Création et manipulation PDF
 - **Jackson (2.16.1)** - Traitement JSON des données
 
 ### Utilitaires

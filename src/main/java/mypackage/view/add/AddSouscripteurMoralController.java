@@ -354,7 +354,7 @@ public class AddSouscripteurMoralController {
                 CreateInvestorLP(
                     new SimpleStringProperty(nomField.getText().trim()),
                     (numRegistreField.getText() != null && !numRegistreField.getText().trim().isEmpty()) ? 
-                        Integer.parseInt(numRegistreField.getText().trim()) : 0,
+                        numRegistreField.getText().trim() : "",
                     (dateCreationField.getValue() != null) ? dateCreationField.getValue().toString() : "",
                     capitalSocialField.getText() != null ? capitalSocialField.getText().trim() : "",
                     formeJuridiqueComboBox.getValue() != null ? formeJuridiqueComboBox.getValue() : "",
@@ -403,7 +403,7 @@ public class AddSouscripteurMoralController {
         });
     }
 
-    private void CreateInvestorLP(SimpleStringProperty name, int registerNumber, String dateOfCreation,
+    private void CreateInvestorLP(SimpleStringProperty name, String registerNumber, String dateOfCreation,
                     String capitalSocial, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
@@ -429,22 +429,37 @@ public class AddSouscripteurMoralController {
                 }
             }
         }
-        int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
-        investorlp.setFamilyId(familyIdSelected);
-        Family family = FamilyInteractor.GetFamily(familyIdSelected);
-        Boolean isInFamily = false;
-        for(Integer investors : family.getInvestors()) {
-            if(investors.equals(newId)) {
-                System.out.println("Investor already exists in family.");
-                isInFamily = true;
-                break;
+        
+        // Gestion de la famille seulement si une famille est sélectionnée
+        if (selectedFamily != null && !selectedFamily.isEmpty()) {
+            int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
+            investorlp.setFamilyId(familyIdSelected);
+            
+            // Vérification que familyIdSelected n'est pas 0 avant d'accéder à la famille
+            if (familyIdSelected != 0) {
+                Family family = FamilyInteractor.GetFamily(familyIdSelected);
+                
+                if (family != null) {
+                    Boolean isInFamily = false;
+                    for(Integer investors : family.getInvestors()) {
+                        if(investors.equals(newId)) {
+                            System.out.println("Investor already exists in family.");
+                            isInFamily = true;
+                            break;
+                        }
+                    }
+                    if(!isInFamily) {
+                        family.addInvestor(newId);
+                    }
+                    FamilyInteractor.DeleteFamily(familyIdSelected);
+                    FamilyInteractor.SaveFamily(family);
+                }
             }
+        } else {
+            // Aucune famille sélectionnée, familyId = 0
+            investorlp.setFamilyId(0);
         }
-        if(!isInFamily) {
-            family.addInvestor(newId);
-        }
-        FamilyInteractor.DeleteFamily(familyIdSelected);
-        FamilyInteractor.SaveFamily(family);
+        
         InvestorInteractor.SaveInvestorLP(investorlp);
     }
 

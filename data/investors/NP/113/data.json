@@ -1,7 +1,7 @@
 {
   "id": 113,
   "name": "ROBERT",
-  "familyId": "",
+  "familyId": 0,
   "obligations": [],
   "civility": "Monsieur",
   "firstName": "Pierre",

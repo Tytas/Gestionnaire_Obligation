@@ -146,7 +146,7 @@ public class EditFamilyController {
                     nomField.setText(currentFamily.getName());
                 }
                 
-                numRegistreField.setText(String.valueOf(currentFamily.getRegisterNumber()));
+                numRegistreField.setText(currentFamily.getRegisterNumber());
                 
                 if (currentFamily.getDateOfCreation() != null && !currentFamily.getDateOfCreation().isEmpty()) {
                     try {
@@ -335,7 +335,7 @@ public class EditFamilyController {
                 EditFamily(
                     new SimpleStringProperty(nomField.getText().trim()),
                     (numRegistreField.getText() != null && !numRegistreField.getText().trim().isEmpty()) ? 
-                        Integer.parseInt(numRegistreField.getText().trim()) : 0,
+                        numRegistreField.getText().trim() : "",
                     (dateCreationField.getValue() != null) ? dateCreationField.getValue().toString() : "",
                     capitalSocialField.getText() != null ? capitalSocialField.getText().trim() : "",
                     formeJuridiqueComboBox.getValue() != null ? formeJuridiqueComboBox.getValue() : "",
@@ -378,7 +378,7 @@ public class EditFamilyController {
         });
     }
 
-    private void EditFamily(SimpleStringProperty name, int registerNumber, String dateOfCreation,
+    private void EditFamily(SimpleStringProperty name, String registerNumber, String dateOfCreation,
                     String SocialCapital, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
@@ -422,10 +422,11 @@ public class EditFamilyController {
         } else {
             System.out.println("No contacts provided.");
         }
-        family.setInvestors(FamilyInteractor.GetFamily(Id).getInvestors());
-
-        FamilyInteractor.DeleteFamily(Id);
-        FamilyInteractor.SaveFamily(family);
+        if(Id != 0) {
+            family.setInvestors(FamilyInteractor.GetFamily(Id).getInvestors());
+            FamilyInteractor.DeleteFamily(Id);
+            FamilyInteractor.SaveFamily(family);
+        }
     }
 
     private boolean validateField(Control field, Label errorLabel, String expectedType) {

@@ -13,6 +13,7 @@ import mypackage.model.util.InvestorInfo;
 public class Obligation {
     private int id;
     private SimpleStringProperty name;
+    private String registerNumber;
     private Boolean convertible; 
     private long capital;
     private Integer valeurNominale;
@@ -31,6 +32,7 @@ public class Obligation {
 
     public Obligation() {
         this.name = new SimpleStringProperty("");
+        this.registerNumber = "";
         this.convertible = false;
         this.capital = 0;
         this.valeurNominale = 0;
@@ -44,11 +46,12 @@ public class Obligation {
         this.ApplicantId = -1;
     }
 
-    public Obligation(int id, SimpleStringProperty name, Boolean convertible, long capital, Integer valeurNominale,
+    public Obligation(int id, SimpleStringProperty name, String registerNumber, Boolean convertible, long capital, Integer valeurNominale,
                       String startDate, String endDate, int[] rate, String periodicity, String[] prorogation, 
                       Boolean prorogationActivated, String isin, ArrayList<String> safeties, Map<String, Integer> depreciations, int applicantId) {
         this.id = id;
         this.name = name;
+        this.registerNumber = registerNumber;
         this.convertible = convertible;
         this.capital = capital;
         this.valeurNominale = valeurNominale;
@@ -69,6 +72,9 @@ public class Obligation {
     }
     public String getName() {
         return name.get();
+    }
+    public String getRegisterNumber() {
+        return registerNumber;
     }
     public Boolean getConvertible() {
         return convertible;
@@ -142,6 +148,9 @@ public class Obligation {
     }
     public void setName(String name) {
         this.name.set(name);
+    }
+    public void setRegisterNumber(String registerNumber) {
+        this.registerNumber = registerNumber;
     }
     public void setConvertible(Boolean convertible) {
         this.convertible = convertible;

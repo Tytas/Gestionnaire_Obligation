@@ -1,7 +1,8 @@
 {
   "id" : 5,
   "name" : "test123",
-  "convertible" : false,
+  "registerNumber" : "",
+  "convertible" : true,
   "capital" : 1500000,
   "valeurNominale" : 50000,
   "startDate" : "2025-05-29",
@@ -16,15 +17,15 @@
     "2025-07-22" : 40
   },
   "investors" : [ {
-    "investorId" : 3,
-    "capital" : 10,
-    "date" : "2026-07-16"
-  }, {
-    "investorId" : 2,
-    "capital" : 10,
+    "investorId" : 1,
+    "capital" : 15,
     "date" : ""
   }, {
-    "investorId" : 4,
+    "investorId" : 12,
+    "capital" : 5,
+    "date" : ""
+  }, {
+    "investorId" : 129,
     "capital" : 10,
     "date" : ""
   } ],

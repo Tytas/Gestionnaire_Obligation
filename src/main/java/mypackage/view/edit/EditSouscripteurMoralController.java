@@ -185,7 +185,7 @@ public class EditSouscripteurMoralController {
                     nomField.setText(currentSouscripteur.getName());
                 }
                 
-                numRegistreField.setText(String.valueOf(currentSouscripteur.getRegisterNumber()));
+                numRegistreField.setText(currentSouscripteur.getRegisterNumber());
                 
                 if (currentSouscripteur.getDateOfCreation() != null && !currentSouscripteur.getDateOfCreation().isEmpty()) {
                     try {
@@ -311,14 +311,16 @@ public class EditSouscripteurMoralController {
                 
                 // Gestion sécurisée de la famille
                 try {
-                    Family family = FamilyInteractor.GetFamily(currentSouscripteur.getFamilyId());
-                    if (family != null && family.getName() != null && familyListView != null) {
-                        for (int i = 0; i < familyListView.getItems().size(); i++) {
-                            if (familyListView.getItems().get(i) != null && 
-                                familyListView.getItems().get(i).equals(family.getName())) {
-                                familyListView.getSelectionModel().select(i);
-                                selectedFamily = familyListView.getItems().get(i);
-                                break;
+                    if (currentSouscripteur.getFamilyId() != 0) {
+                        Family family = FamilyInteractor.GetFamily(currentSouscripteur.getFamilyId());
+                        if (family != null && family.getName() != null && familyListView != null) {
+                            for (int i = 0; i < familyListView.getItems().size(); i++) {
+                                if (familyListView.getItems().get(i) != null && 
+                                    familyListView.getItems().get(i).equals(family.getName())) {
+                                    familyListView.getSelectionModel().select(i);
+                                    selectedFamily = familyListView.getItems().get(i);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -513,7 +515,7 @@ public class EditSouscripteurMoralController {
                 EditInvestorLP(
                     new SimpleStringProperty(nomField.getText().trim()),
                     (numRegistreField.getText() != null && !numRegistreField.getText().trim().isEmpty()) ? 
-                        Integer.parseInt(numRegistreField.getText().trim()) : 0,
+                        numRegistreField.getText().trim() : "",
                     (dateCreationField.getValue() != null) ? dateCreationField.getValue().toString() : "",
                     capitalSocialField.getText() != null ? capitalSocialField.getText().trim() : "",
                     formeJuridiqueComboBox.getValue() != null ? formeJuridiqueComboBox.getValue() : "",
@@ -562,7 +564,7 @@ public class EditSouscripteurMoralController {
         });
     }
 
-    private void EditInvestorLP(SimpleStringProperty name, int registerNumber, String dateOfCreation,
+    private void EditInvestorLP(SimpleStringProperty name, String registerNumber, String dateOfCreation,
                     String capitalSocial, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
@@ -614,19 +616,32 @@ public class EditSouscripteurMoralController {
                 }
             }
         }
-        int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
-        investorlp.setFamilyId(familyIdSelected);
-        Family family = FamilyInteractor.GetFamily(familyIdSelected);
         
-        // Vérification que l'investisseur n'existe pas déjà dans la famille
-        if (!family.getInvestors().contains(Id)) {
-            family.addInvestor(Id);
+        // Gestion de la famille seulement si une famille est sélectionnée
+        if (selectedFamily != null && !selectedFamily.isEmpty()) {
+            int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
+            investorlp.setFamilyId(familyIdSelected);
+            
+            // Vérification que familyIdSelected n'est pas 0 avant d'accéder à la famille
+            if (familyIdSelected != 0) {
+                Family family = FamilyInteractor.GetFamily(familyIdSelected);
+                
+                // Vérification que l'investisseur n'existe pas déjà dans la famille
+                if (family != null && !family.getInvestors().contains(Id)) {
+                    family.addInvestor(Id);
+                } else if (family != null) {
+                    System.out.println("Investor " + Id + " already exists in family " + familyIdSelected);
+                }
+                
+                if (family != null) {
+                    FamilyInteractor.DeleteFamily(familyIdSelected);
+                    FamilyInteractor.SaveFamily(family);
+                }
+            }
         } else {
-            System.out.println("Investor " + Id + " already exists in family " + familyIdSelected);
+            // Aucune famille sélectionnée, familyId = 0
+            investorlp.setFamilyId(0);
         }
-        
-        FamilyInteractor.DeleteFamily(familyIdSelected);
-        FamilyInteractor.SaveFamily(family);
         
         InvestorInteractor.DeleteInvestorLP(currentSouscripteur.getId());
         InvestorInteractor.SaveInvestorLP(investorlp);

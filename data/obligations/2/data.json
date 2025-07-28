@@ -1,6 +1,7 @@
 {
   "id" : 2,
   "name" : "jjjj",
+  "registerNumber" : "",
   "convertible" : false,
   "capital" : 1000000,
   "valeurNominale" : 10000,
@@ -13,23 +14,7 @@
   "isin" : "",
   "safeties" : [ ],
   "depreciations" : { },
-  "investors" : [ {
-    "investorId" : 1,
-    "capital" : 12,
-    "date" : ""
-  }, {
-    "investorId" : 2,
-    "capital" : 8,
-    "date" : ""
-  }, {
-    "investorId" : 2,
-    "capital" : 10,
-    "date" : ""
-  }, {
-    "investorId" : 1,
-    "capital" : 10,
-    "date" : ""
-  } ],
+  "investors" : [ ],
   "replacements" : [ ],
   "applicantId" : 1
 }

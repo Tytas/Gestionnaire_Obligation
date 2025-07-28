@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class Applicant {
     private int id;
     private SimpleStringProperty name;
-    private int registerNumber;
+    private String registerNumber;
     private String dateOfCreation;
     private String socialCapital;
     private String legalStatus;
@@ -32,7 +32,7 @@ public class Applicant {
 
     public Applicant() {
         this.name = new SimpleStringProperty("");
-        this.registerNumber = 0;
+        this.registerNumber = "";
         this.dateOfCreation = "";
         this.socialCapital = "";
         this.legalStatus = "";
@@ -59,7 +59,7 @@ public class Applicant {
         this.groupId = 0;
     }
 
-    public Applicant(int id, SimpleStringProperty name, int registerNumber, String dateOfCreation,
+    public Applicant(int id, SimpleStringProperty name, String registerNumber, String dateOfCreation,
                     String socialCapital, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,
@@ -99,7 +99,7 @@ public class Applicant {
     public SimpleStringProperty nameProperty() {
         return name;
     }
-    public int getRegisterNumber() {
+    public String getRegisterNumber() {
         return registerNumber;
     }
     public String getDateOfCreation() {
@@ -169,7 +169,7 @@ public class Applicant {
     public void setName(String name) {
         this.name.set(name);
     }
-    public void setRegisterNumber(int registerNumber) {
+    public void setRegisterNumber(String registerNumber) {
         this.registerNumber = registerNumber;
     }
     public void setDateOfCreation(String dateOfCreation) {

@@ -350,22 +350,36 @@ public class AddSouscripteurPhysiqueController {
                 }
             }
         }
-        int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
-        investorNP.setFamilyId(familyIdSelected);
-        Family family = FamilyInteractor.GetFamily(familyIdSelected);
-        Boolean isInFamily = false;
-        for(Integer investors : family.getInvestors()) {
-            if(investors.equals(newId)) {
-                System.out.println("Investor already exists in family.");
-                isInFamily = true;
-                break;
+        
+        // Gestion de la famille seulement si une famille est sélectionnée
+        if (selectedFamily != null && !selectedFamily.isEmpty()) {
+            int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
+            investorNP.setFamilyId(familyIdSelected);
+            
+            // Vérification que familyIdSelected n'est pas 0 avant d'accéder à la famille
+            if (familyIdSelected != 0) {
+                Family family = FamilyInteractor.GetFamily(familyIdSelected);
+                
+                if (family != null) {
+                    Boolean isInFamily = false;
+                    for(Integer investors : family.getInvestors()) {
+                        if(investors.equals(newId)) {
+                            System.out.println("Investor already exists in family.");
+                            isInFamily = true;
+                            break;
+                        }
+                    }
+                    if(!isInFamily) {
+                        family.addInvestor(newId);
+                    }
+                    FamilyInteractor.DeleteFamily(familyIdSelected);
+                    FamilyInteractor.SaveFamily(family);
+                }
             }
+        } else {
+            // Aucune famille sélectionnée, familyId = 0
+            investorNP.setFamilyId(0);
         }
-        if(!isInFamily) {
-            family.addInvestor(newId);
-        }
-        FamilyInteractor.DeleteFamily(familyIdSelected);
-        FamilyInteractor.SaveFamily(family);
         InvestorInteractor.SaveInvestorNP(investorNP);
     }
 

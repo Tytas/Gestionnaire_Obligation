@@ -3,7 +3,7 @@ package mypackage.model;
 import javafx.beans.property.SimpleStringProperty;
 
 public class InvestorLP extends Investor {
-    private int registerNumber;
+    private String registerNumber;
     private String dateOfCreation;
     private String capitalSocial;
     private String legalStatus;
@@ -26,7 +26,7 @@ public class InvestorLP extends Investor {
 
     public InvestorLP() {
         super();
-        this.registerNumber = 0;
+        this.registerNumber = "";
         this.dateOfCreation = "";
         this.capitalSocial = "";
         this.legalStatus = "";
@@ -52,7 +52,7 @@ public class InvestorLP extends Investor {
         this.bankName = "";
     }
 
-    public InvestorLP(int id, SimpleStringProperty name, int registerNumber, String dateOfCreation,
+    public InvestorLP(int id, SimpleStringProperty name, String registerNumber, String dateOfCreation,
                       String capitalSocial, String legalStatus, String[] address,
                       String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                       String dateOfBirthBoss, String placeOfBirthBoss,
@@ -81,7 +81,7 @@ public class InvestorLP extends Investor {
         this.bankName = BankName;
     }
 
-    public int getRegisterNumber() {
+    public String getRegisterNumber() {
         return registerNumber;
     }
     public String getDateOfCreation() {
@@ -141,7 +141,7 @@ public class InvestorLP extends Investor {
     public String getBankName() {
         return bankName;
     }
-    public void setRegisterNumber(int registerNumber) {
+    public void setRegisterNumber(String registerNumber) {
         this.registerNumber = registerNumber;
     }
     public void setDateOfCreation(String dateOfCreation) {

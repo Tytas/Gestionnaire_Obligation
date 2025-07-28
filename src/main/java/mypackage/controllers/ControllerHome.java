@@ -612,7 +612,8 @@ public class ControllerHome {
                         investorBIC = investorLP.getBIC();
                     } else if(investor != null && investor instanceof InvestorNP) {
                         InvestorNP investorNP = (InvestorNP) investor;
-                        if (investorNP.getAddress()[4].equals("France")) {
+                        if (investorNP.getAddress()[4].toUpperCase(Locale.FRANCE).equals("FRANCE") ||
+                            investorNP.getAddress()[4].toUpperCase(Locale.FRANCE).equals("FR")) {
                             investorResidence = "R";
                         } else {
                             investorResidence = "NR";
@@ -681,7 +682,11 @@ public class ControllerHome {
                     
                     // ID Souscripteur
                     Cell cellFamily = dataRow.createCell(0);
-                    cellFamily.setCellValue(FamilyInteractor.GetFamily(investor.getFamilyId()).getName());
+                    if(investor.getFamilyId() == 0) {
+                        cellFamily.setCellValue("Aucune");
+                    } else {
+                        cellFamily.setCellValue(FamilyInteractor.GetFamily(investor.getFamilyId()).getName());
+                    }
 
                     // Nom du Souscripteur
                     Cell cellName = dataRow.createCell(1);
@@ -834,7 +839,7 @@ public class ControllerHome {
         LocalDate startDate = LocalDate.parse(obligation.getStartDate());
         long nombreDeMois = ChronoUnit.MONTHS.between(startDate, couponDate);
         for (int i = 1; i < nombreDeMois / 12; i++) {
-            montantInvesti = (long) (montantInvesti * (1 + obligation.getRate()[0] / 100.0));
+            montantInvesti += (long) (montantInvesti * (1 + obligation.getRate()[0] / 100.0));
         }
         return montantInvesti;
     }

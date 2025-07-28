@@ -1,6 +1,7 @@
 {
   "id" : 6,
   "name" : "2emeoblig",
+  "registerNumber" : "",
   "convertible" : true,
   "capital" : 5000000,
   "valeurNominale" : 75000,
@@ -13,15 +14,7 @@
   "isin" : "",
   "safeties" : [ ],
   "depreciations" : { },
-  "investors" : [ {
-    "investorId" : 2,
-    "capital" : 15,
-    "date" : ""
-  }, {
-    "investorId" : 4,
-    "capital" : 25,
-    "date" : ""
-  } ],
+  "investors" : [ ],
   "replacements" : [ ],
   "applicantId" : 3
 }

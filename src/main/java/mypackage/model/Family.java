@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class Family {
     private int id;
     private SimpleStringProperty name;
-    private int registerNumber;
+    private String registerNumber;
     private String dateOfCreation;
     private String villeRCS;
     private String legalStatus;
@@ -33,7 +33,7 @@ public class Family {
 
     public Family() {
         this.name = new SimpleStringProperty("");
-        this.registerNumber = 0;
+        this.registerNumber = "";
         this.dateOfCreation = "";
         this.villeRCS = "";
         this.legalStatus = "";
@@ -56,7 +56,7 @@ public class Family {
         this.nbAprooval = "";
         this.distributionType = "";
     }
-    public Family(int id, SimpleStringProperty name, int registerNumber, String dateOfCreation,
+    public Family(int id, SimpleStringProperty name, String registerNumber, String dateOfCreation,
                   String villeRCS, String legalStatus, String[] address,
                   String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss,
                   String nationalityBoss, String dateOfBirthBoss, String placeOfBirthBoss,
@@ -96,7 +96,7 @@ public class Family {
     public SimpleStringProperty nameProperty() {
         return name;
     }
-    public int getRegisterNumber() {
+    public String getRegisterNumber() {
         return registerNumber;
     }
     public String getDateOfCreation() {
@@ -171,7 +171,7 @@ public class Family {
     public void setName(String name) {
         this.name.set(name);
     }
-    public void setRegisterNumber(int registerNumber) {
+    public void setRegisterNumber(String registerNumber) {
         this.registerNumber = registerNumber;
     }
     public void setDateOfCreation(String dateOfCreation) {

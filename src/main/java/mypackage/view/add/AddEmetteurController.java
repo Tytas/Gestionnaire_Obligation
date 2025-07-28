@@ -208,7 +208,7 @@ public class AddEmetteurController {
                 CreateApplicant(
                     new SimpleStringProperty(nomField.getText().trim()),
                     (numRegistreField.getText() != null && !numRegistreField.getText().trim().isEmpty()) ? 
-                        Integer.parseInt(numRegistreField.getText().trim()) : 0,
+                        numRegistreField.getText().trim() : "",
                     (dateCreationField.getValue() != null) ? dateCreationField.getValue().toString() : "",
                     capitalSocialField.getText() != null ? capitalSocialField.getText().trim() : "",
                     formeJuridiqueComboBox.getValue() != null ? formeJuridiqueComboBox.getValue() : "",
@@ -257,7 +257,7 @@ public class AddEmetteurController {
         });
     }
 
-    private void CreateApplicant(SimpleStringProperty name, int registerNumber, String dateOfCreation,
+    private void CreateApplicant(SimpleStringProperty name, String registerNumber, String dateOfCreation,
                     String socialCapital, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,

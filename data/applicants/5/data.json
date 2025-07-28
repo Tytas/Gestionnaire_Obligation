@@ -1,7 +1,7 @@
 {
   "id" : 5,
   "name" : "ffrfef",
-  "registerNumber" : 42,
+  "registerNumber" : "42",
   "dateOfCreation" : "2025-06-06",
   "socialCapital" : "42",
   "legalStatus" : "SA",

@@ -205,7 +205,7 @@ public class AddFamilyController {
                 CreateFamily(
                     new SimpleStringProperty(nomField.getText().trim()),
                     (numRegistreField.getText() != null && !numRegistreField.getText().trim().isEmpty()) ? 
-                        Integer.parseInt(numRegistreField.getText().trim()) : 0,
+                        numRegistreField.getText().trim() : "",
                     (dateCreationField.getValue() != null) ? dateCreationField.getValue().toString() : "",
                     villeRCSField.getText() != null ? villeRCSField.getText().trim() : "",
                     formeJuridiqueComboBox.getValue() != null ? formeJuridiqueComboBox.getValue() : "",
@@ -248,7 +248,7 @@ public class AddFamilyController {
         });
     }
 
-    private void CreateFamily(SimpleStringProperty name, int registerNumber, String dateOfCreation,
+    private void CreateFamily(SimpleStringProperty name, String registerNumber, String dateOfCreation,
                     String villeRCS, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,

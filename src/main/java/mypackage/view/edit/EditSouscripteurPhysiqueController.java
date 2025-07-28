@@ -234,14 +234,16 @@ public class EditSouscripteurPhysiqueController {
                 
                 // Gestion sécurisée de la famille
                 try {
-                    Family family = FamilyInteractor.GetFamily(currentSouscripteur.getFamilyId());
-                    if (family != null && family.getName() != null && familyListView != null) {
-                        for (int i = 0; i < familyListView.getItems().size(); i++) {
-                            if (familyListView.getItems().get(i) != null && 
-                                familyListView.getItems().get(i).equals(family.getName())) {
-                                familyListView.getSelectionModel().select(i);
-                                selectedFamily = familyListView.getItems().get(i);
-                                break;
+                    if (currentSouscripteur.getFamilyId() != 0) {
+                        Family family = FamilyInteractor.GetFamily(currentSouscripteur.getFamilyId());
+                        if (family != null && family.getName() != null && familyListView != null) {
+                            for (int i = 0; i < familyListView.getItems().size(); i++) {
+                                if (familyListView.getItems().get(i) != null && 
+                                    familyListView.getItems().get(i).equals(family.getName())) {
+                                    familyListView.getSelectionModel().select(i);
+                                    selectedFamily = familyListView.getItems().get(i);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -497,21 +499,34 @@ public class EditSouscripteurPhysiqueController {
                 }
             }
         }
+        
+        // Gestion de la famille seulement si une famille est sélectionnée
         System.out.println("Selected family: " + selectedFamily);
-        int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
-        System.out.println("Family ID selected: " + familyIdSelected);
-        investorNP.setFamilyId(familyIdSelected);
-        Family family = FamilyInteractor.GetFamily(familyIdSelected);
-        
-        // Vérification que l'investisseur n'existe pas déjà dans la famille
-        if (!family.getInvestors().contains(id)) {
-            family.addInvestor(id);
+        if (selectedFamily != null && !selectedFamily.isEmpty()) {
+            int familyIdSelected = FamilyInteractor.GetFamilyByName(selectedFamily);
+            System.out.println("Family ID selected: " + familyIdSelected);
+            investorNP.setFamilyId(familyIdSelected);
+            
+            // Vérification que familyIdSelected n'est pas 0 avant d'accéder à la famille
+            if (familyIdSelected != 0) {
+                Family family = FamilyInteractor.GetFamily(familyIdSelected);
+                
+                // Vérification que l'investisseur n'existe pas déjà dans la famille
+                if (family != null && !family.getInvestors().contains(id)) {
+                    family.addInvestor(id);
+                } else if (family != null) {
+                    System.out.println("Investor " + id + " already exists in family " + familyIdSelected);
+                }
+                
+                if (family != null) {
+                    FamilyInteractor.DeleteFamily(familyIdSelected);
+                    FamilyInteractor.SaveFamily(family);
+                }
+            }
         } else {
-            System.out.println("Investor " + id + " already exists in family " + familyIdSelected);
+            // Aucune famille sélectionnée, familyId = 0
+            investorNP.setFamilyId(0);
         }
-        
-        FamilyInteractor.DeleteFamily(familyIdSelected);
-        FamilyInteractor.SaveFamily(family);
 
         InvestorInteractor.DeleteInvestorNP(id);
         InvestorInteractor.SaveInvestorNP(investorNP);

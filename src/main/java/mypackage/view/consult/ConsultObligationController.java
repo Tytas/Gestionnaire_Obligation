@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.awt.Desktop;
 
@@ -66,8 +67,9 @@ public class ConsultObligationController {
         ArrayList<Integer> familyIdList = new ArrayList<>();
 
         for (Integer investorId : investorIdList) {
-            if(!familyIdList.contains(InvestorInteractor.GetInvestor(investorId).getFamilyId())){
-                familyIdList.add(InvestorInteractor.GetInvestor(investorId).getFamilyId());
+            int familyId = InvestorInteractor.GetInvestor(investorId).getFamilyId();
+            if(familyId != 0 && !familyIdList.contains(familyId)){
+                familyIdList.add(familyId);
             }
         }
 
@@ -335,7 +337,13 @@ public class ConsultObligationController {
             ArrayList<InvestorInfo> investors = obligation.getInvestors();
             System.out.println("👥 Nombre de souscripteurs trouvés: " + (investors != null ? investors.size() : 0));
             if(!selectedFamilyName.equals("Toutes")) {
-                investors.removeIf(investor -> !FamilyInteractor.GetFamily(InvestorInteractor.GetInvestor(investor.getInvestorId()).getFamilyId()).getName().equals(selectedFamilyName));
+                investors.removeIf(investor -> {
+                    int investorFamilyId = InvestorInteractor.GetInvestor(investor.getInvestorId()).getFamilyId();
+                    if (investorFamilyId == 0) {
+                        return true; // Exclure les investisseurs sans famille
+                    }
+                    return !FamilyInteractor.GetFamily(investorFamilyId).getName().equals(selectedFamilyName);
+                });
             }
             
             if (investors == null || investors.isEmpty()) {
@@ -432,7 +440,8 @@ public class ConsultObligationController {
                         investorBIC = investorLP.getBIC();
                     } else if(investor != null && investor instanceof InvestorNP) {
                         InvestorNP investorNP = (InvestorNP) investor;
-                        if (investorNP.getAddress()[4].equals("France")) {
+                        if (investorNP.getAddress()[4].toUpperCase(Locale.FRANCE).equals("FRANCE") ||
+                            investorNP.getAddress()[4].toUpperCase(Locale.FRANCE).equals("FR")) {
                             investorResidence = "R";
                         } else {
                             investorResidence = "NR";
@@ -464,7 +473,11 @@ public class ConsultObligationController {
                     
                     // ID Souscripteur
                     Cell cellFamily = dataRow.createCell(0);
-                    cellFamily.setCellValue(FamilyInteractor.GetFamily(investor.getFamilyId()).getName());
+                    if (investor.getFamilyId() != 0) {
+                        cellFamily.setCellValue(FamilyInteractor.GetFamily(investor.getFamilyId()).getName());
+                    } else {
+                        cellFamily.setCellValue("Sans famille");
+                    }
 
                     // Nom du Souscripteur
                     Cell cellName = dataRow.createCell(1);
@@ -700,7 +713,7 @@ public class ConsultObligationController {
         LocalDate startDate = LocalDate.parse(obligation.getStartDate());
         long nombreDeMois = ChronoUnit.MONTHS.between(startDate, couponDate);
         for (int i = 1; i < nombreDeMois / 12; i++) {
-            montantInvesti = (long) (montantInvesti * (1 + obligation.getRate()[0] / 100.0));
+            montantInvesti += (long) (montantInvesti * (1 + obligation.getRate()[0] / 100.0));
         }
         return montantInvesti;
     }

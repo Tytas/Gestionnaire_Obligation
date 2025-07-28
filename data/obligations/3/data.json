@@ -1,6 +1,7 @@
 {
   "id" : 3,
   "name" : "lklklklk",
+  "registerNumber" : "",
   "convertible" : true,
   "capital" : 600000,
   "valeurNominale" : 10000,
@@ -13,15 +14,7 @@
   "isin" : "",
   "safeties" : [ ],
   "depreciations" : { },
-  "investors" : [ {
-    "investorId" : 1,
-    "capital" : 10,
-    "date" : ""
-  }, {
-    "investorId" : 4,
-    "capital" : 40,
-    "date" : ""
-  } ],
+  "investors" : [ ],
   "replacements" : [ ],
   "applicantId" : 2
 }

@@ -432,6 +432,7 @@ public class AddObligationController {
             }
 
             RadioButton selectedType = (RadioButton) convertible.getSelectedToggle();
+            System.out.println("Selected type: " + selectedType.getText());
             boolean isConvertible = selectedType != null && "OCA".equals(selectedType.getText());
 
             Toggle selectedProrogation = prorogation.getSelectedToggle();
@@ -540,7 +541,7 @@ public class AddObligationController {
                 System.out.println("Invalid amortissement format: " + amortissement);
             }
         }
-        Obligation obligation = new Obligation(newId, new SimpleStringProperty(nom), isConvertible, capital, valeurNominale, dateDebut, dateFin, taux, periodicite,
+        Obligation obligation = new Obligation(newId, new SimpleStringProperty(nom), "", isConvertible, capital, valeurNominale, dateDebut, dateFin, taux, periodicite,
                                                 new String[]{dateFinProrogation, tauxProrogation, tauxProrogationInfine}, false, numeroIsin, new ArrayList<>(suretes), amortissementsMap, idApplicant);
         for (TupleStringLongBoolean souscripteur : souscripteursList) {
             System.out.println("Adding investor: " + souscripteur.getName());

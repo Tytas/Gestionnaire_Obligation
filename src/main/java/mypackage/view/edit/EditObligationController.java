@@ -11,6 +11,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -81,6 +82,7 @@ public class EditObligationController {
     private TextField souscripteurSearchField;
     private ObservableList<TupleStringLongBoolean> allSouscripteurs = FXCollections.observableArrayList();
     private FilteredList<TupleStringLongBoolean> filteredSouscripteurs;
+    private SortedList<TupleStringLongBoolean> sortedSouscripteurs;
     private ArrayList<TupleStringLongBoolean> selectedSouscripteurs = new ArrayList<>();
 
     private ChangeListener<Boolean> selectionListener;
@@ -232,12 +234,12 @@ public class EditObligationController {
                 
                 // Gestion sécurisée de la convertibilité
                 if (currentObligation.getConvertible()) {
-                    if (convertible.getToggles().size() > 0) {
-                        convertible.selectToggle(convertible.getToggles().get(0)); // Assuming the first toggle is "OCA"
+                    if (convertible.getToggles().size() > 1) {
+                        convertible.selectToggle(convertible.getToggles().get(1)); // Assuming the first toggle is "OCA"
                     }
                 } else {
                     if (convertible.getToggles().size() > 1) {
-                        convertible.selectToggle(convertible.getToggles().get(1)); // Assuming the second toggle is "Non Convertible"
+                        convertible.selectToggle(convertible.getToggles().get(0)); // Assuming the second toggle is "Non Convertible"
                     }
                 }
                 
@@ -278,8 +280,8 @@ public class EditObligationController {
                 }
                 
                 // Gestion sécurisée des souscripteurs
-                if (filteredSouscripteurs != null && currentObligation.getInvestors() != null) {
-                    for (TupleStringLongBoolean item : filteredSouscripteurs) {
+                if (currentObligation.getInvestors() != null) {
+                    for (TupleStringLongBoolean item : allSouscripteurs) {
                         if (item != null) {
                             for (mypackage.model.util.InvestorInfo info : currentObligation.getInvestors()) {
                                 if (info != null) {
@@ -292,17 +294,13 @@ public class EditObligationController {
                                         }
                                         if (investor != null && investor.getName() != null && item.getName() != null && 
                                             item.getName().equalsIgnoreCase(investorName)) {
+                                            item.setCapital(String.valueOf(info.getCapital()));
                                             item.selectionneProperty().set(true);
-                                            item.capitalProperty().set(String.valueOf(info.getCapital()));
-                                            if (info.getDate() != null) {
-                                                item.setDate(info.getDate());
-                                            }
-                                            if (souscripteurListView != null) {
-                                                souscripteurListView.getSelectionModel().select(item);
-                                            }
+                                            item.setDate(info.getDate());
                                             if (!selectedSouscripteurs.contains(item)) {
                                                 selectedSouscripteurs.add(item);
                                             }
+                                            break; // Sortir de la boucle une fois trouvé
                                         }
                                     } catch (Exception e) {
                                         System.err.println("Erreur lors de la récupération du souscripteur ID " + info.getInvestorId() + ": " + e.getMessage());
@@ -310,9 +308,18 @@ public class EditObligationController {
                                 }
                             }
                         }
+                        System.out.println("Souscripteur ajouté: " + item.getName() + " selection ? " + item.getSelectionne());
+                    }
+                    if (souscripteurListView != null) {
+                        sortedSouscripteurs.setComparator((a, b) -> {
+                            if (a.getSelectionne() && !b.getSelectionne()) return -1;
+                            if (!a.getSelectionne() && b.getSelectionne()) return 1;
+                            return a.getName().compareToIgnoreCase(b.getName());
+                        });
+                        souscripteurListView.refresh();
                     }
                 }
-                
+
                 // Gestion sécurisée des amortissements
                 if (currentObligation.getDepreciations() != null) {
                     for (Map.Entry<String, Integer> entry : currentObligation.getDepreciations().entrySet()) {
@@ -384,6 +391,8 @@ public class EditObligationController {
 
     @FXML
     private void initialize() { 
+        allSouscripteurs.clear();
+        allEmetteurs.clear();
         periodiciteComboBox.getItems().addAll("Mensuelle", "Trimestrielle", "Semestrielle", "Annuelle");
         ArrayList<Integer> investorsId = InvestorInteractor.GetAllInvestorId();
         for (Integer id : investorsId) {
@@ -395,12 +404,12 @@ public class EditObligationController {
                                                                           new SimpleBooleanProperty(false));
                 allSouscripteurs.add(tuple);
             }
-            if (investor instanceof InvestorLP) {
+            else if (investor instanceof InvestorLP) {
                 InvestorLP investorLP = (InvestorLP) investor;
-                TupleStringLongBoolean tuple = new TupleStringLongBoolean(new SimpleStringProperty(investorLP.getName()), 
+                TupleStringLongBoolean tuple2 = new TupleStringLongBoolean(new SimpleStringProperty(investorLP.getName()), 
                                                                           new SimpleStringProperty("0"), 
                                                                           new SimpleBooleanProperty(false));
-                allSouscripteurs.add(tuple);
+                allSouscripteurs.add(tuple2);
             }
         }
         prorogation.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
@@ -429,7 +438,16 @@ public class EditObligationController {
             }
         });
         filteredSouscripteurs = new FilteredList<>(allSouscripteurs, s -> true);
-        souscripteurListView.setItems(filteredSouscripteurs);
+
+        // Ajout du tri pour afficher les sélectionnés en premier
+        sortedSouscripteurs = new SortedList<>(filteredSouscripteurs, (a, b) -> {
+            // Les sélectionnés d'abord
+            if (a.getSelectionne() && !b.getSelectionne()) return -1;
+            if (!a.getSelectionne() && b.getSelectionne()) return 1;
+            // Sinon, tri par nom
+            return a.getName().compareToIgnoreCase(b.getName());
+        });
+        souscripteurListView.setItems(sortedSouscripteurs);
         souscripteurSearchField.textProperty().addListener((obs, oldValue, newValue) -> {
             filteredSouscripteurs.setPredicate(item -> {
                 if (newValue == null || newValue.isEmpty()) {
@@ -623,7 +641,6 @@ public class EditObligationController {
         });
         addcessionButton.setOnAction(e -> {
             // Ouvre la fenêtre pour ajouter une cession
-            System.out.println("Liste souscripteur: " + selectedSouscripteurs);
             boolean success = cessionWindow.showDialog(cessions, selectedSouscripteurs);
             if (success) {
                 // La nouvelle cession a été ajoutée à la liste
@@ -834,8 +851,30 @@ public class EditObligationController {
                 System.out.println("Invalid amortissement format: " + amortissement);
             }
         }
-        Obligation obligation = new Obligation(currentObligation.getId(), new SimpleStringProperty(nom), isConvertible, capital, valeurNominale, dateDebut, dateFin, taux, periodicite,
-                                                new String[]{dateFinProrogation, tauxProrogation, tauxProrogationInfine}, prorogationActivated, isin, new ArrayList<>(suretes), amortissementsMap, idApplicant);
+        
+        // Au lieu de créer une nouvelle obligation, nous modifions l'obligation existante
+        Obligation obligation = currentObligation;
+        
+        // Mise à jour des propriétés de l'obligation existante
+        obligation.setName(nom);
+        obligation.setConvertible(isConvertible);
+        obligation.setcapital(capital);
+        obligation.setValeurNominale(valeurNominale);
+        obligation.setStartDate(dateDebut);
+        obligation.setEndDate(dateFin);
+        obligation.setRate(taux);
+        obligation.setPeriodicity(periodicite);
+        obligation.setProrogation(new String[]{dateFinProrogation, tauxProrogation, tauxProrogationInfine});
+        obligation.setProrogationActivated(prorogationActivated);
+        obligation.setIsin(isin);
+        obligation.setSafeties(new ArrayList<>(suretes));
+        obligation.setDepreciations(amortissementsMap);
+        obligation.setApplicantId(idApplicant);
+        
+        // Synchronisation des souscripteurs
+        // 1. D'abord, nous collectons tous les souscripteurs qui DEVRAIENT être dans l'obligation (ceux cochés)
+        ArrayList<mypackage.model.util.InvestorInfo> nouveauxInvestors = new ArrayList<>();
+        
         for (TupleStringLongBoolean souscripteur : souscripteursList) {
             if (souscripteur.getName() != null && !souscripteur.getName().isEmpty() && souscripteur.getSelectionne()) {
                 String souscripteurName = souscripteur.getName();
@@ -849,25 +888,19 @@ public class EditObligationController {
                     continue; // Skip this investor if not found
                 }
                 
-                // Vérification que l'investisseur avec ce montant n'existe pas déjà
                 Long currentCapital = Long.valueOf(souscripteur.getCapital());
-                boolean investorExists = false;
-                for (mypackage.model.util.InvestorInfo info : obligation.getInvestors()) {
-                    if (info.getInvestorId() == idInvestor && 
-                        info.getCapital().equals(currentCapital)) {
-                        investorExists = true;
-                        System.out.println("Investor " + souscripteur.getName() + " with amount " + currentCapital + " already exists in obligation");
-                        break;
-                    }
-                }
-                if (!investorExists) {
-                    // Vérifier si la date est définie
-                    String date = souscripteur.getDate() != null && !souscripteur.getDate().isEmpty() ? 
-                                souscripteur.getDate() : "";
-                    obligation.addInvestor(idInvestor, currentCapital, date);
-                }
+                String date = souscripteur.getDate() != null && !souscripteur.getDate().isEmpty() ? 
+                            souscripteur.getDate() : "";
+                
+                // Créer une nouvelle InvestorInfo pour cet investisseur
+                mypackage.model.util.InvestorInfo newInfo = new mypackage.model.util.InvestorInfo(idInvestor, currentCapital, date);
+                nouveauxInvestors.add(newInfo);
             }
         }
+        
+        // 2. Maintenant, nous remplaçons complètement la liste des investisseurs de l'obligation
+        // Ceci permet de gérer correctement les ajouts ET les suppressions
+        obligation.setInvestors(nouveauxInvestors);
         System.out.println(cessions + " cessions to process.");
         for (TupleStringMapMap cession : cessions) {
             if (cession.getDate() != null && !cession.getVendeurs().isEmpty() && !cession.getAcheteurs().isEmpty()) {
@@ -922,21 +955,47 @@ public class EditObligationController {
         ApplicantInteractor.DeleteApplicant(idApplicant);
         ApplicantInteractor.SaveApplicant(newApplicant);
 
+        // Gestion intelligente des investisseurs : ajouter les nouveaux ET supprimer les anciens
+        
+        // 1. D'abord, supprimer l'obligation de TOUS les investisseurs qui étaient dans l'obligation précédemment
+        if (currentObligation.getInvestors() != null) {
+            for (mypackage.model.util.InvestorInfo oldInfo : currentObligation.getInvestors()) {
+                try {
+                    int oldInvestorId = oldInfo.getInvestorId();
+                    Investor oldInvestor = InvestorInteractor.GetInvestor(oldInvestorId);
+                    if (oldInvestor != null && oldInvestor.getObligations().contains(obligation.getId())) {
+                        oldInvestor.removeObligation(obligation.getId());
+                        InvestorInteractor.DeleteInvestor(oldInvestorId);
+                        InvestorInteractor.SaveInvestor(oldInvestor);
+                        System.out.println("Removed obligation " + obligation.getId() + " from investor " + oldInvestorId);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erreur lors de la suppression de l'obligation de l'ancien investisseur: " + e.getMessage());
+                }
+            }
+        }
+        
+        // 2. Ensuite, ajouter l'obligation aux investisseurs actuellement cochés
         for (TupleStringLongBoolean souscripteur : souscripteursList) {
             if(souscripteur.getSelectionne()) {
-                int idInvestor = InvestorInteractor.GetInvestorByName(souscripteur.getName());
+                String souscripteurName = souscripteur.getName();
+                String[] nameParts = souscripteurName.split(" ", 2);
+                if (nameParts.length > 1) {
+                    souscripteurName = nameParts[1];
+                }
+                int idInvestor = InvestorInteractor.GetInvestorByName(souscripteurName);
                 if (idInvestor != -1) {
                     Investor newInvestor = InvestorInteractor.GetInvestor(idInvestor);
                     
                     // Vérification que l'obligation n'existe pas déjà dans l'investor
                     if (!newInvestor.getObligations().contains(obligation.getId())) {
                         newInvestor.addObligation(obligation.getId());
+                        InvestorInteractor.DeleteInvestor(idInvestor);
+                        InvestorInteractor.SaveInvestor(newInvestor);
+                        System.out.println("Added obligation " + obligation.getId() + " to investor " + idInvestor);
                     } else {
                         System.out.println("Obligation " + obligation.getId() + " already exists in investor " + idInvestor);
                     }
-                    
-                    InvestorInteractor.DeleteInvestor(idInvestor);
-                    InvestorInteractor.SaveInvestor(newInvestor);
                 }
             }
         }

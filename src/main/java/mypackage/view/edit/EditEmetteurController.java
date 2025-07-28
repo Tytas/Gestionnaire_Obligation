@@ -155,7 +155,7 @@ public class EditEmetteurController {
                     nomField.setText(currentEmetteur.getName());
                 }
                 
-                numRegistreField.setText(String.valueOf(currentEmetteur.getRegisterNumber()));
+                numRegistreField.setText(currentEmetteur.getRegisterNumber());
                 
                 if (currentEmetteur.getDateOfCreation() != null && !currentEmetteur.getDateOfCreation().isEmpty()) {
                     try {
@@ -348,7 +348,7 @@ public class EditEmetteurController {
                 EditApplicant(
                     new SimpleStringProperty(nomField.getText().trim()),
                     (numRegistreField.getText() != null && !numRegistreField.getText().trim().isEmpty()) ? 
-                        Integer.parseInt(numRegistreField.getText().trim()) : 0,
+                        numRegistreField.getText().trim() : "",
                     (dateCreationField.getValue() != null) ? dateCreationField.getValue().toString() : "",
                     capitalSocialField.getText() != null ? capitalSocialField.getText().trim() : "",
                     formeJuridiqueComboBox.getValue() != null ? formeJuridiqueComboBox.getValue() : "",
@@ -397,7 +397,7 @@ public class EditEmetteurController {
         });
     }
 
-    private void EditApplicant(SimpleStringProperty name, int registerNumber, String dateOfCreation,
+    private void EditApplicant(SimpleStringProperty name, String registerNumber, String dateOfCreation,
                     String socialCapital, String legalStatus, String[] address,
                     String civilityBoss, SimpleStringProperty nameBoss, String firstNameBoss, String nationalityBoss,
                     String dateOfBirthBoss, String placeOfBirthBoss,

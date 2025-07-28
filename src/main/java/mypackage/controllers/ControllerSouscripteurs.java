@@ -216,8 +216,19 @@ public class ControllerSouscripteurs {
         if (investor instanceof InvestorNP) {
             String name = investor.getName() + " " + ((InvestorNP) investor).getFirstName();
             NameInvestor.setText(name);
-            String familyName = FamilyInteractor.GetFamily(investor.getFamilyId()).getName();
-            FamilyInvestor.setText(familyName);
+            
+            // Gestion sécurisée de la famille pour InvestorNP
+            if(investor.getFamilyId() == 0) {
+                FamilyInvestor.setText("Aucune famille associée");
+            } else {
+                Family family = FamilyInteractor.GetFamily(investor.getFamilyId());
+                if(family != null) {
+                    FamilyInvestor.setText(family.getName());
+                } else {
+                    FamilyInvestor.setText("Aucune famille associée");
+                }
+            }
+            
             String iban = ((InvestorNP) investor).getIBAN();
             NameIBAN.setText(iban);
             String bic = ((InvestorNP) investor).getBIC();
@@ -229,8 +240,13 @@ public class ControllerSouscripteurs {
         } else if (investor instanceof InvestorLP) {
             String name = ((InvestorLP) investor).getName();
             NameInvestor.setText(name);
-            String familyName = FamilyInteractor.GetFamily(investor.getFamilyId()).getName();
-            FamilyInvestor.setText(familyName);
+            if(investor.getFamilyId() == 0) {
+                FamilyInvestor.setText("Aucune famille associée");
+            }
+            else if(investor.getFamilyId() != 0) {
+                String familyName = FamilyInteractor.GetFamily(investor.getFamilyId()).getName();
+                FamilyInvestor.setText(familyName);
+            }
             String iban = ((InvestorLP) investor).getIBAN();
             NameIBAN.setText(iban);
             String bic = ((InvestorLP) investor).getBIC();
@@ -257,10 +273,12 @@ public class ControllerSouscripteurs {
             return;
         }
         if (ConfirmWindow.confirmWindow()) {
-            Family family = FamilyInteractor.GetFamily(selectedInvestor.getFamilyId());
-            family.removeInvestor(selectedInvestor.getId());
-            FamilyInteractor.DeleteFamily(family.getId());
-            FamilyInteractor.SaveFamily(family);
+            if(selectedInvestor.getFamilyId() !=  0){
+                Family family = FamilyInteractor.GetFamily(selectedInvestor.getFamilyId());
+                family.removeInvestor(selectedInvestor.getId());
+                FamilyInteractor.DeleteFamily(family.getId());
+                FamilyInteractor.SaveFamily(family);
+            }
             selectedInvestor.getObligations().forEach(obligationId -> {
                 Obligation obligation = ObligationInteractor.GetObligation(obligationId);
                 obligation.removeInvestor(selectedInvestor.getId());
@@ -386,11 +404,16 @@ public class ControllerSouscripteurs {
                     stage.showAndWait(); // attend que la fenêtre se ferme
 
                     if (editSouscripteurWindow.getResult()) {
-                        // Refresh the list of obligations
-                        ids = ObligationInteractor.GetAllObligationsId();
+                        // Refresh the list of investors
+                        ids = InvestorInteractor.GetAllInvestorId();
                         listInvestor.clear();
                         for (Integer id : ids) {
-                            listInvestor.add(InvestorInteractor.GetInvestor(id));
+                            if (InvestorInteractor.GetInvestorLP(id) != null){
+                                listInvestor.add(InvestorInteractor.GetInvestorLP(id));
+                            }
+                            if (InvestorInteractor.GetInvestorNP(id) != null){
+                                listInvestor.add(InvestorInteractor.GetInvestorNP(id));
+                            }
                         }
                     }
                     tableInvestors.setItems(listInvestor);
@@ -405,11 +428,16 @@ public class ControllerSouscripteurs {
                     stage.showAndWait(); // attend que la fenêtre se ferme
 
                     if (editSouscripteurWindow.getResult()) {
-                        // Refresh the list of obligations
+                        // Refresh the list of investors
                         ids = InvestorInteractor.GetAllInvestorId();
                         listInvestor.clear();
                         for (Integer id : ids) {
-                            listInvestor.add(InvestorInteractor.GetInvestor(id));
+                            if (InvestorInteractor.GetInvestorLP(id) != null){
+                                listInvestor.add(InvestorInteractor.GetInvestorLP(id));
+                            }
+                            if (InvestorInteractor.GetInvestorNP(id) != null){
+                                listInvestor.add(InvestorInteractor.GetInvestorNP(id));
+                            }
                         }
                     }
                     tableInvestors.setItems(listInvestor);
