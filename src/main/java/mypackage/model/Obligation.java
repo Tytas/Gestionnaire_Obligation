@@ -284,13 +284,13 @@ public class Obligation {
                 if ((this.getProrogation()[2] != "0" || this.getProrogation()[2] != "") && this.getProrogation()[1].trim() != "" && couponDate.isEqual(prorogationEndDate)) {
                     String[] coupon = new String[3];
                     coupon[0] = couponDate.toString();
-                    coupon[1] = String.valueOf((Long.parseLong(this.getProrogation()[1]) + Long.parseLong(this.getProrogation()[2])) * this.getCapital() / 100);
+                    coupon[1] = String.valueOf((Double.parseDouble(this.getProrogation()[1]) + Double.parseDouble(this.getProrogation()[2])) * this.getCapital() / 100);
                     coupon[2] = this.getName();
                     listCoupon.add(coupon);
                 } else {
                     String[] coupon = new String[3];
                     coupon[0] = couponDate.toString();
-                    coupon[1] = String.valueOf(Long.parseLong(this.getProrogation()[1]) * this.getCapital() / 100);
+                    coupon[1] = String.valueOf(Double.parseDouble(this.getProrogation()[1]) * this.getCapital() / 100);
                     coupon[2] = this.getName();
                     listCoupon.add(coupon);
                 }
@@ -299,7 +299,7 @@ public class Obligation {
             LocalDate prorogationCouponDate = LocalDate.parse(this.getProrogation()[0]); // date de fin de prorogation
             String[] coupon = new String[3];
             coupon[0] = prorogationCouponDate.toString();
-            coupon[1] = String.valueOf((Long.parseLong(this.getProrogation()[2])) * this.getCapital() / 100);
+            coupon[1] = String.valueOf((Double.parseDouble(this.getProrogation()[2])) * this.getCapital() / 100);
             coupon[2] = this.getName();
             listCoupon.add(coupon);
         }

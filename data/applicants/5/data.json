@@ -20,6 +20,6 @@
   "bankName" : "42",
   "groupId" : 2,
   "obligations" : [ 4 ],
-  "iban" : "42",
-  "bic" : "24"
+  "bic" : "24",
+  "iban" : "42"
 }

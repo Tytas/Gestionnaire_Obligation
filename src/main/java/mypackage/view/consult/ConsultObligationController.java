@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -411,7 +412,7 @@ public class ConsultObligationController {
                                 long durationProrogationYears = ChronoUnit.YEARS.between(endDateNormale, endDateProrogation);
                                 long resProrog = (long) (montantInvesti * Double.parseDouble(obligation.getProrogation()[2]) / 100.0);
                                 for(int i = 0; i <= durationProrogationYears; i++) {
-                                    resProrog = (long) (resProrog * (1 + Double.parseDouble(obligation.getProrogation()[2]) / 100.0) + (montantInvesti * Double.parseDouble(obligation.getProrogation()[0]) / 100.0));
+                                    resProrog = (long) (resProrog * (1 + Double.parseDouble(obligation.getProrogation()[2]) / 100.0) + (montantInvesti * Double.parseDouble(obligation.getProrogation()[2]) / 100.0));
                                 }
                                 partBrutInFine = montantInvestiInFine;
                                 partNetInFine = partBrutInFine;
@@ -539,7 +540,8 @@ public class ConsultObligationController {
                             System.out.println("Amortissements trouvés : " + AmortissementsMap.size());
                             index = 0;
                             for (Map.Entry<String, Integer> entry : AmortissementsMap.entrySet()) {
-                                if(LocalDate.parse(entry.getKey()).isBefore(LocalDate.parse(listCoupon.get(i/3)[0])) && !amortissementApplique[index]) {
+                                DateTimeFormatter frenchFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                                if(LocalDate.parse(entry.getKey(), frenchFormatter).isBefore(LocalDate.parse(listCoupon.get(i/3)[0])) && !amortissementApplique[index]) {
                                     amortissementApplique[index] = true;
                                     partBrut *= (1 - (entry.getValue() / 100.0));
                                     partPLF *= (1 - (entry.getValue() / 100.0));

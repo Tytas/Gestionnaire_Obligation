@@ -13,9 +13,7 @@
   "prorogationActivated" : true,
   "isin" : "",
   "safeties" : [ "10", "coucou" ],
-  "depreciations" : {
-    "21-02-2025" : 1000
-  },
+  "depreciations" : { },
   "investors" : [ {
     "investorId" : 16,
     "capital" : 10,
