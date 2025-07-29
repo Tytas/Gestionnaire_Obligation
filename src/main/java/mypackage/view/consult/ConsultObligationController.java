@@ -410,13 +410,11 @@ public class ConsultObligationController {
                                 LocalDate endDateNormale = LocalDate.parse(obligation.getEndDate());
                                 LocalDate endDateProrogation = LocalDate.parse(obligation.getProrogation()[0]);
                                 long durationProrogationYears = ChronoUnit.YEARS.between(endDateNormale, endDateProrogation);
-                                long resProrog = (long) (montantInvesti * Double.parseDouble(obligation.getProrogation()[2]) / 100.0);
                                 for(int i = 0; i <= durationProrogationYears; i++) {
-                                    resProrog = (long) (resProrog * (1 + Double.parseDouble(obligation.getProrogation()[2]) / 100.0) + (montantInvesti * Double.parseDouble(obligation.getProrogation()[2]) / 100.0));
+                                    montantInvestiInFine = (long) (montantInvestiInFine * (1 + Double.parseDouble(obligation.getProrogation()[2]) / 100.0) + (montantInvesti * Double.parseDouble(obligation.getProrogation()[2]) / 100.0));
                                 }
                                 partBrutInFine = montantInvestiInFine;
-                                partNetInFine = partBrutInFine;
-                                System.out.println("📅 Date de coupon égale à la date de fin de l'obligation, ajout du taux In Fine.");
+                                System.out.println("Date de coupon égale à la date de fin de l'obligation, ajout du taux In Fine.");
                             }
                         }
                     }
