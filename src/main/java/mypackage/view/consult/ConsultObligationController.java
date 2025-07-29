@@ -16,7 +16,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -405,15 +404,17 @@ public class ConsultObligationController {
                         obligationEndDate = LocalDate.parse(obligation.getProrogation()[0]); // date de fin de prorogation
                         if(obligationEndDate.isEqual(lastCouponDate)) {
                             if(Double.parseDouble(obligation.getProrogation()[2]) != 0.0) {
-                                montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, listCoupon.get(listCoupon.size() - 1)[0]);
+                                montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, obligation.getEndDate());
                                 // Calculer la durée en années entre la fin normale et la fin de prorogation
                                 LocalDate endDateNormale = LocalDate.parse(obligation.getEndDate());
                                 LocalDate endDateProrogation = LocalDate.parse(obligation.getProrogation()[0]);
                                 long durationProrogationYears = ChronoUnit.YEARS.between(endDateNormale, endDateProrogation);
-                                for(int i = 0; i <= durationProrogationYears; i++) {
+                                for(int i = 1; i <= durationProrogationYears; i++) {
+                                    System.out.println("Montant investi In Fine avant prorogation: " + montantInvestiInFine);
                                     montantInvestiInFine = (long) (montantInvestiInFine * (1 + Double.parseDouble(obligation.getProrogation()[2]) / 100.0) + (montantInvesti * Double.parseDouble(obligation.getProrogation()[2]) / 100.0));
                                 }
                                 partBrutInFine = montantInvestiInFine;
+                                partNetInFine = partBrutInFine;
                                 System.out.println("Date de coupon égale à la date de fin de l'obligation, ajout du taux In Fine.");
                             }
                         }
@@ -533,13 +534,11 @@ public class ConsultObligationController {
                     }
                     for (int i = 0; i < 3*listCoupon.size(); i+=3) {
                         if(AmortissementsMap.isEmpty() || i == 0) {
-                            System.out.println("Aucun amortissement trouvé pour l'obligation : " + obligation.getName());
                         } else {
                             System.out.println("Amortissements trouvés : " + AmortissementsMap.size());
                             index = 0;
                             for (Map.Entry<String, Integer> entry : AmortissementsMap.entrySet()) {
-                                DateTimeFormatter frenchFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                                if(LocalDate.parse(entry.getKey(), frenchFormatter).isBefore(LocalDate.parse(listCoupon.get(i/3)[0])) && !amortissementApplique[index]) {
+                                if(LocalDate.parse(entry.getKey()).isBefore(LocalDate.parse(listCoupon.get(i/3)[0])) && !amortissementApplique[index]) {
                                     amortissementApplique[index] = true;
                                     partBrut *= (1 - (entry.getValue() / 100.0));
                                     partPLF *= (1 - (entry.getValue() / 100.0));
@@ -750,7 +749,8 @@ public class ConsultObligationController {
         LocalDate startDate = LocalDate.parse(obligation.getStartDate());
         long nombreDeMois = ChronoUnit.MONTHS.between(startDate, couponDate);
         long res = (long) (montantInvesti * (obligation.getRate()[0] / 100.0));
-        for (int i = 1; i <= nombreDeMois / 12; i++) {
+        for (int i = 2; i <= nombreDeMois / 12; i++) {
+            System.out.println("Montant investi In Fine avant capitalisation: " + res);
             res = (long) (res * ((100 + obligation.getRate()[0]) / 100.0) + (montantInvesti * (obligation.getRate()[0] / 100.0)));
         }
         return res;

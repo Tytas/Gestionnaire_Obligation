@@ -2,7 +2,7 @@
   "id" : 149,
   "name" : "FAURIE",
   "familyId" : 0,
-  "obligations" : [ 2 ],
+  "obligations" : [ 2, 5 ],
   "civility" : "Monsieur",
   "firstName" : "ALAIN",
   "nationality" : "FR",
@@ -12,6 +12,6 @@
   "phoneNumber" : "+33673398019",
   "address" : [ "53", "COURS MARIGNY", "94300", "VINCENNES", "FR", "" ],
   "bankName" : "CIC MELUN",
-  "iban" : "FR76 3008 7338 4000 0201 8850 370",
-  "bic" : "CMCIFRPP"
+  "bic" : "CMCIFRPP",
+  "iban" : "FR76 3008 7338 4000 0201 8850 370"
 }

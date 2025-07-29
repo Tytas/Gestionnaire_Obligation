@@ -149,9 +149,8 @@ public class CouponWindow {
                     }
                     if(AmortissementsMap.isEmpty() || 
                         LocalDate.parse(obligation[0]).isEqual(LocalDate.parse(obligationData.getStartDate()).plusMonths(period))) {
-                        System.out.println("⚠️ Aucun amortissement trouvé pour l'obligation : " + obligationData.getName());
                     } else {
-                        System.out.println("📉 Amortissements trouvés : " + AmortissementsMap.size());
+                        System.out.println("Amortissements trouvés : " + AmortissementsMap.size());
                         index = 0;
                         for (Map.Entry<String, Integer> entry : AmortissementsMap.entrySet()) {
                             if(LocalDate.parse(entry.getKey()).isBefore(LocalDate.parse(obligation[0])) && !amortissementApplique[index]) {

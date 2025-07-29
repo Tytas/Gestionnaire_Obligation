@@ -12,6 +12,6 @@
   "phoneNumber" : "33687053890",
   "address" : [ "26.0", "Rue Comte Felix Gastaldi", "98000", "Monaco", "MC", "" ],
   "bankName" : "Société Générale",
-  "iban" : "MC131336800001EU01329935K40",
-  "bic" : "SGBTMCMCXXX"
+  "bic" : "SGBTMCMCXXX",
+  "iban" : "MC131336800001EU01329935K40"
 }

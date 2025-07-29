@@ -2,7 +2,7 @@
   "id" : 9,
   "name" : "4D",
   "familyId" : 0,
-  "obligations" : [ 6, 2 ],
+  "obligations" : [ 6, 2, 5 ],
   "registerNumber" : "752 376 384",
   "dateOfCreation" : "",
   "capitalSocial" : "1000",

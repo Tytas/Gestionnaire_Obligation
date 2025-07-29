@@ -659,7 +659,6 @@ public class ControllerHome {
                     }
                     if(AmortissementsMap.isEmpty() || 
                        LocalDate.parse(item[0]).isEqual(LocalDate.parse(obligation.getStartDate()).plusMonths(period))) {
-                        System.out.println("⚠️ Aucun amortissement trouvé pour l'obligation : " + obligation.getName());
                     } else {
                         System.out.println("📉 Amortissements trouvés : " + AmortissementsMap.size());
                         index = 0;
