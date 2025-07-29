@@ -191,14 +191,14 @@ public class ControllerHome {
                 coupon[2] = obligation.getName();
                 couponListViewItems.add(coupon);
             }
-            if (obligation.getProrogationActivated() && !obligation.getProrogation()[1].equals("0")) {
+            if (obligation.getProrogationActivated() && Double.parseDouble(obligation.getProrogation()[2]) != 0.0) {
                 LocalDate endDate = LocalDate.parse(obligation.getEndDate());
                 LocalDate prorogationEndDate = LocalDate.parse(obligation.getProrogation()[0]); // date de fin de prorogation
                 for(LocalDate couponDate = endDate.plusMonths(period); 
                     couponDate.isBefore(prorogationEndDate) || couponDate.isEqual(prorogationEndDate); 
                     couponDate = couponDate.plusMonths(period)) {
                     
-                    if (!(obligation.getProrogation()[2].equals("0")) && couponDate.isEqual(prorogationEndDate)) {
+                    if (Double.parseDouble(obligation.getProrogation()[2]) != 0.0 && couponDate.isEqual(prorogationEndDate)) {
                         String[] coupon = new String[3];
                         coupon[0] = couponDate.toString();
                         coupon[1] = String.valueOf((Double.parseDouble(obligation.getProrogation()[1]) + Double.parseDouble(obligation.getProrogation()[2])) * obligation.getCapital() / 100);
@@ -207,16 +207,16 @@ public class ControllerHome {
                     } else {
                         String[] coupon = new String[3];
                         coupon[0] = couponDate.toString();
-                        coupon[1] = String.valueOf(Long.parseLong(obligation.getProrogation()[1]) * obligation.getCapital() / 100);
+                        coupon[1] = String.valueOf(Double.parseDouble(obligation.getProrogation()[1]) * obligation.getCapital() / 100);
                         coupon[2] = obligation.getName();
                         couponListViewItems.add(coupon);
                     }
                 }
-            } else if(obligation.getProrogationActivated() && !obligation.getProrogation()[2].equals("0")) {
+            } else if(obligation.getProrogationActivated() && Double.parseDouble(obligation.getProrogation()[2]) == 0.0) {
                 LocalDate prorogationCouponDate = LocalDate.parse(obligation.getProrogation()[0]); // date de fin de prorogation
                 String[] coupon = new String[3];
                 coupon[0] = prorogationCouponDate.toString();
-                coupon[1] = String.valueOf((Long.parseLong(obligation.getProrogation()[2])) * obligation.getCapital() / 100);
+                coupon[1] = String.valueOf((Double.parseDouble(obligation.getProrogation()[2])) * obligation.getCapital() / 100);
                 coupon[2] = obligation.getName();
                 couponListViewItems.add(coupon);
             }
@@ -570,7 +570,7 @@ public class ControllerHome {
                     if(obligation.getProrogationActivated()) {
                         obligationEndDate = LocalDate.parse(obligation.getProrogation()[0]); // date de fin de prorogation
                         if(obligationEndDate.isEqual(couponDate)) {
-                            if(obligation.getProrogation()[2] != "0" && obligation.getProrogation()[2] != "") {
+                            if(Double.parseDouble(obligation.getProrogation()[2]) != 0.0) {
                                 montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, item[0]);
                                 
                                 // Calculer la durée de prorogation en années

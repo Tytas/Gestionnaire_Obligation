@@ -403,15 +403,15 @@ public class ConsultObligationController {
                     if(obligation.getProrogationActivated()) {
                         obligationEndDate = LocalDate.parse(obligation.getProrogation()[0]); // date de fin de prorogation
                         if(obligationEndDate.isEqual(lastCouponDate)) {
-                            if(obligation.getProrogation()[2] != "0" && obligation.getProrogation()[2] != "") {
+                            if(Double.parseDouble(obligation.getProrogation()[2]) != 0.0) {
                                 montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, listCoupon.get(listCoupon.size() - 1)[0]);
                                 // Calculer la durée en années entre la fin normale et la fin de prorogation
                                 LocalDate endDateNormale = LocalDate.parse(obligation.getEndDate());
                                 LocalDate endDateProrogation = LocalDate.parse(obligation.getProrogation()[0]);
                                 long durationProrogationYears = ChronoUnit.YEARS.between(endDateNormale, endDateProrogation);
-                                long resProrog = (long) (montantInvesti * Double.parseDouble(obligation.getProrogation()[0]) / 100.0);
+                                long resProrog = (long) (montantInvesti * Double.parseDouble(obligation.getProrogation()[2]) / 100.0);
                                 for(int i = 0; i <= durationProrogationYears; i++) {
-                                    resProrog = (long) (resProrog * (1 + Double.parseDouble(obligation.getProrogation()[0]) / 100.0) + (montantInvesti * Double.parseDouble(obligation.getProrogation()[0]) / 100.0));
+                                    resProrog = (long) (resProrog * (1 + Double.parseDouble(obligation.getProrogation()[2]) / 100.0) + (montantInvesti * Double.parseDouble(obligation.getProrogation()[0]) / 100.0));
                                 }
                                 partBrutInFine = montantInvestiInFine;
                                 partNetInFine = partBrutInFine;
