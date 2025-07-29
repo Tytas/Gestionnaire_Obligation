@@ -167,9 +167,12 @@ public class AddSouscripteurPhysiqueController {
         for (Integer id : obligationId) {
             Obligation obligation = ObligationInteractor.GetObligation(id);
             if (obligation != null) {
-                TupleStringLongBoolean tuple = new TupleStringLongBoolean(new SimpleStringProperty(obligation.getName()),
-                                                                          new SimpleStringProperty("0"),
-                                                                          new SimpleBooleanProperty(false));
+                TupleStringLongBoolean tuple = new TupleStringLongBoolean(
+                    id,
+                    new SimpleStringProperty(obligation.getName()),
+                    new SimpleStringProperty("0"),
+                    new SimpleBooleanProperty(false)
+                );
                 allObligations.add(tuple);
             }
         }

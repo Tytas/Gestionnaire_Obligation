@@ -244,17 +244,17 @@ public class EditObligationController {
                 }
                 
                 // Gestion sécurisée des taux
-                int[] rates = currentObligation.getRate();
+                Double[] rates = currentObligation.getRate();
                 if (rates != null) {
                     if (rates.length > 0) {
-                        if (rates[0] != 0) {
+                        if (rates[0] != 0.0) {
                             taux_INFINE.setText(String.valueOf(rates[0]));
                         } else {
                             taux_INFINE.setText("0");
                         }
                     }
                     if (rates.length > 1) {
-                        if (rates[1] != 0) {
+                        if (rates[1] != 0.0) {
                             taux_TEMP.setText(String.valueOf(rates[1]));
                         } else {
                             taux_TEMP.setText("0");
@@ -308,7 +308,6 @@ public class EditObligationController {
                                 }
                             }
                         }
-                        System.out.println("Souscripteur ajouté: " + item.getName() + " selection ? " + item.getSelectionne());
                     }
                     if (souscripteurListView != null) {
                         sortedSouscripteurs.setComparator((a, b) -> {
@@ -399,16 +398,22 @@ public class EditObligationController {
             Investor investor = InvestorInteractor.GetInvestor(id);
             if (investor instanceof InvestorNP) {
                 InvestorNP investorNP = (InvestorNP) investor;
-                TupleStringLongBoolean tuple = new TupleStringLongBoolean(new SimpleStringProperty(investorNP.getFirstName() + " " + investorNP.getName()), 
-                                                                          new SimpleStringProperty("0"), 
-                                                                          new SimpleBooleanProperty(false));
+                TupleStringLongBoolean tuple = new TupleStringLongBoolean(
+                    id,
+                    new SimpleStringProperty(investorNP.getFirstName() + " " + investorNP.getName()),
+                    new SimpleStringProperty("0"),
+                    new SimpleBooleanProperty(false)
+                );
                 allSouscripteurs.add(tuple);
             }
             else if (investor instanceof InvestorLP) {
                 InvestorLP investorLP = (InvestorLP) investor;
-                TupleStringLongBoolean tuple2 = new TupleStringLongBoolean(new SimpleStringProperty(investorLP.getName()), 
-                                                                          new SimpleStringProperty("0"), 
-                                                                          new SimpleBooleanProperty(false));
+                TupleStringLongBoolean tuple2 = new TupleStringLongBoolean(
+                    id,
+                    new SimpleStringProperty(investorLP.getName()),
+                    new SimpleStringProperty("0"),
+                    new SimpleBooleanProperty(false)
+                );
                 allSouscripteurs.add(tuple2);
             }
         }
@@ -688,10 +693,10 @@ public class EditObligationController {
             }
 
             String tauxTempString = taux_TEMP.getText();
-            Integer tauxTemp = null;
+            Double tauxTemp = 0.0;
             if (tauxTempString != null && !tauxTempString.isEmpty()) {
                 try {
-                    tauxTemp = Integer.parseInt(tauxTempString);
+                    tauxTemp = Double.parseDouble(tauxTempString);
                     if (tauxTemp < 0 || tauxTemp > 100) {
                         showError(tauxTempErreurField, "Le taux TEMP doit être un pourcentage entre 0 et 100");
                         hasError = true;
@@ -704,10 +709,10 @@ public class EditObligationController {
             }
 
             String tauxInFineString = taux_INFINE.getText();
-            int tauxInFine = 0;
+            Double tauxInFine = 0.0;
             if (tauxInFineString != null && !tauxInFineString.isEmpty()) {
                 try {
-                    tauxInFine = Integer.parseInt(tauxInFineString);
+                    tauxInFine = Double.parseDouble(tauxInFineString);
                     if (tauxInFine < 0 || tauxInFine > 100) {
                         showError(tauxInFineErreurField, "Le taux IN FINE doit être un pourcentage entre 0 et 100");
                         hasError = true;
@@ -801,7 +806,7 @@ public class EditObligationController {
             }
 
             if (!hasError) {
-                EditObligation(nom, capital, valeurNominale, new int[]{tauxInFine, tauxTemp}, isConvertible, periodicite, isProrogation, 
+                EditObligation(nom, capital, valeurNominale, new Double[]{tauxInFine, tauxTemp}, isConvertible, periodicite, isProrogation, 
                     TauxProrogationField.getText(), TauxProrogationInfineField.getText(), ProrogationActivee.isSelected(), 
                     DateFinProrogationField.getValue() != null ? DateFinProrogationField.getValue().toString() : "",
                     numeroIsinField.getText(), dateFinString, dateDebutString, allSouscripteurs, emetteur, suretes, amortissements);
@@ -831,7 +836,7 @@ public class EditObligationController {
     }
 
 
-    private void EditObligation(String nom, Long capital, Integer valeurNominale, int[] taux, Boolean isConvertible,
+    private void EditObligation(String nom, Long capital, Integer valeurNominale, Double[] taux, Boolean isConvertible,
                                   String periodicite, Boolean isProrogation,
                                   String tauxProrogation, String tauxProrogationInfine, Boolean prorogationActivated, String dateFinProrogation, String isin, String dateFin,
                                   String dateDebut, ObservableList<TupleStringLongBoolean> souscripteursList, String emetteurName,
@@ -876,15 +881,9 @@ public class EditObligationController {
         ArrayList<mypackage.model.util.InvestorInfo> nouveauxInvestors = new ArrayList<>();
         
         for (TupleStringLongBoolean souscripteur : souscripteursList) {
-            if (souscripteur.getName() != null && !souscripteur.getName().isEmpty() && souscripteur.getSelectionne()) {
-                String souscripteurName = souscripteur.getName();
-                String[] nameParts = souscripteurName.split(" ", 2);
-                if (nameParts.length > 1) {
-                    souscripteurName = nameParts[1];
-                }
-                int idInvestor = InvestorInteractor.GetInvestorByName(souscripteurName);
-                if (idInvestor == -1) {
-                    System.out.println("Investor not found: " + souscripteurName);
+            if (souscripteur.getId() > 0 && souscripteur.getSelectionne()) {
+                if (souscripteur.getId() < 1) {
+                    System.out.println("Id Investor < 1 : " + souscripteur.getName());
                     continue; // Skip this investor if not found
                 }
                 
@@ -893,7 +892,7 @@ public class EditObligationController {
                             souscripteur.getDate() : "";
                 
                 // Créer une nouvelle InvestorInfo pour cet investisseur
-                mypackage.model.util.InvestorInfo newInfo = new mypackage.model.util.InvestorInfo(idInvestor, currentCapital, date);
+                mypackage.model.util.InvestorInfo newInfo = new mypackage.model.util.InvestorInfo(souscripteur.getId(), currentCapital, date);
                 nouveauxInvestors.add(newInfo);
             }
         }

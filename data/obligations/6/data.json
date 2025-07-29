@@ -7,14 +7,18 @@
   "valeurNominale" : 75000,
   "startDate" : "2025-07-02",
   "endDate" : "2028-07-02",
-  "rate" : [ 3, 10 ],
+  "rate" : [ 3.0, 10.0 ],
   "periodicity" : "Annuelle",
   "prorogation" : [ "", "", "" ],
   "prorogationActivated" : false,
   "isin" : "",
   "safeties" : [ ],
   "depreciations" : { },
-  "investors" : [ ],
+  "investors" : [ {
+    "investorId" : 9,
+    "capital" : 35,
+    "date" : ""
+  } ],
   "replacements" : [ ],
   "applicantId" : 3
 }

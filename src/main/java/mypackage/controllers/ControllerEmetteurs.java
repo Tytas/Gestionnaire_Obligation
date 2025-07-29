@@ -278,10 +278,12 @@ public class ControllerEmetteurs {
         if (selectedApplicant != null) {
             if (ConfirmWindow.confirmWindow()) {
                 System.out.println("Applicant deleted: " + selectedApplicant.getName());
-                Group group = GroupInteractor.GetGroup(selectedApplicant.getGroupId());
-                group.removeMember(selectedApplicant.getId());
-                GroupInteractor.DeleteGroup(selectedApplicant.getGroupId());
-                GroupInteractor.SaveGroup(group);
+                if(selectedApplicant.getGroupId() > 0) {
+                    Group group = GroupInteractor.GetGroup(selectedApplicant.getGroupId());
+                    group.removeMember(selectedApplicant.getId());
+                    GroupInteractor.DeleteGroup(selectedApplicant.getGroupId());
+                    GroupInteractor.SaveGroup(group);
+                }
                 selectedApplicant.getObligations().forEach(obligationId -> {
                     ObligationInteractor.DeleteObligation(obligationId);
                 });

@@ -81,7 +81,7 @@ public class ControllerHome {
         Long totalCapitaux = 0l;
         Integer totalObligationsRunning = 0;
         Integer totalInvestors = 0;
-        Long rateWeightedAverage = 0l;
+        Double rateWeightedAverage = 0.0;
         Long remainDurationDayAverage = 0l;
 
         for (Integer obligationId : obligationsId) {
@@ -161,7 +161,7 @@ public class ControllerHome {
                 System.err.println("Periodicity not set for obligation ID: " + id);
                 continue;
             }
-            if(obligation.getRate()[1] != 0){
+            if(obligation.getRate()[1] != 0.0){
                 LocalDate startDate = LocalDate.parse(obligation.getStartDate());
                 LocalDate endDate = LocalDate.parse(obligation.getEndDate());
                 
@@ -169,7 +169,7 @@ public class ControllerHome {
                     couponDate.isBefore(endDate) || couponDate.isEqual(endDate); 
                     couponDate = couponDate.plusMonths(period)) {
                     
-                    if (obligation.getRate()[0] != 0 && couponDate.isEqual(endDate) && !obligation.getProrogationActivated()) {
+                    if (obligation.getRate()[0] != 0.0 && couponDate.isEqual(endDate) && !obligation.getProrogationActivated()) {
                         String[] coupon = new String[3];
                         coupon[0] = couponDate.toString();
                         coupon[1] = String.valueOf((obligation.getRate()[1]+obligation.getRate()[0]) * obligation.getCapital() / 100);
@@ -201,7 +201,7 @@ public class ControllerHome {
                     if (!(obligation.getProrogation()[2].equals("0")) && couponDate.isEqual(prorogationEndDate)) {
                         String[] coupon = new String[3];
                         coupon[0] = couponDate.toString();
-                        coupon[1] = String.valueOf((Long.parseLong(obligation.getProrogation()[1]) + Long.parseLong(obligation.getProrogation()[2])) * obligation.getCapital() / 100);
+                        coupon[1] = String.valueOf((Double.parseDouble(obligation.getProrogation()[1]) + Double.parseDouble(obligation.getProrogation()[2])) * obligation.getCapital() / 100);
                         coupon[2] = obligation.getName();
                         couponListViewItems.add(coupon);
                     } else {
@@ -783,7 +783,7 @@ public class ControllerHome {
                 totalNetCell.setCellFormula("SUM(O11:O" + rowIndex + ")");
                 totalNetCell.setCellStyle(currencyStyle);
 
-                if(obligation.getRate()[0]!=0) {
+                if(obligation.getRate()[0]!=0 && LocalDate.parse(item[0]).isEqual(LocalDate.parse(obligation.getEndDate()))) {
                     Cell totalInfineBrutCell = totalRow.createCell(15);
                     totalInfineBrutCell.setCellFormula("SUM(P11:P" + rowIndex + ")");
                     totalInfineBrutCell.setCellStyle(currencyStyle);
@@ -813,23 +813,23 @@ public class ControllerHome {
                 if (Desktop.isDesktopSupported()) {
                     Desktop.getDesktop().open(excelFile);
                 } else {
-                    System.err.println("❌ Ouverture automatique non supportée sur cette plateforme.");
+                    System.err.println("Ouverture automatique non supportée sur cette plateforme.");
                 }
             }
             
-            System.out.println("✅ Fichier Excel généré avec succès : " + filename);
+            System.out.println("Fichier Excel généré avec succès : " + filename);
 
         } catch (FileNotFoundException e) {
-            System.err.println("❌ Erreur lors de la création du fichier Excel : " + e.getMessage());
+            System.err.println("Erreur lors de la création du fichier Excel : " + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
-            System.err.println("❌ Erreur d'écriture du fichier Excel : " + e.getMessage());
+            System.err.println("Erreur d'écriture du fichier Excel : " + e.getMessage());
             e.printStackTrace();
         } catch (NumberFormatException e) {
-            System.err.println("❌ Erreur de format du montant : " + e.getMessage());
+            System.err.println("Erreur de format du montant : " + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("❌ Erreur générale : " + e.getMessage());
+            System.err.println("Erreur générale : " + e.getMessage());
             e.printStackTrace();
         }
     }

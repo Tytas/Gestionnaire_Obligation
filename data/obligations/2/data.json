@@ -7,14 +7,26 @@
   "valeurNominale" : 10000,
   "startDate" : "2025-06-13",
   "endDate" : "2028-06-13",
-  "rate" : [ 0, 5 ],
+  "rate" : [ 0.0, 5.0 ],
   "periodicity" : "Semestrielle",
   "prorogation" : [ "", "", "" ],
   "prorogationActivated" : false,
   "isin" : "",
   "safeties" : [ ],
   "depreciations" : { },
-  "investors" : [ ],
+  "investors" : [ {
+    "investorId" : 9,
+    "capital" : 30,
+    "date" : ""
+  }, {
+    "investorId" : 132,
+    "capital" : 5,
+    "date" : ""
+  }, {
+    "investorId" : 150,
+    "capital" : 50,
+    "date" : ""
+  } ],
   "replacements" : [ ],
   "applicantId" : 1
 }

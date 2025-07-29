@@ -148,9 +148,12 @@ public class AddObligationController {
         for (Integer id : investorsId) {
             Investor investor = InvestorInteractor.GetInvestorNP(id);
             if (investor != null) {
-                TupleStringLongBoolean tuple = new TupleStringLongBoolean(new SimpleStringProperty(investor.getName()), 
-                                                                          new SimpleStringProperty("0"), 
-                                                                          new SimpleBooleanProperty(false));
+                TupleStringLongBoolean tuple = new TupleStringLongBoolean(
+                    id,
+                    new SimpleStringProperty(investor.getName()),
+                    new SimpleStringProperty("0"),
+                    new SimpleBooleanProperty(false)
+                );
                 allSouscripteurs.add(tuple);
             }
         }
@@ -374,10 +377,10 @@ public class AddObligationController {
             }
 
             String tauxTempString = taux_TEMP.getText();
-            Integer tauxTemp = null;
+            Double tauxTemp = null;
             if (tauxTempString != null && !tauxTempString.isEmpty()) {
                 try {
-                    tauxTemp = Integer.parseInt(tauxTempString);
+                    tauxTemp = Double.parseDouble(tauxTempString);
                     if (tauxTemp < 0 || tauxTemp > 100) {
                         showError(tauxTempErreurField, "Le taux TEMP doit être un pourcentage entre 0 et 100");
                         hasError = true;
@@ -390,10 +393,10 @@ public class AddObligationController {
             }
 
             String tauxInFineString = taux_INFINE.getText();
-            int tauxInFine = 0;
+            double tauxInFine = 0;
             if (tauxInFineString != null && !tauxInFineString.isEmpty()) {
                 try {
-                    tauxInFine = Integer.parseInt(tauxInFineString);
+                    tauxInFine = Double.parseDouble(tauxInFineString);
                     if (tauxInFine < 0 || tauxInFine > 100) {
                         showError(tauxInFineErreurField, "Le taux IN FINE doit être un pourcentage entre 0 et 100");
                         hasError = true;
@@ -490,8 +493,8 @@ public class AddObligationController {
             }
 
             if (!hasError) {
-                CreateObligation(nom, capital, valeurNominale, new int[]{tauxInFine, tauxTemp}, isConvertible,
-                    periodicite, isProrogation, TauxProrogationField.getText(), TauxProrogationInfineField.getText(), 
+                CreateObligation(nom, capital, valeurNominale, new Double[]{tauxInFine, tauxTemp}, isConvertible,
+                    periodicite, isProrogation, TauxProrogationField.getText(), TauxProrogationInfineField.getText(),
                     DateFinProrogationField.getValue() != null ? DateFinProrogationField.getValue().toString() : "",
                     numeroIsin, dateFinString, dateDebutString, allSouscripteurs, emetteur, suretes, amortissements);
                 result = true;
@@ -520,7 +523,7 @@ public class AddObligationController {
     }
 
 
-    private void CreateObligation(String nom, Long capital, Integer valeurNominale, int[] taux, Boolean isConvertible,
+    private void CreateObligation(String nom, Long capital, Integer valeurNominale, Double[] taux, Boolean isConvertible,
                                   String periodicite, Boolean isProrogation,String tauxProrogation,
                                   String tauxProrogationInfine, String dateFinProrogation, String numeroIsin, String dateFin,
                                   String dateDebut, ObservableList<TupleStringLongBoolean> souscripteursList, String emetteurName,

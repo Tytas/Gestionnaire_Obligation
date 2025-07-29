@@ -251,13 +251,13 @@ public class ControllerObligations {
             DureeObligation.setText(String.valueOf(ChronoUnit.MONTHS.between(LocalDate.parse(oblig.getStartDate()), LocalDate.parse(oblig.getEndDate()))) + " mois");
             DateDebutObligation.setText(oblig.getStartDate());
             DateFinObligation.setText(oblig.getEndDate());
-            if(oblig.getRate()[0] != 0 && oblig.getRate()[1] != 0) {
+            if(oblig.getRate()[0] != 0.0 && oblig.getRate()[1] != 0.0) {
                 TauxObligation.setText(String.valueOf(oblig.getRate()[1]) + "%" + " + " + String.valueOf(oblig.getRate()[0]) + "% INFINE");
             } else {
                 TauxObligation.setText("Aucun Taux");
-                if(oblig.getRate()[0] != 0){
+                if(oblig.getRate()[0] != 0.0){
                     TauxObligation.setText(String.valueOf(oblig.getRate()[0]) + "% INFINE");
-                } if(oblig.getRate()[1] != 0){
+                } if(oblig.getRate()[1] != 0.0){
                     TauxObligation.setText(String.valueOf(oblig.getRate()[1]) + "%");
                 }
             }

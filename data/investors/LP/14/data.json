@@ -2,7 +2,7 @@
   "id" : 14,
   "name" : "HAE HOLDING",
   "familyId" : 0,
-  "obligations" : [ ],
+  "obligations" : [ 2 ],
   "registerNumber" : "840 996 664",
   "dateOfCreation" : "",
   "capitalSocial" : "1000",
@@ -20,6 +20,6 @@
   "villeRCS" : "",
   "roleBoss" : "",
   "bankName" : "",
-  "iban" : "",
-  "bic" : ""
+  "bic" : "",
+  "iban" : ""
 }

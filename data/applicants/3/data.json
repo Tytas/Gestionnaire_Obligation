@@ -18,8 +18,8 @@
   "addressBoss" : [ "75", "75", "75", "75", "75", "75" ],
   "roleBoss" : "75",
   "bankName" : "75",
-  "groupId" : 1,
+  "groupId" : 0,
   "obligations" : [ 5, 6 ],
-  "bic" : "75",
-  "iban" : "75"
+  "iban" : "75",
+  "bic" : "75"
 }

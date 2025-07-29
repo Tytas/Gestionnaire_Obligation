@@ -104,7 +104,7 @@ public class ConsultObligationController {
     }
 
     private void ShowExcel(String selectedFamilyName) {
-        System.out.println("🔄 Début de création du fichier Excel pour le coupon:");
+        System.out.println("Début de création du fichier Excel pour l'obligation :");
         System.out.println("   - Date: " + obligation.getStartDate());
         System.out.println("   - Montant: " + obligation.getValeurNominale());
         System.out.println("   - Obligation: " + obligation.getName());
@@ -258,44 +258,48 @@ public class ConsultObligationController {
             headerCell2.setCellStyle(headerStyle);
 
             Cell headerCell3 = headerRow.createCell(2);
-            headerCell3.setCellValue("PP / PM");
+            headerCell3.setCellValue("Date de Souscription");
             headerCell3.setCellStyle(headerStyle);
 
             Cell headerCell4 = headerRow.createCell(3);
-            headerCell4.setCellValue("R / NR");
+            headerCell4.setCellValue("PP / PM");
             headerCell4.setCellStyle(headerStyle);
 
             Cell headerCell5 = headerRow.createCell(4);
-            headerCell5.setCellValue("PLF");
+            headerCell5.setCellValue("R / NR");
             headerCell5.setCellStyle(headerStyle);
 
             Cell headerCell6 = headerRow.createCell(5);
-            headerCell6.setCellValue("Adresse");
+            headerCell6.setCellValue("PLF");
             headerCell6.setCellStyle(headerStyle);
 
             Cell headerCell7 = headerRow.createCell(6);
-            headerCell7.setCellValue("Ville");
+            headerCell7.setCellValue("Adresse");
             headerCell7.setCellStyle(headerStyle);
 
             Cell headerCell8 = headerRow.createCell(7);
-            headerCell8.setCellValue("Pays");
+            headerCell8.setCellValue("Ville");
             headerCell8.setCellStyle(headerStyle);
 
             Cell headerCell9 = headerRow.createCell(8);
-            headerCell9.setCellValue("Nombre D'Obligations");
+            headerCell9.setCellValue("Pays");
             headerCell9.setCellStyle(headerStyle);
 
             Cell headerCell10 = headerRow.createCell(9);
-            headerCell10.setCellValue("Montant de Souscritption");
+            headerCell10.setCellValue("Nombre D'Obligations");
             headerCell10.setCellStyle(headerStyle);
 
             Cell headerCell11 = headerRow.createCell(10);
-            headerCell11.setCellValue("IBAN");
+            headerCell11.setCellValue("Montant de Souscritption");
             headerCell11.setCellStyle(headerStyle);
 
             Cell headerCell12 = headerRow.createCell(11);
-            headerCell12.setCellValue("BIC");
+            headerCell12.setCellValue("IBAN");
             headerCell12.setCellStyle(headerStyle);
+
+            Cell headerCell13 = headerRow.createCell(12);
+            headerCell13.setCellValue("BIC");
+            headerCell13.setCellStyle(headerStyle);
 
             ArrayList<Cell> headerListCoupon = new ArrayList<>();
 
@@ -303,33 +307,33 @@ public class ConsultObligationController {
 
             Row headerCouponRow = sheet.createRow(8);
             for (int i = 0; i < 3*listCoupon.size(); i+=3) {
-                Cell headerCouponCell = headerCouponRow.createCell(12 + i);
-                sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(8, 8, 12 + i, 14 + i));
+                Cell headerCouponCell = headerCouponRow.createCell(13 + i);
+                sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(8, 8, 13 + i, 15 + i));
                 headerCouponCell.setCellValue("COUPON " + listCoupon.get(i/3)[0]);
                 headerCouponCell.setCellStyle(headerStyle);
 
                 headerListCoupon.add(headerCouponCell);
 
-                Cell titleCouponBrutCell = headerRow.createCell(12 + i);
+                Cell titleCouponBrutCell = headerRow.createCell(13 + i);
                 titleCouponBrutCell.setCellValue("BRUT");
-                Cell titleCouponPLFCell = headerRow.createCell(13 + i);
+                Cell titleCouponPLFCell = headerRow.createCell(14 + i);
                 titleCouponPLFCell.setCellValue("PLF");
-                Cell titleCouponNetCell = headerRow.createCell(14 + i);
+                Cell titleCouponNetCell = headerRow.createCell(15 + i);
                 titleCouponNetCell.setCellValue("NET");
             }
 
             if(LocalDate.parse(obligation.getEndDate()).isEqual(LocalDate.parse(listCoupon.get(listCoupon.size() - 1)[0])) ||
                (obligation.getProrogationActivated() && LocalDate.parse(obligation.getProrogation()[0]).isEqual(LocalDate.parse(listCoupon.get(listCoupon.size() - 1)[0])))) {
-                Cell headerProrogationCell = headerCouponRow.createCell(12 + 3*listCoupon.size());
-                sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(8, 8, 12 + 3*listCoupon.size(), 14 + 3*listCoupon.size()));
+                Cell headerProrogationCell = headerCouponRow.createCell(13 + 3*listCoupon.size());
+                sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(8, 8, 13 + 3*listCoupon.size(), 15 + 3*listCoupon.size()));
                 headerProrogationCell.setCellValue("COUPON IN FINE");
                 headerProrogationCell.setCellStyle(headerStyle);
 
-                Cell titleCouponInFineBRUTCell = headerRow.createCell(12 + 3*listCoupon.size());
+                Cell titleCouponInFineBRUTCell = headerRow.createCell(13 + 3*listCoupon.size());
                 titleCouponInFineBRUTCell.setCellValue("BRUT");
-                Cell titleCouponInFinePLFCell = headerRow.createCell(13 + 3*listCoupon.size());
+                Cell titleCouponInFinePLFCell = headerRow.createCell(14 + 3*listCoupon.size());
                 titleCouponInFinePLFCell.setCellValue("PLF");
-                Cell titleCouponInFineNETCell = headerRow.createCell(14 + 3*listCoupon.size());
+                Cell titleCouponInFineNETCell = headerRow.createCell(15 + 3*listCoupon.size());
                 titleCouponInFineNETCell.setCellValue("NET");
             }
 
@@ -390,9 +394,9 @@ public class ConsultObligationController {
                     LocalDate obligationEndDate = LocalDate.parse(obligation.getEndDate());
                     LocalDate lastCouponDate = LocalDate.parse(listCoupon.get(listCoupon.size() - 1)[0]);
                     if(obligationEndDate.isEqual(lastCouponDate) && !obligation.getProrogationActivated()) {
-                        if(obligation.getRate()[0] != 0) {
+                        if(obligation.getRate()[0] != 0.0) {
                             montantInvestiInFine = MontantInvestiCapitalise(montantInvesti, obligation, listCoupon.get(listCoupon.size() - 1)[0]);
-                            partBrutInFine = montantInvestiInFine * obligation.getRate()[0] / 100.0;
+                            partBrutInFine = montantInvestiInFine;
                             partNetInFine = partBrutInFine;
                         }
                     }
@@ -405,10 +409,11 @@ public class ConsultObligationController {
                                 LocalDate endDateNormale = LocalDate.parse(obligation.getEndDate());
                                 LocalDate endDateProrogation = LocalDate.parse(obligation.getProrogation()[0]);
                                 long durationProrogationYears = ChronoUnit.YEARS.between(endDateNormale, endDateProrogation);
-                                for(int i = 0; i < durationProrogationYears; i++) {
-                                    montantInvestiInFine = (long) (montantInvestiInFine * (1 + Double.parseDouble(obligation.getProrogation()[1]) / 100.0));
+                                long resProrog = (long) (montantInvesti * Double.parseDouble(obligation.getProrogation()[0]) / 100.0);
+                                for(int i = 0; i <= durationProrogationYears; i++) {
+                                    resProrog = (long) (resProrog * (1 + Double.parseDouble(obligation.getProrogation()[0]) / 100.0) + (montantInvesti * Double.parseDouble(obligation.getProrogation()[0]) / 100.0));
                                 }
-                                partBrutInFine = montantInvestiInFine * Double.parseDouble(obligation.getProrogation()[2]) / 100.0;
+                                partBrutInFine = montantInvestiInFine;
                                 partNetInFine = partBrutInFine;
                                 System.out.println("📅 Date de coupon égale à la date de fin de l'obligation, ajout du taux In Fine.");
                             }
@@ -423,6 +428,10 @@ public class ConsultObligationController {
                     String pays = "";
                     String investorIBAN = "";
                     String investorBIC = "";
+                    String investorDate = obligation.getStartDate();
+                    if(!obligation.getInvestorDate(investorId).equals("")) {
+                        investorDate = obligation.getInvestorDate(investorId);
+                    }
                     if(investor != null && investor instanceof InvestorLP) {
                         InvestorLP investorLP = (InvestorLP) investor;
                         if (investorLP.getAddress()[4].equals("France")) {
@@ -482,36 +491,39 @@ public class ConsultObligationController {
                     // Nom du Souscripteur
                     Cell cellName = dataRow.createCell(1);
                     cellName.setCellValue(investorName);
-                    
-                    Cell cellPPorPM = dataRow.createCell(2);
+
+                    Cell cellDate = dataRow.createCell(2);
+                    cellDate.setCellValue(investorDate);
+
+                    Cell cellPPorPM = dataRow.createCell(3);
                     cellPPorPM.setCellValue(investorPMorPP);
 
-                    Cell cellResident = dataRow.createCell(3);
+                    Cell cellResident = dataRow.createCell(4);
                     cellResident.setCellValue(investorResidence);
 
-                    Cell cellPLF = dataRow.createCell(4);
+                    Cell cellPLF = dataRow.createCell(5);
                     cellPLF.setCellValue(PLF);
 
-                    Cell cellAddress = dataRow.createCell(5);
+                    Cell cellAddress = dataRow.createCell(6);
                     cellAddress.setCellValue(address);
 
-                    Cell cellVille = dataRow.createCell(6);
+                    Cell cellVille = dataRow.createCell(7);
                     cellVille.setCellValue(ville);
 
-                    Cell cellPays = dataRow.createCell(7);
+                    Cell cellPays = dataRow.createCell(8);
                     cellPays.setCellValue(pays);
 
-                    Cell cellNombreParts = dataRow.createCell(8);
+                    Cell cellNombreParts = dataRow.createCell(9);
                     cellNombreParts.setCellValue(nombreParts);
 
-                    Cell cellMontantInvesti = dataRow.createCell(9);
+                    Cell cellMontantInvesti = dataRow.createCell(10);
                     cellMontantInvesti.setCellValue(montantInvesti);
                     cellMontantInvesti.setCellStyle(currencyStyle);
 
-                    Cell cellIBAN = dataRow.createCell(10);
+                    Cell cellIBAN = dataRow.createCell(11);
                     cellIBAN.setCellValue(investorIBAN);
 
-                    Cell cellBIC = dataRow.createCell(11);
+                    Cell cellBIC = dataRow.createCell(12);
                     cellBIC.setCellValue(investorBIC);
 
                     // Calculer la part du coupon
@@ -522,9 +534,9 @@ public class ConsultObligationController {
                     }
                     for (int i = 0; i < 3*listCoupon.size(); i+=3) {
                         if(AmortissementsMap.isEmpty() || i == 0) {
-                            System.out.println("⚠️ Aucun amortissement trouvé pour l'obligation : " + obligation.getName());
+                            System.out.println("Aucun amortissement trouvé pour l'obligation : " + obligation.getName());
                         } else {
-                            System.out.println("📉 Amortissements trouvés : " + AmortissementsMap.size());
+                            System.out.println("Amortissements trouvés : " + AmortissementsMap.size());
                             index = 0;
                             for (Map.Entry<String, Integer> entry : AmortissementsMap.entrySet()) {
                                 if(LocalDate.parse(entry.getKey()).isBefore(LocalDate.parse(listCoupon.get(i/3)[0])) && !amortissementApplique[index]) {
@@ -570,57 +582,82 @@ public class ConsultObligationController {
                         if(!info.getDate().isEmpty() && LocalDate.parse(listCoupon.get(i/3)[0]).isAfter(LocalDate.parse(info.getDate()))) {
                             long daysBetween = ChronoUnit.DAYS.between(LocalDate.parse(info.getDate()), LocalDate.parse(listCoupon.get(i/3)[0]));
                             if(daysBetween < period * 31) {
-                                Cell cellCouponBrut = dataRow.createCell(12 + i);
+                                Cell cellCouponBrut = dataRow.createCell(13 + i);
                                 cellCouponBrut.setCellValue((partBrut / 365) * daysBetween);
                                 cellCouponBrut.setCellStyle(currencyStyle);
 
-                                Cell cellCouponPLF = dataRow.createCell(13 + i);
+                                Cell cellCouponPLF = dataRow.createCell(14 + i);
                                 cellCouponPLF.setCellValue((partPLF / 365) * daysBetween);
                                 cellCouponPLF.setCellStyle(currencyStyle);
 
-                                Cell cellCouponNet = dataRow.createCell(14 + i);
+                                Cell cellCouponNet = dataRow.createCell(15 + i);
                                 cellCouponNet.setCellValue((partNet / 365) * daysBetween);
                                 cellCouponNet.setCellStyle(currencyStyle);
                             }else {
-                                Cell cellCouponBrut = dataRow.createCell(12 + i);
+                                Cell cellCouponBrut = dataRow.createCell(13 + i);
                                 cellCouponBrut.setCellValue(partBrut);
                                 cellCouponBrut.setCellStyle(currencyStyle);
 
-                                Cell cellCouponPLF = dataRow.createCell(13 + i);
+                                Cell cellCouponPLF = dataRow.createCell(14 + i);
                                 cellCouponPLF.setCellValue(partPLF);
                                 cellCouponPLF.setCellStyle(currencyStyle);
 
-                                Cell cellCouponNet = dataRow.createCell(14 + i);
+                                Cell cellCouponNet = dataRow.createCell(15 + i);
                                 cellCouponNet.setCellValue(partNet);
                                 cellCouponNet.setCellStyle(currencyStyle);
                             }
                         } else {
-                            Cell cellCouponBrut = dataRow.createCell(12 + i);
+                            Cell cellCouponBrut = dataRow.createCell(13 + i);
                             cellCouponBrut.setCellValue(partBrut);
                             cellCouponBrut.setCellStyle(currencyStyle);
 
-                            Cell cellCouponPLF = dataRow.createCell(13 + i);
+                            Cell cellCouponPLF = dataRow.createCell(14 + i);
                             cellCouponPLF.setCellValue(partPLF);
                             cellCouponPLF.setCellStyle(currencyStyle);
 
-                            Cell cellCouponNet = dataRow.createCell(14 + i);
+                            Cell cellCouponNet = dataRow.createCell(15 + i);
                             cellCouponNet.setCellValue(partNet);
                             cellCouponNet.setCellStyle(currencyStyle);
                         }
                     }
 
                     if(montantInvestiInFine != 0) {
-                        Cell cellCouponInfineBrut = dataRow.createCell(12 + 3*listCoupon.size());
+                        if(!info.getDate().isEmpty()) {
+                            // Recalculer partBrutInFine pour une arrivée tardive
+                            LocalDate investorLateDate = LocalDate.parse(info.getDate());
+                            LocalDate lateStartDate = LocalDate.parse(obligation.getStartDate());
+                            while( investorLateDate.isAfter(lateStartDate)) {
+                                lateStartDate = lateStartDate.plusMonths(period);
+                            }
+                            double daysBetween = ChronoUnit.DAYS.between(investorLateDate, lateStartDate);
+                            double montantInvestiCapitalise = obligation.getValeurNominale() * info.getCapital()
+                                                            * (daysBetween / 365) * (obligation.getRate()[0] / 100.0);
+                            LocalDate couponDate = LocalDate.parse(listCoupon.get(listCoupon.size() - 1)[0]);
+                            long nombreDeMois = ChronoUnit.MONTHS.between(lateStartDate, couponDate);
+                            for (int i = 1; i <= nombreDeMois / 12; i++) {
+                                montantInvestiCapitalise = (long) (montantInvestiCapitalise * (1 + obligation.getRate()[0] / 100.0) + 
+                                                                   obligation.getValeurNominale() * info.getCapital() * obligation.getRate()[0] / 100.0);
+                            }
+                            double partBrutInFineArriveeTardive = montantInvestiCapitalise;
+                            partBrutInFine = partBrutInFineArriveeTardive;
+                            if(partPLFInFine != 0.0) {
+                                partPLFInFine = partBrutInFine * 0.3;
+                                partNetInFine = partBrutInFine - partPLFInFine;
+                            } else {
+                                partPLFInFine = 0.0;
+                                partNetInFine = partBrutInFine;
+                            }
+                        }
+                        Cell cellCouponInfineBrut = dataRow.createCell(13 + 3*listCoupon.size());
                         cellCouponInfineBrut.setCellValue(partBrutInFine);
                         cellCouponInfineBrut.setCellStyle(currencyStyle);
-                        Cell cellCouponInfinePLF = dataRow.createCell(13 + 3*listCoupon.size());
+                        Cell cellCouponInfinePLF = dataRow.createCell(14 + 3*listCoupon.size());
                         cellCouponInfinePLF.setCellValue(partPLFInFine);
                         cellCouponInfinePLF.setCellStyle(currencyStyle);
-                        Cell cellCouponInfineNet = dataRow.createCell(14 + 3*listCoupon.size());
+                        Cell cellCouponInfineNet = dataRow.createCell(15 + 3*listCoupon.size());
                         cellCouponInfineNet.setCellValue(partNetInFine);
                         cellCouponInfineNet.setCellStyle(currencyStyle);
                     }
-
                     rowIndex++;
                 }
 
@@ -630,41 +667,41 @@ public class ConsultObligationController {
                 totalLabelCell.setCellValue("TOTAL :");
                 totalLabelCell.setCellStyle(headerStyle);
 
-                Cell totalNombrePartsCell = totalRow.createCell(8);
-                totalNombrePartsCell.setCellFormula("SUM(I11:I" + (rowIndex) + ")");
+                Cell totalNombrePartsCell = totalRow.createCell(9);
+                totalNombrePartsCell.setCellFormula("SUM(J11:J" + (rowIndex) + ")");
 
-                Cell totalMontantInvestiCell = totalRow.createCell(9);
-                totalMontantInvestiCell.setCellFormula("SUM(J11:J" + (rowIndex) + ")");
+                Cell totalMontantInvestiCell = totalRow.createCell(10);
+                totalMontantInvestiCell.setCellFormula("SUM(K11:K" + (rowIndex) + ")");
                 totalMontantInvestiCell.setCellStyle(currencyStyle);
 
                 for (int i = 0; i < 3*headerListCoupon.size(); i+=3) {
 
                     // Calculez les colonnes de base pour chaque itération
-                    String brutCol = getColumnReference(12 + i);
-                    String plfCol = getColumnReference(13 + i);
-                    String netCol = getColumnReference(14 + i);
-    
-                    Cell totalBrutCell = totalRow.createCell(12 + i);
+                    String brutCol = getColumnReference(13 + i);
+                    String plfCol = getColumnReference(14 + i);
+                    String netCol = getColumnReference(15 + i);
+
+                    Cell totalBrutCell = totalRow.createCell(13 + i);
                     totalBrutCell.setCellFormula("SUM(" + brutCol + "11:" + brutCol + (rowIndex) + ")");
                     totalBrutCell.setCellStyle(currencyStyle);
 
-                    Cell totalPLFCell = totalRow.createCell(13 + i);
+                    Cell totalPLFCell = totalRow.createCell(14 + i);
                     totalPLFCell.setCellFormula("SUM(" + plfCol + "11:" + plfCol + (rowIndex) + ")");
                     totalPLFCell.setCellStyle(currencyStyle);
 
-                    Cell totalNetCell = totalRow.createCell(14 + i);
+                    Cell totalNetCell = totalRow.createCell(15 + i);
                     totalNetCell.setCellFormula("SUM(" + netCol + "11:" + netCol + (rowIndex) + ")");
                     totalNetCell.setCellStyle(currencyStyle);
                 }
                 if(obligation.getRate()[0]!=0) {
-                    Cell totalInfineBrutCell = totalRow.createCell(12 + 3*headerListCoupon.size());
-                    totalInfineBrutCell.setCellFormula("SUM(" + getColumnReference(12 + 3*headerListCoupon.size()) + "11:" + getColumnReference(12 + 3*headerListCoupon.size()) + rowIndex + ")");
+                    Cell totalInfineBrutCell = totalRow.createCell(13 + 3*headerListCoupon.size());
+                    totalInfineBrutCell.setCellFormula("SUM(" + getColumnReference(13 + 3*headerListCoupon.size()) + "11:" + getColumnReference(13 + 3*headerListCoupon.size()) + rowIndex + ")");
                     totalInfineBrutCell.setCellStyle(currencyStyle);
-                    Cell totalInfinePLFCell = totalRow.createCell(13 + 3*headerListCoupon.size());
-                    totalInfinePLFCell.setCellFormula("SUM(" + getColumnReference(13 + 3*headerListCoupon.size()) + "11:" + getColumnReference(13 + 3*headerListCoupon.size()) + rowIndex + ")");
+                    Cell totalInfinePLFCell = totalRow.createCell(14 + 3*headerListCoupon.size());
+                    totalInfinePLFCell.setCellFormula("SUM(" + getColumnReference(14 + 3*headerListCoupon.size()) + "11:" + getColumnReference(14 + 3*headerListCoupon.size()) + rowIndex + ")");
                     totalInfinePLFCell.setCellStyle(currencyStyle);
-                    Cell totalInfineNetCell = totalRow.createCell(14 + 3*headerListCoupon.size());
-                    totalInfineNetCell.setCellFormula("SUM(" + getColumnReference(14 + 3*headerListCoupon.size()) + "11:" + getColumnReference(14 + 3*headerListCoupon.size()) + rowIndex + ")");
+                    Cell totalInfineNetCell = totalRow.createCell(15 + 3*headerListCoupon.size());
+                    totalInfineNetCell.setCellFormula("SUM(" + getColumnReference(15 + 3*headerListCoupon.size()) + "11:" + getColumnReference(15 + 3*headerListCoupon.size()) + rowIndex + ")");
                     totalInfineNetCell.setCellStyle(currencyStyle);
                 }
             
@@ -712,10 +749,11 @@ public class ConsultObligationController {
         LocalDate couponDate = LocalDate.parse(CouponDate);
         LocalDate startDate = LocalDate.parse(obligation.getStartDate());
         long nombreDeMois = ChronoUnit.MONTHS.between(startDate, couponDate);
-        for (int i = 1; i < nombreDeMois / 12; i++) {
-            montantInvesti += (long) (montantInvesti * (1 + obligation.getRate()[0] / 100.0));
+        long res = (long) (montantInvesti * (obligation.getRate()[0] / 100.0));
+        for (int i = 1; i <= nombreDeMois / 12; i++) {
+            res = (long) (res * ((100 + obligation.getRate()[0]) / 100.0) + (montantInvesti * (obligation.getRate()[0] / 100.0)));
         }
-        return montantInvesti;
+        return res;
     }
 
     // Méthode pour convertir un index de colonne en référence de colonne Excel (A, B, ..., Z, AA, AB, etc.)

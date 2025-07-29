@@ -6,25 +6,31 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class TupleStringLongBoolean {
+    private int id;
     private StringProperty name;
     private StringProperty capital;
     private BooleanProperty selectionne;
     private StringProperty date; // Nouvelle propriété pour la date
 
-    public TupleStringLongBoolean(StringProperty name, StringProperty capital, BooleanProperty selectionne) {
+    public TupleStringLongBoolean(int id, StringProperty name, StringProperty capital, BooleanProperty selectionne) {
+        this.id = id;
         this.name = name;
         this.capital = capital;
         this.selectionne = selectionne;
         this.date = new SimpleStringProperty(""); // Valeur par défaut vide
     }
 
-    public TupleStringLongBoolean(StringProperty name, StringProperty capital, BooleanProperty selectionne, StringProperty date) {
+    public TupleStringLongBoolean(int id, StringProperty name, StringProperty capital, BooleanProperty selectionne, StringProperty date) {
+        this.id = id;
         this.name = name;
         this.capital = capital;
         this.selectionne = selectionne;
         this.date = date;
     }
 
+    public int getId() {
+        return id;
+    }
     public String getName() {
         return name.get();
     }
@@ -53,6 +59,9 @@ public class TupleStringLongBoolean {
         return date;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
     public void setName(String name) {
         this.name.set(name);
     }
@@ -68,6 +77,7 @@ public class TupleStringLongBoolean {
 
     public TupleStringLongBoolean clone() {
         return new TupleStringLongBoolean(
+            id,
             new SimpleStringProperty(name.get()),
             new SimpleStringProperty(capital.get()),
             new SimpleBooleanProperty(false),

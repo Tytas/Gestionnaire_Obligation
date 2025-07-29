@@ -19,7 +19,7 @@ public class Obligation {
     private Integer valeurNominale;
     private String startDate;   
     private String endDate;
-    private int[] rate = {0, 0}; // [In Fine, mensuelle]
+    private Double[] rate = {0.0, 0.0}; // [In Fine, mensuelle]
     private String periodicity;
     private String[] prorogation; // [Date de fin prorogation, nouveau taux, nouveau taux In Fine]
     private Boolean prorogationActivated = false;
@@ -38,7 +38,7 @@ public class Obligation {
         this.valeurNominale = 0;
         this.startDate = "";
         this.endDate = "";
-        this.rate = new int[]{0, 0};
+        this.rate = new Double[]{0.0, 0.0};
         this.periodicity = "";
         this.prorogation = new String[]{"", "", ""}; // [Durée de prorogation, nouveau taux, nouveau taux In Fine]
         this.prorogationActivated = false;
@@ -47,7 +47,7 @@ public class Obligation {
     }
 
     public Obligation(int id, SimpleStringProperty name, String registerNumber, Boolean convertible, long capital, Integer valeurNominale,
-                      String startDate, String endDate, int[] rate, String periodicity, String[] prorogation, 
+                      String startDate, String endDate, Double[] rate, String periodicity, String[] prorogation,
                       Boolean prorogationActivated, String isin, ArrayList<String> safeties, Map<String, Integer> depreciations, int applicantId) {
         this.id = id;
         this.name = name;
@@ -94,7 +94,7 @@ public class Obligation {
     public String getEndDate() {
         return endDate;
     }
-    public int[] getRate() {
+    public Double[] getRate() {
         return rate;
     }
     public String getPeriodicity() {
@@ -167,7 +167,7 @@ public class Obligation {
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
-    public void setRate(int[] rate) {
+    public void setRate(Double[] rate) {
         this.rate = rate;
     }
     public void setPeriodicity(String periodicity) {
@@ -207,17 +207,6 @@ public class Obligation {
         this.investors = investors;
     }
     
-    /**
-     * Convertit l'ancienne structure Map<Integer, Long> en nouvelle structure avec InvestorInfo
-     * @param oldInvestors La map contenant les anciennes données
-     */
-    public void setInvestorsLegacy(Map<Integer, Long> oldInvestors) {
-        this.investors.clear();
-        for (Map.Entry<Integer, Long> entry : oldInvestors.entrySet()) {
-            this.investors.add(new InvestorInfo(entry.getKey(), entry.getValue(), ""));
-        }
-    }
-    
     public void addInvestor(Integer investor, long capital, String date) {
         this.investors.add(new InvestorInfo(investor, capital, date));
     }
@@ -254,7 +243,7 @@ public class Obligation {
             System.err.println("Periodicity not set for obligation ID: " + this.getId());
             return null;
         }
-        if(this.getRate()[1] != 0){
+        if(this.getRate()[1] != 0.0){
             LocalDate startDate = LocalDate.parse(this.getStartDate());
             LocalDate endDate = LocalDate.parse(this.getEndDate());
             
@@ -262,7 +251,7 @@ public class Obligation {
                 couponDate.isBefore(endDate) || couponDate.isEqual(endDate); 
                 couponDate = couponDate.plusMonths(period)) {
                 
-                if (this.getRate()[0] != 0 && couponDate.isEqual(endDate) && !this.getProrogationActivated()) {
+                if (this.getRate()[0] != 0.0 && couponDate.isEqual(endDate) && !this.getProrogationActivated()) {
                     String[] coupon = new String[3];
                     coupon[0] = couponDate.toString();
                     coupon[1] = String.valueOf((this.getRate()[1]+this.getRate()[0]) * this.getCapital() / 100);
@@ -276,7 +265,7 @@ public class Obligation {
                     listCoupon.add(coupon);
                 }
             }
-        } else if(this.getRate()[0] != 0 && !this.getProrogationActivated()) {
+        } else if(this.getRate()[0] != 0.0 && !this.getProrogationActivated()) {
             LocalDate couponDate = LocalDate.parse(this.getEndDate());
             String[] coupon = new String[3];
             coupon[0] = couponDate.toString();
